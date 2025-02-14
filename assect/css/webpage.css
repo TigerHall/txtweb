@@ -1,107 +1,107 @@
 @font-face {
-    font-family: '方正浩宇行楷';
-    src: local(''),
-        url('../font/FZHYXK.woff2') format('woff');
+  font-family: "方正浩宇行楷";
+  src: local(""), url("../font/FZHYXK.woff2") format("woff");
 }
 
 @font-face {
-    font-family: '方正行楷';
-    src: local(''),
-        url('../font/FZXK.woff2') format('woff');
+  font-family: "方正行楷";
+  src: local(""), url("../font/FZXK.woff2") format("woff");
 }
 
 @font-face {
-    font-family: '新楷体';
-    src: local(''),
-        url('../font/XKT.woff2') format('woff');
+  font-family: "新楷体";
+  src: local(""), url("../font/XKT.woff2") format("woff");
 }
 
 @font-face {
-    font-family: '台湾楷';
-    src: local(''),
-        url('../font/TWK.woff2') format('woff');
+  font-family: "台湾楷";
+  src: local(""), url("../font/TWK.woff2") format("woff");
 }
 
 @font-face {
-    font-family: '遍黑体';
-    src: local(''),
-        url('../font/遍黑体.ttf') format('ttf');
+  font-family: "遍黑体";
+  src: local(""), url("../font/遍黑体.ttf") format("ttf");
 }
 
 @font-face {
-    font-family: 'Coca';
-    src: local(''),
-        url('../font/Coca.woff2') format('woff');
+  font-family: "Coca";
+  src: local(""), url("../font/Coca.woff2") format("woff");
 }
 
 :root {
-    --font-size: 1.5em;
+  --font-size: 1.5em;
 }
 
 body {
-    counter-reset: h1section;
-    padding: 0.6em;
-    vertical-align: middle;
+  counter-reset: h1section;
+  padding: 0.6em;
+  vertical-align: middle;
 }
 
 h1 {
-    margin: 0, auto;
-    vertical-align: middle;
-    font-size: var(--font-size, 3em);
-    color: rgba(0, 0, 0, 1);
-    text-align: center;
-    font-family: "新楷体";
-    counter-reset: section;
-    /* 标题位于新页面 */
-    page-break-before: always;
+  margin: 0 auto;
+  vertical-align: middle;
+  font-size: var(--font-size, 3em);
+  color: rgba(0, 0, 0, 1);
+  text-align: center;
+  font-family: "新楷体";
+  counter-reset: section;
+  counter-reset: h2section;
+  /* 标题位于新页面 */
+  page-break-before: always;
 }
 
 h1::before {
-    opacity: 0.5;
-    font-size: 50%;
-    color: #996;
-    counter-increment: h1section;
-    content: "『" counter(h1section) "』";
+  opacity: 0.5;
+  font-size: 50%;
+  color: #996;
+  counter-increment: h1section;
+  content: "『" counter(h1section) "』";
+}
+
+h2 {
+  /* text-align: center; */
+  font-family: "Coca";
 }
 
 p {
-    margin-top: 0.5em;
-    margin-bottom: 0.1em;
-    font-size: var(--font-size, 1em);
-    color: rgba(0, 0, 0, 0.7);
-    font-family: Coca, "新楷体";
+  margin-top: 0.5em;
+  margin-bottom: 0.1em;
+  font-size: var(--font-size, 1em);
+  color: rgba(0, 0, 0, 0.7);
+  font-family: Coca, "新楷体";
 }
 
 /* 段号 */
 p::before {
-    opacity: 0.5;
-    color: #9c9;
-    font-size: 50%;
-    counter-increment: section;
-    content: "「" counter(section) "」";
+  opacity: 0.5;
+  color: #9c9;
+  font-size: 50%;
+  counter-increment: section;
+  content: "「" counter(section) "」";
 }
 
 footer {
-    margin: 0, auto;
-    position: fixed;
-    text-align: center;
-    font-size: 0.5em;
-    color: rgba(0, 0, 0, 0.5);
-    font-family: "新楷体";
-    display: none;
+  margin: 0, auto;
+  position: fixed;
+  text-align: center;
+  font-size: 0.5em;
+  color: rgba(0, 0, 0, 0.5);
+  font-family: "新楷体";
+  display: none;
 }
 
 @page {
-    /* margin: 1em; */
-    counter-increment: page;
+  /* margin: 1em; */
+  counter-increment: page;
 
-    @top-right {
-        content: "第 " counter(page) " 页 · 共 " counter(pages) "页";
-    }
+  @top-right {
+    content: "第 " counter(page) " 页 · 共 " counter(pages) "页";
+  }
 }
 
 @media print {
-    footer {
-        display: block;
-    }
+  footer {
+    display: block;
+  }
 }
