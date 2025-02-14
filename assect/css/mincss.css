@@ -1,0 +1,86 @@
+@font-face {
+    font-family: '新楷体';
+    src: local(''),
+        url('../font/XKT.woff2') format('woff');
+}
+
+@font-face {
+    font-family: 'Coca';
+    src: local(''),
+        url('../font/Coca.woff2') format('woff');
+}
+
+:root {
+    --font-size: 1.5em;
+    --font-family: 'Coca', '新楷体';
+}
+
+html {
+    color-scheme: light dark;
+}
+
+body {
+    font-family: var(--font-family, system-ui);
+    font-size: 1.25rem;
+    line-height: 1.5;
+    width: min(75ch, 100% - 4rem);
+    margin-inline: auto;
+    counter-reset: h1section;
+}
+
+img,
+svg,
+video {
+    max-width: 100%;
+    display: block;
+}
+
+h1 {
+    /* 标题打印时位于新页面 */
+    counter-reset: section;
+    page-break-before: always;
+}
+
+h1::before {
+    opacity: 0;
+    font-size: 0%;
+    counter-increment: h1section;
+    content: counter(h1section)" ";
+    /* content: "『" counter(h1section) "』"; */
+}
+
+p {
+    text-indent: 1em;
+    text-align: justify;
+    text-justify: inter-ideograph;
+    margin-block: 0.5em;
+    margin-inline: 0;
+}
+
+/* 段号 */
+p::before {
+    opacity: 0.5;
+    font-size: 50%;
+    counter-increment: section;
+    content: counter(h1section) "-" counter(section) " ";
+    /* content: "「" counter(h1section) "-" counter(section) "」"; */
+}
+
+footer {
+    /* display: none; */
+    content: "第 " counter(page) " 页 · 共 " counter(pages) "页";
+}
+
+@page {
+    counter-increment: page;
+
+    /* 国家标准公文页边距 GB/T 9704-2012 */
+    size: A4 portrait;
+    margin: 3.7cm 2.6cm 3.5cm;
+}
+
+@media print {
+    footer {
+        display: block;
+    }
+}

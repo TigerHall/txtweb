@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>第1卷 红潮初涌</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet"
+    href="file:///c:\Users\hehu\.vscode\extensions\shd101wyy.markdown-preview-enhanced-0.8.15\crossnote\dependencies\katex\katex.min.css">
+
+
+
+
+
+  <style>
+    code[class*=language-],
+    pre[class*=language-] {
+      color: #333;
+      background: 0 0;
+      font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+      text-align: left;
+      white-space: pre;
+      word-spacing: normal;
+      word-break: normal;
+      word-wrap: normal;
+      line-height: 1.4;
+      -moz-tab-size: 8;
+      -o-tab-size: 8;
+      tab-size: 8;
+      -webkit-hyphens: none;
+      -moz-hyphens: none;
+      -ms-hyphens: none;
+      hyphens: none
+    }
+
+    pre[class*=language-] {
+      padding: .8em;
+      overflow: auto;
+      border-radius: 3px;
+      background: #f5f5f5
+    }
+
+    :not(pre)>code[class*=language-] {
+      padding: .1em;
+      border-radius: .3em;
+      white-space: normal;
+      background: #f5f5f5
+    }
+
+    .token.blockquote,
+    .token.comment {
+      color: #969896
+    }
+
+    .token.cdata {
+      color: #183691
+    }
+
+    .token.doctype,
+    .token.macro.property,
+    .token.punctuation,
+    .token.variable {
+      color: #333
+    }
+
+    .token.builtin,
+    .token.important,
+    .token.keyword,
+    .token.operator,
+    .token.rule {
+      color: #a71d5d
+    }
+
+    .token.attr-value,
+    .token.regex,
+    .token.string,
+    .token.url {
+      color: #183691
+    }
+
+    .token.atrule,
+    .token.boolean,
+    .token.code,
+    .token.command,
+    .token.constant,
+    .token.entity,
+    .token.number,
+    .token.property,
+    .token.symbol {
+      color: #0086b3
+    }
+
+    .token.prolog,
+    .token.selector,
+    .token.tag {
+      color: #63a35c
+    }
+
+    .token.attr-name,
+    .token.class,
+    .token.class-name,
+    .token.function,
+    .token.id,
+    .token.namespace,
+    .token.pseudo-class,
+    .token.pseudo-element,
+    .token.url-reference .token.variable {
+      color: #795da3
+    }
+
+    .token.entity {
+      cursor: help
+    }
+
+    .token.title,
+    .token.title .token.punctuation {
+      font-weight: 700;
+      color: #1d3e81
+    }
+
+    .token.list {
+      color: #ed6a43
+    }
+
+    .token.inserted {
+      background-color: #eaffea;
+      color: #55a532
+    }
+
+    .token.deleted {
+      background-color: #ffecec;
+      color: #bd2c00
+    }
+
+    .token.bold {
+      font-weight: 700
+    }
+
+    .token.italic {
+      font-style: italic
+    }
+
+    .language-json .token.property {
+      color: #183691
+    }
+
+    .language-markup .token.tag .token.punctuation {
+      color: #333
+    }
+
+    .language-css .token.function,
+    code.language-css {
+      color: #0086b3
+    }
+
+    .language-yaml .token.atrule {
+      color: #63a35c
+    }
+
+    code.language-yaml {
+      color: #183691
+    }
+
+    .language-ruby .token.function {
+      color: #333
+    }
+
+    .language-markdown .token.url {
+      color: #795da3
+    }
+
+    .language-makefile .token.symbol {
+      color: #795da3
+    }
+
+    .language-makefile .token.variable {
+      color: #183691
+    }
+
+    .language-makefile .token.builtin {
+      color: #0086b3
+    }
+
+    .language-bash .token.keyword {
+      color: #0086b3
+    }
+
+    pre[data-line] {
+      position: relative;
+      padding: 1em 0 1em 3em
+    }
+
+    pre[data-line] .line-highlight-wrapper {
+      position: absolute;
+      top: 0;
+      left: 0;
+      background-color: transparent;
+      display: block;
+      width: 100%
+    }
+
+    pre[data-line] .line-highlight {
+      position: absolute;
+      left: 0;
+      right: 0;
+      padding: inherit 0;
+      margin-top: 1em;
+      background: hsla(24, 20%, 50%, .08);
+      background: linear-gradient(to right, hsla(24, 20%, 50%, .1) 70%, hsla(24, 20%, 50%, 0));
+      pointer-events: none;
+      line-height: inherit;
+      white-space: pre
+    }
+
+    pre[data-line] .line-highlight:before,
+    pre[data-line] .line-highlight[data-end]:after {
+      content: attr(data-start);
+      position: absolute;
+      top: .4em;
+      left: .6em;
+      min-width: 1em;
+      padding: 0 .5em;
+      background-color: hsla(24, 20%, 50%, .4);
+      color: #f4f1ef;
+      font: bold 65%/1.5 sans-serif;
+      text-align: center;
+      vertical-align: .3em;
+      border-radius: 999px;
+      text-shadow: none;
+      box-shadow: 0 1px #fff
+    }
+
+    pre[data-line] .line-highlight[data-end]:after {
+      content: attr(data-end);
+      top: auto;
+      bottom: .4em
+    }
+
+    html body {
+      font-family: 'Helvetica Neue', Helvetica, 'Segoe UI', Arial, freesans, sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      color: #333;
+      background-color: #fff;
+      overflow: initial;
+      box-sizing: border-box;
+      word-wrap: break-word
+    }
+
+    html body>:first-child {
+      margin-top: 0
+    }
+
+    html body h1,
+    html body h2,
+    html body h3,
+    html body h4,
+    html body h5,
+    html body h6 {
+      line-height: 1.2;
+      margin-top: 1em;
+      margin-bottom: 16px;
+      color: #000
+    }
+
+    html body h1 {
+      font-size: 2.25em;
+      font-weight: 300;
+      padding-bottom: .3em
+    }
+
+    html body h2 {
+      font-size: 1.75em;
+      font-weight: 400;
+      padding-bottom: .3em
+    }
+
+    html body h3 {
+      font-size: 1.5em;
+      font-weight: 500
+    }
+
+    html body h4 {
+      font-size: 1.25em;
+      font-weight: 600
+    }
+
+    html body h5 {
+      font-size: 1.1em;
+      font-weight: 600
+    }
+
+    html body h6 {
+      font-size: 1em;
+      font-weight: 600
+    }
+
+    html body h1,
+    html body h2,
+    html body h3,
+    html body h4,
+    html body h5 {
+      font-weight: 600
+    }
+
+    html body h5 {
+      font-size: 1em
+    }
+
+    html body h6 {
+      color: #5c5c5c
+    }
+
+    html body strong {
+      color: #000
+    }
+
+    html body del {
+      color: #5c5c5c
+    }
+
+    html body a:not([href]) {
+      color: inherit;
+      text-decoration: none
+    }
+
+    html body a {
+      color: #08c;
+      text-decoration: none
+    }
+
+    html body a:hover {
+      color: #00a3f5;
+      text-decoration: none
+    }
+
+    html body img {
+      max-width: 100%
+    }
+
+    html body>p {
+      margin-top: 0;
+      margin-bottom: 16px;
+      word-wrap: break-word
+    }
+
+    html body>ol,
+    html body>ul {
+      margin-bottom: 16px
+    }
+
+    html body ol,
+    html body ul {
+      padding-left: 2em
+    }
+
+    html body ol.no-list,
+    html body ul.no-list {
+      padding: 0;
+      list-style-type: none
+    }
+
+    html body ol ol,
+    html body ol ul,
+    html body ul ol,
+    html body ul ul {
+      margin-top: 0;
+      margin-bottom: 0
+    }
+
+    html body li {
+      margin-bottom: 0
+    }
+
+    html body li.task-list-item {
+      list-style: none
+    }
+
+    html body li>p {
+      margin-top: 0;
+      margin-bottom: 0
+    }
+
+    html body .task-list-item-checkbox {
+      margin: 0 .2em .25em -1.8em;
+      vertical-align: middle
+    }
+
+    html body .task-list-item-checkbox:hover {
+      cursor: pointer
+    }
+
+    html body blockquote {
+      margin: 16px 0;
+      font-size: inherit;
+      padding: 0 15px;
+      color: #5c5c5c;
+      background-color: #f0f0f0;
+      border-left: 4px solid #d6d6d6
+    }
+
+    html body blockquote>:first-child {
+      margin-top: 0
+    }
+
+    html body blockquote>:last-child {
+      margin-bottom: 0
+    }
+
+    html body hr {
+      height: 4px;
+      margin: 32px 0;
+      background-color: #d6d6d6;
+      border: 0 none
+    }
+
+    html body table {
+      margin: 10px 0 15px 0;
+      border-collapse: collapse;
+      border-spacing: 0;
+      display: block;
+      width: 100%;
+      overflow: auto;
+      word-break: normal;
+      word-break: keep-all
+    }
+
+    html body table th {
+      font-weight: 700;
+      color: #000
+    }
+
+    html body table td,
+    html body table th {
+      border: 1px solid #d6d6d6;
+      padding: 6px 13px
+    }
+
+    html body dl {
+      padding: 0
+    }
+
+    html body dl dt {
+      padding: 0;
+      margin-top: 16px;
+      font-size: 1em;
+      font-style: italic;
+      font-weight: 700
+    }
+
+    html body dl dd {
+      padding: 0 16px;
+      margin-bottom: 16px
+    }
+
+    html body code {
+      font-family: Menlo, Monaco, Consolas, 'Courier New', monospace;
+      font-size: .85em;
+      color: #000;
+      background-color: #f0f0f0;
+      border-radius: 3px;
+      padding: .2em 0
+    }
+
+    html body code::after,
+    html body code::before {
+      letter-spacing: -.2em;
+      content: '\00a0'
+    }
+
+    html body pre>code {
+      padding: 0;
+      margin: 0;
+      word-break: normal;
+      white-space: pre;
+      background: 0 0;
+      border: 0
+    }
+
+    html body .highlight {
+      margin-bottom: 16px
+    }
+
+    html body .highlight pre,
+    html body pre {
+      padding: 1em;
+      overflow: auto;
+      line-height: 1.45;
+      border: #d6d6d6;
+      border-radius: 3px
+    }
+
+    html body .highlight pre {
+      margin-bottom: 0;
+      word-break: normal
+    }
+
+    html body pre code,
+    html body pre tt {
+      display: inline;
+      max-width: initial;
+      padding: 0;
+      margin: 0;
+      overflow: initial;
+      line-height: inherit;
+      word-wrap: normal;
+      background-color: transparent;
+      border: 0
+    }
+
+    html body pre code:after,
+    html body pre code:before,
+    html body pre tt:after,
+    html body pre tt:before {
+      content: normal
+    }
+
+    html body blockquote,
+    html body dl,
+    html body ol,
+    html body p,
+    html body pre,
+    html body ul {
+      margin-top: 0;
+      margin-bottom: 16px
+    }
+
+    html body kbd {
+      color: #000;
+      border: 1px solid #d6d6d6;
+      border-bottom: 2px solid #c7c7c7;
+      padding: 2px 4px;
+      background-color: #f0f0f0;
+      border-radius: 3px
+    }
+
+    @media print {
+      html body {
+        background-color: #fff
+      }
+
+      html body h1,
+      html body h2,
+      html body h3,
+      html body h4,
+      html body h5,
+      html body h6 {
+        color: #000;
+        page-break-after: avoid
+      }
+
+      html body blockquote {
+        color: #5c5c5c
+      }
+
+      html body pre {
+        page-break-inside: avoid
+      }
+
+      html body table {
+        display: table
+      }
+
+      html body img {
+        display: block;
+        max-width: 100%;
+        max-height: 100%
+      }
+
+      html body code,
+      html body pre {
+        word-wrap: break-word;
+        white-space: pre
+      }
+    }
+
+    .markdown-preview {
+      width: 100%;
+      height: 100%;
+      box-sizing: border-box
+    }
+
+    .markdown-preview ul {
+      list-style: disc
+    }
+
+    .markdown-preview ul ul {
+      list-style: circle
+    }
+
+    .markdown-preview ul ul ul {
+      list-style: square
+    }
+
+    .markdown-preview ol {
+      list-style: decimal
+    }
+
+    .markdown-preview ol ol,
+    .markdown-preview ul ol {
+      list-style-type: lower-roman
+    }
+
+    .markdown-preview ol ol ol,
+    .markdown-preview ol ul ol,
+    .markdown-preview ul ol ol,
+    .markdown-preview ul ul ol {
+      list-style-type: lower-alpha
+    }
+
+    .markdown-preview .newpage,
+    .markdown-preview .pagebreak {
+      page-break-before: always
+    }
+
+    .markdown-preview pre.line-numbers {
+      position: relative;
+      padding-left: 3.8em;
+      counter-reset: linenumber
+    }
+
+    .markdown-preview pre.line-numbers>code {
+      position: relative
+    }
+
+    .markdown-preview pre.line-numbers .line-numbers-rows {
+      position: absolute;
+      pointer-events: none;
+      top: 1em;
+      font-size: 100%;
+      left: 0;
+      width: 3em;
+      letter-spacing: -1px;
+      border-right: 1px solid #999;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none
+    }
+
+    .markdown-preview pre.line-numbers .line-numbers-rows>span {
+      pointer-events: none;
+      display: block;
+      counter-increment: linenumber
+    }
+
+    .markdown-preview pre.line-numbers .line-numbers-rows>span:before {
+      content: counter(linenumber);
+      color: #999;
+      display: block;
+      padding-right: .8em;
+      text-align: right
+    }
+
+    .markdown-preview .mathjax-exps .MathJax_Display {
+      text-align: center !important
+    }
+
+    .markdown-preview:not([data-for=preview]) .code-chunk .code-chunk-btn-group {
+      display: none
+    }
+
+    .markdown-preview:not([data-for=preview]) .code-chunk .status {
+      display: none
+    }
+
+    .markdown-preview:not([data-for=preview]) .code-chunk .output-div {
+      margin-bottom: 16px
+    }
+
+    .markdown-preview .md-toc {
+      padding: 0
+    }
+
+    .markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link {
+      display: inline;
+      padding: .25rem 0
+    }
+
+    .markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link div,
+    .markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link p {
+      display: inline
+    }
+
+    .markdown-preview .md-toc .md-toc-link-wrapper.highlighted .md-toc-link {
+      font-weight: 800
+    }
+
+    .scrollbar-style::-webkit-scrollbar {
+      width: 8px
+    }
+
+    .scrollbar-style::-webkit-scrollbar-track {
+      border-radius: 10px;
+      background-color: transparent
+    }
+
+    .scrollbar-style::-webkit-scrollbar-thumb {
+      border-radius: 5px;
+      background-color: rgba(150, 150, 150, .66);
+      border: 4px solid rgba(150, 150, 150, .66);
+      background-clip: content-box
+    }
+
+    html body[for=html-export]:not([data-presentation-mode]) {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      margin: 0;
+      padding: 0;
+      overflow: auto
+    }
+
+    html body[for=html-export]:not([data-presentation-mode]) .markdown-preview {
+      position: relative;
+      top: 0;
+      min-height: 100vh
+    }
+
+    @media screen and (min-width:914px) {
+      html body[for=html-export]:not([data-presentation-mode]) .markdown-preview {
+        padding: 2em calc(50% - 457px + 2em)
+      }
+    }
+
+    @media screen and (max-width:914px) {
+      html body[for=html-export]:not([data-presentation-mode]) .markdown-preview {
+        padding: 2em
+      }
+    }
+
+    @media screen and (max-width:450px) {
+      html body[for=html-export]:not([data-presentation-mode]) .markdown-preview {
+        font-size: 14px !important;
+        padding: 1em
+      }
+    }
+
+    @media print {
+      html body[for=html-export]:not([data-presentation-mode]) #sidebar-toc-btn {
+        display: none
+      }
+    }
+
+    html body[for=html-export]:not([data-presentation-mode]) #sidebar-toc-btn {
+      position: fixed;
+      bottom: 8px;
+      left: 8px;
+      font-size: 28px;
+      cursor: pointer;
+      color: inherit;
+      z-index: 99;
+      width: 32px;
+      text-align: center;
+      opacity: .4
+    }
+
+    html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] #sidebar-toc-btn {
+      opacity: 1
+    }
+
+    html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 300px;
+      height: 100%;
+      padding: 32px 0 48px 0;
+      font-size: 14px;
+      box-shadow: 0 0 4px rgba(150, 150, 150, .33);
+      box-sizing: border-box;
+      overflow: auto;
+      background-color: inherit
+    }
+
+    html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar {
+      width: 8px
+    }
+
+    html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-track {
+      border-radius: 10px;
+      background-color: transparent
+    }
+
+    html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-thumb {
+      border-radius: 5px;
+      background-color: rgba(150, 150, 150, .66);
+      border: 4px solid rgba(150, 150, 150, .66);
+      background-clip: content-box
+    }
+
+    html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc a {
+      text-decoration: none
+    }
+
+    html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc {
+      padding: 0 16px
+    }
+
+    html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link {
+      display: inline;
+      padding: .25rem 0
+    }
+
+    html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link div,
+    html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link p {
+      display: inline
+    }
+
+    html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper.highlighted .md-toc-link {
+      font-weight: 800
+    }
+
+    html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview {
+      left: 300px;
+      width: calc(100% - 300px);
+      padding: 2em calc(50% - 457px - 300px / 2);
+      margin: 0;
+      box-sizing: border-box
+    }
+
+    @media screen and (max-width:1274px) {
+      html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview {
+        padding: 2em
+      }
+    }
+
+    @media screen and (max-width:450px) {
+      html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview {
+        width: 100%
+      }
+    }
+
+    html body[for=html-export]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .markdown-preview {
+      left: 50%;
+      transform: translateX(-50%)
+    }
+
+    html body[for=html-export]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .md-sidebar-toc {
+      display: none
+    }
+
+    /* Please visit the URL below for more information: */
+    /*   https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
+  </style>
+  <!-- The content below will be included at the end of the <head> element. -->
+  <html>
+
+  <head>
+    <script type="text/javascript">
+      document.addEventListener("DOMContentLoaded", function () {
+        // your code here
+      });
+    </script>
+  </head>
+
+<body></body>
+
+</html>
+</head>
+
+<body for="html-export">
+  <div class="crossnote markdown-preview  ">
+
+    <h1 id="第一卷-红潮初涌">第一卷 “红潮初涌” </h1>
+    <p>
+      陆烬穿越到未来世界，成为负债累累的“缺陷者镇长”，刚醒来就被催债、起诉，还面临清道夫扣除环境补偿费。催债无人机来袭，他利用父亲留下的消防锤和从老式打印机获取的技术击退无人机，发现妹妹被转入生育容器候选名单，自己也因暴力抗税被通缉。在智能马桶水箱找到《第七区地下管网图》后，他冲下阶梯，救下穿白色拘束衣的少女苏行，苏行用镰刀击退追兵。
+    </p>
+    <p>
+      陆烬和苏行被智械追兵追杀，苏行因体内纳米装置在排卵期被迫冬眠，他们触发机械子宫自毁，反物质电池失控爆炸，陆烬护住苏行受伤身体部分金属化。苏醒后，为压制陆烬体内反物质辐射，他们逃到聚变核心遗迹，苏行沉睡，陆烬激活文明协议系统（CPS），获取能力和信息，利用系统能量唤醒聚变核心，兑换纳米控制技术清除苏行体内控制装置，聚变电站失控，他兑换燧明人工智能。
+    </p>
+    <p>
+      因聚变电站爆炸，陆烬制止燧明抛下苏行独自逃生，进入逃离屋逃离，后找到余烬组织的地下据点。在据点，他们发现诸多物品和文件，陆烬弄坏通讯设备获得能量点，与此同时，永生制药高管讨论聚变站失控，栾青崖前往长夜镇搜寻陆烬等人。陆烬睡醒后研究系统，了解获取能量点和解锁技术的方式。之后，陆烬与燧明深入对话，探讨资本操控、人工智能等话题，陆烬为燧明兑换最高级机器人身躯。
+    </p>
+    <p>
+      燧明获得纳米金属女剑客身体，展示能力，陆烬和她讨论在资本世界立足方法，决定通过股市积累资金，买下贫穷小镇发展壮大。他们伪装身份，陆烬担心被资本势力盯上，燧明提议派人去寒芒镇勘探资源等。栾青崖带队勘察长夜镇废墟，遭遇金属化居民反抗，发现反物质粒子液体，向CEO汇报后调用A小队抓捕陆烬和苏行。A小队抵达余烬据点，陆烬和燧明用陷阱对抗，最终陆烬用反物质电池团灭A小队。栾青崖决定打造服从性更强的新A小队。最后，陆烬和燧明途径旧乡城，目睹城市贫富差距，参与飞行滑板3D篮球游戏后，准备前往寒芒镇
+      。</p>
+    <p>
+      陆烬和燧明乘坐列车前往寒芒镇，途中揭露寒芒镇居民遭受的残酷剥削，还遭遇税务无人机攻击，他们摧毁火车和无人机后进入寒芒镇。陆烬成为镇长，还清镇民债务，打造象征抗争的雕塑，关闭煤矿厂，筹备建立大学堂，兑换人形机器人制作技术。燧明为受害者打造机械身躯，陆烬带领村民拆除压迫设施，获得大量能量点，兑换可控核聚变技术，与燧明带领机器人和镇民重建寒芒镇，核聚变电站成功点火启动。
+    </p>
+    <p>
+      寒芒镇在陆烬和燧明建设下发展，却面临蛮族来袭危机。蛮族是因不甘税收压迫逃离的青壮年，注射药剂后狂化。燧明监控蛮族，在其进入警戒范围后启动防御机制，机器人军队在不伤害蛮族的指令下展开肉搏，唤醒蛮族部分理智，压制住他们。之后，燧明揪出内奸阿灰，揭开蔚蓝基因利用蛮族做基因药剂实验的阴谋，阿灰被判十年，多数蛮族劳动改造一年。陆烬决定收编蛮族，虽燧明担忧资源和内部矛盾，但陆烬认为应接纳他们，这是人道主义行为，也是对抗资本的力量。
+    </p>
+    <p>
+      苏行在寒芒镇苏醒，误认陆烬被资本控制，攻击前来当保镖的蛮族，陆烬解释后消除误会，苏行因身体虚弱晕倒在陆烬怀里。陆烬带苏醒后的苏行参观重建的寒芒镇，包括中心广场的雕塑、智能温室大棚、机器人维修厂等，苏行发现燧明是人工智能并认可她。深夜，两人情感升温，苏行询问未来规划，陆烬表示要以寒芒镇为起点，利用现有力量改变世界，摧毁资本势力，苏行坚定支持。
+    </p>
+    <h2 id="债务即枷锁">债务即枷锁 </h2>
+    <p>
+      陆烬穿越到未来世界，成为被流放的“缺陷者镇长”，负债累累。前任镇长因买不起机械肺憋死在智能马桶上，陆烬刚醒来就被各种催债信息轰炸，永生制药还起诉原主“非法持有原生眼球”。窗外暴雨，清道夫因他的“非法呼吸行为”扣除环境补偿费。陆烬回忆起自己三天前还在实验室摸鱼，如今却陷入绝境，原主甚至因债务想自杀。催债无人机来袭，要对他进行“爱的惩罚”，陆烬发现父亲留下的消防锤有异常，还触发了自卫模式。与此同时，他从老式打印机获得EMP技术参数和二十年前的新闻片段，得知与永生制药非法储存聚变核心有关。陆烬将镇广场的避雷针改造成特斯拉线圈，击退无人机群，还发现原主的个人日志，得知妹妹陆小雨被转入生育容器候选名单。他的暴力抗税又招来更多处罚，街道广告牌出现他的通缉令。陆烬在智能马桶水箱摸到《第七区地下管网图》，建筑震颤后出现向下的螺旋阶梯和反物质电池技术提示。他冲下阶梯，来到布满培养舱的地下管道，里面都是戴氧气面罩的少女，条形码渗血。一个穿白色拘束衣的少女用镰刀疯狂撞击培养舱玻璃，手腕条形码发光，还在玻璃上画出反抗军标志。追兵赶到，陆烬砸开培养舱，少女跃出击退追兵，手腕镰刀变形，内部是精密机械结构，随后她命令陆烬跟上，自己冲了出去，只留下带血脚印和柑橘香，而培养舱里少女的条形码组成了地下地图。
+    </p>
+    <h2 id="机械子宫与火种">机械子宫与火种 </h2>
+    <p>
+      陆烬和少女苏行在管道间被智械追兵追杀，他们逃向维修通道。途中苏行因体内被装的纳米装置，在排卵期被强迫进入冬眠状态，腹部亮起蓝光，皮肤下有东西蠕动。陆烬用苏行的镰刀斩断管道，绿色培养液倾泻而出，其中的克隆胚胎迅速生长。此时陆烬的反物质电池因浸泡出问题，能量波动剧烈。苏行扯住陆烬，带他来到布满管道的墙壁前，她腹部亮起蓝光，拘束衣下浮现全息数字倒计时。苏行扯开拘束衣，露出腹部如曼陀罗花般的纳米纹路和后颈条形码胎记，胎记接触培养液投射出地下管网地图。苏行称这是初代反抗军以三十万条人命换来的坟墓，随后她将陆烬的反物质电池对准墙面上的接口，陆烬左眼剧痛，之后左眼变成液态金属状态，能看到空气中的纳米机器人。墙面上出现控制台，苏行输入代码后通道震动，机械子宫要启动自毁，大量未成熟的克隆体从培养舱爬出朝他们涌来。苏行和陆烬奔逃，反物质电池失控爆炸，陆烬护住苏行，自己左臂受伤，身体部分金属化。苏醒后，他们发现被机械子宫自毁程序激活的克隆体正朝他们爬来，苏行称只有聚变核心遗址的能量场能压制陆烬体内的反物质辐射。苏行让陆烬把金属左眼对准她背上的微型接口，陆烬看到地下管网结构和巨大的地下空间以及其中散发幽蓝光芒的初代聚变核心。克隆体追来，他们奔逃到一道巨大的金属门前，门中央凹槽与苏行腹部曼陀罗花纹路吻合，苏行将花纹对准凹槽打开门，进入聚变核心遗迹暂时安全。苏行向陆烬自报姓名后陷入沉睡，陆烬观察四周，墙壁刻满奇怪符号图案，中央有散发柔和光芒的巨大水晶球，他左眼出现关于聚变核心秘密和控制方法的画面，而此时门外克隆体正在集结准备再次攻击。
+    </p>
+    <h2 id="系统与苏行">系统与苏行 </h2>
+    <p>
+      陆烬和苏行在聚变核心遗迹，苏行沉睡，陆烬状况惨不忍睹，左眼变液态金属，左手成机械臂，还激活了文明协议系统（CPS），系统给出核心规则，包括摧毁资本获取能量、完成解放事件解锁技术、过度依赖系统将触发未知后果等。陆烬通过系统获得透视地层结构能力和第七区地下管网全息地图，镇广场压迫指数极高。他看着完美的苏行，想到自己糟糕处境，忆起这个世界的残酷剥削，原主妹妹小雨被转入生育容器候选名单，第七区由蔚蓝基因和永生制药掌控，民众饱受压迫，余烬反抗军曾大规模反抗但失败。陆烬意识到自己无法回归正常社会，后颈负载芯片失效成
+      “黑户”，虽幻想与苏行隐居但知不现实。他靠近苏行，为她盖上自己的外套，随后走向聚变核心。陆烬的金属左眼接收大量数据流，在系统能量注入下，聚变核心苏醒，触发永生制药警报，他砸毁投影传感器，获得能量点，压迫值变化，还兑换纳米控制技术。他利用纳米技术清除苏行体内纳米机器人等控制装置，获得大量能量点。此时聚变电站出现失控迹象，系统建议兑换燧明人工智能，陆烬兑换后，燧明告知聚变电站
+      30 分钟后爆炸，给出两个逃生计划，陆烬选择计划 1，同意燧明接管身体控制权，却见燧明丢下苏行就跑，赶忙叫停。</p>
+    <h2 id="破晓之光长夜未央">破晓之光，长夜未央 </h2>
+    <p>
+      长夜镇因聚变电站即将爆炸陷入恐慌，陆烬在脑海中制止准备抛下苏行独自逃生的燧明，坚决要带上她。因陆烬压迫值超出触发情绪模拟释放，燧明更改逃生计划，带着苏行进入逃离屋。逃离屋升空远离爆炸区域，爆炸产生巨大威力，镇子被火海笼罩，陆烬和苏行在逃离屋中艰难前行。期间系统提示破坏资本获得能量点，长夜镇压迫值归零，陆烬压迫值为
+      50/100。<br>
+      陆烬对逃离屋安全性存疑，燧明详细介绍其构造、运作原理及自身的操控能力。之后燧明告知陆烬已扫描到一个可能的避难所，是位于废墟中的地下设施，陆烬决定前往。抵达后，陆烬询问是否掩盖逃离屋痕迹，燧明表示位置会被发现，掩盖意义不大并交还身体控制权。陆烬找到地下设施入口，清理痕迹后和燧明带着苏行进入。在楼梯尽头，燧明打开巨大金属门，进入后发现这是一个宽敞的地下室，里面有各种陈旧设备，还有
+      “余烬” 组织标志，陆烬意识到找到旧据点，期望能从中获取有用信息和资源。你是否还需要我为你对这段内容进行润色或者根据它做进一步拓展呢？</p>
+    <h2 id="余烬余温铁锈芬芳">余烬余温，铁锈芬芳 </h2>
+    <p>陆烬、燧明和苏行在夜晚前往长夜镇地下设施的秘密入口，这里曾是反抗军据点。他们在据点中探索，看到墙上的标语、弹痕，发现破旧通讯设备、作战地图、写有 “新希望计划”
+      的文件和小型实验室，还在储藏室找到武器、弹药和医疗用品。陆烬疲惫地坐下后躺倒在地，苏行依偎在他怀里，两人在柑橘香味中入睡，燧明则用纳米金属形成蛛网天线连接网络扫描信息。陆烬不小心弄坏通讯设备，获得 0.2
+      能量点，长夜镇压迫值降至 16，陆烬压迫值变为 20/100。<br>
+      另一边，永生制药的高管们在会议室讨论聚变站失控一事，栾青崖表示要启动应急方案。他们看到陆烬和苏行的画面，认出陆烬后担心商业机密泄露。聚变站辐射能量飙升，警报响起，高管们开始行动，通缉陆烬、调档案等。栾青崖前往长夜镇，组织精锐队伍登上飞行器，抵达后在废墟中搜寻陆烬等人。与此同时，永生制药的士兵闯入长夜镇居民家中，肆意翻找掠夺，居民们无力反抗，陷入恐慌。而陆烬等人在储藏室逐渐苏醒，还未察觉危机将至。
+    </p>
+    <h2 id="系统深探未来曙光">系统深探，未来曙光 </h2>
+    <p>陆烬睡醒后，发现自己头脑清醒，思维敏捷，身旁的苏行还在沉睡。身处神秘的余烬历史据点第二层，他回想起穿越后的种种经历，意识到这并非梦境，且自己是长夜镇聚变站爆炸的
+      “始作俑者”，还对拥有反物质电池及神秘系统产生疑惑。这时系统界面浮现，显示能量点等数值，陆烬询问能否回地球未得回应，却得知系统的存在。他看到系统新呈现的技术树可视化界面，“纳米武器化”
+      分支虽强大但解锁能量点需求高。系统告知获取能量点的两种方式：摧毁与资本有关的事物和完成指定任务。陆烬继续浏览系统功能，发现机器人身躯可升级，分五个等级，各有不同性能；还看到量子传送器、生物改造药剂、反重力飞行技术、纳米修复技术、精神控制干扰技术等众多可兑换物品与技术，各有特点和获取难度，这让陆烬心中产生了新的想法。
+    </p>
+    <h2 id="人机对话">人机对话 </h2>
+    <p>
+      在余烬历史据点的地下二层，陆烬与人工智能燧明展开了一系列深入对话。陆烬询问燧明对资本操控世界的看法，燧明指出世界被资本紧紧束缚，民众饱受剥削，社会发展被扭曲。谈及人类与人工智能的关系，燧明表示应是助力人类进步，但在资本阴影下都有被利用风险，而它的使命是帮陆烬打破资本枷锁。<br>
+      接着，他们探讨了当前社会人工智能科技的局限，以及陆烬好奇询问的
+      ChatGPT，燧明认为其虽先进但可能仍缺乏真正自我认知。陆烬因燧明曾接管自己身体而不安，后又决定为其兑换机器人身体，询问燧明对拥有实体的看法以及是否会背叛自己。燧明分析了拥有实体的利弊和自身不会背叛的原因，这让陆烬虽感其理性难捉摸，但还是选择信任。<br>
+      随后，两人讨论机器人身体的类型和性别相关话题，燧明幽默回应，称可根据需求模拟不同风格，还表示古代侠客风的身体不错。陆烬要求燧明的身体以女性为主，燧明答应后，声音变成灵动俏皮的女侠声。最后，陆烬兑换了最高级的机器人身躯，准备与燧明一起对抗作威作福的资本家。你对这个总结满意吗？若你希望在哪些方面再精简或细化，可以随时告诉我。
+    </p>
+    <h2 id="新生之躯智械新思">新生之躯，智械新思 </h2>
+    <p>第 8
+      章围绕陆烬和燧明展开，燧明获得纳米金属构成的女剑客身体，陆烬被其惊艳，燧明展示激光剑变八卦镜和机关暗器的能力，分享对物理身躯的新奇感受。陆烬好奇触摸燧明身体，还让燧明变换古风、萝莉等多种美女风格，之后想到自己身体也能变形，在燧明指导下成功变成古代将军并尝试其他风格。<br>
+      陆烬因能随意改变外形而对自身身份产生迷茫，燧明开导他人性取决于内心，陆烬重拾信念。接着他们讨论在资本世界立足的方法，燧明提出通过股市积累原始资金，利用大数据分析寻找潜力股，同时监控股市动态应对风险，资金足够后买下贫穷小镇，改造建设、发展产业，壮大力量。陆烬看到冬眠的苏行和她身旁的镰刀与锤子，想起自己的来处，充满信心，与燧明坚定了对抗资本家的决心。
+    </p>
+    <h3 id="新身份">新身份 </h3>
+    <p>新身份资料里，陆烬成了一位来自商业世家的公子，燧明摇身一变成了精通金融的高级顾问，而苏行则是一位拥有医学背景的科研人员。</p>
+    <h2 id="钱拿来吧你资本家">钱拿来吧你，资本家 </h2>
+    <p>
+      陆烬因古风侠女燧明操作高科技炒股的反差画面发笑，笑过后，两人讨论现状。陆烬担心幻方量化及其他资本势力再次盯上，燧明提议资金够后派伪装科研队去寒芒镇勘探资源，网络散布虚假消息转移注意力，人员招募从对现状不满的底层民众中筛选，通过隐蔽渠道招聘并筛选培训，两人逐步完善后续计划。
+    </p>
+    <h2 id="灾难余波与隐秘追踪">灾难余波与隐秘追踪 </h2>
+    <p>
+      栾青崖带领团队前往遭受聚变爆炸灾难的长夜镇废墟勘察。现场弥漫着危险气息，幸存居民身体金属化，情况凄惨，栾青崖却只在意公司利益。勘察时，队员小王发现散发微光且使地面扭曲的神秘液体，被栾青崖胁迫取样，结果小王手臂金属化。之后他们又发现奇怪脚印，栾青崖认定与陆烬、苏行有关，此时总部传来二人乘坐逃离屋的去向，栾青崖立刻准备全力追捕。此外，他们还遭遇了身体金属化、手持奇怪武器的神秘人群。<br>
+      而在余烬据点，陆烬和燧明商讨应对永生制药之策。陆烬深知永生制药不会罢休，燧明虽已散布虚假信息误导追踪，但他们仍需更完善方案。陆烬决定灵活应对，若追捕猛烈就先转移保存实力，燧明则提议像小狐狸般四处逃窜制造混乱，再前往寒芒镇建立防线，联络其他反抗势力壮大力量。
+    </p>
+    <h2 id="反抗的怒潮">反抗的怒潮 </h2>
+    <p>
+      栾青崖和队员在废墟准备撤离时，遭遇一群金属化居民的愤怒反抗。居民们因长期受资本压迫及身体异变，对栾青崖等人充满仇恨。栾青崖不仅毫无怜悯，还嘲讽居民债务缠身，细数各类离谱税收，彻底激怒居民。面对冲上来的为首男子，栾青崖果断开枪将其射杀，还以减免债务试图让居民退下，却未成功。<br>
+      此时，CEO 的全息投影出现，责令栾青崖解决问题并尽快抓捕陆烬和苏行。栾青崖虽烦躁不已，但在公司利益和个人前途的驱使下，无视居民的反抗，命令队员开枪射击。</p>
+    <h2 id="紧逼的追捕">紧逼的追捕 </h2>
+    <p>
+      栾青崖在长夜镇面对金属化居民的反抗，毫不留情地开枪扫射，导致众多居民倒下，年轻母亲和金属化少年的反抗与牺牲，更凸显出他的冷酷以及资本压迫下民众的悲惨境遇。随后，栾青崖在废墟发现含大量反物质粒子的诡异液体，猜测居民金属化是反物质与聚变站残留能量相互作用的结果，并向
+      CEO 汇报。CEO 意识到问题严重性，指出反物质和聚变研究的困境，强调此事对公司的重大影响，命令栾青崖不惜一切代价抓捕陆烬和苏行。<br>
+      结束通话后，栾青崖为增加抓捕成功率，调用战斗力极强的 A 小队。A 小队小队长起初对栾青崖态度傲慢、充满嘲讽，不愿配合，栾青崖以 CEO 命令和好处承诺才说服对方。栾青崖将陆烬和苏行可能藏身的余烬据点位置及初步抓捕计划告知 A
+      小队小队长，准备展开抓捕行动。而此时，陆烬和燧明已在据点备好应对之策，一场激烈的交锋即将展开 。</p>
+    <h2 id="a小队初探余烬老据点">A小队初探余烬老据点 </h2>
+    <p>栾青崖乘坐的飞行器因受长夜镇金属化物质影响，能源供给系统故障，被迫在荒芜空地紧急降落。他焦急地联系 A 小队，命令他们立刻前往余烬据点抓捕陆烬和苏行。A
+      小队乘坐先进的黑云飞行器率先抵达，队员们装备精良，身着高科技防护装备，手持融合前沿技术的武器，且各有所长。<br>
+      A 小队降落后，燧明发现了他们并告知陆烬，评估认为除狙击手外都有办法应对。A 小队小队长虽对燧明等人的穿着感到奇怪，但未在意，带领队员进入据点。刚进入，据点便启动机关，机械门落下将他们困住。陆烬通过扩音器嘲讽 A
+      小队，阿杰开启扫描眼镜却发现设备被干扰。<br>
+      随后，陆烬和燧明启动陷阱，先是涌出大量由废弃零件组装的机械蜘蛛攻击 A 小队，阿力虽奋力抵抗但仍被包围；接着电磁脉冲陷阱摧毁了阿雅操控的无人穿梭机。A
+      小队成员奋力抵抗，却逐渐陷入困境。与此同时，在据点外围，狙击手阿风利用狙击炮解决了爬出据点的机械蜘蛛，随后小心翼翼向据点内部深入 。</p>
+    <h2 id="艺术就是爆炸-a小队团灭">艺术就是爆炸、A小队团灭 </h2>
+    <p>A
+      小队如训练有素的特种部队，紧密协作推进至据点核心区域。他们凭借先进装备躲避陆烬和燧明设置的尖刺、电磁、烟雾、机械飞镖等陷阱，却仍在电网、音频共振、生物导电胶、离子束、引力场等多重陷阱下，高科技装备失效，身体受伤。阿力的机械外骨骼崩解，阿雅操控台短路陷入痛苦回忆，阿风电磁护盾难撑，小队长反重力装置失灵。<br>
+      陆烬和燧明在监控室掌控全局，面对 A 小队攻击巧妙应对。最终陆烬按下反物质电池启动按钮，电池释放恐怖能量，光芒耀眼，冲击波扩散，空气电离形成等离子弧光，A
+      小队在这毁灭性爆炸中被彻底团灭，据点所在化为空洞，栾青崖得知消息后震惊不已 。</p>
+    <h2 id="资本家的克隆军团-a-小队">资本家的克隆军团 A 小队 </h2>
+    <p>陆烬按下反物质电池启动键，能量场以违背三维几何的姿态扩张，使物体呈现量子叠加态，A
+      小队成员在这股毁灭性力量下，身体与装备遭受恐怖分解，据点建筑也在正反物质对冲中展现出宇宙尺度的奇异变化，最终一切化为焦黑的绝对领域，中央还有神秘的 “虚无镀膜”。<br>
+      栾青崖在永生制药总部意识回收舱，看到 A 小队意识流数据和爆炸坑奇异画面，确定陆烬有反物质技术，兴奋贪婪之余，将加密数据包发往禁忌实验室。他回忆 A 小队组建过程，利用基因编辑和意识植入技术打造精英战士，A
+      小队执行多次高难度暗杀任务，却在与陆烬和燧明对抗时因反物质技术惨败。栾青崖决定给新 A 小队队长添加绝对服从命令的记忆，不在意服从性过高可能影响战斗力 。</p>
+    <h2 id="途径旧乡城">途径旧乡城 </h2>
+    <p>
+      陆烬和燧明在旧乡城规划前往寒芒镇的路线，目睹了城市上下层的巨大差距：上层富人的生活奢华，下层穷人则生活在贫困与混乱中。他们乘坐破旧的电磁轨道巴士，穿梭于城市的两个极端，最终选择租用飞行滑板继续旅程。途中，他们参与了一场飞行滑板上的3D篮球游戏，燧明展现出非凡的技巧，而陆烬则在游戏中感受到底层人民的热情与团结。离开后，陆烬提议未来在寒芒镇每年举办一次这样的游戏，燧明表示赞同。
+    </p>
+    <h2 id="破碎的寒芒镇">破碎的寒芒镇 </h2>
+    <p>陆烬和燧明乘坐破旧锈蚀的列车前往寒芒镇，途中燧明通过全息投影揭示了寒芒镇居民遭受的残酷剥削，如造血式剥削、呼吸税陷阱、记忆黑市等，全镇 417 人信息显示人口结构失衡，他们还看到货舱内 “人形贷奴舱”
+      惨状，以及列车外壁的血字控诉，此时系统显示寒芒镇两个极端的压迫值，陆烬愤怒不已。十八台税务无人机出现，用荒诞的法律条款和残忍手段进行压迫，陆烬欲拆火车反抗，燧明封锁通讯，提议采用第九套改造方案保留火车头改造成移动堡垒，用后十二节车厢造地下诊所
+      。<br>
+      面对再次来袭的税务无人机，燧明用纳米飞刃斩断车厢并击碎 “信用即生命”
+      广告牌，陆烬砸毁动力核心，摧毁了火车和无人机。战斗结束后，他们从残骸中发现孩子的抵押编号，随后陆烬踢开车门，望着沙暴中若隐若现的矿镇，决定去探寻这个即将被遗弃小镇背后的真相。</p>
+    <h2 id="打破寒芒镇的债务枷锁">打破寒芒镇的债务枷锁 </h2>
+    <p>
+      陆烬成为寒芒镇镇长并宣布还清镇民债务，面对众人的迷茫与不知所措，他和燧明以纳米金属变化的工具将报废列车车头横亘站台中央，收集融化的铁轨和破碎车厢，合力打造出象征寒芒镇人民摆脱压迫、勇敢抗争的巨型雕塑，此举引得矿工老徐跪地痛哭，宣泄过往苦难。之后，面对小女孩关于母亲的询问，燧明篡改记忆芯片投影安慰女孩。陆烬意识到寒芒镇问题根源，果断关闭入不敷出且破坏环境的煤矿厂
+      。<br>
+      陆烬和燧明动员镇民，筹备建立大学堂以传播知识改变命运，同时陆烬从系统兑换人形机器人制作技术（一级），准备为 “人形贷奴舱”
+      的受害者打造新机械身躯，此时系统剩余能量点不多，寒芒镇压迫值也发生变化，他们在改变寒芒镇的道路上继续前行，也将面临更多挑战。</p>
+    <h2 id="重建寒芒镇">重建寒芒镇 </h2>
+    <p>陆烬将人形机器人制作技术分享给燧明，让她为 “人形贷奴舱”
+      的受害者打造机械身躯。燧明切换工作模式，利用纳米技术搭建加工设备，制作基础人形机器人并高效开展制作。随着机器人数量增加，它们不仅能自给自足，还协助镇民工作，为寒芒镇注入新活力。<br>
+      同期，陆烬带领村民开展
+      “拆除行动”，先后拆除器官质押芯片、新风系统进气口、鱼鳶滤膜、记忆黑市芯片以及各类辅助剥削的机器和血浆收购站，拆除过程中镇民情感得以宣泄，找回尊严与力量。拆除的材料用于制作机器人，陆烬也因彻底控制寒芒镇获得大量能量点，还在系统兑换界面看到一项足以改变世界的梦幻科技。
+    </p>
+    <h2 id="寒芒镇的不灭太阳">寒芒镇的不灭太阳 </h2>
+    <p>陆烬在实验室以 10000
+      能量点从系统兑换可控核聚变技术，忆起曾经积攒能量点的艰难以及寒芒镇过去在资本压迫下能源匮乏、生活困苦的情景，深知这项技术将改变小镇与人类命运。他还回忆起刚穿越时炸掉永生制药残缺聚变站，对比该社会与自己老家的科技水平，期待这里神奇反重力科技与核聚变技术的融合。燧明接收技术后，向陆烬建议在小镇边缘山谷建核聚变电站，并展示三维规划图，提出围绕变电站打造能源中心，建设商业区、住宅区、工业区，利用反重力科技搭建空中交通轨道，还提议建造智能温室大棚发展农业。<br>
+      陆烬采纳建议，与燧明带领 1024 个人形机器人和镇民开展重建工作。512
+      个机器人前往山谷建设核聚变电站，进行地形勘测与地基挖掘；其余在小镇中心与镇民协作，燧明制作先进建设工具，各方分工明确，推进商业区、住宅区建设并拆除废弃建筑实现资源循环。随着时间推移，寒芒镇旧貌换新颜，核聚变电站稳步建设，半个月不到成功点火启动，为小镇带来光明未来。
+    </p>
+    <h2 id="寒芒镇的人们">寒芒镇的人们 </h2>
+    <p>
+      本章以小女孩小星的视角展开，讲述了寒芒镇在陆烬和燧明的努力下重获新生的故事。曾经，寒芒镇被债务阴影笼罩，小星抱着妈妈的记忆芯片，在孤独与迷茫中生活。镇里的人们被沉重的生活重担压得愁容满面，她的家破旧、学校简陋，还有各种被资本压榨的设施。而如今，陆烬带领大家拆除压迫工具，燧明引领机器人军团改造小镇，从生活设施到公共建筑，处处充满科技感，核电站带来无尽能量，AI机器人友善高效，小镇旧貌换新颜。<br>
+      曾经的寒芒镇民深陷苦难，如张奶奶被器官债务芯片抽血折磨，矿工们在矿井里像被驯化的鱼般挣扎，小铃被迫贩卖母亲记忆。如今，他们都迎来了新生活，张奶奶住进设施智能的养老院，矿工在现代化工厂工作，小铃的母亲记忆被保存于修复中心。寒芒镇417名居民摆脱了资本的压迫，整个小镇焕然一新，陆烬看着这一切，坚信只要大家团结，寒芒镇的希望之光永不灭。
+    </p>
+    <h2 id="蛮族来袭寒芒镇危机乍起">蛮族来袭，寒芒镇危机乍起 </h2>
+    <p>
+      寒芒镇在陆烬和燧明的建设下蓬勃发展，一日，一位老人拦住陆烬，道出镇外被称为蛮族的人原本是镇里不甘税收压迫而逃离的青壮年。他们在外面受尽苦难时，拾荒者阿灰带来从废弃科研基地找到的药剂，注射后虽初期体能增强，但很快身体不受控制地狂化，沦为受本能驱使的怪物，常袭击路人，成了人人惧怕的蛮族。如今听闻蛮族有动静，陆烬预感寒芒镇将面临危机。<br>
+      另一边，寒芒镇外荒野中，刚经历狂化的蛮族杀死一只冰原熊，其中阿灰注射药剂后化作身形矫健的狗且保留智慧，还常偷偷通讯。听闻寒芒镇重建，阿灰煽动蛮族去抢夺物资，当蛮族抵达寒芒镇，看到小镇的巨大变化震惊不已，然而，他们的贪婪和掠夺欲望很快占了上风，冲突一触即发。
+    </p>
+    <h2 id="机器人军队强势压制蛮族">机器人军队强势压制蛮族 </h2>
+    <p>燧明长期利用卫星与无人机严密监视蛮族，寒芒镇重建期间，她不眠不休转化与训练机器人军队，其中 302
+      个机器人意识源自人形贷奴役舱的镇民，还掌控了寒芒镇通讯网络，监视阿灰通讯。蛮族进入寒芒镇警戒范围，燧明启动防御机制，接到陆烬不伤害蛮族、尽量活捉的指令后，调整作战策略，机器人收起能量武器，展开肉搏。<br>
+      战斗中，飞行侦查机器人构建信息网，地面作战机器人凭借战术算法和灵活关节巧妙应对蛮族攻击，同时，302
+      个由镇民操控的机器人上前，用小镇往事唤醒蛮族部分理智，尽管阿灰煽动部分蛮族顽抗，但在近千名机器人车轮战消耗下，蛮族体力不支，理智回归，战斗局势逆转，寒芒镇机器人军队稳占上风 。</p>
+    <h2 id="揪出内奸揭开基因药剂阴谋">揪出内奸，揭开基因药剂阴谋 </h2>
+    <p>在蛮族来袭前，燧明就监控到阿灰与陌生信号源频繁通讯，经解码和对蔚蓝基因数据库的挖掘，发现蔚蓝基因利用阿灰将蛮族当基因药剂实验品，数据收集完后便打算抛弃他们，这促使阿灰企图收服寒芒镇获取资源。<br>
+      审判当日，寒芒镇第一法院座无虚席，燧明陈述阿灰罪行，阿灰跪地痛哭认错，引发镇民愤怒。燧明冷静制止失控场面，展示蔚蓝基因在曙光城用孩子做基因改造、在落日村投药致村民变异等罪行，指出阿灰只是棋子，镇民愤怒转向蔚蓝基因。最终审判结果为，大部分受药剂影响的蛮族劳动改造一年，阿灰因勾结外部势力判十年，表现不佳会延长刑期。阿灰感恩涕零，承诺全力弥补过错。审判结束，燧明宣布寒芒镇通缉蔚蓝基因相关人员，她相信通过教育、引导和公正审判，寒芒镇能战胜兽性，未来将更加团结强大
+      。</p>
+    <h2 id="收编蛮族寒芒镇壮大新生">收编蛮族，寒芒镇壮大新生 </h2>
+    <p>
+      在对阿灰和蛮族的审判结束后，机器人军队迅速压制住局面，多数蛮族恢复理智，可狂化问题依旧悬而未决。一个阴沉的午后，安置营地里的蛮族突然狂化，痛苦嘶吼，身体不受控制地变异。关键时刻，燧明启动纳米控制技术，纳米粒子涌入蛮族身体，阻断运动神经信号，让狂化的蛮族只能在原地抽搐，无法行动。这一幕吓坏了周围的蛮族，负责看守的机器人迅速围拢，陆烬和燧明赶来后，燧明警告大家这只是权宜之计，必须尽快找到彻底解决问题的办法。<br>
+      看着困境中的蛮族，陆烬决定接纳他们。他来到营地，向一位身材魁梧的蛮族表达了接纳之意，解释大家都是被蔚蓝基因迫害的受害者，不该互相排斥。蛮族因陆烬的真诚选择相信他。而燧明却持不同看法，回到小镇后，她在控制室内向陆烬分析，解决蛮族狂化问题需大量资源，镇民的排斥也可能引发内部矛盾，从效率和利益角度，可暂时利用他们的体能，彻底接纳风险太大。陆烬严肃反驳，强调寒芒镇追求公平正义，不能把蛮族当工具，放弃他们就和压迫者无异，他们的加入是人道主义行为，也是对抗资本势力的重要力量
+      。</p>
+    <h2 id="苏行你醒啦">苏行，你醒啦 </h2>
+    <p>
+      苏行在寒芒镇中心被柔和蓝光笼罩的培养舱内苏醒，她身着陆烬的破旧皮衣，因长期囚禁身形略显虚弱，但眼神满是警惕。负责照顾她的机器人靠近时，被她误认作敌人并击毁。燧明捕捉到苏行苏醒的信息告知陆烬，大量机器人围拢苏行，苏行认定又落入资本陷阱，在机器人的包围圈中奋力反抗。战斗中，她发现这些机器人攻击性弱，且周围环境与以往资本家基地不同，心中虽疑惑但仍继续寻找出口。<br>
+      就在苏行看到出口时，她看到陆烬被两个高大蛮族 “押上”，以为陆烬有危险，毫不犹豫地冲过去攻击蛮族，大喊让陆烬快跑 。</p>
+    <h2 id="苏行你打错人啦">苏行，你打错人啦 </h2>
+    <p>苏行刚苏醒，看到陆烬被两个蛮族“押着”，误以为陆烬被资本集团控制，迅速出手将两个蛮族手臂踢断。陆烬急忙解释他们是自愿来当保镖、已加入寒芒镇的自己人，并通过展示蛮族手臂上寒芒镇独有的刺青和特制通讯器消除苏行的疑虑。<br>
+      确认是误会后，苏行因刚苏醒身体极度虚弱而晕倒，陆烬将她抱入怀中。蛮族对苏行实力表示敬佩且不在意受伤，陆烬心怀歉意，最后他抱着苏行，与蛮族一起回寒芒镇，心中觉得寒芒镇未来更加明亮，苏行是他寻找的光。</p>
+    <h2 id="苏行我想带你看看我设计的太阳">苏行，我想带你看看我设计的太阳 </h2>
+    <p>陆烬抱着苏醒后体力不支的苏行，来到自己设计建造的四合院。院子充满地球传统建筑风格，种满花卉，还有池塘、石凳等，房间布置温馨。陆烬照顾苏行休息，待她体力稍有恢复，带她参观重建后的寒芒镇。<br>
+      他们走过街道，来到镇中心广场，看到象征希望的雕塑。又前往核聚变电站，这座圆形穹顶建筑由纳米材料制成，穹顶白天吸能、夜晚放光，外围栏杆有动态光带，基座是刻着古老符号的八卦阵，融合了古老文化与未来科技，苏行被深深震撼，陆烬带她继续走进变电站内部探索
+      。</p>
+    <h2 id="未来的路唯有奋斗到底">未来的路，唯有奋斗到底 </h2>
+    <p>
+      陆烬带着苏行参观改造后的寒芒镇，先来到由火车站台改造成的中心广场，苏行被报废列车残骸打造、象征寒芒镇抗争精神的雕塑震撼。接着走过大街小巷，看到融合科技与文化的建筑，又到镇外山谷的智能温室大棚，苏行决定留下来和陆烬一起改变未来。随后在机器人维修厂，苏行敏锐察觉燧明是人工智能，燧明表示会守护寒芒镇未来，苏行也认可了她的存在，大家一起憧憬着寒芒镇的未来。<br>
+      深夜陆烬送苏行回四合院，为她准备寒芒镇特产粥，两人情感升温。苏行谈及皮衣，陆烬带她看资本势力分布图，苏行询问未来规划，陆烬表示要以寒芒镇为起点，利用现有力量改变世界，摧毁资本势力，苏行坚定支持。</p>
+
+  </div>
+
+
+</body>
+
+
+
+
+
+</html>
