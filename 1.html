@@ -12,6 +12,24 @@
 
 
   <style>
+    h1::before {
+      counter-increment: h1section;
+      content: "";
+    }
+
+    h1 {
+      counter-reset: h2section;
+    }
+
+    h2::before {
+      counter-increment: h2section;
+      /* 每次遇到 h2 元素时，h2section 计数器加 1 */
+      content: "第" counter(h2section) "章";
+      /* 在 h2 元素前显示计数器的值 */
+    }
+
+
+
     code[class*=language-],
     pre[class*=language-] {
       color: #333;
