@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_ModEdgeSplit</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_ChangeEdgeGeom.html" title="ST_ChangeEdgeGeom"/>
+    <link rel="next" href="ST_ModEdgeHeal.html" title="ST_ModEdgeHeal"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_ModEdgeSplit</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_ChangeEdgeGeom.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">9.6. Topology Editors</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_ModEdgeHeal.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_ModEdgeSplit">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_ModEdgeSplit — Split an edge by creating a new node along an existing edge, modifying the original edge and adding a new edge.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">integer <strong class="fsfunc">ST_ModEdgeSplit</strong>(</code>varchar  <var class="pdparam">atopology</var>, integer  <var class="pdparam">anedge</var>, geometry  <var class="pdparam">apoint</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm24865">
+        <h2>Description</h2>
+        <p>
+Split an edge by creating a new node along an existing edge,
+modifying the original edge and adding a new edge.
+Updates all existing joined edges and relationships accordingly.
+Returns the identifier of the newly added node.
+		</p>
+        <p class="availability">Availability: 1.1 </p>
+        <p class="changed">Changed: 2.0 - In prior versions, this was misnamed ST_ModEdgesSplit</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method implements the SQL/MM specification.
+         SQL-MM: Topo-Geo and Topo-Net 3: Routine Details:  X.3.9</p>
+      </div>
+      <div class="refsection" id="idm24874">
+        <h2>Examples</h2>
+        <pre class="programlisting">
+-- Add an edge --
+ SELECT topology.AddEdge('ma_topo', ST_GeomFromText('LINESTRING(227592 893910, 227600 893910)', 26986) ) As edgeid;
+
+-- edgeid-
+3
+
+
+-- Split the edge  --
+SELECT topology.ST_ModEdgeSplit('ma_topo',  3, ST_SetSRID(ST_Point(227594,893910),26986)  ) As node_id;
+        node_id
+-------------------------
+7
+</pre>
+      </div>
+      <div class="refsection" id="idm24877">
+        <h2>See Also</h2>
+        <p>
+				<a class="xref" href="ST_NewEdgesSplit.html" title="ST_NewEdgesSplit">ST_NewEdgesSplit</a>,
+				<a class="xref" href="ST_ModEdgeHeal.html" title="ST_ModEdgeHeal">ST_ModEdgeHeal</a>,
+				<a class="xref" href="ST_NewEdgeHeal.html" title="ST_NewEdgeHeal">ST_NewEdgeHeal</a>,
+				<a class="xref" href="AddEdge.html" title="AddEdge">AddEdge</a>
+				</p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_ChangeEdgeGeom.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="Topology.html#Topology_Editing">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_ModEdgeHeal.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_ChangeEdgeGeom </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_ModEdgeHeal</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_BandPixelType</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="RT_ST_BandFileTimestamp.html" title="ST_BandFileTimestamp"/>
+    <link rel="next" href="ST_MinPossibleValue.html" title="ST_MinPossibleValue"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_BandPixelType</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="RT_ST_BandFileTimestamp.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">11.5. Raster Band Accessors</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_MinPossibleValue.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="RT_ST_BandPixelType">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_BandPixelType — Returns the type of pixel for given band. If no bandnum specified, 1 is assumed.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">text <strong class="fsfunc">ST_BandPixelType</strong>(</code>raster  <var class="pdparam">rast</var>, integer  <var class="pdparam">bandnum=1</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm29709">
+        <h2>Description</h2>
+        <p>Returns name describing data type and size of values stored in each cell of given band.</p>
+        <p>There are 11 pixel types.  Pixel Types supported are as follows:
+                    </p>
+        <div class="itemizedlist">
+          <ul class="itemizedlist" style="list-style-type: disc; ">
+            <li class="listitem">
+              <p>1BB -  1-bit boolean</p>
+            </li>
+            <li class="listitem">
+              <p>2BUI - 2-bit unsigned integer</p>
+            </li>
+            <li class="listitem">
+              <p>4BUI - 4-bit unsigned integer </p>
+            </li>
+            <li class="listitem">
+              <p>8BSI - 8-bit signed integer </p>
+            </li>
+            <li class="listitem">
+              <p>8BUI - 8-bit unsigned integer</p>
+            </li>
+            <li class="listitem">
+              <p>16BSI - 16-bit signed integer</p>
+            </li>
+            <li class="listitem">
+              <p>16BUI - 16-bit unsigned integer</p>
+            </li>
+            <li class="listitem">
+              <p>32BSI - 32-bit signed integer</p>
+            </li>
+            <li class="listitem">
+              <p>32BUI - 32-bit unsigned integer</p>
+            </li>
+            <li class="listitem">
+              <p>32BF - 32-bit float</p>
+            </li>
+            <li class="listitem">
+              <p>64BF - 64-bit float</p>
+            </li>
+          </ul>
+        </div>
+        <p>
+                </p>
+      </div>
+      <div class="refsection" id="idm29736">
+        <h2>Examples</h2>
+        <pre class="programlisting">SELECT ST_BandPixelType(rast,1) As btype1,
+    ST_BandPixelType(rast,2) As btype2, ST_BandPixelType(rast,3) As btype3
+FROM dummy_rast
+WHERE rid = 2;
+
+ btype1 | btype2 | btype3
+--------+--------+--------
+ 8BUI   | 8BUI   | 8BUI
+                </pre>
+      </div>
+      <div class="refsection" id="idm29739">
+        <h2>See Also</h2>
+        <p>
+          <a class="xref" href="RT_ST_NumBands.html" title="ST_NumBands">ST_NumBands</a>
+        </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="RT_ST_BandFileTimestamp.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="RT_reference.html#RasterBand_Accessors">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_MinPossibleValue.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_BandFileTimestamp </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_MinPossibleValue</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

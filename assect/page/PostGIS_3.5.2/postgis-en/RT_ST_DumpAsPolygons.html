@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_DumpAsPolygons</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="RT_ST_ConvexHull.html" title="ST_ConvexHull"/>
+    <link rel="next" href="RT_ST_Envelope.html" title="ST_Envelope"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_DumpAsPolygons</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="RT_ST_ConvexHull.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">11.15. Raster Processing: Raster to Geometry</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="RT_ST_Envelope.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="RT_ST_DumpAsPolygons">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_DumpAsPolygons — Returns a set of geomval (geom,val) rows, from a given raster band.  If no band number is specified, band num defaults to 1.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">setof geomval <strong class="fsfunc">ST_DumpAsPolygons</strong>(</code>raster  <var class="pdparam">rast</var>, integer  <var class="pdparam">band_num=1</var>, boolean  <var class="pdparam">exclude_nodata_value=TRUE</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm36068">
+        <h2>Description</h2>
+        <p>This is a set-returning function (SRF). It returns a set of
+                    geomval rows, formed by a geometry (geom) and a pixel band value (val).
+                    Each polygon is the union of all pixels for that band that have the same pixel value denoted by val.</p>
+        <p>ST_DumpAsPolygon is useful for polygonizing rasters. It is the
+                    reverse of a GROUP BY in that it creates new rows. For example it
+                    can be used to expand a single raster into multiple POLYGONS/MULTIPOLYGONS.</p>
+        <p>Changed 3.3.0, validation and fixing is disabled to improve performance. May result invalid geometries.</p>
+        <p class="availability">Availability: Requires GDAL 1.7 or higher.</p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>If there is a no data value set for a band, pixels with that value will not be returned except in the case of exclude_nodata_value=false.</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>If you only care about count of pixels with a given value in a raster, it is faster to use <a class="xref" href="RT_ST_ValueCount.html" title="ST_ValueCount">ST_ValueCount</a>.</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>
+                            This is different than ST_PixelAsPolygons where one geometry is returned for each pixel regardless of pixel value.
+                        </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="refsection" id="idm36081">
+        <h2>Examples</h2>
+        <pre class="programlisting"> -- this syntax requires PostgreSQL 9.3+
+SELECT val, ST_AsText(geom) As geomwkt
+FROM (
+SELECT dp.*
+FROM dummy_rast, LATERAL ST_DumpAsPolygons(rast) AS dp
+WHERE rid = 2
+) As foo
+WHERE val BETWEEN 249 and 251
+ORDER BY val;
+
+ val |                                                       geomwkt
+-----+--------------------------------------------------------------------------
+ 249 | POLYGON((3427927.95 5793243.95,3427927.95 5793243.85,3427928 5793243.85,
+        3427928 5793243.95,3427927.95 5793243.95))
+ 250 | POLYGON((3427927.75 5793243.9,3427927.75 5793243.85,3427927.8 5793243.85,
+        3427927.8 5793243.9,3427927.75 5793243.9))
+ 250 | POLYGON((3427927.8 5793243.8,3427927.8 5793243.75,3427927.85 5793243.75,
+        3427927.85 5793243.8, 3427927.8 5793243.8))
+ 251 | POLYGON((3427927.75 5793243.85,3427927.75 5793243.8,3427927.8 5793243.8,
+        3427927.8 5793243.85,3427927.75 5793243.85))
+                    </pre>
+      </div>
+      <div class="refsection" id="idm36084">
+        <h2>See Also</h2>
+        <p>
+                        <a class="xref" href="geomval.html" title="geomval">geomval</a>,
+                        <a class="xref" href="RT_ST_Value.html" title="ST_Value">ST_Value</a>,
+                        <a class="xref" href="RT_ST_Polygon.html" title="ST_Polygon">ST_Polygon</a>,
+                        <a class="xref" href="RT_ST_ValueCount.html" title="ST_ValueCount">ST_ValueCount</a>
+                    </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="RT_ST_ConvexHull.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="RT_reference.html#Raster_Processing_Geometry">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="RT_ST_Envelope.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_ConvexHull </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_Envelope</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

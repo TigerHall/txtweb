@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_AsFlatGeobuf</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_AsEncodedPolyline.html" title="ST_AsEncodedPolyline"/>
+    <link rel="next" href="ST_AsGeobuf.html" title="ST_AsGeobuf"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_AsFlatGeobuf</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_AsEncodedPolyline.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.9.3. Other Formats</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_AsGeobuf.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_AsFlatGeobuf">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_AsFlatGeobuf — Return a FlatGeobuf representation of a set of rows.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">bytea <strong class="fsfunc">ST_AsFlatGeobuf</strong>(</code>anyelement set  <var class="pdparam">row</var><code>)</code>;</p>
+          <p><code class="funcdef">bytea <strong class="fsfunc">ST_AsFlatGeobuf</strong>(</code>anyelement  <var class="pdparam">row</var>, bool  <var class="pdparam">index</var><code>)</code>;</p>
+          <p><code class="funcdef">bytea <strong class="fsfunc">ST_AsFlatGeobuf</strong>(</code>anyelement  <var class="pdparam">row</var>, bool  <var class="pdparam">index</var>, text  <var class="pdparam">geom_name</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm10562">
+        <h2>Description</h2>
+        <p>
+			Return a FlatGeobuf representation (<a class="link" href="http://flatgeobuf.org" target="_top">http://flatgeobuf.org</a>)
+			of a set of rows corresponding to a FeatureCollection.
+
+			NOTE: PostgreSQL bytea cannot exceed 1GB.
+		</p>
+        <p><code class="varname">row</code> row data with at least a geometry column.</p>
+        <p><code class="varname">index</code> toggle spatial index creation. Default is false.</p>
+        <p><code class="varname">geom_name</code> is the name of the geometry column in the row data. If NULL it will default to the first found geometry column.</p>
+        <p class="availability">Availability: 3.2.0</p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_AsEncodedPolyline.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#idm10493">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_AsGeobuf.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_AsEncodedPolyline </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_AsGeobuf</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_BuildArea</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_Buffer.html" title="ST_Buffer"/>
+    <link rel="next" href="ST_Centroid.html" title="ST_Centroid"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_BuildArea</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_Buffer.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.14. Geometry Processing</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_Centroid.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_BuildArea">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_BuildArea — Creates a polygonal geometry formed by the linework of a geometry.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_BuildArea</strong>(</code>geometry  <var class="pdparam">geom</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm16367">
+        <h2>Description</h2>
+        <p>Creates an areal geometry formed by the constituent linework
+            of the input geometry.
+            The input can be a LineString, MultiLineString, Polygon, MultiPolygon or a GeometryCollection.
+            The result is a Polygon or MultiPolygon, depending on input.
+            If the input linework does not form polygons, NULL is returned.
+            </p>
+        <p>Unlike <a class="xref" href="ST_MakePolygon.html" title="ST_MakePolygon">ST_MakePolygon</a>,
+            this function accepts rings formed by multiple lines, and can form any number of polygons.
+            </p>
+        <p>This function converts inner rings into holes.
+            To turn inner rings into polygons as well, use <a class="xref" href="ST_Polygonize.html" title="ST_Polygonize">ST_Polygonize</a>.
+            </p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>Input linework must be correctly noded for this function to work properly.
+                <a class="xref" href="ST_Node.html" title="ST_Node">ST_Node</a> can be used to node lines.
+                </p>
+                <p>If the input linework crosses, this function will produce invalid polygons.
+                <a class="xref" href="ST_MakeValid.html" title="ST_MakeValid">ST_MakeValid</a> can be used to ensure the output is valid.
+                </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p class="availability">Availability: 1.1.0</p>
+      </div>
+      <div class="refsection" id="idm16380">
+        <h2>Examples</h2>
+        <div class="informaltable">
+          <table style="border-collapse: collapse; border-top: 1px solid ; border-bottom: 1px solid ; border-left: 1px solid ; border-right: 1px solid ; ">
+            <colgroup>
+              <col/>
+              <col/>
+            </colgroup>
+            <tbody>
+              <tr>
+                <td style="border-right: 1px solid ; ">
+                  <p>
+        </p>
+                  <div class="informalfigure">
+                    <div class="mediaobject">
+                      <img src="../images/st_buildarea02.png"/>
+                      <div class="caption">
+                        <p>Input lines</p>
+                      </div>
+                    </div>
+                  </div>
+                  <p>
+        </p>
+                </td>
+                <td>
+                  <p>
+        </p>
+                  <div class="informalfigure">
+                    <div class="mediaobject">
+                      <img src="../images/st_buildarea03.png"/>
+                      <div class="caption">
+                        <p>Area result</p>
+                      </div>
+                    </div>
+                  </div>
+                  <p>
+        </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <pre class="programlisting">WITH data(geom) AS (VALUES
+   ('LINESTRING (180 40, 30 20, 20 90)'::geometry)
+  ,('LINESTRING (180 40, 160 160)'::geometry)
+  ,('LINESTRING (160 160, 80 190, 80 120, 20 90)'::geometry)
+  ,('LINESTRING (80 60, 120 130, 150 80)'::geometry)
+  ,('LINESTRING (80 60, 150 80)'::geometry)
+)
+SELECT ST_AsText( ST_BuildArea( ST_Collect( geom )))
+    FROM data;
+
+------------------------------------------------------------------------------------------
+POLYGON((180 40,30 20,20 90,80 120,80 190,160 160,180 40),(150 80,120 130,80 60,150 80))
+</pre>
+        <div class="informalfigure">
+          <div class="mediaobject">
+            <img src="../images/st_buildarea01.png"/>
+            <div class="caption">
+              <p>Create a donut from two circular polygons</p>
+            </div>
+          </div>
+        </div>
+        <pre class="programlisting">
+SELECT ST_BuildArea(ST_Collect(inring,outring))
+FROM (SELECT
+    ST_Buffer('POINT(100 90)', 25) As inring,
+    ST_Buffer('POINT(100 90)', 50) As outring) As t;
+</pre>
+      </div>
+      <div class="refsection" id="idm16410">
+        <h2>See Also</h2>
+        <p>
+            <a class="xref" href="ST_Collect.html" title="ST_Collect">ST_Collect</a>,
+            <a class="xref" href="ST_MakePolygon.html" title="ST_MakePolygon">ST_MakePolygon</a>,
+            <a class="xref" href="ST_MakeValid.html" title="ST_MakeValid">ST_MakeValid</a>,
+            <a class="xref" href="ST_Node.html" title="ST_Node">ST_Node</a>,
+            <a class="xref" href="ST_Polygonize.html" title="ST_Polygonize">ST_Polygonize</a>,
+            <a class="xref" href="ST_BdPolyFromText.html" title="ST_BdPolyFromText">ST_BdPolyFromText</a>,
+            <a class="xref" href="ST_BdMPolyFromText.html" title="ST_BdMPolyFromText">ST_BdMPolyFromText</a> (wrappers to
+            this function with standard OGC interface)</p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_Buffer.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Geometry_Processing">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_Centroid.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_Buffer </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_Centroid</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

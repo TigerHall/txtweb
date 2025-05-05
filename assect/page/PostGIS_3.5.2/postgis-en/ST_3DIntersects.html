@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_3DIntersects</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="geometry_distance_centroid_nd.html" title="&lt;&lt;-&gt;&gt;"/>
+    <link rel="next" href="ST_Contains.html" title="ST_Contains"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_3DIntersects</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="geometry_distance_centroid_nd.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.11.1. Topological Relationships</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_Contains.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_3DIntersects">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_3DIntersects — Tests if two geometries spatially
+      intersect in 3D - only for points, linestrings, polygons, polyhedral surface (area)
+      </p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">boolean <strong class="fsfunc">ST_3DIntersects</strong>(</code>
+            geometry
+            <var class="pdparam">geomA</var>
+          , 
+            geometry
+            <var class="pdparam">geomB</var>
+          <code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm12764">
+        <h2>Description</h2>
+        <p>Overlaps, Touches, Within all imply spatial intersection.  If any of the aforementioned
+        returns true, then the geometries also spatially intersect.
+        Disjoint implies false for spatial intersection.</p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>
+            This function automatically includes a bounding box comparison
+            that makes use of any spatial indexes that are available on the geometries.
+        </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>Because of floating robustness failures, geometries don't always intersect as you'd expect them to after geometric processing. For example the closest point on a linestring to a geometry may not lie on the linestring. For these kind of issues where a distance of a centimeter you want to just consider as intersecting, use <a class="xref" href="ST_3DDWithin.html" title="ST_3DDWithin">ST_3DDWithin</a>.</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p class="changed">Changed: 3.0.0 SFCGAL backend removed, GEOS backend supports TINs.</p>
+        <p class="availability">Availability: 2.0.0</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports 3d and will not drop the z-index.
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports Polyhedral surfaces.
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports Triangles and Triangulated Irregular Network Surfaces (TIN).
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method implements the SQL/MM specification.
+         SQL-MM IEC 13249-3: 5.1</p>
+      </div>
+      <div class="refsection" id="idm12790">
+        <h2>Geometry Examples</h2>
+        <pre class="programlisting">SELECT ST_3DIntersects(pt, line), ST_Intersects(pt, line)
+  FROM (SELECT 'POINT(0 0 2)'::geometry As pt, 'LINESTRING (0 0 1, 0 2 3)'::geometry As line) As foo;
+ st_3dintersects | st_intersects
+-----------------+---------------
+ f               | t
+(1 row)
+    </pre>
+      </div>
+      <div class="refsection" id="idm12793">
+        <h2>TIN Examples</h2>
+        <pre class="programlisting">SELECT ST_3DIntersects('TIN(((0 0 0,1 0 0,0 1 0,0 0 0)))'::geometry, 'POINT(.1 .1 0)'::geometry);
+ st_3dintersects
+-----------------
+ t</pre>
+      </div>
+      <div class="refsection" id="idm12796">
+        <h2>See Also</h2>
+        <p><a class="xref" href="ST_3DDWithin.html" title="ST_3DDWithin">ST_3DDWithin</a>, <a class="xref" href="ST_Intersects.html" title="ST_Intersects">ST_Intersects</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="geometry_distance_centroid_nd.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#idm12747">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_Contains.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">&lt;&lt;-&gt;&gt; </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_Contains</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

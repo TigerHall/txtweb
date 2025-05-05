@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_Scale</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_RotateZ.html" title="ST_RotateZ"/>
+    <link rel="next" href="ST_Translate.html" title="ST_Translate"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_Scale</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_RotateZ.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.16. Affine Transformations</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_Translate.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_Scale">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_Scale — Scales a geometry by given factors.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_Scale</strong>(</code>geometry  <var class="pdparam">geomA</var>, float <var class="pdparam">XFactor</var>, float <var class="pdparam">YFactor</var>, float <var class="pdparam">ZFactor</var><code>)</code>;</p>
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_Scale</strong>(</code>geometry  <var class="pdparam">geomA</var>, float <var class="pdparam">XFactor</var>, float <var class="pdparam">YFactor</var><code>)</code>;</p>
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_Scale</strong>(</code>geometry  <var class="pdparam">geom</var>, geometry <var class="pdparam">factor</var><code>)</code>;</p>
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_Scale</strong>(</code>geometry  <var class="pdparam">geom</var>, geometry <var class="pdparam">factor</var>, geometry <var class="pdparam">origin</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm18664">
+        <h2>Description</h2>
+        <p>Scales the geometry to a new size by multiplying the
+			ordinates with the corresponding factor parameters.
+		</p>
+        <p>
+The version taking a geometry as the <code class="varname">factor</code> parameter
+allows passing a 2d, 3dm, 3dz or 4d point to set scaling factor for all
+supported dimensions. Missing dimensions in the <code class="varname">factor</code>
+point are equivalent to no scaling the corresponding dimension.
+    </p>
+        <p>
+        The three-geometry variant allows a "false origin" for the scaling to be passed in. This allows "scaling in place", for example using the centroid of the geometry as the false origin. Without a false origin, scaling takes place relative to the actual origin, so all coordinates are just multiplied by the scale factor.
+    </p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>Prior to 1.3.4, this function crashes if used with geometries that contain CURVES.  This is fixed in 1.3.4+</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p class="availability">Availability: 1.1.0.</p>
+        <p class="enhanced">Enhanced: 2.0.0 support for Polyhedral surfaces, Triangles and TIN was introduced.</p>
+        <p class="enhanced">Enhanced: 2.2.0 support for scaling all dimension (<code class="varname">factor</code> parameter) was introduced.</p>
+        <p class="enhanced">Enhanced: 2.5.0 support for scaling relative to a local origin (<code class="varname">origin</code> parameter) was introduced.</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports Polyhedral surfaces.
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports 3d and will not drop the z-index.
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method supports Circular Strings and Curves.
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports Triangles and Triangulated Irregular Network Surfaces (TIN).
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports M coordinates.
+        </p>
+      </div>
+      <div class="refsection" id="idm18699">
+        <h2>Examples</h2>
+        <pre class="programlisting">--Version 1: scale X, Y, Z
+SELECT ST_AsEWKT(ST_Scale(ST_GeomFromEWKT('LINESTRING(1 2 3, 1 1 1)'), 0.5, 0.75, 0.8));
+			  st_asewkt
+--------------------------------------
+ LINESTRING(0.5 1.5 2.4,0.5 0.75 0.8)
+
+--Version 2: Scale X Y
+ SELECT ST_AsEWKT(ST_Scale(ST_GeomFromEWKT('LINESTRING(1 2 3, 1 1 1)'), 0.5, 0.75));
+			st_asewkt
+----------------------------------
+ LINESTRING(0.5 1.5 3,0.5 0.75 1)
+
+--Version 3: Scale X Y Z M
+ SELECT ST_AsEWKT(ST_Scale(ST_GeomFromEWKT('LINESTRING(1 2 3 4, 1 1 1 1)'),
+   ST_MakePoint(0.5, 0.75, 2, -1)));
+			       st_asewkt
+----------------------------------------
+ LINESTRING(0.5 1.5 6 -4,0.5 0.75 2 -1)
+
+--Version 4: Scale X Y using false origin
+SELECT ST_AsText(ST_Scale('LINESTRING(1 1, 2 2)', 'POINT(2 2)', 'POINT(1 1)'::geometry));
+      st_astext
+---------------------
+ LINESTRING(1 1,3 3)
+
+</pre>
+      </div>
+      <div class="refsection" id="idm18702">
+        <h2>See Also</h2>
+        <p><a class="xref" href="ST_Affine.html" title="ST_Affine">ST_Affine</a>, <a class="xref" href="ST_TransScale.html" title="ST_TransScale">ST_TransScale</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_RotateZ.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Affine_Transformation">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_Translate.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_RotateZ </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_Translate</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Intersects</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="TG_Equals.html" title="Equals"/>
+    <link rel="next" href="using_raster_dataman.html" title="Chapter 10. Raster Data Management, Queries, and Applications"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">Intersects</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="TG_Equals.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">9.13. Topology Spatial Relationships</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="using_raster_dataman.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="TG_Intersects">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>Intersects — Returns true if any pair of primitives from the two topogeometries intersect.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">boolean <strong class="fsfunc">Intersects</strong>(</code>topogeometry  <var class="pdparam">tg1</var>, topogeometry  <var class="pdparam">tg2</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm26317">
+        <h2>Description</h2>
+        <p>
+Returns true if any pair of primitives from the
+two topogeometries intersect.
+          </p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>This function not supported for topogeometries that are geometry collections.  It also can not compare topogeometries from different topologies.
+            Also not currently supported for hierarchical topogeometries (topogeometries composed of other topogeometries).</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p class="availability">Availability: 1.1.0 </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports 3d and will not drop the z-index.
+        </p>
+      </div>
+      <div class="refsection" id="idm26327">
+        <h2>Examples</h2>
+        <pre class="programlisting"/>
+      </div>
+      <div class="refsection" id="idm26330">
+        <h2>See Also</h2>
+        <p>
+          <a class="xref" href="ST_Intersects.html" title="ST_Intersects">ST_Intersects</a>
+        </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="TG_Equals.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="Topology.html#Topology_Relationships">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="using_raster_dataman.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">Equals </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> Chapter 10. Raster Data Management, Queries, and Applications</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

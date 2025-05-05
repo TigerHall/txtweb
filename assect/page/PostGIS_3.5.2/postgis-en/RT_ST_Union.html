@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_Union</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="RT_ST_Reclass.html" title="ST_Reclass"/>
+    <link rel="next" href="RT_ST_Distinct4ma.html" title="ST_Distinct4ma"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_Union</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="RT_ST_Reclass.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">11.12. Raster Processing: Map Algebra</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="RT_ST_Distinct4ma.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="RT_ST_Union">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_Union — Returns the union of a set of raster tiles into a single raster composed of 1 or more bands.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">raster <strong class="fsfunc">ST_Union</strong>(</code>setof raster  <var class="pdparam">rast</var><code>)</code>;</p>
+          <p><code class="funcdef">raster <strong class="fsfunc">ST_Union</strong>(</code>setof raster  <var class="pdparam">rast</var>, unionarg[]  <var class="pdparam">unionargset</var><code>)</code>;</p>
+          <p><code class="funcdef">raster <strong class="fsfunc">ST_Union</strong>(</code>setof raster <var class="pdparam">rast</var>, integer <var class="pdparam">nband</var><code>)</code>;</p>
+          <p><code class="funcdef">raster <strong class="fsfunc">ST_Union</strong>(</code>setof raster <var class="pdparam">rast</var>, text <var class="pdparam">uniontype</var><code>)</code>;</p>
+          <p><code class="funcdef">raster <strong class="fsfunc">ST_Union</strong>(</code>setof raster <var class="pdparam">rast</var>, integer <var class="pdparam">nband</var>, text <var class="pdparam">uniontype</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm35073">
+        <h2>Description</h2>
+        <p>Returns the union of a set of raster tiles into a single raster composed of at least one band.  The resulting raster's extent is the extent of the whole set.  In the case of intersection, the resulting value is defined by <code class="varname">uniontype</code> which is one of the following: LAST (default), FIRST, MIN, MAX, COUNT, SUM, MEAN, RANGE.</p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>In order for rasters to be unioned, they must all have the same alignment.  Use <a class="xref" href="RT_ST_SameAlignment.html" title="ST_SameAlignment">ST_SameAlignment</a> and <a class="xref" href="RT_ST_NotSameAlignmentReason.html" title="ST_NotSameAlignmentReason">ST_NotSameAlignmentReason</a> for more details and help. One way to fix alignment issues is to use <a class="xref" href="RT_ST_Resample.html" title="ST_Resample">ST_Resample</a> and use the same reference raster for alignment.</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p class="availability">Availability: 2.0.0 </p>
+        <p class="enhanced">Enhanced: 2.1.0 Improved Speed (fully C-Based).</p>
+        <p class="availability">Availability: 2.1.0 ST_Union(rast, unionarg) variant was introduced.</p>
+        <p class="enhanced">Enhanced: 2.1.0 ST_Union(rast) (variant 1) unions all bands of all input rasters.  Prior versions of PostGIS assumed the first band.</p>
+        <p class="enhanced">Enhanced: 2.1.0 ST_Union(rast, uniontype) (variant 4) unions all bands of all input rasters.</p>
+      </div>
+      <div class="refsection" id="idm35087">
+        <h2>Examples: Reconstitute a single band chunked raster tile</h2>
+        <pre class="programlisting">
+-- this creates a single band from first band of raster tiles
+-- that form the original file system tile
+SELECT filename, ST_Union(rast,1) As file_rast
+FROM sometable WHERE filename IN('dem01', 'dem02') GROUP BY filename;
+                    </pre>
+      </div>
+      <div class="refsection" id="idm35090">
+        <h2>Examples: Return a multi-band raster that is the union of tiles intersecting geometry</h2>
+        <pre class="programlisting">
+-- this creates a multi band raster collecting all the tiles that intersect a line
+-- Note: In 2.0, this would have just returned a single band raster
+-- , new union works on all bands by default
+-- this is equivalent to unionarg: ARRAY[ROW(1, 'LAST'), ROW(2, 'LAST'), ROW(3, 'LAST')]::unionarg[]
+SELECT ST_Union(rast)
+FROM aerials.boston
+WHERE ST_Intersects(rast,  ST_GeomFromText('LINESTRING(230486 887771, 230500 88772)',26986) );
+                    </pre>
+      </div>
+      <div class="refsection" id="idm35093">
+        <h2>Examples: Return a multi-band raster that is the union of tiles intersecting geometry</h2>
+        <p>Here we use the longer syntax if we only wanted a subset of bands or we want to change order of bands</p>
+        <pre class="programlisting">
+-- this creates a multi band raster collecting all the tiles that intersect a line
+SELECT ST_Union(rast,ARRAY[ROW(2, 'LAST'), ROW(1, 'LAST'), ROW(3, 'LAST')]::unionarg[])
+FROM aerials.boston
+WHERE ST_Intersects(rast,  ST_GeomFromText('LINESTRING(230486 887771, 230500 88772)',26986) );
+                    </pre>
+      </div>
+      <div class="refsection" id="idm35097">
+        <h2>See Also</h2>
+        <p>
+                        <a class="xref" href="unionarg.html" title="unionarg">unionarg</a>,
+                        <a class="xref" href="RT_ST_Envelope.html" title="ST_Envelope">ST_Envelope</a>,
+                        <a class="xref" href="RT_ST_ConvexHull.html" title="ST_ConvexHull">ST_ConvexHull</a>,
+                        <a class="xref" href="RT_ST_Clip.html" title="ST_Clip">ST_Clip</a>,
+                        <a class="xref" href="ST_Union.html" title="ST_Union">ST_Union</a>
+                    </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="RT_ST_Reclass.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="RT_reference.html#Raster_Processing_MapAlgebra">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="RT_ST_Distinct4ma.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_Reclass </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_Distinct4ma</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

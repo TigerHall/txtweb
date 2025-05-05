@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_RasterToWorldCoordX</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="RT_ST_RasterToWorldCoord.html" title="ST_RasterToWorldCoord"/>
+    <link rel="next" href="RT_ST_RasterToWorldCoordY.html" title="ST_RasterToWorldCoordY"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_RasterToWorldCoordX</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="RT_ST_RasterToWorldCoord.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">11.4. Raster Accessors</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="RT_ST_RasterToWorldCoordY.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="RT_ST_RasterToWorldCoordX">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_RasterToWorldCoordX — Returns the geometric X coordinate upper left of a raster, column and row. Numbering of columns
+                    and rows starts at 1.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">float8 <strong class="fsfunc">ST_RasterToWorldCoordX</strong>(</code>raster  <var class="pdparam">rast</var>, integer  <var class="pdparam">xcolumn</var><code>)</code>;</p>
+          <p><code class="funcdef">float8 <strong class="fsfunc">ST_RasterToWorldCoordX</strong>(</code>raster  <var class="pdparam">rast</var>, integer  <var class="pdparam">xcolumn</var>, integer  <var class="pdparam">yrow</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm29108">
+        <h2>Description</h2>
+        <p>Returns the upper left X coordinate of a raster column row in geometric units of the georeferenced raster.
+                    Numbering of columns and rows starts at 1 but if you pass in a negative number or number higher than number of
+                        columns in raster, it will give you
+                    coordinates outside of the raster file to left or right with the assumption that the
+                    skew and pixel sizes are same as selected raster. </p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>For non-skewed rasters, providing the X column is sufficient.  For skewed rasters,
+                        the georeferenced coordinate is a function of the ST_ScaleX and ST_SkewX and row and column.
+                        An error will be raised if you give just the X column for a skewed raster.</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p class="changed">Changed: 2.1.0 In prior versions, this was called ST_Raster2WorldCoordX</p>
+      </div>
+      <div class="refsection" id="idm29114">
+        <h2>Examples</h2>
+        <pre class="programlisting">
+-- non-skewed raster providing column is sufficient
+SELECT rid, ST_RasterToWorldCoordX(rast,1) As x1coord,
+    ST_RasterToWorldCoordX(rast,2) As x2coord,
+    ST_ScaleX(rast) As pixelx
+FROM dummy_rast;
+
+ rid |  x1coord   |  x2coord  | pixelx
+-----+------------+-----------+--------
+   1 |        0.5 |       2.5 |      2
+   2 | 3427927.75 | 3427927.8 |   0.05
+                </pre>
+        <pre class="programlisting">
+-- for fun lets skew it
+SELECT rid, ST_RasterToWorldCoordX(rast, 1, 1) As x1coord,
+    ST_RasterToWorldCoordX(rast, 2, 3) As x2coord,
+    ST_ScaleX(rast) As pixelx
+FROM (SELECT rid, ST_SetSkew(rast, 100.5, 0) As rast FROM dummy_rast) As foo;
+
+ rid |  x1coord   |  x2coord  | pixelx
+-----+------------+-----------+--------
+   1 |        0.5 |     203.5 |      2
+   2 | 3427927.75 | 3428128.8 |   0.05
+                </pre>
+      </div>
+      <div class="refsection" id="idm29118">
+        <h2>See Also</h2>
+        <p><a class="xref" href="RT_ST_ScaleX.html" title="ST_ScaleX">ST_ScaleX</a>, <a class="xref" href="RT_ST_RasterToWorldCoordY.html" title="ST_RasterToWorldCoordY">ST_RasterToWorldCoordY</a>, <a class="xref" href="RT_ST_SetSkew.html" title="ST_SetSkew">ST_SetSkew</a>, <a class="xref" href="RT_ST_SkewX.html" title="ST_SkewX">ST_SkewX</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="RT_ST_RasterToWorldCoord.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="RT_reference.html#Raster_Accessors">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="RT_ST_RasterToWorldCoordY.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_RasterToWorldCoord </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_RasterToWorldCoordY</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

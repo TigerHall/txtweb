@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_PointN</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_PatchN.html" title="ST_PatchN"/>
+    <link rel="next" href="ST_Points.html" title="ST_Points"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_PointN</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_PatchN.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.4. Geometry Accessors</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_Points.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_PointN">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_PointN — Returns the Nth point in the first LineString or circular LineString in a
+			geometry. </p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_PointN</strong>(</code>geometry  <var class="pdparam">a_linestring</var>, integer  <var class="pdparam">n</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm6064">
+        <h2>Description</h2>
+        <p>Return the Nth point in a single linestring or circular linestring in the
+			geometry. Negative values are counted backwards from the end of the LineString, so that -1 is the last point. Returns NULL if there is no linestring in the
+			geometry.</p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>Index is 1-based as for OGC specs since version 0.8.0.
+              Backward indexing (negative index) is not in OGC
+			  Previous versions implemented this as 0-based instead.</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>If you want to get the Nth point of each LineString in a MultiLineString, use in conjunction
+			  with ST_Dump</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method implements the <a class="link" href="http://www.opengeospatial.org/standards/sfs" target="_top">OGC Simple Features
+            Implementation Specification for SQL 1.1.</a>
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method implements the SQL/MM specification.
+         SQL-MM 3: 7.2.5, 7.3.5</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports 3d and will not drop the z-index.
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method supports Circular Strings and Curves.
+        </p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p class="changed">Changed: 2.0.0 no longer works with single geometry multilinestrings.  In older
+	  versions of PostGIS -- a single line multilinestring would work happily with this
+	  function and return the start point.  In 2.0.0 it just returns NULL like any other multilinestring.</p>
+                <p class="changed"> Changed: 2.3.0 : negative indexing available (-1 is last point)
+    </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="refsection" id="idm6091">
+        <h2>Examples</h2>
+        <pre class="programlisting">-- Extract all POINTs from a LINESTRING
+SELECT ST_AsText(
+   ST_PointN(
+	  column1,
+	  generate_series(1, ST_NPoints(column1))
+   ))
+FROM ( VALUES ('LINESTRING(0 0, 1 1, 2 2)'::geometry) ) AS foo;
+
+ st_astext
+------------
+ POINT(0 0)
+ POINT(1 1)
+ POINT(2 2)
+(3 rows)
+
+--Example circular string
+SELECT ST_AsText(ST_PointN(ST_GeomFromText('CIRCULARSTRING(1 2, 3 2, 1 2)'), 2));
+
+ st_astext
+------------
+ POINT(3 2)
+(1 row)
+
+SELECT ST_AsText(f)
+FROM ST_GeomFromText('LINESTRING(0 0 0, 1 1 1, 2 2 2)') AS g
+  ,ST_PointN(g, -2) AS f; -- 1 based index
+
+    st_astext
+-----------------
+ POINT Z (1 1 1)
+(1 row)
+
+</pre>
+      </div>
+      <div class="refsection" id="idm6094">
+        <h2>See Also</h2>
+        <p>
+          <a class="xref" href="ST_NPoints.html" title="ST_NPoints">ST_NPoints</a>
+        </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_PatchN.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Geometry_Accessors">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_Points.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_PatchN </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_Points</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

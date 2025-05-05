@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_IsValid</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_SwapOrdinates.html" title="ST_SwapOrdinates"/>
+    <link rel="next" href="ST_IsValidDetail.html" title="ST_IsValidDetail"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_IsValid</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_SwapOrdinates.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.6. Geometry Validation</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_IsValidDetail.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_IsValid">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_IsValid — Tests if a geometry is well-formed in 2D.
+		</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">boolean <strong class="fsfunc">ST_IsValid</strong>(</code>geometry  <var class="pdparam">g</var><code>)</code>;</p>
+          <p><code class="funcdef">boolean <strong class="fsfunc">ST_IsValid</strong>(</code>geometry  <var class="pdparam">g</var>, integer  <var class="pdparam">flags</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm8126">
+        <h2>Description</h2>
+        <p>
+        Tests if an ST_Geometry value is well-formed and valid in 2D according to the OGC rules.
+        For geometries with 3 and 4 dimensions, the validity is still only tested in 2 dimensions.
+		For geometries that are invalid, a PostgreSQL NOTICE is emitted providing details of why it is not valid.
+                </p>
+        <p>
+For the version with the <code class="varname">flags</code> parameter,
+supported values are documented in <a class="xref" href="ST_IsValidDetail.html" title="ST_IsValidDetail">ST_IsValidDetail</a>
+This version does not print a NOTICE explaining invalidity.
+		</p>
+        <p>For more information on the definition of geometry validity, refer
+			to <a class="xref" href="using_postgis_dbmanagement.html#OGC_Validity" title="4.4. Geometry Validation">Section 4.4, “Geometry Validation”</a>
+		</p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>SQL-MM defines the result of ST_IsValid(NULL) to be 0, while
+			PostGIS returns NULL.</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p>Performed by the GEOS module.</p>
+        <p>The version accepting flags is available starting with 2.0.0.		</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method implements the <a class="link" href="http://www.opengeospatial.org/standards/sfs" target="_top">OGC Simple Features
+            Implementation Specification for SQL 1.1.</a>
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method implements the SQL/MM specification.
+         SQL-MM 3: 5.1.9</p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>
+Neither OGC-SFS nor SQL-MM specifications include a flag argument
+for ST_IsValid. The flag is a PostGIS extension.
+			</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="refsection" id="idm8149">
+        <h2>Examples</h2>
+        <pre class="programlisting">SELECT ST_IsValid(ST_GeomFromText('LINESTRING(0 0, 1 1)')) As good_line,
+	ST_IsValid(ST_GeomFromText('POLYGON((0 0, 1 1, 1 2, 1 1, 0 0))')) As bad_poly
+--results
+NOTICE:  Self-intersection at or near point 0 0
+ good_line | bad_poly
+-----------+----------
+ t         | f
+</pre>
+      </div>
+      <div class="refsection" id="idm8152">
+        <h2>See Also</h2>
+        <p>
+<a class="xref" href="ST_IsSimple.html" title="ST_IsSimple">ST_IsSimple</a>,
+<a class="xref" href="ST_IsValidReason.html" title="ST_IsValidReason">ST_IsValidReason</a>,
+<a class="xref" href="ST_IsValidDetail.html" title="ST_IsValidDetail">ST_IsValidDetail</a>,
+</p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_SwapOrdinates.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Geometry_Validation">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_IsValidDetail.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_SwapOrdinates </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_IsValidDetail</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

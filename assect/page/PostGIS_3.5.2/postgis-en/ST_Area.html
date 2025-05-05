@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_Area</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_PointInsideCircle.html" title="ST_PointInsideCircle"/>
+    <link rel="next" href="ST_Azimuth.html" title="ST_Azimuth"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_Area</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_PointInsideCircle.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.12. Measurement Functions</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_Azimuth.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_Area">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_Area — Returns the area of a polygonal geometry.
+			</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">float <strong class="fsfunc">ST_Area</strong>(</code>geometry <var class="pdparam">g1</var><code>)</code>;</p>
+          <p><code class="funcdef">float <strong class="fsfunc">ST_Area</strong>(</code>geography <var class="pdparam">geog</var>, boolean <var class="pdparam">use_spheroid = true</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm14291">
+        <h2>Description</h2>
+        <p>Returns the area of a polygonal geometry.
+			For geometry types a 2D Cartesian (planar) area is computed, with units specified by the SRID.
+			For geography types by default area is determined on a spheroid with units in square meters.
+		  To compute the area using the faster but less accurate spherical model use <code class="varname">ST_Area(geog,false)</code>.
+		  </p>
+        <p class="enhanced">Enhanced: 2.0.0 - support for 2D polyhedral surfaces was introduced.</p>
+        <p class="enhanced">Enhanced: 2.2.0 - measurement on spheroid performed with GeographicLib for improved accuracy and robustness.  Requires PROJ &gt;= 4.9.0 to take advantage of the new feature.</p>
+        <p class="changed">Changed: 3.0.0 - does not depend on SFCGAL anymore.</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method implements the <a class="link" href="http://www.opengeospatial.org/standards/sfs" target="_top">OGC Simple Features
+            Implementation Specification for SQL 1.1.</a>
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method implements the SQL/MM specification.
+         SQL-MM 3: 8.1.2, 9.5.3</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports Polyhedral surfaces.
+        </p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>For polyhedral surfaces, only supports 2D polyhedral surfaces (not 2.5D).  For 2.5D, may give a non-zero answer, but only for the faces that
+			sit completely in XY plane.</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="refsection" id="idm14313">
+        <h2>Examples</h2>
+        <p>Return area in square feet for a plot of Massachusetts land and multiply by conversion to get square meters.
+				Note this is in square feet because EPSG:2249 is
+				Massachusetts State Plane Feet </p>
+        <pre class="programlisting">
+select ST_Area(geom) sqft,
+    ST_Area(geom) * 0.3048 ^ 2 sqm
+from (
+         select 'SRID=2249;POLYGON((743238 2967416,743238 2967450,
+				 743265 2967450,743265.625 2967416,743238 2967416))' :: geometry geom
+     ) subquery;
+┌─────────┬─────────────┐
+│  sqft   │     sqm     │
+├─────────┼─────────────┤
+│ 928.625 │ 86.27208552 │
+└─────────┴─────────────┘
+</pre>
+        <p>Return area square feet and transform to Massachusetts state plane meters (EPSG:26986) to get square meters.
+				Note this is in square feet because 2249 is
+				Massachusetts State Plane Feet and transformed area is in square meters since EPSG:26986 is state plane Massachusetts meters </p>
+        <pre class="programlisting">select ST_Area(geom) sqft,
+    ST_Area(ST_Transform(geom, 26986)) As sqm
+from (
+         select
+             'SRID=2249;POLYGON((743238 2967416,743238 2967450,
+             743265 2967450,743265.625 2967416,743238 2967416))' :: geometry geom
+     ) subquery;
+┌─────────┬─────────────────┐
+│  sqft   │       sqm       │
+├─────────┼─────────────────┤
+│ 928.625 │ 86.272430607008 │
+└─────────┴─────────────────┘
+</pre>
+        <p>Return area square feet and square meters using geography data type.  Note that we transform to our geometry to geography
+	(before you can do that make sure your geometry is in WGS 84 long lat 4326).  Geography always measures in meters.
+	This is just for demonstration to compare.  Normally your table will be stored in geography data type already.</p>
+        <pre class="programlisting">
+
+select ST_Area(geog) / 0.3048 ^ 2 sqft_spheroid,
+    ST_Area(geog, false) / 0.3048 ^ 2 sqft_sphere,
+    ST_Area(geog) sqm_spheroid
+from (
+         select ST_Transform(
+                    'SRID=2249;POLYGON((743238 2967416,743238 2967450,743265 2967450,743265.625 2967416,743238 2967416))'::geometry,
+                    4326
+             ) :: geography geog
+     ) as subquery;
+┌──────────────────┬──────────────────┬──────────────────┐
+│  sqft_spheroid   │   sqft_sphere    │   sqm_spheroid   │
+├──────────────────┼──────────────────┼──────────────────┤
+│ 928.684405784452 │ 927.049336105925 │ 86.2776044979692 │
+└──────────────────┴──────────────────┴──────────────────┘
+</pre>
+        <p>If your data is in geography already:</p>
+        <pre class="programlisting">
+select ST_Area(geog) / 0.3048 ^ 2 sqft,
+    ST_Area(the_geog) sqm
+from somegeogtable;</pre>
+      </div>
+      <div class="refsection" id="idm14323">
+        <h2>See Also</h2>
+        <p><a class="xref" href="ST_3DArea.html" title="ST_3DArea">ST_3DArea</a>, <a class="xref" href="ST_GeomFromText.html" title="ST_GeomFromText">ST_GeomFromText</a>, <a class="xref" href="ST_GeographyFromText.html" title="ST_GeographyFromText">ST_GeographyFromText</a>, <a class="xref" href="ST_SetSRID.html" title="ST_SetSRID">ST_SetSRID</a>, <a class="xref" href="ST_Transform.html" title="ST_Transform">ST_Transform</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_PointInsideCircle.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Measurement_Functions">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_Azimuth.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_PointInsideCircle </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_Azimuth</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

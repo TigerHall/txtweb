@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_MetaData</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="RT_ST_MemSize.html" title="ST_MemSize"/>
+    <link rel="next" href="RT_ST_NumBands.html" title="ST_NumBands"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_MetaData</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="RT_ST_MemSize.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">11.4. Raster Accessors</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="RT_ST_NumBands.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="RT_ST_MetaData">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_MetaData — Returns basic meta data about a raster object such as pixel size, rotation (skew), upper, lower left, etc.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">record <strong class="fsfunc">ST_MetaData</strong>(</code>raster  <var class="pdparam">rast</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm28899">
+        <h2>Description</h2>
+        <p>Returns basic meta data about a raster object such as pixel size, rotation (skew), upper, lower left, etc. Columns returned:
+                    upperleftx | upperlefty | width | height | scalex | scaley | skewx | skewy | srid | numbands</p>
+      </div>
+      <div class="refsection" id="idm28902">
+        <h2>Examples</h2>
+        <pre class="programlisting">SELECT rid, (foo.md).*
+ FROM (SELECT rid, ST_MetaData(rast) As md
+FROM dummy_rast) As foo;
+
+ rid | upperleftx | upperlefty | width | height | scalex | scaley | skewx | skewy | srid | numbands
+ ----+------------+------------+-------+--------+--------+-----------+-------+-------+------+-------
+   1 |        0.5 |        0.5 |    10 |     20 |      2 |      3 |     0 |     0 |    0 |        0
+   2 | 3427927.75 |    5793244 |     5 |      5 |   0.05 |  -0.05 |     0 |     0 |    0 |        3
+                </pre>
+      </div>
+      <div class="refsection" id="idm28905">
+        <h2>See Also</h2>
+        <p><a class="xref" href="RT_ST_BandMetaData.html" title="ST_BandMetaData">ST_BandMetaData</a>, <a class="xref" href="RT_ST_NumBands.html" title="ST_NumBands">ST_NumBands</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="RT_ST_MemSize.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="RT_reference.html#Raster_Accessors">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="RT_ST_NumBands.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_MemSize </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_NumBands</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>TopoElement</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="TopoElementArray_Agg.html" title="TopoElementArray_Agg"/>
+    <link rel="next" href="clearTopoGeom.html" title="clearTopoGeom"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">TopoElement</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="TopoElementArray_Agg.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">9.9. TopoGeometry Constructors</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="clearTopoGeom.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="TopoElement">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>TopoElement — Converts a topogeometry to a topoelement.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">topoelement <strong class="fsfunc">TopoElement</strong>(</code>topogeometry  <var class="pdparam">topo</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm25820">
+        <h2>Description</h2>
+        <p>Converts a <a class="xref" href="topogeometry.html" title="TopoGeometry">TopoGeometry</a> to a <a class="xref" href="topoelement.html" title="TopoElement">TopoElement</a>.</p>
+        <p class="availability">Availability: 3.4.0</p>
+      </div>
+      <div class="refsection" id="idm25826">
+        <h2>Examples</h2>
+        <p>This is a full self-contained workflow</p>
+        <pre class="programlisting">-- do this if you don't have a topology setup already
+-- Creates topology not allowing any tolerance
+SELECT TopoElement(topo)
+FROM neighborhoods;</pre>
+        <pre class="programlisting">-- using as cast
+SELECT topology.TopoElementArray_Agg(topo::topoelement)
+FROM neighborhoods
+GROUP BY city;</pre>
+      </div>
+      <div class="refsection" id="idm25831">
+        <h2>See Also</h2>
+        <p><a class="xref" href="TopoElementArray_Agg.html" title="TopoElementArray_Agg">TopoElementArray_Agg</a>, <a class="xref" href="topogeometry.html" title="TopoGeometry">TopoGeometry</a>, <a class="xref" href="topoelement.html" title="TopoElement">TopoElement</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="TopoElementArray_Agg.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="Topology.html#TopoGeometry_Constructors">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="clearTopoGeom.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">TopoElementArray_Agg </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> clearTopoGeom</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_AsMARC21</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_AsLatLonText.html" title="ST_AsLatLonText"/>
+    <link rel="next" href="ST_AsMVTGeom.html" title="ST_AsMVTGeom"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_AsMARC21</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_AsLatLonText.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.9.3. Other Formats</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_AsMVTGeom.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_AsMARC21">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_AsMARC21 — Returns geometry as a MARC21/XML record with a geographic datafield (034).</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">
+                        text
+                        <strong class="fsfunc">ST_AsMARC21</strong>
+                    (</code>
+                        geometry 
+                        <var class="pdparam">geom</var>
+                    , 
+                        text 
+                        <var class="pdparam">format='hdddmmss'</var>
+                    <code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm10986">
+        <h2>Description</h2>
+        <p>This function returns a MARC21/XML record with <a class="link" href="https://www.loc.gov/marc/bibliographic/bd034.html" target="_top">Coded Cartographic Mathematical Data</a> representing the bounding box of a given geometry.
+            The <code class="varname">format</code> parameter allows to encode the coordinates in subfields <code class="varname">$d</code>,<code class="varname">$e</code>,<code class="varname">$f</code> and <code class="varname">$g</code> in all formats supported by the MARC21/XML standard. Valid formats are:</p>
+        <div class="itemizedlist">
+          <ul class="itemizedlist" style="list-style-type: disc; ">
+            <li class="listitem">
+              <p>cardinal direction, degrees, minutes and seconds (default): <code class="varname">hdddmmss</code></p>
+            </li>
+            <li class="listitem">
+              <p>decimal degrees with cardinal direction: <code class="varname">hddd.dddddd</code></p>
+            </li>
+            <li class="listitem">
+              <p>decimal degrees without cardinal direction: <code class="varname">ddd.dddddd</code></p>
+            </li>
+            <li class="listitem">
+              <p>decimal minutes with cardinal direction: <code class="varname">hdddmm.mmmm</code></p>
+            </li>
+            <li class="listitem">
+              <p>decimal minutes without cardinal direction: <code class="varname">dddmm.mmmm</code></p>
+            </li>
+            <li class="listitem">
+              <p>decimal seconds with cardinal direction: <code class="varname">hdddmmss.sss</code></p>
+            </li>
+          </ul>
+        </div>
+        <p>The decimal sign may be also a comma, e.g. <code class="varname">hdddmm,mmmm</code>.</p>
+        <p>The precision of decimal formats can be limited by the number of characters after the decimal sign, e.g. <code class="varname">hdddmm.mm</code> for decimal minutes with a precision of two decimals.</p>
+        <p>This function ignores the Z and M dimensions.</p>
+        <p>
+                LOC MARC21/XML versions supported:
+                </p>
+        <div class="itemizedlist">
+          <ul class="itemizedlist" style="list-style-type: disc; ">
+            <li class="listitem">
+              <p>
+                <a class="link" href="https://www.loc.gov/standards/marcxml/" target="_top">MARC21/XML 1.1</a>
+              </p>
+            </li>
+          </ul>
+        </div>
+        <p>
+            </p>
+        <p class="availability">Availability: 3.3.0 </p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>This function does not support non lon/lat geometries, as they are not supported by the MARC21/XML standard (Coded Cartographic Mathematical Data).</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>
+                    The MARC21/XML Standard does not provide any means to annotate the spatial reference system for Coded Cartographic Mathematical Data, which means that this information will be lost after conversion to MARC21/XML.
+                </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="refsection" id="idm11029">
+        <h2>Examples</h2>
+        <p>Converting a <code class="varname">POINT</code> to MARC21/XML formatted as hdddmmss (default)</p>
+        <pre class="programlisting">
+
+
+                SELECT ST_AsMARC21('SRID=4326;POINT(-4.504289 54.253312)'::geometry);
+
+                                st_asmarc21
+                -------------------------------------------------
+                &lt;record xmlns="http://www.loc.gov/MARC21/slim"&gt;
+                    &lt;datafield tag="034" ind1="1" ind2=" "&gt;
+                        &lt;subfield code="a"&gt;a&lt;/subfield&gt;
+                        &lt;subfield code="d"&gt;W0043015&lt;/subfield&gt;
+                        &lt;subfield code="e"&gt;W0043015&lt;/subfield&gt;
+                        &lt;subfield code="f"&gt;N0541512&lt;/subfield&gt;
+                        &lt;subfield code="g"&gt;N0541512&lt;/subfield&gt;
+                    &lt;/datafield&gt;
+                &lt;/record&gt;
+
+
+
+</pre>
+        <p>Converting a <code class="varname">POLYGON</code> to MARC21/XML formatted in decimal degrees</p>
+        <pre class="programlisting">
+
+
+                SELECT ST_AsMARC21('SRID=4326;POLYGON((-4.5792388916015625 54.18172660239091,-4.56756591796875 54.196993557130355,-4.546623229980469 54.18313300502024,-4.5792388916015625 54.18172660239091))'::geometry,'hddd.dddd');
+
+                &lt;record xmlns="http://www.loc.gov/MARC21/slim"&gt;
+                    &lt;datafield tag="034" ind1="1" ind2=" "&gt;
+                        &lt;subfield code="a"&gt;a&lt;/subfield&gt;
+                        &lt;subfield code="d"&gt;W004.5792&lt;/subfield&gt;
+                        &lt;subfield code="e"&gt;W004.5466&lt;/subfield&gt;
+                        &lt;subfield code="f"&gt;N054.1970&lt;/subfield&gt;
+                        &lt;subfield code="g"&gt;N054.1817&lt;/subfield&gt;
+                    &lt;/datafield&gt;
+                &lt;/record&gt;
+
+
+
+</pre>
+        <p>Converting a <code class="varname">GEOMETRYCOLLECTION</code> to MARC21/XML formatted in decimal minutes. The geometries order in the MARC21/XML output correspond to their order in the collection.</p>
+        <pre class="programlisting">
+
+
+                SELECT ST_AsMARC21('SRID=4326;GEOMETRYCOLLECTION(POLYGON((13.1 52.65,13.516666666666667 52.65,13.516666666666667 52.38333333333333,13.1 52.38333333333333,13.1 52.65)),POINT(-4.5 54.25))'::geometry,'hdddmm.mmmm');
+
+                                st_asmarc21
+                -------------------------------------------------
+                &lt;record xmlns="http://www.loc.gov/MARC21/slim"&gt;
+                    &lt;datafield tag="034" ind1="1" ind2=" "&gt;
+                        &lt;subfield code="a"&gt;a&lt;/subfield&gt;
+                        &lt;subfield code="d"&gt;E01307.0000&lt;/subfield&gt;
+                        &lt;subfield code="e"&gt;E01331.0000&lt;/subfield&gt;
+                        &lt;subfield code="f"&gt;N05240.0000&lt;/subfield&gt;
+                        &lt;subfield code="g"&gt;N05224.0000&lt;/subfield&gt;
+                    &lt;/datafield&gt;
+                    &lt;datafield tag="034" ind1="1" ind2=" "&gt;
+                        &lt;subfield code="a"&gt;a&lt;/subfield&gt;
+                        &lt;subfield code="d"&gt;W00430.0000&lt;/subfield&gt;
+                        &lt;subfield code="e"&gt;W00430.0000&lt;/subfield&gt;
+                        &lt;subfield code="f"&gt;N05415.0000&lt;/subfield&gt;
+                        &lt;subfield code="g"&gt;N05415.0000&lt;/subfield&gt;
+                    &lt;/datafield&gt;
+                &lt;/record&gt;
+
+
+
+</pre>
+      </div>
+      <div class="refsection" id="idm11040">
+        <h2>See Also</h2>
+        <p>
+          <a class="xref" href="ST_GeomFromMARC21.html" title="ST_GeomFromMARC21">ST_GeomFromMARC21</a>
+        </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_AsLatLonText.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#idm10493">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_AsMVTGeom.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_AsLatLonText </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_AsMVTGeom</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

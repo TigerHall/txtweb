@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>UpdateGeometrySRID</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="Populate_Geometry_Columns.html" title="Populate_Geometry_Columns"/>
+    <link rel="next" href="ST_Collect.html" title="ST_Collect"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">UpdateGeometrySRID</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="Populate_Geometry_Columns.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.2. Table Management Functions</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_Collect.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="UpdateGeometrySRID">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>UpdateGeometrySRID — Updates the SRID of all features in a geometry
+		column, and the table metadata.
+		</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">text <strong class="fsfunc">UpdateGeometrySRID</strong>(</code>varchar 
+			<var class="pdparam">table_name</var>, varchar 
+			<var class="pdparam">column_name</var>, integer 
+			<var class="pdparam">srid</var><code>)</code>;</p>
+          <p><code class="funcdef">text <strong class="fsfunc">UpdateGeometrySRID</strong>(</code>varchar 
+			<var class="pdparam">schema_name</var>, varchar 
+			<var class="pdparam">table_name</var>, varchar 
+			<var class="pdparam">column_name</var>, integer 
+			<var class="pdparam">srid</var><code>)</code>;</p>
+          <p><code class="funcdef">text <strong class="fsfunc">UpdateGeometrySRID</strong>(</code>varchar 
+			<var class="pdparam">catalog_name</var>, varchar 
+			<var class="pdparam">schema_name</var>, varchar 
+			<var class="pdparam">table_name</var>, varchar 
+			<var class="pdparam">column_name</var>, integer 
+			<var class="pdparam">srid</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm3543">
+        <h2>Description</h2>
+        <p>Updates the SRID of all features in a geometry column, updating
+		constraints and reference in geometry_columns.
+		If the column was enforced by a type definition, the type definition will be changed.
+		Note: uses
+		current_schema() on schema-aware pgsql installations if schema is not
+		provided.</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports 3d and will not drop the z-index.
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method supports Circular Strings and Curves.
+        </p>
+      </div>
+      <div class="refsection" id="idm3554">
+        <h2>Examples</h2>
+        <p>Insert geometries into roads table with a SRID set already using <a class="link" href="ST_GeomFromEWKT.html" title="ST_GeomFromEWKT">EWKT format</a>:</p>
+        <pre class="programlisting">COPY roads (geom) FROM STDIN;
+SRID=4326;LINESTRING(0 0, 10 10)
+SRID=4326;LINESTRING(10 10, 15 0)
+\.
+		</pre>
+        <p>This will change the srid of the roads table to 4326 from whatever it was before:</p>
+        <pre class="programlisting">SELECT UpdateGeometrySRID('roads','geom',4326);</pre>
+        <p>The prior example is equivalent to this DDL statement:</p>
+        <pre class="programlisting">ALTER TABLE roads
+  ALTER COLUMN geom TYPE geometry(MULTILINESTRING, 4326)
+    USING ST_SetSRID(geom,4326);</pre>
+        <p>If you got the projection wrong (or brought it in as unknown) in load and you wanted to transform to web mercator all in one shot you can do this with
+	DDL but there is no equivalent PostGIS management function to do so in one go.</p>
+        <pre class="programlisting">ALTER TABLE roads
+ ALTER COLUMN geom TYPE geometry(MULTILINESTRING, 3857) USING ST_Transform(ST_SetSRID(geom,4326),3857) ;</pre>
+      </div>
+      <div class="refsection" id="idm3565">
+        <h2>See Also</h2>
+        <p>
+  <a class="xref" href="RT_UpdateRasterSRID.html" title="UpdateRasterSRID">UpdateRasterSRID</a>,
+  <a class="xref" href="ST_SetSRID.html" title="ST_SetSRID">ST_SetSRID</a>,
+  <a class="xref" href="ST_Transform.html" title="ST_Transform">ST_Transform</a>,
+  <a class="xref" href="ST_GeomFromEWKT.html" title="ST_GeomFromEWKT">ST_GeomFromEWKT</a>
+		</p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="Populate_Geometry_Columns.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Management_Functions">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_Collect.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">Populate_Geometry_Columns </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_Collect</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

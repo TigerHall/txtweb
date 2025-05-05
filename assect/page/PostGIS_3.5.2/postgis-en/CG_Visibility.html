@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>CG_Visibility</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="CG_Triangulate.html" title="CG_Triangulate"/>
+    <link rel="next" href="CG_YMonotonePartition.html" title="CG_YMonotonePartition"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">CG_Visibility</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="CG_Triangulate.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">8.3. SFCGAL Processing and Relationship Functions</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="CG_YMonotonePartition.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="CG_Visibility">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>CG_Visibility — Compute a visibility polygon from a point or a segment in a polygon geometry</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">geometry <strong class="fsfunc">CG_Visibility</strong>(</code>geometry <var class="pdparam">polygon</var>, geometry <var class="pdparam">point</var><code>)</code>;</p>
+          <p><code class="funcdef">geometry <strong class="fsfunc">CG_Visibility</strong>(</code>geometry <var class="pdparam">polygon</var>, geometry <var class="pdparam">pointA</var>, geometry <var class="pdparam">pointB</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm23432">
+        <h2>Description</h2>
+        <p class="availability">Availability: 3.5.0 - requires SFCGAL &gt;= 1.5.0.</p>
+        <p class="sfcgal_requirement">Requires SFCGAL &gt;= 1.5.0</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method needs SFCGAL backend.
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports 3d and will not drop the z-index.
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports Polyhedral surfaces.
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports Triangles and Triangulated Irregular Network Surfaces (TIN).
+        </p>
+      </div>
+      <div class="refsection" id="idm23452">
+        <h2>Examples</h2>
+        <pre class="programlisting">SELECT CG_Visibility('POLYGON((23.5 23.5,23.5 173.5,173.5 173.5,173.5 23.5,23.5 23.5),(108 98,108 36,156 37,155 99,108 98),(107 157.5,107 106.5,135 107.5,133 127.5,143.5 127.5,143.5 108.5,153.5 109.5,151.5 166,107 157.5),(41 95.5,41 35,100.5 36,98.5 68,78.5 68,77.5 96.5,41 95.5),(39 150,40 104,97.5 106.5,95.5 152,39 150))'::geometry, 'POINT(91 87)'::geometry);</pre>
+        <pre class="programlisting">SELECT CG_Visibility('POLYGON((23.5 23.5,23.5 173.5,173.5 173.5,173.5 23.5,23.5 23.5),(108 98,108 36,156 37,155 99,108 98),(107 157.5,107 106.5,135 107.5,133 127.5,143.5 127.5,143.5 108.5,153.5 109.5,151.5 166,107 157.5),(41 95.5,41 35,100.5 36,98.5 68,78.5 68,77.5 96.5,41 95.5),(39 150,40 104,97.5 106.5,95.5 152,39 150))'::geometry,'POINT(78.5 68)'::geometry, 'POINT(98.5 68)'::geometry);</pre>
+        <div class="informaltable">
+          <table style="border-collapse: collapse; border-top: 1px solid ; border-bottom: 1px solid ; border-left: 1px solid ; border-right: 1px solid ; ">
+            <colgroup>
+              <col/>
+              <col/>
+              <col/>
+            </colgroup>
+            <tbody>
+              <tr>
+                <td style="border-right: 1px solid ; "><div class="informalfigure"><div class="mediaobject"><img src="../images/cg_visibility01.png"/><div class="caption"><p>Original polygon</p></div></div></div>
+                            </td>
+                <td style="border-right: 1px solid ; "><div class="informalfigure"><div class="mediaobject"><img src="../images/cg_visibility02.png"/><div class="caption"><p>Visibility from the point</p></div></div></div>
+                            </td>
+                <td><div class="informalfigure"><div class="mediaobject"><img src="../images/cg_visibility03.png"/><div class="caption"><p>Visibility from the segment</p></div></div></div>
+                            </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="CG_Triangulate.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference_sfcgal.html#sfcgal_processing">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="CG_YMonotonePartition.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">CG_Triangulate </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> CG_YMonotonePartition</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

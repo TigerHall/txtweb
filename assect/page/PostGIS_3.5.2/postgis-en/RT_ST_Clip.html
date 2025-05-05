@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_Clip</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="RT_ST_AsTIFF.html" title="ST_AsTIFF"/>
+    <link rel="next" href="RT_ST_ColorMap.html" title="ST_ColorMap"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_Clip</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="RT_ST_AsTIFF.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">11.12. Raster Processing: Map Algebra</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="RT_ST_ColorMap.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="RT_ST_Clip">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_Clip — Returns the raster clipped by the input geometry.  If band number is not specified, all bands are processed. If <code class="varname">crop</code> is not specified or TRUE, the output raster is cropped. If <code class="varname">touched</code> is set to TRUE, then touched pixels are included, otherwise only if the center of the pixel is in the geometry it is included.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">raster <strong class="fsfunc">ST_Clip</strong>(</code>raster  <var class="pdparam">rast</var>, integer[]  <var class="pdparam">nband</var>, geometry  <var class="pdparam">geom</var>, double precision[]  <var class="pdparam">nodataval=NULL</var>, boolean  <var class="pdparam">crop=TRUE</var>, boolean  <var class="pdparam">touched=FALSE</var><code>)</code>;</p>
+          <p><code class="funcdef">raster <strong class="fsfunc">ST_Clip</strong>(</code>raster  <var class="pdparam">rast</var>, integer  <var class="pdparam">nband</var>, geometry  <var class="pdparam">geom</var>, double precision  <var class="pdparam">nodataval</var>, boolean  <var class="pdparam">crop=TRUE</var>, boolean  <var class="pdparam">touched=FALSE</var><code>)</code>;</p>
+          <p><code class="funcdef">raster <strong class="fsfunc">ST_Clip</strong>(</code>raster  <var class="pdparam">rast</var>, integer  <var class="pdparam">nband</var>, geometry  <var class="pdparam">geom</var>, boolean  <var class="pdparam">crop</var>, boolean  <var class="pdparam">touched=FALSE</var><code>)</code>;</p>
+          <p><code class="funcdef">raster <strong class="fsfunc">ST_Clip</strong>(</code>raster  <var class="pdparam">rast</var>, geometry  <var class="pdparam">geom</var>, double precision[]  <var class="pdparam">nodataval=NULL</var>, boolean  <var class="pdparam">crop=TRUE</var>, boolean  <var class="pdparam">touched=FALSE</var><code>)</code>;</p>
+          <p><code class="funcdef">raster <strong class="fsfunc">ST_Clip</strong>(</code>raster  <var class="pdparam">rast</var>, geometry  <var class="pdparam">geom</var>, double precision  <var class="pdparam">nodataval</var>, boolean  <var class="pdparam">crop=TRUE</var>, boolean  <var class="pdparam">touched=FALSE</var><code>)</code>;</p>
+          <p><code class="funcdef">raster <strong class="fsfunc">ST_Clip</strong>(</code>raster  <var class="pdparam">rast</var>, geometry  <var class="pdparam">geom</var>, boolean  <var class="pdparam">crop</var>, boolean  <var class="pdparam">touched=FALSE</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm33142">
+        <h2>Description</h2>
+        <p>
+                        Returns a raster that is clipped by the input geometry <code class="varname">geom</code>. If band index is not specified, all bands are processed.
+                    </p>
+        <p>
+                        Rasters resulting from ST_Clip must have a nodata value assigned for areas clipped, one for each band. If none are provided and the input raster do not have a nodata value defined, nodata values of the resulting raster are set to ST_MinPossibleValue(ST_BandPixelType(rast, band)). When the number of nodata value in the array is smaller than the number of band, the last one in the array is used for the remaining bands. If the number of nodata value is greater than the number of band, the extra nodata values are ignored. All variants accepting an array of nodata values also accept a single value which will be assigned to each band.
+                    </p>
+        <p>
+                        If <code class="varname">crop</code> is not specified, true is assumed meaning the output raster is cropped to the intersection of the <code class="varname">geom</code>and <code class="varname">rast</code> extents. If <code class="varname">crop</code> is set to false, the new raster gets the same extent as <code class="varname">rast</code>.  If <code class="varname">touched</code> is set to true, then all pixels in the <code class="varname">rast</code> that intersect the geometry are selected.
+                    </p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>The default behavior is touched=false, which will only select pixels where the center of the pixel is covered by the geometry.</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p class="enhanced">Enhanced: 3.5.0 - touched argument added.</p>
+        <p class="availability">Availability: 2.0.0 </p>
+        <p class="enhanced">Enhanced: 2.1.0 Rewritten in C</p>
+        <p>
+                        Examples here use Massachusetts aerial data available on MassGIS site <a class="link" href="https://www.mass.gov/info-details/massgis-data-20082009-aerial-imagery" target="_top">MassGIS Aerial Orthos</a>.
+                    </p>
+      </div>
+      <div class="refsection" id="idm33162">
+        <h2>Examples: Comparing selecting all touched vs. not all touched</h2>
+        <pre class="programlisting">SELECT ST_Count(rast) AS count_pixels_in_orig, ST_Count(rast_touched) AS all_touched_pixels, ST_Count(rast_not_touched) AS default_clip
+FROM ST_AsRaster(ST_Letters('R'), scalex =&gt; 1.0, scaley =&gt; -1.0) AS r(rast) 
+    INNER JOIN ST_GeomFromText('LINESTRING(0 1, 5 6, 10 10)') AS g(geom)
+ ON ST_Intersects(r.rast,g.geom)
+ , ST_Clip(r.rast, g.geom, touched =&gt; true) AS rast_touched
+ , ST_Clip(r.rast, g.geom, touched =&gt; false) AS rast_not_touched;
+ 
+ count_pixels_in_orig | all_touched_pixels | default_clip
+----------------------+--------------------+--------------
+                 2605 |                 16 |           10
+(1 row)
+ </pre>
+      </div>
+      <div class="refsection" id="idm33165">
+        <h2>Examples: 1 band clipping (not touched)</h2>
+        <pre class="programlisting">
+-- Clip the first band of an aerial tile by a 20 meter buffer.
+SELECT ST_Clip(rast, 1,
+        ST_Buffer(ST_Centroid(ST_Envelope(rast)),20)
+    ) from aerials.boston
+WHERE rid = 4;
+                    </pre>
+        <pre class="programlisting">
+-- Demonstrate effect of crop on final dimensions of raster
+-- Note how final extent is clipped to that of the geometry
+-- if crop = true
+SELECT ST_XMax(ST_Envelope(ST_Clip(rast, 1, clipper, true))) As xmax_w_trim,
+    ST_XMax(clipper) As xmax_clipper,
+    ST_XMax(ST_Envelope(ST_Clip(rast, 1, clipper, false))) As xmax_wo_trim,
+    ST_XMax(ST_Envelope(rast)) As xmax_rast_orig
+FROM (SELECT rast, ST_Buffer(ST_Centroid(ST_Envelope(rast)),6) As clipper
+    FROM aerials.boston
+WHERE rid = 6) As foo;
+
+   xmax_w_trim    |   xmax_clipper   |   xmax_wo_trim   |  xmax_rast_orig
+------------------+------------------+------------------+------------------
+ 230657.436173996 | 230657.436173996 | 230666.436173996 | 230666.436173996
+                    </pre>
+        <div class="informaltable">
+          <table style="border-collapse: collapse; border-top: 1px solid ; border-bottom: 1px solid ; border-left: 1px solid ; border-right: 1px solid ; ">
+            <colgroup>
+              <col/>
+              <col/>
+            </colgroup>
+            <tbody>
+              <tr>
+                <td style="border-right: 1px solid ; ">
+                                        <p>
+                                            </p><div class="informalfigure"><div class="mediaobject"><img src="../images/st_clip01.png"/><div class="caption"><p>Full raster tile before clipping</p></div></div></div><p>
+                                        </p>
+                                    </td>
+                <td>
+                                        <p>
+                                            </p><div class="informalfigure"><div class="mediaobject"><img src="../images/st_clip02.png"/><div class="caption"><p>After Clipping</p></div></div></div><p>
+                                        </p>
+                                    </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="refsection" id="idm33189">
+        <h2>Examples: 1 band clipping with no crop and add back other bands unchanged</h2>
+        <pre class="programlisting">
+-- Same example as before, but we need to set crop to false to be able to use ST_AddBand
+-- because ST_AddBand requires all bands be the same Width and height
+SELECT ST_AddBand(ST_Clip(rast, 1,
+        ST_Buffer(ST_Centroid(ST_Envelope(rast)),20),false
+    ), ARRAY[ST_Band(rast,2),ST_Band(rast,3)] ) from aerials.boston
+WHERE rid = 6;
+                    </pre>
+        <div class="informaltable">
+          <table style="border-collapse: collapse; border-top: 1px solid ; border-bottom: 1px solid ; border-left: 1px solid ; border-right: 1px solid ; ">
+            <colgroup>
+              <col/>
+              <col/>
+            </colgroup>
+            <tbody>
+              <tr>
+                <td style="border-right: 1px solid ; ">
+                                        <p>
+                                            </p><div class="informalfigure"><div class="mediaobject"><img src="../images/st_clip04.png"/><div class="caption"><p>Full raster tile before clipping</p></div></div></div><p>
+                                        </p>
+                                    </td>
+                <td>
+                                        <p>
+                                            </p><div class="informalfigure"><div class="mediaobject"><img src="../images/st_clip05.png"/><div class="caption"><p>After Clipping - surreal</p></div></div></div><p>
+                                        </p>
+                                    </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="refsection" id="idm33212">
+        <h2>Examples: Clip all bands</h2>
+        <pre class="programlisting">
+-- Clip all bands of an aerial tile by a 20 meter buffer.
+-- Only difference is we don't specify a specific band to clip
+-- so all bands are clipped
+SELECT ST_Clip(rast,
+      ST_Buffer(ST_Centroid(ST_Envelope(rast)), 20),
+      false
+    ) from aerials.boston
+WHERE rid = 4;
+                    </pre>
+        <div class="informaltable">
+          <table style="border-collapse: collapse; border-top: 1px solid ; border-bottom: 1px solid ; border-left: 1px solid ; border-right: 1px solid ; ">
+            <colgroup>
+              <col/>
+              <col/>
+            </colgroup>
+            <tbody>
+              <tr>
+                <td style="border-right: 1px solid ; ">
+                                        <p>
+                                            </p><div class="informalfigure"><div class="mediaobject"><img src="../images/st_clip01.png"/><div class="caption"><p>Full raster tile before clipping</p></div></div></div><p>
+                                        </p>
+                                    </td>
+                <td>
+                                        <p>
+                                            </p><div class="informalfigure"><div class="mediaobject"><img src="../images/st_clip03.png"/><div class="caption"><p>After Clipping</p></div></div></div><p>
+                                        </p>
+                                    </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="refsection" id="idm33235">
+        <h2>See Also</h2>
+        <p>
+                        <a class="xref" href="RT_ST_AddBand.html" title="ST_AddBand">ST_AddBand</a>,
+                        <a class="xref" href="RT_ST_Count.html" title="ST_Count">ST_Count</a>,
+                        <a class="xref" href="RT_ST_MapAlgebra.html" title="ST_MapAlgebra (callback function version)">ST_MapAlgebra (callback function version)</a>,
+                        <a class="xref" href="RT_ST_Intersection.html" title="ST_Intersection">ST_Intersection</a>
+                    </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="RT_ST_AsTIFF.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="RT_reference.html#Raster_Processing_MapAlgebra">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="RT_ST_ColorMap.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_AsTIFF </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_ColorMap</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

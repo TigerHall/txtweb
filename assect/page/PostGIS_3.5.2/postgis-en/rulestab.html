@@ -1,0 +1,512 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>rules table</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="stdaddr.html" title="stdaddr"/>
+    <link rel="next" href="lextab.html" title="lex table"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">rules table</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="stdaddr.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">12.1.3. Address Standardizer Tables</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="lextab.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="rulestab">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>rules table — The rules table contains a set of rules that maps address input sequence tokens to standardized output sequence. A rule is defined as a set of input tokens followed by -1 (terminator) followed by set of output tokens followed by -1 followed by number denoting kind of rule followed by ranking of rule.</p>
+      </div>
+      <div class="refsection" id="idm37359">
+        <h2>Description</h2>
+        <p>A rules table must have at least the following columns, though you are allowed to add more for your own uses. </p>
+        <div class="variablelist">
+          <dl class="variablelist">
+            <dt>
+              <span class="term">
+                <code class="varname">id</code>
+              </span>
+            </dt>
+            <dd>
+              <p>Primary key of table</p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">rule</code>
+              </span>
+            </dt>
+            <dd>
+              <p>text field denoting the rule. Details at <a class="link" href="http://www.pagcgeo.org/docs/html/pagc-12.html#--r-rec--" target="_top">PAGC Address Standardizer Rule records</a>.</p>
+              <p>A rule consists of a set of non-negative integers representing input tokens, terminated by a -1, followed by an equal number of non-negative integers representing postal attributes, terminated by a -1, followed by an integer representing a rule type, followed by an integer representing the rank of the rule. The rules are ranked from 0 (lowest) to 17 (highest).</p>
+              <p>So for example the rule <code class="code">2 0 2 22 3 -1 5 5 6 7 3 -1 2 6</code> maps to sequence of output tokens <span class="emphasis"><em>TYPE NUMBER TYPE DIRECT QUALIF</em></span> to the output sequence <span class="emphasis"><em>STREET STREET SUFTYP SUFDIR QUALIF</em></span>. The rule is an ARC_C rule of rank 6. </p>
+              <p>Numbers for corresponding output tokens are listed in <a class="xref" href="stdaddr.html" title="stdaddr">stdaddr</a>.</p>
+            </dd>
+          </dl>
+        </div>
+      </div>
+      <div class="refsection" id="rule_input_tokens">
+        <h2>Input Tokens</h2>
+        <p>Each rule starts with a set of input tokens followed by a terminator <code class="code">-1</code>. Valid input tokens excerpted from <a class="link" href="http://www.pagcgeo.org/docs/html/pagc-12.html#ss12.2" target="_top">PAGC Input Tokens</a> are as follows:</p>
+        <p>
+          <span class="bold">
+            <strong>Form-Based Input Tokens</strong>
+          </span>
+        </p>
+        <div class="variablelist">
+          <dl class="variablelist">
+            <dt>
+              <span class="term">
+                <code class="varname">AMPERS</code>
+              </span>
+            </dt>
+            <dd>
+              <p>(13). The ampersand (&amp;) is frequently used to abbreviate the word "and".</p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">DASH</code>
+              </span>
+            </dt>
+            <dd>
+              <p>(9). A punctuation character.</p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">DOUBLE</code>
+              </span>
+            </dt>
+            <dd>
+              <p>(21). A sequence of two letters. Often used as identifiers.</p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">FRACT</code>
+              </span>
+            </dt>
+            <dd>
+              <p>(25). Fractions are sometimes used in civic numbers or unit numbers.</p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">MIXED</code>
+              </span>
+            </dt>
+            <dd>
+              <p>(23). An alphanumeric string that contains both letters and digits. Used for identifiers.</p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">NUMBER</code>
+              </span>
+            </dt>
+            <dd>
+              <p>(0). A string of digits.</p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">ORD</code>
+              </span>
+            </dt>
+            <dd>
+              <p>(15). Representations such as First or 1st. Often used in street names.</p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">ORD</code>
+              </span>
+            </dt>
+            <dd>
+              <p>(18). A single letter.</p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">WORD</code>
+              </span>
+            </dt>
+            <dd>
+              <p>(1). A word is a string of letters of arbitrary length. A single letter can be both a SINGLE and a WORD.</p>
+            </dd>
+          </dl>
+        </div>
+        <p>
+          <span class="bold">
+            <strong>Function-based Input Tokens</strong>
+          </span>
+        </p>
+        <div class="variablelist">
+          <dl class="variablelist">
+            <dt>
+              <span class="term">
+                <code class="varname">BOXH</code>
+              </span>
+            </dt>
+            <dd>
+              <p>(14). Words used to denote post office boxes. For example <span class="emphasis"><em>Box</em></span> or <span class="emphasis"><em>PO Box</em></span>.</p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">BUILDH</code>
+              </span>
+            </dt>
+            <dd>
+              <p>(19). Words used to denote buildings or building complexes, usually as a prefix. For example: <span class="emphasis"><em>Tower</em></span> in <span class="emphasis"><em>Tower 7A</em></span>.</p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">BUILDT</code>
+              </span>
+            </dt>
+            <dd>
+              <p>(24). Words and abbreviations used to denote buildings or building complexes, usually as a suffix. For example: <span class="emphasis"><em>Shopping Centre</em></span>.</p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">DIRECT</code>
+              </span>
+            </dt>
+            <dd>
+              <p>(22). Words used to denote directions, for example <span class="emphasis"><em>North</em></span>.</p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">MILE</code>
+              </span>
+            </dt>
+            <dd>
+              <p>(20). Words used to denote milepost addresses.</p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">ROAD</code>
+              </span>
+            </dt>
+            <dd>
+              <p>(6). Words and abbreviations used to denote highways and roads. For example: the <span class="emphasis"><em>Interstate</em></span> in <span class="emphasis"><em>Interstate 5</em></span></p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">RR</code>
+              </span>
+            </dt>
+            <dd>
+              <p>(8). Words and abbreviations used to denote rural routes. <span class="emphasis"><em>RR</em></span>.</p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">TYPE</code>
+              </span>
+            </dt>
+            <dd>
+              <p>(2). Words and abbreviation used to denote street typess. For example: <span class="emphasis"><em>ST</em></span> or <span class="emphasis"><em>AVE</em></span>.</p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">UNITH</code>
+              </span>
+            </dt>
+            <dd>
+              <p>(16). Words and abbreviation used to denote internal subaddresses. For example, <span class="emphasis"><em>APT</em></span> or <span class="emphasis"><em>UNIT</em></span>.</p>
+            </dd>
+          </dl>
+        </div>
+        <p>
+          <span class="bold">
+            <strong>Postal Type Input Tokens</strong>
+          </span>
+        </p>
+        <div class="variablelist">
+          <dl class="variablelist">
+            <dt>
+              <span class="term">
+                <code class="varname">QUINT</code>
+              </span>
+            </dt>
+            <dd>
+              <p>(28). A 5 digit number. Identifies a Zip Code</p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">QUAD</code>
+              </span>
+            </dt>
+            <dd>
+              <p>(29). A 4 digit number. Identifies ZIP4.</p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">PCH</code>
+              </span>
+            </dt>
+            <dd>
+              <p>(27). A 3 character sequence of letter number letter. Identifies an FSA, the first 3 characters of a Canadian postal code.</p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">PCT</code>
+              </span>
+            </dt>
+            <dd>
+              <p>(26). A 3 character sequence of number letter number. Identifies an LDU, the last 3 characters of a Canadian postal code.</p>
+            </dd>
+          </dl>
+        </div>
+        <p>
+          <span class="bold">
+            <strong>Stopwords</strong>
+          </span>
+        </p>
+        <p>STOPWORDS combine with WORDS. In rules a string of multiple WORDs and STOPWORDs will be represented by a single WORD token.</p>
+        <div class="variablelist">
+          <dl class="variablelist">
+            <dt>
+              <span class="term">
+                <code class="varname">STOPWORD</code>
+              </span>
+            </dt>
+            <dd>
+              <p>(7). A word with low lexical significance, that can be omitted in parsing. For example: <span class="emphasis"><em>THE</em></span>.</p>
+            </dd>
+          </dl>
+        </div>
+      </div>
+      <div class="refsection" id="idm37528">
+        <h2>Output Tokens</h2>
+        <p>After the first -1 (terminator), follows the output tokens and their order, followed by a terminator <code class="code">-1</code>.  Numbers for corresponding output tokens are listed in <a class="xref" href="stdaddr.html" title="stdaddr">stdaddr</a>. What are allowed is dependent on kind of rule.  Output tokens valid for each rule type are listed in <a class="xref" href="rulestab.html#rule_types_rank" title="Rule Types and Rank">the section called “Rule Types and Rank”</a>.</p>
+      </div>
+      <div class="refsection" id="rule_types_rank">
+        <h2>Rule Types and Rank</h2>
+        <p>The final part of the rule is the rule type which is denoted by one of the following, followed by a rule rank.  The rules are ranked from 0 (lowest) to 17 (highest).</p>
+        <p>
+          <span class="bold">
+            <strong>
+              <code class="varname">MACRO_C</code>
+            </strong>
+          </span>
+        </p>
+        <p>(token number = "<span class="bold"><strong>0</strong></span>"). The class of rules for parsing MACRO clauses such as <span class="emphasis"><em>PLACE STATE ZIP</em></span></p>
+        <p><span class="bold"><strong><code class="varname">MACRO_C</code> output tokens</strong></span> (excerpted from <a class="link" href="http://www.pagcgeo.org/docs/html/pagc-12.html#--r-typ--" target="_top">http://www.pagcgeo.org/docs/html/pagc-12.html#--r-typ--</a>.</p>
+        <div class="variablelist">
+          <dl class="variablelist">
+            <dt>
+              <span class="term">
+                <code class="varname">CITY</code>
+              </span>
+            </dt>
+            <dd>
+              <p>(token number "10"). Example "Albany"</p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">STATE</code>
+              </span>
+            </dt>
+            <dd>
+              <p>(token number "11"). Example "NY"</p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">NATION</code>
+              </span>
+            </dt>
+            <dd>
+              <p>(token number "12").  This attribute is not used in most reference files. Example "USA"</p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">POSTAL</code>
+              </span>
+            </dt>
+            <dd>
+              <p>(token number "13").  (SADS elements "ZIP CODE" , "PLUS 4" ). This attribute is used for both the US Zip and the Canadian Postal Codes.</p>
+            </dd>
+          </dl>
+        </div>
+        <p>
+          <span class="bold">
+            <strong>
+              <code class="varname">MICRO_C</code>
+            </strong>
+          </span>
+        </p>
+        <p>(token number = "<span class="bold"><strong>1</strong></span>"). The class of rules for parsing full MICRO clauses (such as House, street, sufdir, predir, pretyp, suftype, qualif) (ie ARC_C plus CIVIC_C). These rules are not used in the build phase.</p>
+        <p><span class="bold"><strong><code class="varname">MICRO_C</code> output tokens</strong></span> (excerpted from <a class="link" href="http://www.pagcgeo.org/docs/html/pagc-12.html#--r-typ--" target="_top">http://www.pagcgeo.org/docs/html/pagc-12.html#--r-typ--</a>.</p>
+        <div class="variablelist">
+          <dl class="variablelist">
+            <dt>
+              <span class="term">
+                <code class="varname">HOUSE</code>
+              </span>
+            </dt>
+            <dd>
+              <p>is a text (token number <code class="code">1</code>): This is the street number on a street. Example <span class="emphasis"><em>75</em></span> in <code class="code">75 State Street</code>.</p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">predir</code>
+              </span>
+            </dt>
+            <dd>
+              <p> is text (token number <code class="code">2</code>): STREET NAME PRE-DIRECTIONAL such as North, South, East, West etc.</p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">qual</code>
+              </span>
+            </dt>
+            <dd>
+              <p>is text (token number <code class="code">3</code>): STREET NAME PRE-MODIFIER Example <span class="emphasis"><em>OLD</em></span> in <code class="code">3715 OLD HIGHWAY 99</code>.</p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">pretype</code>
+              </span>
+            </dt>
+            <dd>
+              <p> is text (token number <code class="code">4</code>): STREET PREFIX TYPE</p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">street</code>
+              </span>
+            </dt>
+            <dd>
+              <p>is text (token number <code class="code">5</code>): STREET NAME</p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">suftype</code>
+              </span>
+            </dt>
+            <dd>
+              <p>is text (token number <code class="code">6</code>): STREET POST TYPE e.g. St, Ave, Cir.  A street type following the root street name. Example <span class="emphasis"><em>STREET</em></span> in <code class="code">75 State Street</code>.</p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">sufdir</code>
+              </span>
+            </dt>
+            <dd>
+              <p>is text (token number <code class="code">7</code>): STREET POST-DIRECTIONAL A directional modifier that follows the street name.. Example <span class="emphasis"><em>WEST</em></span> in <code class="code">3715 TENTH AVENUE WEST</code>.</p>
+            </dd>
+          </dl>
+        </div>
+        <p>
+          <span class="bold">
+            <strong>
+              <code class="varname">ARC_C</code>
+            </strong>
+          </span>
+        </p>
+        <p>(token number = "<span class="bold"><strong>2</strong></span>"). The class of rules for parsing MICRO clauses, excluding the HOUSE attribute. As such uses same set of output tokens as MICRO_C minus the HOUSE token.</p>
+        <p>
+          <span class="bold">
+            <strong>
+              <code class="varname">CIVIC_C</code>
+            </strong>
+          </span>
+        </p>
+        <p>(token number = "<span class="bold"><strong>3</strong></span>"). The class of rules for parsing the HOUSE attribute.</p>
+        <p>
+          <span class="bold">
+            <strong>
+              <code class="varname">EXTRA_C</code>
+            </strong>
+          </span>
+        </p>
+        <p>(token number = "<span class="bold"><strong>4</strong></span>"). The class of rules for parsing EXTRA attributes - attributes excluded from geocoding. These rules are not used in the build phase.</p>
+        <p><span class="bold"><strong><code class="varname">EXTRA_C</code> output tokens</strong></span> (excerpted from <a class="link" href="http://www.pagcgeo.org/docs/html/pagc-12.html#--r-typ--" target="_top">http://www.pagcgeo.org/docs/html/pagc-12.html#--r-typ--</a>.</p>
+        <div class="variablelist">
+          <dl class="variablelist">
+            <dt>
+              <span class="term">
+                <code class="varname">BLDNG</code>
+              </span>
+            </dt>
+            <dd>
+              <p>(token number <code class="code">0</code>):  Unparsed building identifiers and types.</p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">BOXH</code>
+              </span>
+            </dt>
+            <dd>
+              <p>(token number <code class="code">14</code>): The <span class="bold"><strong>BOX</strong></span> in <code class="code">BOX 3B</code></p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">BOXT</code>
+              </span>
+            </dt>
+            <dd>
+              <p>(token number <code class="code">15</code>): The <span class="bold"><strong>3B</strong></span> in <code class="code">BOX 3B</code></p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">RR</code>
+              </span>
+            </dt>
+            <dd>
+              <p>(token number <code class="code">8</code>): The <span class="bold"><strong>RR</strong></span> in <code class="code">RR 7</code></p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">UNITH</code>
+              </span>
+            </dt>
+            <dd>
+              <p>(token number <code class="code">16</code>): The <span class="bold"><strong>APT</strong></span> in <code class="code">APT 3B</code></p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">UNITT</code>
+              </span>
+            </dt>
+            <dd>
+              <p>(token number <code class="code">17</code>): The <span class="bold"><strong>3B</strong></span> in <code class="code">APT 3B</code></p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">UNKNWN</code>
+              </span>
+            </dt>
+            <dd>
+              <p>(token number <code class="code">9</code>): An otherwise unclassified output.</p>
+            </dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="stdaddr.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="Extras.html#Address_Standardizer_Tables">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="lextab.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">stdaddr </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> lex table</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>standardize_address</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="parse_address.html" title="parse_address"/>
+    <link rel="next" href="Drop_Indexes_Generate_Script.html" title="Drop_Indexes_Generate_Script"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">standardize_address</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="parse_address.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">12.1.4. Address Standardizer Functions</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="Drop_Indexes_Generate_Script.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="standardize_address">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>standardize_address — Returns an stdaddr form of an input address utilizing lex, gaz, and rule tables.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">stdaddr <strong class="fsfunc">standardize_address</strong>(</code>text  <var class="pdparam">lextab</var>, text  <var class="pdparam">gaztab</var>, text  <var class="pdparam">rultab</var>, text  <var class="pdparam">address</var><code>)</code>;</p>
+          <p><code class="funcdef">stdaddr <strong class="fsfunc">standardize_address</strong>(</code>text  <var class="pdparam">lextab</var>, text  <var class="pdparam">gaztab</var>, text  <var class="pdparam">rultab</var>, text  <var class="pdparam">micro</var>, text  <var class="pdparam">macro</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm37936">
+        <h2>Description</h2>
+        <p>Returns an <a class="xref" href="stdaddr.html" title="stdaddr">stdaddr</a> form of an input address utilizing <a class="xref" href="lextab.html" title="lex table">lex table</a> table name, <a class="xref" href="gaztab.html" title="gaz table">gaz table</a>, and <a class="xref" href="rulestab.html" title="rules table">rules table</a> table names and an address.</p>
+        <p>Variant 1: Takes an address as a single line.</p>
+        <p>Variant 2: Takes an address as 2 parts.  A <code class="varname">micro</code> consisting of standard first line of postal address e.g. <code class="code">house_num street</code>, and a macro consisting of standard postal second line of an address e.g <code class="code">city, state postal_code country</code>.</p>
+        <p class="availability">Availability: 2.2.0</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method needs address_standardizer extension.
+        </p>
+      </div>
+      <div class="refsection" id="idm37953">
+        <h2>Examples</h2>
+        <p>Using address_standardizer_data_us extension</p>
+        <pre class="programlisting">CREATE EXTENSION address_standardizer_data_us; -- only needs to be done once</pre>
+        <p>Variant 1: Single line address.  This doesn't work well with non-US addresses</p>
+        <pre class="programlisting">SELECT house_num, name, suftype, city, country, state, unit  FROM standardize_address('us_lex',
+			   'us_gaz', 'us_rules', 'One Devonshire Place, PH 301, Boston, MA 02109');</pre>
+        <pre class="screen">house_num |    name    | suftype |  city  | country |     state     |      unit
+----------+------------+---------+--------+---------+---------------+-----------------
+1         | DEVONSHIRE | PLACE   | BOSTON | USA     | MASSACHUSETTS | # PENTHOUSE 301</pre>
+        <p>Using tables packaged with tiger geocoder. This example only works if you installed <code class="varname">postgis_tiger_geocoder</code>.</p>
+        <pre class="programlisting">SELECT *  FROM standardize_address('tiger.pagc_lex',
+         'tiger.pagc_gaz', 'tiger.pagc_rules', 'One Devonshire Place, PH 301, Boston, MA 02109-1234');</pre>
+        <p>Make easier to read we'll dump output using hstore extension CREATE EXTENSION hstore; you need to install</p>
+        <pre class="programlisting">SELECT (each(hstore(p))).*
+ FROM standardize_address('tiger.pagc_lex', 'tiger.pagc_gaz',
+   'tiger.pagc_rules', 'One Devonshire Place, PH 301, Boston, MA 02109') As p;</pre>
+        <pre class="screen">    key     |      value
+------------+-----------------
+ box        |
+ city       | BOSTON
+ name       | DEVONSHIRE
+ qual       |
+ unit       | # PENTHOUSE 301
+ extra      |
+ state      | MA
+ predir     |
+ sufdir     |
+ country    | USA
+ pretype    |
+ suftype    | PL
+ building   |
+ postcode   | 02109
+ house_num  | 1
+ ruralroute |
+(16 rows)
+			</pre>
+        <p>Variant 2: As a two part Address</p>
+        <pre class="programlisting">SELECT (each(hstore(p))).*
+ FROM standardize_address('tiger.pagc_lex', 'tiger.pagc_gaz',
+   'tiger.pagc_rules', 'One Devonshire Place, PH 301', 'Boston, MA 02109, US') As p;</pre>
+        <pre class="screen">    key     |      value
+------------+-----------------
+ box        |
+ city       | BOSTON
+ name       | DEVONSHIRE
+ qual       |
+ unit       | # PENTHOUSE 301
+ extra      |
+ state      | MA
+ predir     |
+ sufdir     |
+ country    | USA
+ pretype    |
+ suftype    | PL
+ building   |
+ postcode   | 02109
+ house_num  | 1
+ ruralroute |
+(16 rows)</pre>
+      </div>
+      <div class="refsection" id="idm37969">
+        <h2>See Also</h2>
+        <p><a class="xref" href="stdaddr.html" title="stdaddr">stdaddr</a>, <a class="xref" href="rulestab.html" title="rules table">rules table</a>, <a class="xref" href="lextab.html" title="lex table">lex table</a>, <a class="xref" href="gaztab.html" title="gaz table">gaz table</a>, <a class="xref" href="Pagc_Normalize_Address.html" title="Pagc_Normalize_Address">Pagc_Normalize_Address</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="parse_address.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="Extras.html#Address_Standardizer_Functions">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="Drop_Indexes_Generate_Script.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">parse_address </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> Drop_Indexes_Generate_Script</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

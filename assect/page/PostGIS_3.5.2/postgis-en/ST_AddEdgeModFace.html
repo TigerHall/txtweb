@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_AddEdgeModFace</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_AddEdgeNewFaces.html" title="ST_AddEdgeNewFaces"/>
+    <link rel="next" href="ST_RemEdgeNewFace.html" title="ST_RemEdgeNewFace"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_AddEdgeModFace</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_AddEdgeNewFaces.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">9.6. Topology Editors</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_RemEdgeNewFace.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_AddEdgeModFace">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_AddEdgeModFace — Add a new edge and, if in doing so it splits a face, modify the original face and add a new face.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">integer <strong class="fsfunc">ST_AddEdgeModFace</strong>(</code>varchar  <var class="pdparam">atopology</var>, integer  <var class="pdparam">anode</var>, integer  <var class="pdparam">anothernode</var>, geometry  <var class="pdparam">acurve</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm24696">
+        <h2>Description</h2>
+        <p>
+Add a new edge and, if doing so splits a face, modify the original
+face and add a new one.
+                </p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>
+If possible, the new face will be created on left side of the new edge.
+This will not be possible if the face on the left side will need to
+be the Universe face (unbounded).
+</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p>
+Returns the id of the newly added edge.
+		</p>
+        <p>
+Updates all existing joined edges and relationships accordingly.
+		</p>
+        <p>If any arguments are null, the given nodes are unknown (must already exist in the <code class="varname">node</code> table of the topology schema) ,
+                    the <code class="varname">acurve</code> is not a <code class="varname">LINESTRING</code>, the <code class="varname">anode</code> and <code class="varname">anothernode</code> are not the start
+                    and endpoints of <code class="varname">acurve</code> then an error is thrown.</p>
+        <p>If the spatial reference system (srid) of the <code class="varname">acurve</code> geometry is not the same as the topology an exception is thrown.</p>
+        <p class="availability">Availability: 2.0 </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method implements the SQL/MM specification.
+         SQL-MM: Topo-Geo and Topo-Net 3: Routine Details:  X.3.13</p>
+      </div>
+      <div class="refsection" id="idm24717">
+        <h2>Examples</h2>
+        <p/>
+      </div>
+      <div class="refsection" id="idm24720">
+        <h2>See Also</h2>
+        <p>
+          <a class="xref" href="ST_RemEdgeModFace.html" title="ST_RemEdgeModFace">ST_RemEdgeModFace</a>
+        </p>
+        <p>
+          <a class="xref" href="ST_AddEdgeNewFaces.html" title="ST_AddEdgeNewFaces">ST_AddEdgeNewFaces</a>
+        </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_AddEdgeNewFaces.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="Topology.html#Topology_Editing">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_RemEdgeNewFace.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_AddEdgeNewFaces </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_RemEdgeNewFace</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

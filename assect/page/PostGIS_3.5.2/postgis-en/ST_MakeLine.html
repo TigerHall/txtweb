@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_MakeLine</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_MakeEnvelope.html" title="ST_MakeEnvelope"/>
+    <link rel="next" href="ST_MakePoint.html" title="ST_MakePoint"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_MakeLine</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_MakeEnvelope.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.3. Geometry Constructors</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_MakePoint.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_MakeLine">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_MakeLine — Creates a LineString from Point, MultiPoint, or LineString geometries.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_MakeLine</strong>(</code>geometry <var class="pdparam">geom1</var>, geometry <var class="pdparam">geom2</var><code>)</code>;</p>
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_MakeLine</strong>(</code>geometry[] <var class="pdparam">geoms_array</var><code>)</code>;</p>
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_MakeLine</strong>(</code>geometry set <var class="pdparam">geoms</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm3744">
+        <h2>Description</h2>
+        <p>Creates a LineString containing the points of Point, MultiPoint, or LineString geometries.
+		Other geometry types cause an error.
+		</p>
+        <p><span class="bold"><strong>Variant 1:</strong></span> accepts two input geometries</p>
+        <p><span class="bold"><strong>Variant 2:</strong></span> accepts an array of geometries</p>
+        <p><span class="bold"><strong>Variant 3:</strong></span> aggregate function accepting a rowset of geometries.
+		To ensure the order of the input geometries use <code class="varname">ORDER BY</code> in the function call,
+		or a subquery with an <code class="varname">ORDER BY</code> clause.</p>
+        <p>
+		Repeated nodes at the beginning of input LineStrings are collapsed to a single point.
+		Repeated points in Point and MultiPoint inputs are not collapsed.
+		<a class="xref" href="ST_RemoveRepeatedPoints.html" title="ST_RemoveRepeatedPoints">ST_RemoveRepeatedPoints</a> can be used to collapse repeated points from the output LineString.
+		</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports 3d and will not drop the z-index.
+        </p>
+        <p class="availability">Availability: 2.3.0 -  Support for MultiPoint input elements was introduced</p>
+        <p class="availability">Availability: 2.0.0 -  Support for LineString input elements was introduced</p>
+        <p class="availability">Availability: 1.4.0 -  ST_MakeLine(geomarray) was introduced. ST_MakeLine aggregate functions was enhanced to handle more points faster.</p>
+      </div>
+      <div class="refsection" id="idm3764">
+        <h2>Examples: Two-input variant</h2>
+        <p>Create a line composed of two points.</p>
+        <pre class="programlisting">
+SELECT ST_AsText( ST_MakeLine(ST_Point(1,2), ST_Point(3,4)) );
+
+	  st_astext
+---------------------
+ LINESTRING(1 2,3 4)
+</pre>
+        <p>Create a 3D line from two 3D points.</p>
+        <pre class="programlisting">
+SELECT ST_AsEWKT( ST_MakeLine(ST_MakePoint(1,2,3), ST_MakePoint(3,4,5) ));
+
+		st_asewkt
+-------------------------
+ LINESTRING(1 2 3,3 4 5)
+</pre>
+        <p>Create a line from two disjoint LineStrings.</p>
+        <pre class="programlisting">
+ select ST_AsText( ST_MakeLine( 'LINESTRING(0 0, 1 1)', 'LINESTRING(2 2, 3 3)' ) );
+
+          st_astext
+-----------------------------
+ LINESTRING(0 0,1 1,2 2,3 3)
+</pre>
+      </div>
+      <div class="refsection" id="idm3772">
+        <h2>Examples: Array variant</h2>
+        <p>Create a line from an array formed by a subquery with ordering.</p>
+        <pre class="programlisting">
+SELECT ST_MakeLine( ARRAY( SELECT ST_Centroid(geom) FROM visit_locations ORDER BY visit_time) );
+</pre>
+        <p>Create a 3D line from an array of 3D points</p>
+        <pre class="programlisting">
+SELECT ST_AsEWKT( ST_MakeLine(
+          ARRAY[ ST_MakePoint(1,2,3), ST_MakePoint(3,4,5), ST_MakePoint(6,6,6) ]  ));
+
+		st_asewkt
+-------------------------
+LINESTRING(1 2 3,3 4 5,6 6 6)
+</pre>
+      </div>
+      <div class="refsection" id="idm3778">
+        <h2>Examples: Aggregate variant</h2>
+        <p>This example queries time-based sequences of GPS points from a set of tracks
+		and creates one record for each track.
+		The result geometries are LineStrings composed of the GPS track points in the order of travel.</p>
+        <p>Using aggregate <code class="varname">ORDER BY</code> provides a correctly-ordered LineString.</p>
+        <pre class="programlisting">
+SELECT gps.track_id, ST_MakeLine(gps.geom ORDER BY gps_time) As geom
+	FROM gps_points As gps
+	GROUP BY track_id;</pre>
+        <p>Prior to PostgreSQL 9, ordering in a subquery can be used.
+However, sometimes the query plan may not respect the order of the subquery.</p>
+        <pre class="programlisting">
+SELECT gps.track_id, ST_MakeLine(gps.geom) As geom
+	FROM ( SELECT track_id, gps_time, geom
+			FROM gps_points ORDER BY track_id, gps_time ) As gps
+	GROUP BY track_id;</pre>
+      </div>
+      <div class="refsection" id="idm3786">
+        <h2>See Also</h2>
+        <p><a class="xref" href="ST_RemoveRepeatedPoints.html" title="ST_RemoveRepeatedPoints">ST_RemoveRepeatedPoints</a>,
+            <a class="xref" href="ST_AsEWKT.html" title="ST_AsEWKT">ST_AsEWKT</a>,
+            <a class="xref" href="ST_AsText.html" title="ST_AsText">ST_AsText</a>,
+            <a class="xref" href="ST_GeomFromText.html" title="ST_GeomFromText">ST_GeomFromText</a>,
+            <a class="xref" href="ST_MakePoint.html" title="ST_MakePoint">ST_MakePoint</a>,
+            <a class="xref" href="ST_Point.html" title="ST_Point">ST_Point</a>
+            </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_MakeEnvelope.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Geometry_Constructors">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_MakePoint.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_MakeEnvelope </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_MakePoint</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

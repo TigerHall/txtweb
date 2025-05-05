@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_MinimumBoundingCircle</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_LargestEmptyCircle.html" title="ST_LargestEmptyCircle"/>
+    <link rel="next" href="ST_MinimumBoundingRadius.html" title="ST_MinimumBoundingRadius"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_MinimumBoundingCircle</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_LargestEmptyCircle.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.14. Geometry Processing</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_MinimumBoundingRadius.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_MinimumBoundingCircle">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_MinimumBoundingCircle — Returns the smallest circle polygon that contains a geometry.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_MinimumBoundingCircle</strong>(</code>geometry  <var class="pdparam">geomA</var>, integer  <var class="pdparam">num_segs_per_qt_circ=48</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm17202">
+        <h2>Description</h2>
+        <p>Returns the smallest circle polygon that contains a geometry. </p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>The bounding circle is approximated by a polygon with a default of 48 segments per quarter circle.
+            Because the polygon is an approximation of the minimum bounding circle, some points in the input geometry may not be contained within the polygon.
+            The approximation can be improved by increasing the number of segments.
+            For applications where an approximation is not suitable <a class="xref" href="ST_MinimumBoundingRadius.html" title="ST_MinimumBoundingRadius">ST_MinimumBoundingRadius</a> may be used.</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p>Use with <a class="xref" href="ST_Collect.html" title="ST_Collect">ST_Collect</a> to get the minimum bounding circle of a set of geometries.</p>
+        <p>To compute two points lying on the minimum circle (the "maximum diameter") use <a class="xref" href="ST_LongestLine.html" title="ST_LongestLine">ST_LongestLine</a>.
+        </p>
+        <p>The ratio of the area of a polygon divided by the area of its Minimum Bounding Circle
+        is referred to as the <span class="emphasis"><em>Reock compactness score</em></span>.</p>
+        <p>Performed by the GEOS module.</p>
+        <p class="availability">Availability: 1.4.0</p>
+      </div>
+      <div class="refsection" id="idm17216">
+        <h2>Examples</h2>
+        <pre class="programlisting">SELECT d.disease_type,
+    ST_MinimumBoundingCircle(ST_Collect(d.geom)) As geom
+    FROM disease_obs As d
+    GROUP BY d.disease_type;
+</pre>
+        <div class="informalfigure">
+          <div class="mediaobject">
+            <img src="../images/st_minimumboundingcircle01.png"/>
+            <div class="caption">
+              <p>Minimum bounding circle of a point and linestring.  Using 8 segs to approximate a quarter circle</p>
+            </div>
+          </div>
+        </div>
+        <pre class="programlisting">
+SELECT ST_AsText(ST_MinimumBoundingCircle(
+        ST_Collect(
+            ST_GeomFromText('LINESTRING(55 75,125 150)'),
+                ST_Point(20, 80)), 8
+                )) As wktmbc;
+wktmbc
+-----------
+POLYGON((135.59714732062 115,134.384753327498 102.690357210921,130.79416296937 90.8537670908995,124.963360620072 79.9451031602111,117.116420743937 70.3835792560632,107.554896839789 62.5366393799277,96.6462329091006 56.70583703063,84.8096427890789 53.115246672502,72.5000000000001 51.9028526793802,60.1903572109213 53.1152466725019,48.3537670908996 56.7058370306299,37.4451031602112 62.5366393799276,27.8835792560632 70.383579256063,20.0366393799278 79.9451031602109,14.20583703063 90.8537670908993,10.615246672502 102.690357210921,9.40285267938019 115,10.6152466725019 127.309642789079,14.2058370306299 139.1462329091,20.0366393799275 150.054896839789,27.883579256063 159.616420743937,
+37.4451031602108 167.463360620072,48.3537670908992 173.29416296937,60.190357210921 176.884753327498,
+72.4999999999998 178.09714732062,84.8096427890786 176.884753327498,96.6462329091003 173.29416296937,107.554896839789 167.463360620072,
+117.116420743937 159.616420743937,124.963360620072 150.054896839789,130.79416296937 139.146232909101,134.384753327498 127.309642789079,135.59714732062 115))
+                </pre>
+      </div>
+      <div class="refsection" id="idm17226">
+        <h2>See Also</h2>
+        <p><a class="xref" href="ST_Collect.html" title="ST_Collect">ST_Collect</a>, <a class="xref" href="ST_MinimumBoundingRadius.html" title="ST_MinimumBoundingRadius">ST_MinimumBoundingRadius</a>, <a class="xref" href="ST_LargestEmptyCircle.html" title="ST_LargestEmptyCircle">ST_LargestEmptyCircle</a>, <a class="xref" href="ST_LongestLine.html" title="ST_LongestLine">ST_LongestLine</a> </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_LargestEmptyCircle.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Geometry_Processing">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_MinimumBoundingRadius.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_LargestEmptyCircle </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_MinimumBoundingRadius</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

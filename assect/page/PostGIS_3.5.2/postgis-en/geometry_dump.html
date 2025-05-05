@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>geometry_dump</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="geometry.html" title="geometry"/>
+    <link rel="next" href="geography.html" title="geography"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">geometry_dump</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="geometry.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.1. PostGIS Geometry/Geography/Box Data Types</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="geography.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="geometry_dump">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>geometry_dump — A composite type used to describe the parts of complex geometry.</p>
+      </div>
+      <div class="refsection" id="idm3121">
+        <h2>Description</h2>
+        <p><code class="varname">geometry_dump</code> is a
+		<a class="link" href="https://www.postgresql.org/docs/current/rowtypes.html" target="_top">composite data type</a>
+		containing the fields:</p>
+        <div class="itemizedlist">
+          <ul class="itemizedlist" style="list-style-type: disc; ">
+            <li class="listitem">
+              <p><code class="varname">geom</code> - a geometry representing a component of the dumped geometry.
+                The geometry type depends on the originating function.</p>
+            </li>
+            <li class="listitem">
+              <p><code class="varname">path[]</code> - an integer array
+			that defines the navigation path within the dumped geometry to the <code class="varname">geom</code> component.
+			The path array is 1-based (i.e. <code class="varname">path[1]</code> is the first element.)</p>
+            </li>
+          </ul>
+        </div>
+        <p>
+		It is used by the <code class="varname">ST_Dump*</code> family of functions as an output type to explode a complex geometry into its
+		constituent parts.</p>
+      </div>
+      <div class="refsection" id="idm3137">
+        <h2>See Also</h2>
+        <p><a class="xref" href="PostGIS_Special_Functions_Index.html#PostGIS_Geometry_DumpFunctions" title="13.6. PostGIS Geometry / Geography / Raster Dump Functions">Section 13.6, “PostGIS Geometry / Geography / Raster Dump Functions”</a> </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="geometry.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#PostGIS_Types">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="geography.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">geometry </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> geography</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

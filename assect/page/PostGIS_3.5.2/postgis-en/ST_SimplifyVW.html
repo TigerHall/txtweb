@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_SimplifyVW</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_SimplifyPolygonHull.html" title="ST_SimplifyPolygonHull"/>
+    <link rel="next" href="ST_SetEffectiveArea.html" title="ST_SetEffectiveArea"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_SimplifyVW</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_SimplifyPolygonHull.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.14. Geometry Processing</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_SetEffectiveArea.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_SimplifyVW">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_SimplifyVW — Returns a simplified representation of a geometry, using the Visvalingam-Whyatt algorithm</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_SimplifyVW</strong>(</code>geometry <var class="pdparam">geom</var>, float <var class="pdparam">tolerance</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm17860">
+        <h2>Description</h2>
+        <p> Returns a simplified representation of a geometry using the 
+        <a class="link" href="https://en.wikipedia.org/wiki/Visvalingam%E2%80%93Whyatt_algorithm" target="_top">Visvalingam-Whyatt algorithm</a>.
+            The simplification <code class="varname">tolerance</code> is an area value, in the units of the input SRS.
+            Simplification removes vertices which form "corners" with area less than the tolerance.
+            The result may not be valid even if the input is.
+            </p>
+        <p>
+            The function can be called with any kind of geometry (including GeometryCollections), 
+            but only line and polygon elements are simplified.
+            Endpoints of linear geometry are preserved.
+            </p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>The returned geometry may lose its simplicity (see <a class="xref" href="ST_IsSimple.html" title="ST_IsSimple">ST_IsSimple</a>), 
+         topology may not be preserved, and polygonal results may be invalid (see <a class="xref" href="ST_IsValid.html" title="ST_IsValid">ST_IsValid</a>).  
+         Use <a class="xref" href="ST_SimplifyPreserveTopology.html" title="ST_SimplifyPreserveTopology">ST_SimplifyPreserveTopology</a> to preserve topology and ensure validity.
+         <a class="xref" href="ST_CoverageSimplify.html" title="ST_CoverageSimplify">ST_CoverageSimplify</a> also preserves topology and validity.
+         </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>This function does not preserve boundaries shared between polygons.  Use <a class="xref" href="ST_CoverageSimplify.html" title="ST_CoverageSimplify">ST_CoverageSimplify</a> if this is required.</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>This function handles 3D and the third dimension will affect the result.</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p class="availability">Availability: 2.2.0</p>
+      </div>
+      <div class="refsection" id="idm17878">
+        <h2>Examples</h2>
+        <p>A LineString is simplified with a minimum-area tolerance of 30.</p>
+        <pre class="programlisting">
+SELECT ST_AsText(ST_SimplifyVW(geom,30)) simplified
+  FROM (SELECT 'LINESTRING(5 2, 3 8, 6 20, 7 25, 10 10)'::geometry AS geom) AS t;
+
+ simplified
+------------------------------
+LINESTRING(5 2,7 25,10 10)
+</pre>
+        <p>Simplifying a line.</p>
+        <div class="informalfigure">
+          <div class="mediaobject">
+            <img src="../images/st_simplifyvw01.png"/>
+          </div>
+        </div>
+        <pre class="programlisting">SELECT ST_SimplifyVW(
+  'LINESTRING (10 10, 50 40, 30 70, 50 60, 70 80, 50 110, 100 100, 90 140, 100 180, 150 170, 170 140, 190 90, 180 40, 110 40, 150 20)',
+    1600);
+</pre>
+        <p>Simplifying a polygon.</p>
+        <div class="informalfigure">
+          <div class="mediaobject">
+            <img src="../images/st_simplifyvw02.png"/>
+          </div>
+        </div>
+        <pre class="programlisting">SELECT ST_SimplifyVW(
+  'MULTIPOLYGON (((90 110, 80 180, 50 160, 10 170, 10 140, 20 110, 90 110)), ((40 80, 100 100, 120 160, 170 180, 190 70, 140 10, 110 40, 60 40, 40 80), (180 70, 170 110, 142.5 128.5, 128.5 77.5, 90 60, 180 70)))',
+    40);
+</pre>
+      </div>
+      <div class="refsection" id="idm17894">
+        <h2>See Also</h2>
+        <p><a class="xref" href="ST_SetEffectiveArea.html" title="ST_SetEffectiveArea">ST_SetEffectiveArea</a>, 
+            <a class="xref" href="ST_Simplify.html" title="ST_Simplify">ST_Simplify</a>, 
+            <a class="xref" href="ST_SimplifyPreserveTopology.html" title="ST_SimplifyPreserveTopology">ST_SimplifyPreserveTopology</a>, 
+            <a class="xref" href="ST_CoverageSimplify.html" title="ST_CoverageSimplify">ST_CoverageSimplify</a>,
+            Topology <a class="xref" href="TP_ST_Simplify.html" title="ST_Simplify">ST_Simplify</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_SimplifyPolygonHull.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Geometry_Processing">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_SetEffectiveArea.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_SimplifyPolygonHull </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_SetEffectiveArea</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

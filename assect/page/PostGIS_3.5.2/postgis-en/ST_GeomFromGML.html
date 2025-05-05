@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_GeomFromGML</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_GeomFromGeoHash.html" title="ST_GeomFromGeoHash"/>
+    <link rel="next" href="ST_GeomFromGeoJSON.html" title="ST_GeomFromGeoJSON"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_GeomFromGML</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_GeomFromGeoHash.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.8.3. Other Formats</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_GeomFromGeoJSON.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_GeomFromGML">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_GeomFromGML — Takes as input GML representation of geometry and outputs a PostGIS geometry object</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_GeomFromGML</strong>(</code>text  <var class="pdparam">geomgml</var><code>)</code>;</p>
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_GeomFromGML</strong>(</code>text  <var class="pdparam">geomgml</var>, integer  <var class="pdparam">srid</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm9823">
+        <h2>Description</h2>
+        <p>Constructs a PostGIS ST_Geometry object from the OGC GML representation.</p>
+        <p>ST_GeomFromGML works only for GML Geometry fragments. It throws an error if you try to use it on a whole GML document.</p>
+        <p>
+			OGC GML versions supported:
+			</p>
+        <div class="itemizedlist">
+          <ul class="itemizedlist" style="list-style-type: disc; ">
+            <li class="listitem">
+              <p>GML 3.2.1 Namespace</p>
+            </li>
+            <li class="listitem">
+              <p>GML 3.1.1 Simple Features profile SF-2 (with GML 3.1.0 and 3.0.0 backward compatibility)</p>
+            </li>
+            <li class="listitem">
+              <p>GML 2.1.2</p>
+            </li>
+          </ul>
+        </div>
+        <p>
+			OGC GML standards, cf: <a class="link" href="http://www.opengeospatial.org/standards/gml" target="_top">http://www.opengeospatial.org/standards/gml</a>:
+		</p>
+        <p class="availability">Availability: 1.5, requires libxml2 1.6+</p>
+        <p class="enhanced">Enhanced: 2.0.0 support for Polyhedral surfaces and TIN was introduced.</p>
+        <p class="enhanced">Enhanced: 2.0.0 default srid optional parameter added.</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports 3d and will not drop the z-index.
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports Polyhedral surfaces.
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports Triangles and Triangulated Irregular Network Surfaces (TIN).
+        </p>
+        <p>GML allow mixed dimensions (2D and 3D inside the same MultiGeometry for instance). As PostGIS geometries don't, ST_GeomFromGML convert the whole geometry to 2D if a missing Z dimension is found once.</p>
+        <p>GML support mixed SRS inside the same MultiGeometry. As PostGIS geometries don't, ST_GeomFromGML, in this case, reproject all subgeometries to the SRS root node. If no srsName attribute available for the GML root node, the function throw an error.</p>
+        <p>ST_GeomFromGML function is not pedantic about an explicit GML namespace. You could avoid to mention it explicitly for common usages. But you need it if you want to use XLink feature inside GML.</p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>ST_GeomFromGML function not support SQL/MM curves geometries.</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="refsection" id="idm9856">
+        <h2>Examples - A single geometry with srsName</h2>
+        <pre class="programlisting">
+SELECT ST_GeomFromGML($$
+    &lt;gml:LineString xmlns:gml="http://www.opengis.net/gml"
+			srsName="EPSG:4269"&gt;
+        &lt;gml:coordinates&gt;
+            -71.16028,42.258729 -71.160837,42.259112 -71.161143,42.25932
+        &lt;/gml:coordinates&gt;
+    &lt;/gml:LineString&gt;
+$$);
+
+		</pre>
+      </div>
+      <div class="refsection" id="idm9859">
+        <h2>Examples - XLink usage</h2>
+        <pre class="programlisting">
+SELECT ST_GeomFromGML($$
+    &lt;gml:LineString xmlns:gml="http://www.opengis.net/gml"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            srsName="urn:ogc:def:crs:EPSG::4269"&gt;
+        &lt;gml:pointProperty&gt;
+            &lt;gml:Point gml:id="p1"&gt;&lt;gml:pos&gt;42.258729 -71.16028&lt;/gml:pos&gt;&lt;/gml:Point&gt;
+        &lt;/gml:pointProperty&gt;
+        &lt;gml:pos&gt;42.259112 -71.160837&lt;/gml:pos&gt;
+        &lt;gml:pointProperty&gt;
+            &lt;gml:Point xlink:type="simple" xlink:href="#p1"/&gt;
+        &lt;/gml:pointProperty&gt;
+    &lt;/gml:LineString&gt;
+$$);
+
+		</pre>
+      </div>
+      <div class="refsection" id="idm9862">
+        <h2>Examples - Polyhedral Surface</h2>
+        <pre class="programlisting">
+SELECT ST_AsEWKT(ST_GeomFromGML('
+&lt;gml:PolyhedralSurface xmlns:gml="http://www.opengis.net/gml"&gt;
+&lt;gml:polygonPatches&gt;
+  &lt;gml:PolygonPatch&gt;
+    &lt;gml:exterior&gt;
+      &lt;gml:LinearRing&gt;&lt;gml:posList srsDimension="3"&gt;0 0 0 0 0 1 0 1 1 0 1 0 0 0 0&lt;/gml:posList&gt;&lt;/gml:LinearRing&gt;
+    &lt;/gml:exterior&gt;
+  &lt;/gml:PolygonPatch&gt;
+  &lt;gml:PolygonPatch&gt;
+    &lt;gml:exterior&gt;
+	&lt;gml:LinearRing&gt;&lt;gml:posList srsDimension="3"&gt;0 0 0 0 1 0 1 1 0 1 0 0 0 0 0&lt;/gml:posList&gt;&lt;/gml:LinearRing&gt;
+    &lt;/gml:exterior&gt;
+  &lt;/gml:PolygonPatch&gt;
+  &lt;gml:PolygonPatch&gt;
+    &lt;gml:exterior&gt;
+	&lt;gml:LinearRing&gt;&lt;gml:posList srsDimension="3"&gt;0 0 0 1 0 0 1 0 1 0 0 1 0 0 0&lt;/gml:posList&gt;&lt;/gml:LinearRing&gt;
+    &lt;/gml:exterior&gt;
+  &lt;/gml:PolygonPatch&gt;
+  &lt;gml:PolygonPatch&gt;
+    &lt;gml:exterior&gt;
+	&lt;gml:LinearRing&gt;&lt;gml:posList srsDimension="3"&gt;1 1 0 1 1 1 1 0 1 1 0 0 1 1 0&lt;/gml:posList&gt;&lt;/gml:LinearRing&gt;
+    &lt;/gml:exterior&gt;
+  &lt;/gml:PolygonPatch&gt;
+  &lt;gml:PolygonPatch&gt;
+    &lt;gml:exterior&gt;
+	&lt;gml:LinearRing&gt;&lt;gml:posList srsDimension="3"&gt;0 1 0 0 1 1 1 1 1 1 1 0 0 1 0&lt;/gml:posList&gt;&lt;/gml:LinearRing&gt;
+    &lt;/gml:exterior&gt;
+  &lt;/gml:PolygonPatch&gt;
+  &lt;gml:PolygonPatch&gt;
+    &lt;gml:exterior&gt;
+	&lt;gml:LinearRing&gt;&lt;gml:posList srsDimension="3"&gt;0 0 1 1 0 1 1 1 1 0 1 1 0 0 1&lt;/gml:posList&gt;&lt;/gml:LinearRing&gt;
+    &lt;/gml:exterior&gt;
+  &lt;/gml:PolygonPatch&gt;
+&lt;/gml:polygonPatches&gt;
+&lt;/gml:PolyhedralSurface&gt;'));
+
+-- result --
+ POLYHEDRALSURFACE(((0 0 0,0 0 1,0 1 1,0 1 0,0 0 0)),
+ ((0 0 0,0 1 0,1 1 0,1 0 0,0 0 0)),
+ ((0 0 0,1 0 0,1 0 1,0 0 1,0 0 0)),
+ ((1 1 0,1 1 1,1 0 1,1 0 0,1 1 0)),
+ ((0 1 0,0 1 1,1 1 1,1 1 0,0 1 0)),
+ ((0 0 1,1 0 1,1 1 1,0 1 1,0 0 1)))
+		</pre>
+      </div>
+      <div class="refsection" id="idm9865">
+        <h2>See Also</h2>
+        <p><a class="xref" href="postgis_installation.html#installation_configuration" title="2.2.3. Build configuration">Section 2.2.3, “Build configuration”</a>, <a class="xref" href="ST_AsGML.html" title="ST_AsGML">ST_AsGML</a>, <a class="xref" href="ST_GMLToSQL.html" title="ST_GMLToSQL">ST_GMLToSQL</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_GeomFromGeoHash.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#idm9736">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_GeomFromGeoJSON.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_GeomFromGeoHash </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_GeomFromGeoJSON</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

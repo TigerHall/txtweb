@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_AsLatLonText</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_AsKML.html" title="ST_AsKML"/>
+    <link rel="next" href="ST_AsMARC21.html" title="ST_AsMARC21"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_AsLatLonText</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_AsKML.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.9.3. Other Formats</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_AsMARC21.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_AsLatLonText">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_AsLatLonText — Return the Degrees, Minutes, Seconds representation of the given point.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">text <strong class="fsfunc">ST_AsLatLonText</strong>(</code>geometry  <var class="pdparam">pt</var>, text  <var class="pdparam">format=''</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm10948">
+        <h2>Description</h2>
+        <p>Returns the Degrees, Minutes, Seconds representation of the point.</p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>It is assumed the point is in a lat/lon projection.  The X (lon) and Y (lat) coordinates are normalized in the output
+				to the "normal" range (-180 to +180 for lon, -90 to +90 for lat).</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p>
+					The text parameter is a format string containing the format for the resulting text, similar to a date format string.  Valid tokens
+					are "D" for degrees, "M" for minutes, "S" for seconds, and "C" for cardinal direction (NSEW).  DMS tokens may be repeated to indicate
+					desired width and precision ("SSS.SSSS" means "  1.0023").
+				</p>
+        <p>
+					"M", "S", and "C" are optional.  If "C" is omitted, degrees are
+					shown with a "-" sign if south or west.  If "S" is omitted, minutes will be shown as decimal with as many digits of precision
+					as you specify.  If "M" is also omitted, degrees are shown as decimal with as many digits precision as you specify.
+				</p>
+        <p>
+					If the format string is omitted (or zero-length) a default format will be used.
+				</p>
+        <p class="availability">Availability: 2.0</p>
+      </div>
+      <div class="refsection" id="idm10957">
+        <h2>Examples</h2>
+        <p>Default format.</p>
+        <pre class="programlisting">
+SELECT (ST_AsLatLonText('POINT (-3.2342342 -2.32498)'));
+      st_aslatlontext
+----------------------------
+ 2°19'29.928"S 3°14'3.243"W
+</pre>
+        <p>Providing a format (same as the default).</p>
+        <pre class="programlisting">
+SELECT (ST_AsLatLonText('POINT (-3.2342342 -2.32498)', 'D°M''S.SSS"C'));
+      st_aslatlontext
+----------------------------
+ 2°19'29.928"S 3°14'3.243"W
+</pre>
+        <p>Characters other than D, M, S, C and . are just passed through.</p>
+        <pre class="programlisting">
+SELECT (ST_AsLatLonText('POINT (-3.2342342 -2.32498)', 'D degrees, M minutes, S seconds to the C'));
+                                   st_aslatlontext
+--------------------------------------------------------------------------------------
+ 2 degrees, 19 minutes, 30 seconds to the S 3 degrees, 14 minutes, 3 seconds to the W
+</pre>
+        <p>Signed degrees instead of cardinal directions.</p>
+        <pre class="programlisting">
+SELECT (ST_AsLatLonText('POINT (-3.2342342 -2.32498)', 'D°M''S.SSS"'));
+      st_aslatlontext
+----------------------------
+ -2°19'29.928" -3°14'3.243"
+</pre>
+        <p>Decimal degrees.</p>
+        <pre class="programlisting">
+SELECT (ST_AsLatLonText('POINT (-3.2342342 -2.32498)', 'D.DDDD degrees C'));
+          st_aslatlontext
+-----------------------------------
+ 2.3250 degrees S 3.2342 degrees W
+</pre>
+        <p>Excessively large values are normalized.</p>
+        <pre class="programlisting">
+SELECT (ST_AsLatLonText('POINT (-302.2342342 -792.32498)'));
+        st_aslatlontext
+-------------------------------
+ 72°19'29.928"S 57°45'56.757"E
+</pre>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_AsKML.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#idm10493">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_AsMARC21.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_AsKML </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_AsMARC21</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_SameAlignment</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="RT_ST_Touches.html" title="ST_Touches"/>
+    <link rel="next" href="RT_ST_NotSameAlignmentReason.html" title="ST_NotSameAlignmentReason"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_SameAlignment</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="RT_ST_Touches.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">11.17. Raster and Raster Band Spatial Relationships</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="RT_ST_NotSameAlignmentReason.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="RT_ST_SameAlignment">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_SameAlignment — Returns true if rasters have same skew, scale, spatial ref, and offset (pixels can be put on same grid without cutting into pixels) and false if they don't with notice detailing issue.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">boolean <strong class="fsfunc">ST_SameAlignment</strong>(</code>
+                  raster 
+                  <var class="pdparam">rastA</var>
+                , 
+                  raster 
+                  <var class="pdparam">rastB</var>
+                <code>)</code>;</p>
+          <p><code class="funcdef">boolean <strong class="fsfunc">ST_SameAlignment</strong>(</code>
+                  double precision 
+                  <var class="pdparam">ulx1</var>
+                , 
+                  double precision 
+                  <var class="pdparam">uly1</var>
+                , 
+                  double precision 
+                  <var class="pdparam">scalex1</var>
+                , 
+                  double precision 
+                  <var class="pdparam">scaley1</var>
+                , 
+                  double precision 
+                  <var class="pdparam">skewx1</var>
+                , 
+                  double precision 
+                  <var class="pdparam">skewy1</var>
+                , 
+                  double precision 
+                  <var class="pdparam">ulx2</var>
+                , 
+                  double precision 
+                  <var class="pdparam">uly2</var>
+                , 
+                  double precision 
+                  <var class="pdparam">scalex2</var>
+                , 
+                  double precision 
+                  <var class="pdparam">scaley2</var>
+                , 
+                  double precision 
+                  <var class="pdparam">skewx2</var>
+                , 
+                  double precision 
+                  <var class="pdparam">skewy2</var>
+                <code>)</code>;</p>
+          <p><code class="funcdef">boolean <strong class="fsfunc">ST_SameAlignment</strong>(</code>
+                        raster set 
+                        <var class="pdparam">rastfield</var>
+                    <code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm36907">
+        <h2>Description</h2>
+        <p>
+                Non-Aggregate version (Variants 1 and 2): Returns true if the two rasters (either provided directly or made using the values for upperleft, scale, skew and srid) have the same scale, skew, srid and at least one of any of the four corners of any pixel of one raster falls on any corner of the grid of the other raster. Returns false if they don't and a NOTICE detailing the alignment issue.
+            </p>
+        <p>
+                Aggregate version (Variant 3): From a set of rasters, returns true if all rasters in the set are aligned. The ST_SameAlignment() function is an "aggregate" function in the terminology of PostgreSQL. That means that it operates on rows of data, in the same way the SUM() and AVG() functions do.
+            </p>
+        <p class="availability">Availability: 2.0.0</p>
+        <p class="enhanced">Enhanced: 2.1.0 addition of Aggegrate variant</p>
+      </div>
+      <div class="refsection" id="idm36913">
+        <h2>Examples: Rasters</h2>
+        <pre class="programlisting">SELECT ST_SameAlignment(
+    ST_MakeEmptyRaster(1, 1, 0, 0, 1, 1, 0, 0),
+    ST_MakeEmptyRaster(1, 1, 0, 0, 1, 1, 0, 0)
+) as sm;
+
+sm
+----
+t
+</pre>
+        <pre class="programlisting">
+SELECT ST_SameAlignment(A.rast,b.rast)
+ FROM dummy_rast AS A CROSS JOIN dummy_rast AS B;
+
+ NOTICE:  The two rasters provided have different SRIDs
+NOTICE:  The two rasters provided have different SRIDs
+ st_samealignment
+------------------
+ t
+ f
+ f
+ f
+</pre>
+      </div>
+      <div class="refsection" id="idm36917">
+        <h2>See Also</h2>
+        <p>
+                    <a class="xref" href="using_raster_dataman.html#RT_Loading_Rasters" title="10.1. Loading and Creating Rasters">Section 10.1, “Loading and Creating Rasters”</a>,
+                    <a class="xref" href="RT_ST_NotSameAlignmentReason.html" title="ST_NotSameAlignmentReason">ST_NotSameAlignmentReason</a>,
+                    <a class="xref" href="RT_ST_MakeEmptyRaster.html" title="ST_MakeEmptyRaster">ST_MakeEmptyRaster</a>
+                </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="RT_ST_Touches.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="RT_reference.html#Raster_Relationships">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="RT_ST_NotSameAlignmentReason.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_Touches </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_NotSameAlignmentReason</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

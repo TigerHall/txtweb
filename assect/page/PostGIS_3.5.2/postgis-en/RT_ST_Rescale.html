@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_Rescale</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="RT_ST_Resample.html" title="ST_Resample"/>
+    <link rel="next" href="RT_ST_Reskew.html" title="ST_Reskew"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_Rescale</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="RT_ST_Resample.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">11.7. Raster Editors</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="RT_ST_Reskew.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="RT_ST_Rescale">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_Rescale — Resample a raster by adjusting only its scale (or pixel size). New pixel values are computed using the NearestNeighbor (english or american spelling), Bilinear, Cubic, CubicSpline, Lanczos, Max or Min resampling algorithm. Default is NearestNeighbor.
+                    </p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">raster <strong class="fsfunc">ST_Rescale</strong>(</code>raster  <var class="pdparam">rast</var>, double precision  <var class="pdparam">scalexy</var>, text  <var class="pdparam">algorithm=NearestNeighbor</var>, double precision  <var class="pdparam">maxerr=0.125</var><code>)</code>;</p>
+          <p><code class="funcdef">raster <strong class="fsfunc">ST_Rescale</strong>(</code>raster  <var class="pdparam">rast</var>, double precision  <var class="pdparam">scalex</var>, double precision  <var class="pdparam">scaley</var>, text  <var class="pdparam">algorithm=NearestNeighbor</var>, double precision  <var class="pdparam">maxerr=0.125</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm31217">
+        <h2>Description</h2>
+        <p>Resample a raster by adjusting only its scale (or pixel size). New pixel values are computed using one of the following resampling algorithms:</p>
+        <div class="itemizedlist">
+          <ul class="itemizedlist" style="list-style-type: bullet; ">
+            <li class="listitem" style="list-style-type: disc">
+              <p>NearestNeighbor (english or american spelling)</p>
+            </li>
+            <li class="listitem" style="list-style-type: disc">
+              <p>Bilinear</p>
+            </li>
+            <li class="listitem" style="list-style-type: disc">
+              <p>Cubic</p>
+            </li>
+            <li class="listitem" style="list-style-type: disc">
+              <p>CubicSpline</p>
+            </li>
+            <li class="listitem" style="list-style-type: disc">
+              <p>Lanczos</p>
+            </li>
+            <li class="listitem" style="list-style-type: disc">
+              <p>Max</p>
+            </li>
+            <li class="listitem" style="list-style-type: disc">
+              <p>Min</p>
+            </li>
+          </ul>
+        </div>
+        <p>The default is NearestNeighbor which is the fastest but results in the worst interpolation.</p>
+        <p><code class="varname">scalex</code> and <code class="varname">scaley</code> define the new pixel size. scaley must often be negative to get well oriented raster.</p>
+        <p>When the new scalex or scaley is not a divisor of the raster width or height, the extent of the resulting raster is expanded to encompass the extent of the provided raster. If you want to be sure to retain exact input extent see <a class="xref" href="RT_ST_Resize.html" title="ST_Resize">ST_Resize</a></p>
+        <p><code class="varname">maxerr</code> is the threshold for transformation approximation by the resampling algorithm (in pixel units). A default of 0.125 is used if no <code class="varname">maxerr</code> is specified, which is the same value used in GDAL gdalwarp utility. If set to zero, no approximation takes place.</p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>Refer to: <a class="link" href="http://www.gdal.org/gdalwarp.html" target="_top">GDAL Warp resampling methods</a> for more details. </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>ST_Rescale is different from <a class="xref" href="RT_ST_SetScale.html" title="ST_SetScale">ST_SetScale</a> in that ST_SetScale do not resample the raster to match the raster extent. ST_SetScale only changes the metadata (or georeference) of the raster to correct an originally mis-specified scaling. ST_Rescale results in a raster having different width and height computed to fit the geographic extent of the input raster. ST_SetScale do not modify the width, nor the height of the raster.</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p class="availability">Availability: 2.0.0  Requires GDAL 1.6.1+</p>
+        <p class="enhanced">Enhanced: 3.4.0 max and min resampling options added</p>
+        <p class="changed">Changed: 2.1.0 Works on rasters with no SRID</p>
+      </div>
+      <div class="refsection" id="idm31254">
+        <h2>Examples</h2>
+        <p>A simple example rescaling a raster from a pixel size of 0.001 degree to a pixel size of 0.0015 degree.</p>
+        <pre class="programlisting">-- the original raster pixel size
+SELECT ST_PixelWidth(ST_AddBand(ST_MakeEmptyRaster(100, 100, 0, 0, 0.001, -0.001, 0, 0, 4269), '8BUI'::text, 1, 0)) width
+
+   width
+----------
+0.001
+
+-- the rescaled raster raster pixel size
+SELECT ST_PixelWidth(ST_Rescale(ST_AddBand(ST_MakeEmptyRaster(100, 100, 0, 0, 0.001, -0.001, 0, 0, 4269), '8BUI'::text, 1, 0), 0.0015)) width
+
+   width
+----------
+0.0015
+</pre>
+      </div>
+      <div class="refsection" id="idm31258">
+        <h2>See Also</h2>
+        <p>
+                    <a class="xref" href="RT_ST_Resize.html" title="ST_Resize">ST_Resize</a>,
+                    <a class="xref" href="RT_ST_Resample.html" title="ST_Resample">ST_Resample</a>,
+                    <a class="xref" href="RT_ST_SetScale.html" title="ST_SetScale">ST_SetScale</a>,
+                    <a class="xref" href="RT_ST_ScaleX.html" title="ST_ScaleX">ST_ScaleX</a>,
+                    <a class="xref" href="RT_ST_ScaleY.html" title="ST_ScaleY">ST_ScaleY</a>,
+                    <a class="xref" href="RT_ST_Transform.html" title="ST_Transform">ST_Transform</a>
+                </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="RT_ST_Resample.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="RT_reference.html#Raster_Editors">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="RT_ST_Reskew.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_Resample </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_Reskew</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

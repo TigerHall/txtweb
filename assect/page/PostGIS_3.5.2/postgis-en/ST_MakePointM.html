@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_MakePointM</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_MakePoint.html" title="ST_MakePoint"/>
+    <link rel="next" href="ST_MakePolygon.html" title="ST_MakePolygon"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_MakePointM</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_MakePoint.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.3. Geometry Constructors</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_MakePolygon.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_MakePointM">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_MakePointM — Creates a Point from X, Y and M values.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_MakePointM</strong>(</code>float <var class="pdparam">x</var>, float <var class="pdparam">y</var>, float <var class="pdparam">m</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm3895">
+        <h2>Description</h2>
+        <p>Creates a point with X, Y and M (measure) ordinates. 
+			Use <a class="xref" href="ST_MakePoint.html" title="ST_MakePoint">ST_MakePoint</a> to make points with XY, XYZ, or XYZM coordinates.</p>
+        <p>Use <a class="xref" href="ST_SetSRID.html" title="ST_SetSRID">ST_SetSRID</a> to specify a SRID for the created point.</p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>For geodetic coordinates, <code class="varname">X</code> is longitude and <code class="varname">Y</code> is latitude</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>
+			The functions 
+			<a class="xref" href="ST_PointM.html" title="ST_PointM">ST_PointM</a>, and <a class="xref" href="ST_PointZM.html" title="ST_PointZM">ST_PointZM</a> 
+			can be used to create points with an M value and a given SRID.
+			</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="refsection" id="idm3909">
+        <h2>Examples</h2>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p><a class="xref" href="ST_AsEWKT.html" title="ST_AsEWKT">ST_AsEWKT</a> is used for text output
+			because <a class="xref" href="ST_AsText.html" title="ST_AsText">ST_AsText</a> does not support M values.</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p>Create point with unknown SRID.</p>
+        <pre class="programlisting">
+SELECT ST_AsEWKT(  ST_MakePointM(-71.1043443253471, 42.3150676015829, 10)  );
+
+				   st_asewkt
+-----------------------------------------------
+ POINTM(-71.1043443253471 42.3150676015829 10)
+</pre>
+        <p>Create point with a measure in the WGS 84 geodetic coordinate system.</p>
+        <pre class="programlisting">
+SELECT ST_AsEWKT( ST_SetSRID(  ST_MakePointM(-71.104, 42.315, 10),  4326));
+
+						st_asewkt
+---------------------------------------------------------
+SRID=4326;POINTM(-71.104 42.315 10)
+</pre>
+        <p>Get measure of created point.</p>
+        <pre class="programlisting">
+SELECT ST_M(  ST_MakePointM(-71.104, 42.315, 10)  );
+
+result
+-------
+10
+</pre>
+      </div>
+      <div class="refsection" id="idm3921">
+        <h2>See Also</h2>
+        <p><a class="xref" href="ST_MakePoint.html" title="ST_MakePoint">ST_MakePoint</a>, <a class="xref" href="ST_SetSRID.html" title="ST_SetSRID">ST_SetSRID</a>,
+			<a class="xref" href="ST_PointM.html" title="ST_PointM">ST_PointM</a>, <a class="xref" href="ST_PointZM.html" title="ST_PointZM">ST_PointZM</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_MakePoint.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Geometry_Constructors">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_MakePolygon.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_MakePoint </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_MakePolygon</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_IsCollection</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_IsClosed.html" title="ST_IsClosed"/>
+    <link rel="next" href="ST_IsEmpty.html" title="ST_IsEmpty"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_IsCollection</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_IsClosed.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.4. Geometry Accessors</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_IsEmpty.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_IsCollection">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_IsCollection — Tests if a geometry is a geometry collection type.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">boolean <strong class="fsfunc">ST_IsCollection</strong>(</code>geometry  <var class="pdparam">g</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm5453">
+        <h2>Description</h2>
+        <p>Returns <code class="varname">TRUE</code> if the geometry type of
+                  the argument a geometry collection type.  Collection types are the following:
+                  </p>
+        <div class="itemizedlist">
+          <ul class="itemizedlist" style="list-style-type: disc; ">
+            <li class="listitem">
+              <p>GEOMETRYCOLLECTION</p>
+            </li>
+            <li class="listitem">
+              <p>MULTI{POINT,POLYGON,LINESTRING,CURVE,SURFACE}</p>
+            </li>
+            <li class="listitem">
+              <p>COMPOUNDCURVE</p>
+            </li>
+          </ul>
+        </div>
+        <p>
+                </p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>
+                    This function analyzes the type of the geometry. This means
+                    that it will return <code class="varname">TRUE</code> on collections
+                    that are empty or that contain a single element.
+                  </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports 3d and will not drop the z-index.
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method supports Circular Strings and Curves.
+        </p>
+      </div>
+      <div class="refsection" id="idm5475">
+        <h2>Examples</h2>
+        <pre class="programlisting">postgis=# SELECT ST_IsCollection('LINESTRING(0 0, 1 1)'::geometry);
+ st_iscollection
+-------------
+ f
+(1 row)
+
+postgis=# SELECT ST_IsCollection('MULTIPOINT EMPTY'::geometry);
+ st_iscollection
+-------------
+ t
+(1 row)
+
+postgis=# SELECT ST_IsCollection('MULTIPOINT((0 0))'::geometry);
+ st_iscollection
+-------------
+ t
+(1 row)
+
+postgis=# SELECT ST_IsCollection('MULTIPOINT((0 0), (42 42))'::geometry);
+ st_iscollection
+-------------
+ t
+(1 row)
+
+postgis=# SELECT ST_IsCollection('GEOMETRYCOLLECTION(POINT(0 0))'::geometry);
+ st_iscollection
+-------------
+ t
+(1 row)</pre>
+      </div>
+      <div class="refsection" id="idm5478">
+        <h2>See Also</h2>
+        <p>
+          <a class="xref" href="ST_NumGeometries.html" title="ST_NumGeometries">ST_NumGeometries</a>
+        </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_IsClosed.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Geometry_Accessors">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_IsEmpty.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_IsClosed </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_IsEmpty</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

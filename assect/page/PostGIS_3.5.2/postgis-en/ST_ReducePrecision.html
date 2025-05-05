@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_ReducePrecision</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_Polygonize.html" title="ST_Polygonize"/>
+    <link rel="next" href="ST_SharedPaths.html" title="ST_SharedPaths"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_ReducePrecision</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_Polygonize.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.14. Geometry Processing</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_SharedPaths.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_ReducePrecision">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_ReducePrecision — Returns a valid geometry with points rounded to a grid tolerance.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_ReducePrecision</strong>(</code>geometry 
+            <var class="pdparam">g</var>, float8 
+            <var class="pdparam">gridsize</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm17581">
+        <h2>Description</h2>
+        <p>Returns a valid geometry with all points rounded to the provided grid tolerance, and features below the tolerance removed.</p>
+        <p>Unlike <a class="xref" href="ST_SnapToGrid.html" title="ST_SnapToGrid">ST_SnapToGrid</a> the returned geometry will be valid, with no ring self-intersections or collapsed components.</p>
+        <p>
+        Precision reduction can be used to:
+        </p>
+        <div class="itemizedlist">
+          <ul class="itemizedlist" style="list-style-type: disc; ">
+            <li class="listitem">
+              <p>
+            match coordinate precision to the data accuracy
+            </p>
+            </li>
+            <li class="listitem">
+              <p>
+            reduce the number of coordinates needed to represent a geometry
+            </p>
+            </li>
+            <li class="listitem">
+              <p>
+            ensure valid geometry output to formats which use lower precision
+            (e.g. text formats such as WKT, GeoJSON or KML
+            when the number of output decimal places is limited).
+            </p>
+            </li>
+            <li class="listitem">
+              <p>
+            export valid geometry to systems which use lower or limited precision
+            (e.g. SDE, Oracle tolerance value)
+            </p>
+            </li>
+          </ul>
+        </div>
+        <p>
+		</p>
+        <p class="availability">Availability: 3.1.0.</p>
+        <p class="geos_requirement">Requires GEOS &gt;= 3.9.0.</p>
+      </div>
+      <div class="refsection" id="idm17598">
+        <h2>Examples</h2>
+        <pre class="programlisting">SELECT ST_AsText(ST_ReducePrecision('POINT(1.412 19.323)', 0.1));
+    st_astext
+-----------------
+ POINT(1.4 19.3)
+
+SELECT ST_AsText(ST_ReducePrecision('POINT(1.412 19.323)', 1.0));
+  st_astext
+-------------
+ POINT(1 19)
+
+SELECT ST_AsText(ST_ReducePrecision('POINT(1.412 19.323)', 10));
+  st_astext
+-------------
+ POINT(0 20)
+</pre>
+        <p>Precision reduction can reduce number of vertices</p>
+        <pre class="programlisting">SELECT ST_AsText(ST_ReducePrecision('LINESTRING (10 10, 19.6 30.1, 20 30, 20.3 30, 40 40)', 1));
+  st_astext
+-------------
+ LINESTRING (10 10, 20 30, 40 40)
+</pre>
+        <p>Precision reduction splits polygons if needed to ensure validity</p>
+        <pre class="programlisting">SELECT ST_AsText(ST_ReducePrecision('POLYGON ((10 10, 60 60.1, 70 30, 40 40, 50 10, 10 10))', 10));
+  st_astext
+-------------
+ MULTIPOLYGON (((60 60, 70 30, 40 40, 60 60)), ((40 40, 50 10, 10 10, 40 40)))
+</pre>
+      </div>
+      <div class="refsection" id="idm17605">
+        <h2>See Also</h2>
+        <p><a class="xref" href="ST_SnapToGrid.html" title="ST_SnapToGrid">ST_SnapToGrid</a>, <a class="xref" href="ST_Simplify.html" title="ST_Simplify">ST_Simplify</a>, <a class="xref" href="ST_SimplifyVW.html" title="ST_SimplifyVW">ST_SimplifyVW</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_Polygonize.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Geometry_Processing">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_SharedPaths.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_Polygonize </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_SharedPaths</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_Disjoint</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="RT_ST_CoveredBy.html" title="ST_CoveredBy"/>
+    <link rel="next" href="RT_ST_Intersects.html" title="ST_Intersects"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_Disjoint</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="RT_ST_CoveredBy.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">11.17. Raster and Raster Band Spatial Relationships</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="RT_ST_Intersects.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="RT_ST_Disjoint">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_Disjoint — 
+                Return true if raster rastA does not spatially intersect rastB.
+            </p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">boolean <strong class="fsfunc">ST_Disjoint</strong>(</code>
+                        raster 
+                        <var class="pdparam">rastA</var>
+                    , 
+                        integer 
+                        <var class="pdparam">nbandA</var>
+                    , 
+                        raster 
+                        <var class="pdparam">rastB</var>
+                    , 
+                        integer 
+                        <var class="pdparam">nbandB</var>
+                    <code>)</code>;</p>
+          <p><code class="funcdef">boolean <strong class="fsfunc">ST_Disjoint</strong>(</code>
+                        raster 
+                        <var class="pdparam">rastA</var>
+                    , 
+                        raster 
+                        <var class="pdparam">rastB</var>
+                    <code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm36659">
+        <h2>Description</h2>
+        <p>
+                Raster rastA and rastB are disjointed if they do not share any space together. If the band number is not provided (or set to NULL), only the convex hull of the raster is considered in the test. If the band number is provided, only those pixels with value (not NODATA) are considered in the test.
+            </p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>
+                    This function does NOT use any indexes.
+                </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>
+                    To test the spatial relationship of a raster and a geometry, use ST_Polygon on the raster, e.g. ST_Disjoint(ST_Polygon(raster), geometry).
+                </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p class="availability">Availability: 2.1.0</p>
+      </div>
+      <div class="refsection" id="idm36667">
+        <h2>Examples</h2>
+        <pre class="programlisting">
+-- rid = 1 has no bands, hence the NOTICE and the NULL value for st_disjoint
+SELECT r1.rid, r2.rid, ST_Disjoint(r1.rast, 1, r2.rast, 1) FROM dummy_rast r1 CROSS JOIN dummy_rast r2 WHERE r1.rid = 2;
+
+NOTICE:  The second raster provided has no bands
+ rid | rid | st_disjoint
+-----+-----+-------------
+   2 |   1 |
+   2 |   2 | f
+            </pre>
+        <pre class="programlisting">
+-- this time, without specifying band numbers
+SELECT r1.rid, r2.rid, ST_Disjoint(r1.rast, r2.rast) FROM dummy_rast r1 CROSS JOIN dummy_rast r2 WHERE r1.rid = 2;
+
+ rid | rid | st_disjoint
+-----+-----+-------------
+   2 |   1 | t
+   2 |   2 | f
+            </pre>
+      </div>
+      <div class="refsection" id="idm36671">
+        <h2>See Also</h2>
+        <p>
+                <a class="xref" href="RT_ST_Intersects.html" title="ST_Intersects">ST_Intersects</a>
+            </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="RT_ST_CoveredBy.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="RT_reference.html#Raster_Relationships">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="RT_ST_Intersects.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_CoveredBy </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_Intersects</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

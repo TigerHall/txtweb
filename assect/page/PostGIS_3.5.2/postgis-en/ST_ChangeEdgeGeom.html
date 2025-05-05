@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_ChangeEdgeGeom</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_RemEdgeModFace.html" title="ST_RemEdgeModFace"/>
+    <link rel="next" href="ST_ModEdgeSplit.html" title="ST_ModEdgeSplit"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_ChangeEdgeGeom</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_RemEdgeModFace.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">9.6. Topology Editors</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_ModEdgeSplit.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_ChangeEdgeGeom">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_ChangeEdgeGeom — 
+Changes the shape of an edge without affecting the topology structure.
+				</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">text <strong class="fsfunc">ST_ChangeEdgeGeom</strong>(</code>varchar  <var class="pdparam">atopology</var>, integer  <var class="pdparam">anedge</var>, geometry  <var class="pdparam">acurve</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm24818">
+        <h2>Description</h2>
+        <p>
+Changes the shape of an edge without affecting the topology structure.
+		</p>
+        <p>
+If any arguments are null, the given edge does not exist in
+the <code class="varname">edge</code> table of the topology schema, the
+<code class="varname">acurve</code> is not a <code class="varname">LINESTRING</code>, or the modification would
+change the underlying topology then an error is thrown.
+		</p>
+        <p>If the spatial reference system (srid) of the <code class="varname">acurve</code> geometry is not the same as the topology an exception is thrown.</p>
+        <p>If the new <code class="varname">acurve</code> is not simple, then an error is thrown.</p>
+        <p>
+If moving the edge from old to new position would hit an obstacle then
+an error is thrown.
+		</p>
+        <p class="availability">Availability: 1.1.0</p>
+        <p>
+	Enhanced: 2.0.0 adds topological consistency enforcement
+		</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method implements the SQL/MM specification.
+         SQL-MM: Topo-Geo and Topo-Net 3: Routine Details X.3.6</p>
+      </div>
+      <div class="refsection" id="idm24836">
+        <h2>Examples</h2>
+        <pre class="programlisting">SELECT topology.ST_ChangeEdgeGeom('ma_topo', 1,
+		ST_GeomFromText('LINESTRING(227591.9 893900.4,227622.6 893844.3,227641.6 893816.6, 227704.5 893778.5)', 26986) );
+ ----
+ Edge 1 changed</pre>
+      </div>
+      <div class="refsection" id="idm24839">
+        <h2>See Also</h2>
+        <p>
+          <a class="xref" href="ST_AddEdgeModFace.html" title="ST_AddEdgeModFace">ST_AddEdgeModFace</a>
+        </p>
+        <p>
+          <a class="xref" href="ST_RemEdgeModFace.html" title="ST_RemEdgeModFace">ST_RemEdgeModFace</a>
+        </p>
+        <p>
+          <a class="xref" href="ST_ModEdgeSplit.html" title="ST_ModEdgeSplit">ST_ModEdgeSplit</a>
+        </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_RemEdgeModFace.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="Topology.html#Topology_Editing">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_ModEdgeSplit.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_RemEdgeModFace </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_ModEdgeSplit</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

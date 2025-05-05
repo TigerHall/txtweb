@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>TopoGeo_AddPolygon</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="TopoGeo_AddLineString.html" title="TopoGeo_AddLineString"/>
+    <link rel="next" href="TopoGeo_LoadGeometry.html" title="TopoGeo_LoadGeometry"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">TopoGeo_AddPolygon</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="TopoGeo_AddLineString.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">9.5. Topology Constructors</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="TopoGeo_LoadGeometry.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="TopoGeo_AddPolygon">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>TopoGeo_AddPolygon — Adds a polygon to an existing topology using a tolerance and possibly splitting existing edges/faces. Returns face identifiers.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">SETOF integer <strong class="fsfunc">TopoGeo_AddPolygon</strong>(</code>varchar  <var class="pdparam">atopology</var>, geometry  <var class="pdparam">apoly</var>, float8  <var class="pdparam">tolerance</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm24477">
+        <h2>Description</h2>
+        <p>
+Adds a polygon to an existing topology and returns a set of face identifiers forming it up.
+The boundary of the given polygon will snap to existing nodes or edges within given tolerance.
+Existing edges and faces may be split by the boundary of the new polygon.
+                </p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>
+Updating statistics about topologies being loaded via this function is
+up to caller, see <a class="xref" href="Topology.html#Topology_StatsManagement" title="9.4. Topology Statistics Management">maintaining statistics during topology editing and population</a>.
+                </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p class="availability">Availability: 2.0.0</p>
+      </div>
+      <div class="refsection" id="idm24484">
+        <h2>See Also</h2>
+        <p>
+<a class="xref" href="TopoGeo_AddPoint.html" title="TopoGeo_AddPoint">TopoGeo_AddPoint</a>,
+<a class="xref" href="TopoGeo_AddLineString.html" title="TopoGeo_AddLineString">TopoGeo_AddLineString</a>,
+<a class="xref" href="TopoGeo_LoadGeometry.html" title="TopoGeo_LoadGeometry">TopoGeo_LoadGeometry</a>,
+<a class="xref" href="AddFace.html" title="AddFace">AddFace</a>,
+<a class="xref" href="CreateTopology.html" title="CreateTopology">CreateTopology</a>
+				</p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="TopoGeo_AddLineString.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="Topology.html#Topology_Constructors">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="TopoGeo_LoadGeometry.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">TopoGeo_AddLineString </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> TopoGeo_LoadGeometry</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

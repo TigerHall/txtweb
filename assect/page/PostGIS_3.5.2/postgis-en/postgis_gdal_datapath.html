@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>postgis.gdal_datapath</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="postgis_backend.html" title="postgis.backend"/>
+    <link rel="next" href="postgis_gdal_enabled_drivers.html" title="postgis.gdal_enabled_drivers"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">postgis.gdal_datapath</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="postgis_backend.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.22. Grand Unified Custom Variables (GUCs)</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="postgis_gdal_enabled_drivers.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="postgis_gdal_datapath">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>postgis.gdal_datapath — 
+                    A configuration option to assign the value of GDAL's GDAL_DATA option. If not set, the environmentally set GDAL_DATA variable is used.
+                </p>
+      </div>
+      <div class="refsection" id="idm20796">
+        <h2>Description</h2>
+        <p>
+                    A PostgreSQL GUC variable for setting the value of GDAL's GDAL_DATA option. The <code class="varname">postgis.gdal_datapath</code> value should be the complete physical path to GDAL's data files.
+                </p>
+        <p>
+                    This configuration option is of most use for Windows platforms where GDAL's data files path is not hard-coded. This option should also be set when GDAL's data files are not located in GDAL's expected path.
+                </p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>
+                        This option can be set in PostgreSQL's configuration file postgresql.conf. It can also be set by connection or transaction.
+                    </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p class="availability">Availability: 2.2.0</p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>
+                        Additional information about GDAL_DATA is available at GDAL's <a class="link" href="http://trac.osgeo.org/gdal/wiki/ConfigOptions" target="_top">Configuration Options</a>.
+                    </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="refsection" id="idm20807">
+        <h2>Examples</h2>
+        <p>Set and reset <code class="varname">postgis.gdal_datapath</code></p>
+        <pre class="programlisting">
+SET postgis.gdal_datapath TO '/usr/local/share/gdal.hidden';
+SET postgis.gdal_datapath TO default;
+                </pre>
+        <p>Setting on windows for a particular database</p>
+        <pre class="programlisting">ALTER DATABASE gisdb
+SET postgis.gdal_datapath = 'C:/Program Files/PostgreSQL/9.3/gdal-data';</pre>
+      </div>
+      <div class="refsection" id="idm20814">
+        <h2>See Also</h2>
+        <p>
+                    <a class="xref" href="RT_PostGIS_GDAL_Version.html" title="PostGIS_GDAL_Version">PostGIS_GDAL_Version</a>, <a class="xref" href="RT_ST_Transform.html" title="ST_Transform">ST_Transform</a>
+                </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="postgis_backend.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#PostGIS_GUC">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="postgis_gdal_enabled_drivers.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">postgis.backend </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> postgis.gdal_enabled_drivers</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

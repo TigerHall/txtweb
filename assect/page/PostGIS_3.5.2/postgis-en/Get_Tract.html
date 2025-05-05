@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Get_Tract</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="Get_Geocode_Setting.html" title="Get_Geocode_Setting"/>
+    <link rel="next" href="Install_Missing_Indexes.html" title="Install_Missing_Indexes"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">Get_Tract</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="Get_Geocode_Setting.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">12.2. Tiger Geocoder</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="Install_Missing_Indexes.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="Get_Tract">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>Get_Tract — Returns census tract or field from tract table of where the geometry is located. Default to returning short name of tract.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">text <strong class="fsfunc">get_tract</strong>(</code>geometry  <var class="pdparam"> loc_geom</var>, text  <var class="pdparam"> output_field=name</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm38297">
+        <h2>Description</h2>
+        <p>Given a geometry will return the census tract location of that geometry. NAD 83 long lat is assumed if no spatial ref sys is specified.</p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>This function uses the census <code class="varname">tract</code> which is not loaded by default.  If you have already loaded your state table, you can load tract
+        as well as bg, and tabblock using the <a class="xref" href="Loader_Generate_Census_Script.html" title="Loader_Generate_Census_Script">Loader_Generate_Census_Script</a> script.</p>
+                <p>If you have not loaded your state data yet and want these additional tables loaded, do the following</p>
+                <pre class="programlisting">UPDATE tiger.loader_lookuptables SET load = true WHERE load = false AND lookup_name IN('tract', 'bg', 'tabblock');</pre>
+                <p>then they will be included by the <a class="xref" href="Loader_Generate_Script.html" title="Loader_Generate_Script">Loader_Generate_Script</a>.</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p class="availability">Availability: 2.0.0</p>
+      </div>
+      <div class="refsection" id="idm38309">
+        <h2>Examples: Basic</h2>
+        <pre class="programlisting">SELECT get_tract(ST_Point(-71.101375, 42.31376) ) As tract_name;
+tract_name
+---------
+1203.01
+        </pre>
+        <pre class="programlisting">--this one returns the tiger geoid
+SELECT get_tract(ST_Point(-71.101375, 42.31376), 'tract_id' ) As tract_id;
+tract_id
+---------
+25025120301</pre>
+      </div>
+      <div class="refsection" id="idm38313">
+        <h2>See Also</h2>
+        <p><a class="xref" href="Geocode.html" title="Geocode">Geocode</a>&gt;</p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="Get_Geocode_Setting.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="Extras.html#Tiger_Geocoder">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="Install_Missing_Indexes.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">Get_Geocode_Setting </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> Install_Missing_Indexes</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

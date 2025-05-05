@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_FrechetDistance</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_Distance_Spheroid.html" title="ST_DistanceSpheroid"/>
+    <link rel="next" href="ST_HausdorffDistance.html" title="ST_HausdorffDistance"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_FrechetDistance</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_Distance_Spheroid.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.12. Measurement Functions</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_HausdorffDistance.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_FrechetDistance">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_FrechetDistance — Returns the Fréchet distance between two geometries.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">float <strong class="fsfunc">ST_FrechetDistance</strong>(</code>geometry 
+			<var class="pdparam">g1</var>, geometry 
+			<var class="pdparam">g2</var>, float
+			<var class="pdparam">densifyFrac = -1</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm14781">
+        <h2>Description</h2>
+        <p>Implements algorithm for computing the Fréchet distance restricted to discrete points for both geometries, based on <a class="link" href="http://www.kr.tuwien.ac.at/staff/eiter/et-archive/cdtr9464.pdf" target="_top">Computing Discrete Fréchet Distance</a>.
+		The Fréchet distance is a measure of similarity between curves that takes into account the location and ordering of the points along the curves. Therefore it is often better than the Hausdorff distance. </p>
+        <p>
+When the optional densifyFrac is specified, this function performs a segment densification before computing the discrete Fréchet distance. The densifyFrac parameter sets the fraction by which to densify each segment. Each segment will be split into a number of equal-length subsegments, whose fraction of the total length is closest to the given fraction.
+		</p>
+        <p>Units are in the units of the spatial reference system of the geometries.
+		</p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>
+The current implementation supports only vertices as the discrete locations. This could be extended to allow an arbitrary density of points to be used.
+			</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>
+The smaller densifyFrac we specify, the more accurate Fréchet distance we get. But, the computation time and the memory usage increase with the square of the number of subsegments.
+			</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p>Performed by the GEOS module.</p>
+        <p class="availability">Availability: 2.4.0 - requires GEOS &gt;= 3.7.0</p>
+      </div>
+      <div class="refsection" id="idm14793">
+        <h2>Examples</h2>
+        <pre class="programlisting">postgres=# SELECT st_frechetdistance('LINESTRING (0 0, 100 0)'::geometry, 'LINESTRING (0 0, 50 50, 100 0)'::geometry);
+ st_frechetdistance
+--------------------
+   70.7106781186548
+(1 row)
+			</pre>
+        <pre class="programlisting">SELECT st_frechetdistance('LINESTRING (0 0, 100 0)'::geometry, 'LINESTRING (0 0, 50 50, 100 0)'::geometry, 0.5);
+ st_frechetdistance
+--------------------
+                 50
+(1 row)
+			</pre>
+      </div>
+      <div class="refsection" id="idm14797">
+        <h2>See Also</h2>
+        <p>
+          <a class="xref" href="ST_HausdorffDistance.html" title="ST_HausdorffDistance">ST_HausdorffDistance</a>
+        </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_Distance_Spheroid.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Measurement_Functions">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_HausdorffDistance.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_DistanceSpheroid </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_HausdorffDistance</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

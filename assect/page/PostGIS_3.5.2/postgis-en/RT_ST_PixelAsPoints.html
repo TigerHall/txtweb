@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_PixelAsPoints</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="RT_ST_PixelAsPoint.html" title="ST_PixelAsPoint"/>
+    <link rel="next" href="RT_ST_PixelAsCentroid.html" title="ST_PixelAsCentroid"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_PixelAsPoints</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="RT_ST_PixelAsPoint.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">11.6. Raster Pixel Accessors and Setters</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="RT_ST_PixelAsCentroid.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="RT_ST_PixelAsPoints">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_PixelAsPoints — 
+                    Returns a point geometry for each pixel of a raster band along with the value, the X and the Y raster coordinates of each pixel.  The coordinates of the point geometry are of the pixel's upper-left corner.
+                </p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">setof record <strong class="fsfunc">ST_PixelAsPoints</strong>(</code>raster  <var class="pdparam">rast</var>, integer  <var class="pdparam">band=1</var>, boolean  <var class="pdparam">exclude_nodata_value=TRUE</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm29929">
+        <h2>Description</h2>
+        <p>
+                    Returns a point geometry for each pixel of a raster band along with the value, the X and the Y raster coordinates of each pixel.  The coordinates of the point geometry are of the pixel's upper-left corner.
+                </p>
+        <p>
+                    Return record format: <em class="parameter"><code>geom</code></em> <a class="xref" href="geometry.html" title="geometry">geometry</a>, <em class="parameter"><code>val</code></em> double precision, <em class="parameter"><code>x</code></em> integer, <em class="parameter"><code>y</code></em> integers.
+                </p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>
+                        When <em class="parameter"><code>exclude_nodata_value</code></em> = TRUE, only those pixels whose values are not NODATA are returned as points.
+                    </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p class="availability">Availability: 2.1.0</p>
+        <p class="changed">Changed: 2.1.1 Changed behavior of exclude_nodata_value.</p>
+      </div>
+      <div class="refsection" id="idm29943">
+        <h2>Examples</h2>
+        <pre class="programlisting">
+SELECT x, y, val, ST_AsText(geom) FROM (SELECT (ST_PixelAsPoints(rast, 1)).* FROM dummy_rast WHERE rid = 2) foo;
+
+ x | y | val |          st_astext
+---+---+-----+------------------------------
+ 1 | 1 | 253 | POINT(3427927.75 5793244)
+ 2 | 1 | 254 | POINT(3427927.8 5793244)
+ 3 | 1 | 253 | POINT(3427927.85 5793244)
+ 4 | 1 | 254 | POINT(3427927.9 5793244)
+ 5 | 1 | 254 | POINT(3427927.95 5793244)
+ 1 | 2 | 253 | POINT(3427927.75 5793243.95)
+ 2 | 2 | 254 | POINT(3427927.8 5793243.95)
+ 3 | 2 | 254 | POINT(3427927.85 5793243.95)
+ 4 | 2 | 253 | POINT(3427927.9 5793243.95)
+ 5 | 2 | 249 | POINT(3427927.95 5793243.95)
+ 1 | 3 | 250 | POINT(3427927.75 5793243.9)
+ 2 | 3 | 254 | POINT(3427927.8 5793243.9)
+ 3 | 3 | 254 | POINT(3427927.85 5793243.9)
+ 4 | 3 | 252 | POINT(3427927.9 5793243.9)
+ 5 | 3 | 249 | POINT(3427927.95 5793243.9)
+ 1 | 4 | 251 | POINT(3427927.75 5793243.85)
+ 2 | 4 | 253 | POINT(3427927.8 5793243.85)
+ 3 | 4 | 254 | POINT(3427927.85 5793243.85)
+ 4 | 4 | 254 | POINT(3427927.9 5793243.85)
+ 5 | 4 | 253 | POINT(3427927.95 5793243.85)
+ 1 | 5 | 252 | POINT(3427927.75 5793243.8)
+ 2 | 5 | 250 | POINT(3427927.8 5793243.8)
+ 3 | 5 | 254 | POINT(3427927.85 5793243.8)
+ 4 | 5 | 254 | POINT(3427927.9 5793243.8)
+ 5 | 5 | 254 | POINT(3427927.95 5793243.8)
+                </pre>
+      </div>
+      <div class="refsection" id="idm29946">
+        <h2>See Also</h2>
+        <p>
+                    <a class="xref" href="RT_ST_DumpAsPolygons.html" title="ST_DumpAsPolygons">ST_DumpAsPolygons</a>,
+                    <a class="xref" href="RT_ST_PixelAsPolygon.html" title="ST_PixelAsPolygon">ST_PixelAsPolygon</a>,
+                    <a class="xref" href="RT_ST_PixelAsPolygons.html" title="ST_PixelAsPolygons">ST_PixelAsPolygons</a>,
+                    <a class="xref" href="RT_ST_PixelAsPoint.html" title="ST_PixelAsPoint">ST_PixelAsPoint</a>,
+                    <a class="xref" href="RT_ST_PixelAsCentroid.html" title="ST_PixelAsCentroid">ST_PixelAsCentroid</a>,
+                    <a class="xref" href="RT_ST_PixelAsCentroids.html" title="ST_PixelAsCentroids">ST_PixelAsCentroids</a>
+                </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="RT_ST_PixelAsPoint.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="RT_reference.html#Raster_Pixel_Accessors">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="RT_ST_PixelAsCentroid.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_PixelAsPoint </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_PixelAsCentroid</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

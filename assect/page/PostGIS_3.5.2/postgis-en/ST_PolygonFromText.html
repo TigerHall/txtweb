@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_PolygonFromText</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_PointFromText.html" title="ST_PointFromText"/>
+    <link rel="next" href="ST_WKTToSQL.html" title="ST_WKTToSQL"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_PolygonFromText</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_PointFromText.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.8.1. Well-Known Text (WKT)</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_WKTToSQL.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_PolygonFromText">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_PolygonFromText — Makes a Geometry from WKT with the given SRID. If SRID is
+			not given, it defaults to 0.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_PolygonFromText</strong>(</code>text  <var class="pdparam">WKT</var><code>)</code>;</p>
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_PolygonFromText</strong>(</code>text  <var class="pdparam">WKT</var>, integer  <var class="pdparam">srid</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm9372">
+        <h2>Description</h2>
+        <p>Makes a Geometry from WKT with the given SRID. If SRID is
+			not given, it defaults to 0.  Returns null if WKT is not a polygon.</p>
+        <p>OGC SPEC 3.2.6.2 - option SRID is from the conformance
+			suite</p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>If you are absolutely sure all your WKT geometries are polygons, don't use this function.
+					It is slower than ST_GeomFromText since it adds an additional validation step. </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method implements the <a class="link" href="http://www.opengeospatial.org/standards/sfs" target="_top">OGC Simple Features
+            Implementation Specification for SQL 1.1.</a>
+         s3.2.6.2</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method implements the SQL/MM specification.
+         SQL-MM 3: 8.3.6</p>
+      </div>
+      <div class="refsection" id="idm9387">
+        <h2>Examples</h2>
+        <pre class="programlisting">SELECT ST_PolygonFromText('POLYGON((-71.1776585052917 42.3902909739571,-71.1776820268866 42.3903701743239,
+-71.1776063012595 42.3903825660754,-71.1775826583081 42.3903033653531,-71.1776585052917 42.3902909739571))');
+st_polygonfromtext
+------------------
+010300000001000000050000006...
+
+
+SELECT ST_PolygonFromText('POINT(1 2)') IS NULL as point_is_notpoly;
+
+point_is_not_poly
+----------
+t
+</pre>
+      </div>
+      <div class="refsection" id="idm9390">
+        <h2>See Also</h2>
+        <p>
+          <a class="xref" href="ST_GeomFromText.html" title="ST_GeomFromText">ST_GeomFromText</a>
+        </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_PointFromText.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#idm8784">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_WKTToSQL.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_PointFromText </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_WKTToSQL</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

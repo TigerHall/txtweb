@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Equals</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="AsTopoJSON.html" title="AsTopoJSON"/>
+    <link rel="next" href="TG_Intersects.html" title="Intersects"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">Equals</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="AsTopoJSON.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">9.13. Topology Spatial Relationships</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="TG_Intersects.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="TG_Equals">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>Equals — Returns true if two topogeometries are composed of the same topology primitives.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">boolean <strong class="fsfunc">Equals</strong>(</code>topogeometry  <var class="pdparam">tg1</var>, topogeometry  <var class="pdparam">tg2</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm26284">
+        <h2>Description</h2>
+        <p>Returns true if two topogeometries are composed of the same topology primitives: faces, edges, nodes.</p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>This function not supported for topogeometries that are geometry collections.  It also can not compare topogeometries from different topologies.</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p class="availability">Availability: 1.1.0 </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports 3d and will not drop the z-index.
+        </p>
+      </div>
+      <div class="refsection" id="idm26294">
+        <h2>Examples</h2>
+        <pre class="programlisting"/>
+      </div>
+      <div class="refsection" id="idm26297">
+        <h2>See Also</h2>
+        <p><a class="xref" href="GetTopoGeomElements.html" title="GetTopoGeomElements">GetTopoGeomElements</a>, <a class="xref" href="ST_Equals.html" title="ST_Equals">ST_Equals</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="AsTopoJSON.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="Topology.html#Topology_Relationships">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="TG_Intersects.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">AsTopoJSON </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> Intersects</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>postgis.gdal_vsi_options</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="postgis_enable_outdb_rasters.html" title="postgis.enable_outdb_rasters"/>
+    <link rel="next" href="PostGIS_AddBBox.html" title="PostGIS_AddBBox"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">postgis.gdal_vsi_options</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="postgis_enable_outdb_rasters.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.22. Grand Unified Custom Variables (GUCs)</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="PostGIS_AddBBox.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="postgis_gdal_vsi_options">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>postgis.gdal_vsi_options — 
+                    A string configuration to set options used when working with an out-db raster.
+                </p>
+      </div>
+      <div class="refsection" id="idm20910">
+        <h2>Description</h2>
+        <p>
+                    A string configuration to set options used when working with an out-db raster. <a class="link" href="http://trac.osgeo.org/gdal/wiki/ConfigOptions" target="_top">Configuration options</a> control things like how much space GDAL allocates to local data cache, whether to read overviews, and what access keys to use for remote out-db data sources.
+                </p>
+        <p class="availability">Availability: 3.2.0</p>
+      </div>
+      <div class="refsection" id="idm20915">
+        <h2>Examples</h2>
+        <p>Set <code class="varname">postgis.gdal_vsi_options</code> for current session:</p>
+        <pre class="programlisting">
+SET postgis.gdal_vsi_options = 'AWS_ACCESS_KEY_ID=xxxxxxxxxxxxxxx AWS_SECRET_ACCESS_KEY=yyyyyyyyyyyyyyyyyyyyyyyyyy';
+                </pre>
+        <p>Set <code class="varname">postgis.gdal_vsi_options</code> just for the <span class="emphasis"><em>current transaction</em></span> using the <code class="varname">LOCAL</code> keyword:</p>
+        <pre class="programlisting">
+SET LOCAL postgis.gdal_vsi_options = 'AWS_ACCESS_KEY_ID=xxxxxxxxxxxxxxx AWS_SECRET_ACCESS_KEY=yyyyyyyyyyyyyyyyyyyyyyyyyy';
+                </pre>
+      </div>
+      <div class="refsection" id="idm20925">
+        <h2>See Also</h2>
+        <p>
+                    <a class="xref" href="postgis_enable_outdb_rasters.html" title="postgis.enable_outdb_rasters">postgis.enable_outdb_rasters</a>
+                    <a class="xref" href="postgis_gdal_enabled_drivers.html" title="postgis.gdal_enabled_drivers">postgis.gdal_enabled_drivers</a>
+                </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="postgis_enable_outdb_rasters.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#PostGIS_GUC">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="PostGIS_AddBBox.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">postgis.enable_outdb_rasters </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> PostGIS_AddBBox</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

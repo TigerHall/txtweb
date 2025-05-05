@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_CPAWithin</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_DistanceCPA.html" title="ST_DistanceCPA"/>
+    <link rel="next" href="PostGIS_Extensions_Upgrade.html" title="PostGIS_Extensions_Upgrade"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_CPAWithin</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_DistanceCPA.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.20. Trajectory Functions</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="PostGIS_Extensions_Upgrade.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_CPAWithin">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_CPAWithin — 
+Tests if the closest point of approach of two trajectories
+is within the specified distance.
+      </p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">boolean <strong class="fsfunc">ST_CPAWithin</strong>(</code>geometry  <var class="pdparam">track1</var>, geometry  <var class="pdparam">track2</var>, float8  <var class="pdparam">dist</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm20344">
+        <h2>Description</h2>
+        <p>
+Tests whether two moving objects have ever been closer than the specified distance.
+      </p>
+        <p>
+Inputs must be valid trajectories as checked by
+<a class="xref" href="ST_IsValidTrajectory.html" title="ST_IsValidTrajectory">ST_IsValidTrajectory</a>.
+False is returned if the trajectories do not overlap in their M ranges.
+			</p>
+        <p class="availability">Availability: 2.2.0</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports 3d and will not drop the z-index.
+        </p>
+      </div>
+      <div class="refsection" id="idm20354">
+        <h2>Examples</h2>
+        <pre class="programlisting">
+WITH inp AS ( SELECT
+  ST_AddMeasure('LINESTRING Z (0 0 0, 10 0 5)'::geometry,
+    extract(epoch from '2015-05-26 10:00'::timestamptz),
+    extract(epoch from '2015-05-26 11:00'::timestamptz)
+  ) a,
+  ST_AddMeasure('LINESTRING Z (0 2 10, 12 1 2)'::geometry,
+    extract(epoch from '2015-05-26 10:00'::timestamptz),
+    extract(epoch from '2015-05-26 11:00'::timestamptz)
+  ) b
+)
+SELECT ST_CPAWithin(a,b,2), ST_DistanceCPA(a,b) distance FROM inp;
+
+ st_cpawithin |     distance
+--------------+------------------
+ t            | 1.96521473776207
+</pre>
+      </div>
+      <div class="refsection" id="idm20357">
+        <h2>See Also</h2>
+        <p>
+<a class="xref" href="ST_IsValidTrajectory.html" title="ST_IsValidTrajectory">ST_IsValidTrajectory</a>,
+<a class="xref" href="ST_ClosestPointOfApproach.html" title="ST_ClosestPointOfApproach">ST_ClosestPointOfApproach</a>,
+<a class="xref" href="ST_DistanceCPA.html" title="ST_DistanceCPA">ST_DistanceCPA</a>,
+<a class="xref" href="geometry_distance_cpa.html" title="|=|">|=|</a>
+			</p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_DistanceCPA.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Temporal">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="PostGIS_Extensions_Upgrade.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_DistanceCPA </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> PostGIS_Extensions_Upgrade</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

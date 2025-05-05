@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_LineSubstring</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_LineLocatePoint.html" title="ST_LineLocatePoint"/>
+    <link rel="next" href="ST_LocateAlong.html" title="ST_LocateAlong"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_LineSubstring</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_LineLocatePoint.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.19. Linear Referencing</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_LocateAlong.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_LineSubstring">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_LineSubstring — Returns the part of a line between two fractional locations.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_LineSubstring</strong>(</code>geometry  <var class="pdparam">a_linestring</var>, float8  <var class="pdparam">startfraction</var>, float8  <var class="pdparam">endfraction</var><code>)</code>;</p>
+          <p><code class="funcdef">geography <strong class="fsfunc">ST_LineSubstring</strong>(</code>geography  <var class="pdparam">a_linestring</var>, float8  <var class="pdparam">startfraction</var>, float8  <var class="pdparam">endfraction</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm19977">
+        <h2>Description</h2>
+        <p>Computes the line which is the section of the input line
+			starting and ending at the given fractional locations.
+            The first argument must be a LINESTRING.
+			The second and third arguments are values in the range [0, 1]
+            representing the start and end locations
+            as fractions of line length.
+            The Z and M values are interpolated for added endpoints if present.
+            </p>
+        <p>If <code class="varname">startfraction</code> and <code class="varname">endfraction</code>
+            have the same value this is equivalent
+			to <a class="xref" href="ST_LineInterpolatePoint.html" title="ST_LineInterpolatePoint">ST_LineInterpolatePoint</a>.</p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>This only works with LINESTRINGs.
+			    To use on contiguous MULTILINESTRINGs
+                first join them with <a class="xref" href="ST_LineMerge.html" title="ST_LineMerge">ST_LineMerge</a>.</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>Since release 1.1.1 this function interpolates M and
+			  Z values.  Prior releases set Z and M to
+			  unspecified values.</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p class="enhanced">Enhanced: 3.4.0 - Support for geography was introduced.</p>
+        <p class="changed">Changed: 2.1.0. Up to 2.0.x this was called ST_Line_Substring.</p>
+        <p class="availability">Availability: 1.1.0, Z and M supported added in 1.1.1</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports 3d and will not drop the z-index.
+        </p>
+      </div>
+      <div class="refsection" id="idm19996">
+        <h2>Examples</h2>
+        <div class="informalfigure">
+          <div class="mediaobject">
+            <img src="../images/st_line_substring01.png"/>
+            <div class="caption">
+              <p>A LineString seen with 1/3 midrange overlaid (0.333, 0.666) </p>
+            </div>
+          </div>
+        </div>
+        <pre class="programlisting">
+SELECT ST_AsText(ST_LineSubstring( 'LINESTRING (20 180, 50 20, 90 80, 120 40, 180 150)', 0.333, 0.666));
+------------------------------------------------------------------------------------------------
+LINESTRING (45.17311810399485 45.74337011202746, 50 20, 90 80, 112.97593050157862 49.36542599789519)
+</pre>
+        <p>
+If start and end locations are the same, the result is a POINT.
+</p>
+        <pre class="programlisting">
+SELECT ST_AsText(ST_LineSubstring( 'LINESTRING(25 50, 100 125, 150 190)', 0.333, 0.333));
+------------------------------------------
+ POINT(69.2846934853974 94.2846934853974)
+</pre>
+        <p>
+A query to cut a LineString into sections of length 100 or shorter.
+It uses <code class="varname">generate_series()</code> with a CROSS JOIN LATERAL
+to produce the equivalent of a FOR loop.
+</p>
+        <pre class="programlisting">
+
+WITH data(id, geom) AS (VALUES
+        ( 'A', 'LINESTRING( 0 0, 200 0)'::geometry ),
+        ( 'B', 'LINESTRING( 0 100, 350 100)'::geometry ),
+        ( 'C', 'LINESTRING( 0 200, 50 200)'::geometry )
+    )
+SELECT id, i,
+       ST_AsText( ST_LineSubstring( geom, startfrac, LEAST( endfrac, 1 )) ) AS geom
+FROM (
+    SELECT id, geom, ST_Length(geom) len, 100 sublen FROM data
+    ) AS d
+CROSS JOIN LATERAL (
+    SELECT i, (sublen * i) / len AS startfrac,
+              (sublen * (i+1)) / len AS endfrac
+    FROM generate_series(0, floor( len / sublen )::integer ) AS t(i)
+    -- skip last i if line length is exact multiple of sublen
+    WHERE (sublen * i) / len &lt;&gt; 1.0
+    ) AS d2;
+
+ id | i |            geom
+----+---+-----------------------------
+ A  | 0 | LINESTRING(0 0,100 0)
+ A  | 1 | LINESTRING(100 0,200 0)
+ B  | 0 | LINESTRING(0 100,100 100)
+ B  | 1 | LINESTRING(100 100,200 100)
+ B  | 2 | LINESTRING(200 100,300 100)
+ B  | 3 | LINESTRING(300 100,350 100)
+ C  | 0 | LINESTRING(0 200,50 200)
+
+</pre>
+        <p>Geography implementation measures along a spheroid, geometry along a line</p>
+        <pre class="programlisting">
+SELECT ST_AsText(ST_LineSubstring( 'LINESTRING(-118.2436 34.0522, -71.0570 42.3611)'::geography, 0.333, 0.666),6) AS geog_sub
+ , ST_AsText(ST_LineSubstring('LINESTRING(-118.2436 34.0522, -71.0570 42.3611)'::geometry, 0.333, 0.666),6) AS geom_sub;
+---------------------------------------------------------------
+geog_sub | LINESTRING(-104.167064 38.854691,-87.674646 41.849854)
+geom_sub | LINESTRING(-102.530462 36.819064,-86.817324 39.585927)
+</pre>
+      </div>
+      <div class="refsection" id="idm20012">
+        <h2>See Also</h2>
+        <p><a class="xref" href="ST_Length.html" title="ST_Length">ST_Length</a>, <a class="xref" href="ST_LineExtend.html" title="ST_LineExtend">ST_LineExtend</a>, <a class="xref" href="ST_LineInterpolatePoint.html" title="ST_LineInterpolatePoint">ST_LineInterpolatePoint</a>, <a class="xref" href="ST_LineMerge.html" title="ST_LineMerge">ST_LineMerge</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_LineLocatePoint.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Linear_Referencing">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_LocateAlong.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_LineLocatePoint </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_LocateAlong</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

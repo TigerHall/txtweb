@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>postgis.enable_outdb_rasters</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="postgis_gdal_enabled_drivers.html" title="postgis.gdal_enabled_drivers"/>
+    <link rel="next" href="postgis_gdal_vsi_options.html" title="postgis.gdal_vsi_options"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">postgis.enable_outdb_rasters</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="postgis_gdal_enabled_drivers.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.22. Grand Unified Custom Variables (GUCs)</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="postgis_gdal_vsi_options.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="postgis_enable_outdb_rasters">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>postgis.enable_outdb_rasters — 
+                    A boolean configuration option to enable access to out-db raster bands.
+                </p>
+      </div>
+      <div class="refsection" id="idm20878">
+        <h2>Description</h2>
+        <p>
+                    A boolean configuration option to enable access to out-db raster bands. This option can be set in PostgreSQL's configuration file: postgresql.conf. It can also be set by connection or transaction.
+                </p>
+        <p>
+                    The initial value of <code class="varname">postgis.enable_outdb_rasters</code> may also be set by passing the environment variable <code class="varname">POSTGIS_ENABLE_OUTDB_RASTERS</code> with a non-zero value to the process starting PostgreSQL.
+                </p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>
+                        Even if <code class="varname">postgis.enable_outdb_rasters</code> is True, the GUC <code class="varname">postgis.gdal_enabled_drivers</code> determines the accessible raster formats.
+                    </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>
+                        In the standard PostGIS installation, <code class="varname">postgis.enable_outdb_rasters</code> is set to False.
+                    </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p class="availability">Availability: 2.2.0</p>
+      </div>
+      <div class="refsection" id="idm20892">
+        <h2>Examples</h2>
+        <p>Set and reset <code class="varname">postgis.enable_outdb_rasters</code> for current session</p>
+        <pre class="programlisting">
+SET postgis.enable_outdb_rasters TO True;
+SET postgis.enable_outdb_rasters = default;
+SET postgis.enable_outdb_rasters = True;
+SET postgis.enable_outdb_rasters = False;
+                </pre>
+        <p>Set for all new connections to a specific database</p>
+        <pre class="programlisting">
+ALTER DATABASE gisdb SET postgis.enable_outdb_rasters = true;
+                </pre>
+        <p>Setting for whole database cluster. Requires super user access.
+                    Also note that database, session, and user settings override this.</p>
+        <pre class="programlisting">
+ --writes to postgres.auto.conf
+ALTER SYSTEM SET postgis.enable_outdb_rasters = true;
+ --Reloads postgres conf
+SELECT pg_reload_conf();
+                </pre>
+      </div>
+      <div class="refsection" id="idm20901">
+        <h2>See Also</h2>
+        <p>
+                    <a class="xref" href="postgis_gdal_enabled_drivers.html" title="postgis.gdal_enabled_drivers">postgis.gdal_enabled_drivers</a>
+                    <a class="xref" href="postgis_gdal_vsi_options.html" title="postgis.gdal_vsi_options">postgis.gdal_vsi_options</a>
+                </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="postgis_gdal_enabled_drivers.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#PostGIS_GUC">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="postgis_gdal_vsi_options.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">postgis.gdal_enabled_drivers </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> postgis.gdal_vsi_options</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_MakeEmptyCoverage</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="RT_ST_Band.html" title="ST_Band"/>
+    <link rel="next" href="RT_ST_MakeEmptyRaster.html" title="ST_MakeEmptyRaster"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_MakeEmptyCoverage</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="RT_ST_Band.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">11.3. Raster Constructors</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="RT_ST_MakeEmptyRaster.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="RT_ST_MakeEmptyCoverage">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_MakeEmptyCoverage — Cover georeferenced area with a grid of empty raster tiles.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">raster <strong class="fsfunc">ST_MakeEmptyCoverage</strong>(</code>integer  <var class="pdparam">tilewidth</var>, integer  <var class="pdparam">tileheight</var>, integer  <var class="pdparam">width</var>, integer  <var class="pdparam">height</var>, double precision  <var class="pdparam">upperleftx</var>, double precision  <var class="pdparam">upperlefty</var>, double precision  <var class="pdparam">scalex</var>, double precision  <var class="pdparam">scaley</var>, double precision  <var class="pdparam">skewx</var>, double precision  <var class="pdparam">skewy</var>, integer  <var class="pdparam">srid=unknown</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm28506">
+        <h2>Description</h2>
+        <p>Create a set of raster tiles with <a class="xref" href="RT_ST_MakeEmptyRaster.html" title="ST_MakeEmptyRaster">ST_MakeEmptyRaster</a>. Grid dimension is <code class="varname">width</code> &amp; <code class="varname">height</code>. Tile dimension is <code class="varname">tilewidth</code> &amp; <code class="varname">tileheight</code>. The covered georeferenced area is from upper left corner (<code class="varname">upperleftx</code>, <code class="varname">upperlefty</code>) to lower right corner (<code class="varname">upperleftx</code> + <code class="varname">width</code> * <code class="varname">scalex</code>, <code class="varname">upperlefty</code> + <code class="varname">height</code> * <code class="varname">scaley</code>).</p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>Note that scaley is generally negative for rasters and scalex is generally positive. So lower right corner will have a lower y value and higher x value than the upper left corner.</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p class="availability">Availability: 2.4.0 </p>
+      </div>
+      <div class="refsection" id="idm28525">
+        <h2>Examples Basic</h2>
+        <p>Create 16 tiles in a 4x4 grid to cover the WGS84 area from upper left corner (22, 77) to lower right corner (55, 33).</p>
+        <pre class="programlisting">SELECT (ST_MetaData(tile)).* FROM ST_MakeEmptyCoverage(1, 1, 4, 4, 22, 33, (55 - 22)/(4)::float, (33 - 77)/(4)::float, 0., 0., 4326) tile;
+
+ upperleftx | upperlefty | width | height | scalex | scaley | skewx | skewy | srid | numbands
+-------------------------------------------------------------------------------------
+         22 |         33 |     1 |      1 |   8.25 |    -11 |     0 |     0 | 4326 |        0
+      30.25 |         33 |     1 |      1 |   8.25 |    -11 |     0 |     0 | 4326 |        0
+       38.5 |         33 |     1 |      1 |   8.25 |    -11 |     0 |     0 | 4326 |        0
+      46.75 |         33 |     1 |      1 |   8.25 |    -11 |     0 |     0 | 4326 |        0
+         22 |         22 |     1 |      1 |   8.25 |    -11 |     0 |     0 | 4326 |        0
+      30.25 |         22 |     1 |      1 |   8.25 |    -11 |     0 |     0 | 4326 |        0
+       38.5 |         22 |     1 |      1 |   8.25 |    -11 |     0 |     0 | 4326 |        0
+      46.75 |         22 |     1 |      1 |   8.25 |    -11 |     0 |     0 | 4326 |        0
+         22 |         11 |     1 |      1 |   8.25 |    -11 |     0 |     0 | 4326 |        0
+      30.25 |         11 |     1 |      1 |   8.25 |    -11 |     0 |     0 | 4326 |        0
+       38.5 |         11 |     1 |      1 |   8.25 |    -11 |     0 |     0 | 4326 |        0
+      46.75 |         11 |     1 |      1 |   8.25 |    -11 |     0 |     0 | 4326 |        0
+         22 |          0 |     1 |      1 |   8.25 |    -11 |     0 |     0 | 4326 |        0
+      30.25 |          0 |     1 |      1 |   8.25 |    -11 |     0 |     0 | 4326 |        0
+       38.5 |          0 |     1 |      1 |   8.25 |    -11 |     0 |     0 | 4326 |        0
+      46.75 |          0 |     1 |      1 |   8.25 |    -11 |     0 |     0 | 4326 |        0</pre>
+      </div>
+      <div class="refsection" id="idm28529">
+        <h2>See Also</h2>
+        <p>
+                      <a class="xref" href="RT_ST_MakeEmptyRaster.html" title="ST_MakeEmptyRaster">ST_MakeEmptyRaster</a>
+                    </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="RT_ST_Band.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="RT_reference.html#Raster_Constructors">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="RT_ST_MakeEmptyRaster.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_Band </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_MakeEmptyRaster</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

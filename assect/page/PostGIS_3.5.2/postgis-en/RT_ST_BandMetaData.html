@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_BandMetaData</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="RT_ST_WorldToRasterCoordY.html" title="ST_WorldToRasterCoordY"/>
+    <link rel="next" href="RT_ST_BandNoDataValue.html" title="ST_BandNoDataValue"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_BandMetaData</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="RT_ST_WorldToRasterCoordY.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">11.5. Raster Band Accessors</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="RT_ST_BandNoDataValue.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="RT_ST_BandMetaData">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_BandMetaData — Returns basic meta data for a specific raster band. band num 1 is assumed if none-specified.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">(1) record <strong class="fsfunc">ST_BandMetaData</strong>(</code>raster <var class="pdparam">rast</var>, integer <var class="pdparam">band=1</var><code>)</code>;</p>
+          <p><code class="funcdef">(2) record <strong class="fsfunc">ST_BandMetaData</strong>(</code>raster <var class="pdparam">rast</var>, integer[] <var class="pdparam">band</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm29531">
+        <h2>Description</h2>
+        <p>Returns basic meta data about a raster band. Columns returned: pixeltype, nodatavalue, isoutdb, path, outdbbandnum, filesize, filetimestamp.
+                </p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>
+                        If raster contains no bands then an error is thrown.
+                    </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>
+                        If band has no NODATA value, nodatavalue are NULL.
+                    </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>
+                        If isoutdb is False, path, outdbbandnum, filesize and filetimestamp are NULL. If outdb access is disabled, filesize and filetimestamp will also be NULL.
+                    </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p class="enhanced">Enhanced: 2.5.0 to include <span class="emphasis"><em>outdbbandnum</em></span>, <span class="emphasis"><em>filesize</em></span> and <span class="emphasis"><em>filetimestamp</em></span> for outdb rasters.</p>
+      </div>
+      <div class="refsection" id="idm29544">
+        <h2>Examples: Variant 1</h2>
+        <pre class="programlisting">
+SELECT
+    rid,
+    (foo.md).*
+FROM (
+    SELECT
+        rid,
+        ST_BandMetaData(rast, 1) AS md
+    FROM dummy_rast
+    WHERE rid=2
+) As foo;
+
+ rid | pixeltype | nodatavalue | isoutdb | path | outdbbandnum
+-----+-----------+---- --------+---------+------+--------------
+   2 | 8BUI      |           0 | f       |      |
+                </pre>
+      </div>
+      <div class="refsection" id="idm29547">
+        <h2>Examples: Variant 2</h2>
+        <pre class="programlisting">
+WITH foo AS (
+    SELECT
+        ST_AddBand(NULL::raster, '/home/pele/devel/geo/postgis-git/raster/test/regress/loader/Projected.tif', NULL::int[]) AS rast
+)
+SELECT
+    *
+FROM ST_BandMetadata(
+    (SELECT rast FROM foo),
+    ARRAY[1,3,2]::int[]
+);
+
+ bandnum | pixeltype | nodatavalue | isoutdb |                                      path                                      | outdbbandnum  | filesize | filetimestamp |
+---------+-----------+-------------+---------+--------------------------------------------------------------------------------+---------------+----------+---------------+-
+       1 | 8BUI      |             | t       | /home/pele/devel/geo/postgis-git/raster/test/regress/loader/Projected.tif      |            1  |    12345 |    1521807257 |
+       3 | 8BUI      |             | t       | /home/pele/devel/geo/postgis-git/raster/test/regress/loader/Projected.tif      |            3  |    12345 |    1521807257 |
+       2 | 8BUI      |             | t       | /home/pele/devel/geo/postgis-git/raster/test/regress/loader/Projected.tif      |            2  |    12345 |    1521807257 |
+                </pre>
+      </div>
+      <div class="refsection" id="idm29550">
+        <h2>See Also</h2>
+        <p><a class="xref" href="RT_ST_MetaData.html" title="ST_MetaData">ST_MetaData</a>, <a class="xref" href="RT_ST_BandPixelType.html" title="ST_BandPixelType">ST_BandPixelType</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="RT_ST_WorldToRasterCoordY.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="RT_reference.html#RasterBand_Accessors">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="RT_ST_BandNoDataValue.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_WorldToRasterCoordY </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_BandNoDataValue</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_GeomFromEWKB</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_GeogFromWKB.html" title="ST_GeogFromWKB"/>
+    <link rel="next" href="ST_GeomFromWKB.html" title="ST_GeomFromWKB"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_GeomFromEWKB</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_GeogFromWKB.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.8.2. Well-Known Binary (WKB)</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_GeomFromWKB.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_GeomFromEWKB">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_GeomFromEWKB — Return a specified ST_Geometry value from Extended Well-Known Binary representation (EWKB).</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_GeomFromEWKB</strong>(</code>bytea  <var class="pdparam">EWKB</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm9459">
+        <h2>Description</h2>
+        <p>Constructs a PostGIS ST_Geometry object from the OGC Extended Well-Known binary (EWKT) representation.</p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>The EWKB format is not an OGC standard, but a PostGIS specific format that includes the spatial reference system (SRID)
+			identifier</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p class="enhanced">Enhanced: 2.0.0 support for Polyhedral surfaces and TIN was introduced.</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports 3d and will not drop the z-index.
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method supports Circular Strings and Curves.
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports Polyhedral surfaces.
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports Triangles and Triangulated Irregular Network Surfaces (TIN).
+        </p>
+      </div>
+      <div class="refsection" id="idm9481">
+        <h2>Examples</h2>
+        <p>line string binary rep 0f
+		LINESTRING(-71.160281 42.258729,-71.160837 42.259113,-71.161144 42.25932) in NAD 83 long lat (4269).</p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>NOTE: Even though byte arrays are delimited with \ and may have ', we need to escape both out with \ and '' if standard_conforming_strings is off.  So it does not
+			look exactly like its AsEWKB representation.</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <pre class="programlisting">SELECT ST_GeomFromEWKB(E'\\001\\002\\000\\000 \\255\\020\\000\\000\\003\\000\\000\\000\\344J=
+\\013B\\312Q\\300n\\303(\\010\\036!E@''\\277E''K
+\\312Q\\300\\366{b\\235*!E@\\225|\\354.P\\312Q
+\\300p\\231\\323e1!E@');</pre>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>In PostgreSQL 9.1+ - standard_conforming_strings is set to on by default, where as in past versions it was set to off.  You can change defaults as needed
+		    for a single query or at the database or server level.  Below is how you would do it with standard_conforming_strings = on.  In this case we escape the ' with standard ansi ',
+		    but slashes are not escaped</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <pre class="programlisting">
+	    set standard_conforming_strings = on;
+SELECT ST_GeomFromEWKB('\001\002\000\000 \255\020\000\000\003\000\000\000\344J=\012\013B
+    \312Q\300n\303(\010\036!E@''\277E''K\012\312Q\300\366{b\235*!E@\225|\354.P\312Q\012\300p\231\323e1')</pre>
+      </div>
+      <div class="refsection" id="idm9490">
+        <h2>See Also</h2>
+        <p><a class="xref" href="ST_AsBinary.html" title="ST_AsBinary">ST_AsBinary</a>, <a class="xref" href="ST_AsEWKB.html" title="ST_AsEWKB">ST_AsEWKB</a>, <a class="xref" href="ST_GeomFromWKB.html" title="ST_GeomFromWKB">ST_GeomFromWKB</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_GeogFromWKB.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#idm9416">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_GeomFromWKB.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_GeogFromWKB </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_GeomFromWKB</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

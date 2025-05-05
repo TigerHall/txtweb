@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>postgis_srs_codes</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_TransformPipeline.html" title="ST_TransformPipeline"/>
+    <link rel="next" href="postgis_srs.html" title="postgis_srs"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">postgis_srs_codes</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_TransformPipeline.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.7. Spatial Reference System Functions</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="postgis_srs.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="postgis_srs_codes">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>postgis_srs_codes — Return the list of SRS codes associated with the given authority.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">setof text <strong class="fsfunc">postgis_srs_codes</strong>(</code>text  <var class="pdparam">auth_name</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm8651">
+        <h2>Description</h2>
+        <p>Returns a set of all <code class="varname">auth_srid</code> for the given <code class="varname">auth_name</code>.</p>
+        <p class="availability">Availability: 3.4.0</p>
+        <p>Proj version 6+</p>
+      </div>
+      <div class="refsection" id="idm8658">
+        <h2>Examples</h2>
+        <p>List the first ten codes associated with the EPSG authority.</p>
+        <pre class="programlisting">
+SELECT * FROM postgis_srs_codes('EPSG') LIMIT 10;
+
+ postgis_srs_codes
+-------------------
+ 2000
+ 20004
+ 20005
+ 20006
+ 20007
+ 20008
+ 20009
+ 2001
+ 20010
+ 20011
+    </pre>
+      </div>
+      <div class="refsection" id="idm8662">
+        <h2>See Also</h2>
+        <p><a class="xref" href="postgis_srs.html" title="postgis_srs">postgis_srs</a>, <a class="xref" href="postgis_srs_all.html" title="postgis_srs_all">postgis_srs_all</a>, <a class="xref" href="postgis_srs_search.html" title="postgis_srs_search">postgis_srs_search</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_TransformPipeline.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#SRS_Functions">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="postgis_srs.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_TransformPipeline </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> postgis_srs</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_LengthSpheroid</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_3DLength.html" title="ST_3DLength"/>
+    <link rel="next" href="ST_LongestLine.html" title="ST_LongestLine"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_LengthSpheroid</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_3DLength.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.12. Measurement Functions</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_LongestLine.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_Length_Spheroid">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_LengthSpheroid — Returns the 2D or 3D length/perimeter of a lon/lat geometry on a spheroid.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">float <strong class="fsfunc">ST_LengthSpheroid</strong>(</code>geometry  <var class="pdparam">a_geometry</var>, spheroid  <var class="pdparam">a_spheroid</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm14987">
+        <h2>Description</h2>
+        <p>Calculates the length or perimeter of a geometry on an ellipsoid. This
+			is useful if the coordinates of the geometry are in
+			longitude/latitude and a length is desired without reprojection.
+			The spheroid is specified by a text value	as follows:</p>
+        <div class="literallayout">
+          <p><br/>
+SPHEROID[&lt;NAME&gt;,&lt;SEMI-MAJOR AXIS&gt;,&lt;INVERSE FLATTENING&gt;]<br/>
+ </p>
+        </div>
+        <p>For example:</p>
+        <div class="literallayout">
+          <p>SPHEROID["GRS_1980",6378137,298.257222101]</p>
+        </div>
+        <p class="availability">Availability: 1.2.2</p>
+        <p class="changed">Changed: 2.2.0 In prior versions this was called ST_Length_Spheroid and had the alias ST_3DLength_Spheroid</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports 3d and will not drop the z-index.
+        </p>
+      </div>
+      <div class="refsection" id="idm14999">
+        <h2>Examples</h2>
+        <pre class="programlisting">SELECT ST_LengthSpheroid( geometry_column,
+			  'SPHEROID["GRS_1980",6378137,298.257222101]' )
+			  FROM geometry_table;
+
+SELECT ST_LengthSpheroid( geom, sph_m ) As tot_len,
+ST_LengthSpheroid(ST_GeometryN(geom,1), sph_m) As len_line1,
+ST_LengthSpheroid(ST_GeometryN(geom,2), sph_m) As len_line2
+			  FROM (SELECT ST_GeomFromText('MULTILINESTRING((-118.584 38.374,-118.583 38.5),
+	(-71.05957 42.3589 , -71.061 43))') As geom,
+CAST('SPHEROID["GRS_1980",6378137,298.257222101]' As spheroid) As sph_m)  as foo;
+	tot_len      |    len_line1     |    len_line2
+------------------+------------------+------------------
+ 85204.5207562955 | 13986.8725229309 | 71217.6482333646
+
+ --3D
+SELECT ST_LengthSpheroid( geom, sph_m ) As tot_len,
+ST_LengthSpheroid(ST_GeometryN(geom,1), sph_m) As len_line1,
+ST_LengthSpheroid(ST_GeometryN(geom,2), sph_m) As len_line2
+			  FROM (SELECT ST_GeomFromEWKT('MULTILINESTRING((-118.584 38.374 20,-118.583 38.5 30),
+	(-71.05957 42.3589 75, -71.061 43 90))') As geom,
+CAST('SPHEROID["GRS_1980",6378137,298.257222101]' As spheroid) As sph_m)  as foo;
+
+	 tot_len      |    len_line1    |    len_line2
+------------------+-----------------+------------------
+ 85204.5259107402 | 13986.876097711 | 71217.6498130292
+
+</pre>
+      </div>
+      <div class="refsection" id="idm15002">
+        <h2>See Also</h2>
+        <p><a class="xref" href="ST_GeometryN.html" title="ST_GeometryN">ST_GeometryN</a>, <a class="xref" href="ST_Length.html" title="ST_Length">ST_Length</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_3DLength.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Measurement_Functions">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_LongestLine.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_3DLength </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_LongestLine</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

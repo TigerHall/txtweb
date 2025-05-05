@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_IsValidTrajectory</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_AddMeasure.html" title="ST_AddMeasure"/>
+    <link rel="next" href="ST_ClosestPointOfApproach.html" title="ST_ClosestPointOfApproach"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_IsValidTrajectory</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_AddMeasure.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.20. Trajectory Functions</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_ClosestPointOfApproach.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_IsValidTrajectory">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_IsValidTrajectory — Tests if the geometry is a valid trajectory.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">boolean <strong class="fsfunc">ST_IsValidTrajectory</strong>(</code>geometry  <var class="pdparam">line</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm20236">
+        <h2>Description</h2>
+        <p>
+Tests if a geometry encodes a valid trajectory.
+A valid trajectory is represented as a <code class="varname">LINESTRING</code>
+with measures (M values).
+The measure values must increase from each vertex to the next.
+			</p>
+        <p>
+Valid trajectories are expected as input to spatio-temporal functions
+like <a class="xref" href="ST_ClosestPointOfApproach.html" title="ST_ClosestPointOfApproach">ST_ClosestPointOfApproach</a>
+			</p>
+        <p class="availability">Availability: 2.2.0</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports 3d and will not drop the z-index.
+        </p>
+      </div>
+      <div class="refsection" id="idm20247">
+        <h2>Examples</h2>
+        <pre class="programlisting">
+-- A valid trajectory
+SELECT ST_IsValidTrajectory(ST_MakeLine(
+  ST_MakePointM(0,0,1),
+  ST_MakePointM(0,1,2))
+);
+ t
+
+-- An invalid trajectory
+SELECT ST_IsValidTrajectory(ST_MakeLine(ST_MakePointM(0,0,1), ST_MakePointM(0,1,0)));
+NOTICE:  Measure of vertex 1 (0) not bigger than measure of vertex 0 (1)
+ st_isvalidtrajectory
+----------------------
+ f
+</pre>
+      </div>
+      <div class="refsection" id="idm20250">
+        <h2>See Also</h2>
+        <p>
+<a class="xref" href="ST_ClosestPointOfApproach.html" title="ST_ClosestPointOfApproach">ST_ClosestPointOfApproach</a>
+			</p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_AddMeasure.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Temporal">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_ClosestPointOfApproach.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_AddMeasure </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_ClosestPointOfApproach</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

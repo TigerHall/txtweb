@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_PointZ</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_Point.html" title="ST_Point"/>
+    <link rel="next" href="ST_PointM.html" title="ST_PointM"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_PointZ</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_Point.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.3. Geometry Constructors</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_PointM.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_PointZ">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_PointZ — Creates a Point with X, Y, Z and SRID values.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_PointZ</strong>(</code>float <var class="pdparam">x</var>, float <var class="pdparam">y</var>, float <var class="pdparam">z</var>, integer <var class="pdparam">srid=unknown</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm4085">
+        <h2>Description</h2>
+        <p>Returns an Point with the given X, Y and Z coordinate values, and optionally an SRID number.</p>
+        <p class="enhanced">Enhanced: 3.2.0 srid as an extra optional argument was added. Older installs require combining with ST_SetSRID to mark the srid on the geometry.</p>
+      </div>
+      <div class="refsection" id="idm4089">
+        <h2>Examples</h2>
+        <pre class="programlisting">SELECT ST_PointZ(-71.104, 42.315, 3.4, 4326)</pre>
+        <pre class="programlisting">SELECT ST_PointZ(-71.104, 42.315, 3.4, srid =&gt; 4326)</pre>
+        <pre class="programlisting">SELECT ST_PointZ(-71.104, 42.315, 3.4)</pre>
+      </div>
+      <div class="refsection" id="idm4094">
+        <h2>See Also</h2>
+        <p><a class="xref" href="ST_MakePoint.html" title="ST_MakePoint">ST_MakePoint</a>, <a class="xref" href="ST_Point.html" title="ST_Point">ST_Point</a>, <a class="xref" href="ST_PointM.html" title="ST_PointM">ST_PointM</a>, <a class="xref" href="ST_PointZM.html" title="ST_PointZM">ST_PointZM</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_Point.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Geometry_Constructors">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_PointM.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_Point </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_PointM</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

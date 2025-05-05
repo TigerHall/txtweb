@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_HausdorffDistance</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_FrechetDistance.html" title="ST_FrechetDistance"/>
+    <link rel="next" href="ST_Length.html" title="ST_Length"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_HausdorffDistance</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_FrechetDistance.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.12. Measurement Functions</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_Length.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_HausdorffDistance">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_HausdorffDistance — Returns the Hausdorff distance between two geometries. </p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">float <strong class="fsfunc">ST_HausdorffDistance</strong>(</code>geometry 
+			<var class="pdparam">g1</var>, geometry 
+			<var class="pdparam">g2</var><code>)</code>;</p>
+          <p><code class="funcdef">float <strong class="fsfunc">ST_HausdorffDistance</strong>(</code>geometry 
+			<var class="pdparam">g1</var>, geometry 
+			<var class="pdparam">g2</var>, float
+			<var class="pdparam">densifyFrac</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm14828">
+        <h2>Description</h2>
+        <p>Returns the
+        <a class="link" href="http://en.wikipedia.org/wiki/Hausdorff_distance" target="_top">Hausdorff distance</a>
+        between two geometries.
+        The Hausdorff distance is a measure of how similar or dissimilar 2 geometries are.
+		</p>
+        <p>The function actually computes the "Discrete Hausdorff Distance".
+        This is the Hausdorff distance computed at discrete points on the geometries.
+        The <em class="parameter"><code>densifyFrac</code></em> parameter can be specified,
+        to provide a more accurate answer by densifying
+        segments before computing the discrete Hausdorff distance.
+        Each segment is split into a number of equal-length subsegments
+        whose fraction of the segment length is closest to the given fraction.
+		</p>
+        <p>Units are in the units of the spatial reference system of the geometries.
+		</p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>
+			This algorithm is NOT equivalent to the standard Hausdorff distance.
+            However, it computes an approximation that is correct for a large subset of useful cases.
+			One important case is Linestrings that are roughly parallel to each other,
+            and roughly equal in length.  This is a useful metric for line matching.
+			</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p class="availability">Availability: 1.5.0</p>
+      </div>
+      <div class="refsection" id="idm14838">
+        <h2>Examples</h2>
+        <div class="informalfigure">
+          <div class="mediaobject">
+            <img src="../images/st_hausdorffdistance01.png"/>
+            <div class="caption">
+              <p>Hausdorff distance (red) and distance (yellow)
+            between two lines </p>
+            </div>
+          </div>
+        </div>
+        <pre class="programlisting">
+SELECT ST_HausdorffDistance(geomA, geomB),
+       ST_Distance(geomA, geomB)
+    FROM (SELECT 'LINESTRING (20 70, 70 60, 110 70, 170 70)'::geometry AS geomA,
+                 'LINESTRING (20 90, 130 90, 60 100, 190 100)'::geometry AS geomB) AS t;
+ st_hausdorffdistance | st_distance
+----------------------+-------------
+    37.26206567625497 |          20
+</pre>
+        <p><span class="bold"><strong>Example:</strong></span> Hausdorff distance with densification.</p>
+        <pre class="programlisting">
+SELECT ST_HausdorffDistance(
+            'LINESTRING (130 0, 0 0, 0 150)'::geometry,
+            'LINESTRING (10 10, 10 150, 130 10)'::geometry,
+            0.5);
+ ----------------------
+          70
+</pre>
+        <p><span class="bold"><strong>Example:</strong></span>
+            For each building, find the parcel that best represents it.
+            First we require that the parcel intersect with the building geometry.
+            <code class="code">DISTINCT ON</code> guarantees we get each building listed only once.
+            <code class="code">ORDER BY .. ST_HausdorffDistance</code> selects the parcel that is most similar to the building.</p>
+        <pre class="programlisting">
+SELECT DISTINCT ON (buildings.gid) buildings.gid, parcels.parcel_id
+   FROM buildings
+       INNER JOIN parcels
+       ON ST_Intersects(buildings.geom, parcels.geom)
+   ORDER BY buildings.gid, ST_HausdorffDistance(buildings.geom, parcels.geom);
+</pre>
+      </div>
+      <div class="refsection" id="idm14855">
+        <h2>See Also</h2>
+        <p>
+          <a class="xref" href="ST_FrechetDistance.html" title="ST_FrechetDistance">ST_FrechetDistance</a>
+        </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_FrechetDistance.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Measurement_Functions">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_Length.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_FrechetDistance </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_Length</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

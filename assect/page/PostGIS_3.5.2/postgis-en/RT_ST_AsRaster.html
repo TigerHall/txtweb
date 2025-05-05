@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_AsRaster</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="RT_ST_AddBand.html" title="ST_AddBand"/>
+    <link rel="next" href="RT_ST_Band.html" title="ST_Band"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_AsRaster</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="RT_ST_AddBand.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">11.3. Raster Constructors</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="RT_ST_Band.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="RT_ST_AsRaster">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_AsRaster — Converts a PostGIS geometry to a PostGIS raster.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">raster <strong class="fsfunc">ST_AsRaster</strong>(</code>geometry  <var class="pdparam">geom</var>, raster  <var class="pdparam">ref</var>, text  <var class="pdparam">pixeltype</var>, double precision  <var class="pdparam">value=1</var>, double precision  <var class="pdparam">nodataval=0</var>, boolean  <var class="pdparam">touched=false</var><code>)</code>;</p>
+          <p><code class="funcdef">raster <strong class="fsfunc">ST_AsRaster</strong>(</code>geometry  <var class="pdparam">geom</var>, raster  <var class="pdparam">ref</var>, text[]  <var class="pdparam">pixeltype=ARRAY['8BUI']</var>, double precision[]  <var class="pdparam">value=ARRAY[1]</var>, double precision[]  <var class="pdparam">nodataval=ARRAY[0]</var>, boolean  <var class="pdparam">touched=false</var><code>)</code>;</p>
+          <p><code class="funcdef">raster <strong class="fsfunc">ST_AsRaster</strong>(</code>geometry  <var class="pdparam">geom</var>, double precision  <var class="pdparam">scalex</var>, double precision  <var class="pdparam">scaley</var>, double precision  <var class="pdparam">gridx</var>, double precision  <var class="pdparam">gridy</var>, text  <var class="pdparam">pixeltype</var>, double precision  <var class="pdparam">value=1</var>, double precision  <var class="pdparam">nodataval=0</var>, double precision  <var class="pdparam">skewx=0</var>, double precision  <var class="pdparam">skewy=0</var>, boolean  <var class="pdparam">touched=false</var><code>)</code>;</p>
+          <p><code class="funcdef">raster <strong class="fsfunc">ST_AsRaster</strong>(</code>geometry  <var class="pdparam">geom</var>, double precision  <var class="pdparam">scalex</var>, double precision  <var class="pdparam">scaley</var>, double precision  <var class="pdparam">gridx=NULL</var>, double precision  <var class="pdparam">gridy=NULL</var>, text[]  <var class="pdparam">pixeltype=ARRAY['8BUI']</var>, double precision[]  <var class="pdparam">value=ARRAY[1]</var>, double precision[]  <var class="pdparam">nodataval=ARRAY[0]</var>, double precision  <var class="pdparam">skewx=0</var>, double precision  <var class="pdparam">skewy=0</var>, boolean  <var class="pdparam">touched=false</var><code>)</code>;</p>
+          <p><code class="funcdef">raster <strong class="fsfunc">ST_AsRaster</strong>(</code>geometry  <var class="pdparam">geom</var>, double precision  <var class="pdparam">scalex</var>, double precision  <var class="pdparam">scaley</var>, text  <var class="pdparam">pixeltype</var>, double precision  <var class="pdparam">value=1</var>, double precision  <var class="pdparam">nodataval=0</var>, double precision  <var class="pdparam">upperleftx=NULL</var>, double precision  <var class="pdparam">upperlefty=NULL</var>, double precision  <var class="pdparam">skewx=0</var>, double precision  <var class="pdparam">skewy=0</var>, boolean  <var class="pdparam">touched=false</var><code>)</code>;</p>
+          <p><code class="funcdef">raster <strong class="fsfunc">ST_AsRaster</strong>(</code>geometry  <var class="pdparam">geom</var>, double precision  <var class="pdparam">scalex</var>, double precision  <var class="pdparam">scaley</var>, text[]  <var class="pdparam">pixeltype</var>, double precision[]  <var class="pdparam">value=ARRAY[1]</var>, double precision[]  <var class="pdparam">nodataval=ARRAY[0]</var>, double precision  <var class="pdparam">upperleftx=NULL</var>, double precision  <var class="pdparam">upperlefty=NULL</var>, double precision  <var class="pdparam">skewx=0</var>, double precision  <var class="pdparam">skewy=0</var>, boolean  <var class="pdparam">touched=false</var><code>)</code>;</p>
+          <p><code class="funcdef">raster <strong class="fsfunc">ST_AsRaster</strong>(</code>geometry  <var class="pdparam">geom</var>, integer  <var class="pdparam">width</var>, integer  <var class="pdparam">height</var>, double precision  <var class="pdparam">gridx</var>, double precision  <var class="pdparam">gridy</var>, text  <var class="pdparam">pixeltype</var>, double precision  <var class="pdparam">value=1</var>, double precision  <var class="pdparam">nodataval=0</var>, double precision  <var class="pdparam">skewx=0</var>, double precision  <var class="pdparam">skewy=0</var>, boolean  <var class="pdparam">touched=false</var><code>)</code>;</p>
+          <p><code class="funcdef">raster <strong class="fsfunc">ST_AsRaster</strong>(</code>geometry  <var class="pdparam">geom</var>, integer  <var class="pdparam">width</var>, integer  <var class="pdparam">height</var>, double precision  <var class="pdparam">gridx=NULL</var>, double precision  <var class="pdparam">gridy=NULL</var>, text[]  <var class="pdparam">pixeltype=ARRAY['8BUI']</var>, double precision[]  <var class="pdparam">value=ARRAY[1]</var>, double precision[]  <var class="pdparam">nodataval=ARRAY[0]</var>, double precision  <var class="pdparam">skewx=0</var>, double precision  <var class="pdparam">skewy=0</var>, boolean  <var class="pdparam">touched=false</var><code>)</code>;</p>
+          <p><code class="funcdef">raster <strong class="fsfunc">ST_AsRaster</strong>(</code>geometry  <var class="pdparam">geom</var>, integer  <var class="pdparam">width</var>, integer  <var class="pdparam">height</var>, text  <var class="pdparam">pixeltype</var>, double precision  <var class="pdparam">value=1</var>, double precision  <var class="pdparam">nodataval=0</var>, double precision  <var class="pdparam">upperleftx=NULL</var>, double precision  <var class="pdparam">upperlefty=NULL</var>, double precision  <var class="pdparam">skewx=0</var>, double precision  <var class="pdparam">skewy=0</var>, boolean  <var class="pdparam">touched=false</var><code>)</code>;</p>
+          <p><code class="funcdef">raster <strong class="fsfunc">ST_AsRaster</strong>(</code>geometry  <var class="pdparam">geom</var>, integer  <var class="pdparam">width</var>, integer  <var class="pdparam">height</var>, text[]  <var class="pdparam">pixeltype</var>, double precision[]  <var class="pdparam">value=ARRAY[1]</var>, double precision[]  <var class="pdparam">nodataval=ARRAY[0]</var>, double precision  <var class="pdparam">upperleftx=NULL</var>, double precision  <var class="pdparam">upperlefty=NULL</var>, double precision  <var class="pdparam">skewx=0</var>, double precision  <var class="pdparam">skewy=0</var>, boolean  <var class="pdparam">touched=false</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm28306">
+        <h2>Description</h2>
+        <p>Converts a PostGIS geometry to a PostGIS raster. The many variants offers three groups of  possibilities for setting the alignment and pixelsize of the resulting raster.</p>
+        <p>The first group, composed of the two first variants, produce a raster having the same alignment (<code class="varname">scalex</code>, <code class="varname">scaley</code>, <code class="varname">gridx</code> and <code class="varname">gridy</code>), pixel type and nodata value as the provided reference raster. You generally pass this reference raster by joining the table containing the geometry with the table containing the reference raster.</p>
+        <p>The second group, composed of four variants, let you set the dimensions of the raster by providing the parameters of a pixel size (<code class="varname">scalex</code> &amp; <code class="varname">scaley</code> and <code class="varname">skewx</code> &amp; <code class="varname">skewy</code>). The <code class="varname">width</code> &amp; <code class="varname">height</code> of the resulting raster will be adjusted to fit the extent of the geometry. In most cases, you must cast integer <code class="varname">scalex</code> &amp; <code class="varname">scaley</code> arguments to double precision so that PostgreSQL choose the right variant.</p>
+        <p>The third group, composed of four variants, let you fix the dimensions of the raster by providing the dimensions of the raster (<code class="varname">width</code> &amp; <code class="varname">height</code>). The parameters of the pixel size (<code class="varname">scalex</code> &amp; <code class="varname">scaley</code> and <code class="varname">skewx</code> &amp; <code class="varname">skewy</code>) of the resulting raster will be adjusted to fit the extent of the geometry.</p>
+        <p>The two first variants of each of those two last groups let you specify the alignment with an arbitrary corner of the alignment grid (<code class="varname">gridx</code> &amp; <code class="varname">gridy</code>) and the two last variants takes the upper left corner (<code class="varname">upperleftx</code> &amp; <code class="varname">upperlefty</code>).</p>
+        <p>Each group of variant allows producing a one band raster or a multiple bands raster. To produce a multiple bands raster, you must provide an array of pixel types (<code class="varname">pixeltype[]</code>), an array of initial values (<code class="varname">value</code>) and an array of nodata values (<code class="varname">nodataval</code>). If not provided pixeltyped defaults to 8BUI, values to 1 and nodataval to 0.</p>
+        <p>The output raster will be in the same spatial reference as the source geometry. The only exception is for variants with a reference raster. In this case the resulting raster will get the same SRID as the reference raster.</p>
+        <p>The optional <code class="varname">touched</code> parameter defaults to false and maps to the GDAL ALL_TOUCHED rasterization option, which determines if pixels touched by lines or polygons will be burned. Not just those on the line render path, or whose center point is within the polygon.</p>
+        <p>This is particularly useful for rendering jpegs and pngs of geometries directly from the database when using in combination
+                    with <a class="xref" href="RT_ST_AsPNG.html" title="ST_AsPNG">ST_AsPNG</a> and other <a class="xref" href="RT_ST_AsGDALRaster.html" title="ST_AsGDALRaster">ST_AsGDALRaster</a> family of functions.</p>
+        <p class="availability">Availability: 2.0.0 - requires GDAL &gt;= 1.6.0. </p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>Not yet capable of rendering complex geometry types such as curves, TINS, and PolyhedralSurfaces, but should be
+                 able too once GDAL can.</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="refsection" id="idm28348">
+        <h2>Examples: Output geometries as PNG files</h2>
+        <div class="informalfigure">
+          <div class="mediaobject">
+            <img src="../images/st_asraster01.png"/>
+            <div class="caption">
+              <p>black circle</p>
+            </div>
+          </div>
+        </div>
+        <pre class="programlisting">
+-- this will output a black circle taking up 150 x 150 pixels --
+SELECT ST_AsPNG(ST_AsRaster(ST_Buffer(ST_Point(1,5),10),150, 150));</pre>
+        <div class="informalfigure">
+          <div class="mediaobject">
+            <img src="../images/st_asraster02.png"/>
+            <div class="caption">
+              <p>example from buffer rendered with just PostGIS</p>
+            </div>
+          </div>
+        </div>
+        <pre class="programlisting">-- the bands map to RGB bands - the value (118,154,118) - teal  --
+SELECT ST_AsPNG(
+    ST_AsRaster(
+        ST_Buffer(
+            ST_GeomFromText('LINESTRING(50 50,150 150,150 50)'), 10,'join=bevel'),
+            200,200,ARRAY['8BUI', '8BUI', '8BUI'], ARRAY[118,154,118], ARRAY[0,0,0]));</pre>
+      </div>
+      <div class="refsection" id="idm28366">
+        <h2>See Also</h2>
+        <p><a class="xref" href="RT_ST_BandPixelType.html" title="ST_BandPixelType">ST_BandPixelType</a>, <a class="xref" href="ST_Buffer.html" title="ST_Buffer">ST_Buffer</a>, <a class="xref" href="RT_ST_GDALDrivers.html" title="ST_GDALDrivers">ST_GDALDrivers</a>, <a class="xref" href="RT_ST_AsGDALRaster.html" title="ST_AsGDALRaster">ST_AsGDALRaster</a>, <a class="xref" href="RT_ST_AsPNG.html" title="ST_AsPNG">ST_AsPNG</a>, <a class="xref" href="RT_ST_AsJPEG.html" title="ST_AsJPEG">ST_AsJPEG</a>, <a class="xref" href="RT_ST_SRID.html" title="ST_SRID">ST_SRID</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="RT_ST_AddBand.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="RT_reference.html#Raster_Constructors">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="RT_ST_Band.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_AddBand </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_Band</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_PixelAsCentroid</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="RT_ST_PixelAsPoints.html" title="ST_PixelAsPoints"/>
+    <link rel="next" href="RT_ST_PixelAsCentroids.html" title="ST_PixelAsCentroids"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_PixelAsCentroid</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="RT_ST_PixelAsPoints.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">11.6. Raster Pixel Accessors and Setters</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="RT_ST_PixelAsCentroids.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="RT_ST_PixelAsCentroid">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_PixelAsCentroid — 
+                    Returns the centroid (point geometry) of the area represented by a pixel.
+                </p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_PixelAsCentroid</strong>(</code>raster  <var class="pdparam">rast</var>, integer  <var class="pdparam">x</var>, integer  <var class="pdparam">y</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm29973">
+        <h2>Description</h2>
+        <p>Returns the centroid (point geometry) of the area represented by a pixel.</p>
+        <p class="enhanced">Enhanced: 3.2.0 Faster now implemented in C.</p>
+        <p class="availability">Availability: 2.1.0</p>
+      </div>
+      <div class="refsection" id="idm29978">
+        <h2>Examples</h2>
+        <pre class="programlisting">
+SELECT ST_AsText(ST_PixelAsCentroid(rast, 1, 1)) FROM dummy_rast WHERE rid = 1;
+
+  st_astext
+--------------
+ POINT(1.5 2)
+                </pre>
+      </div>
+      <div class="refsection" id="idm29981">
+        <h2>See Also</h2>
+        <p>
+                    <a class="xref" href="RT_ST_DumpAsPolygons.html" title="ST_DumpAsPolygons">ST_DumpAsPolygons</a>,
+                    <a class="xref" href="RT_ST_PixelAsPolygon.html" title="ST_PixelAsPolygon">ST_PixelAsPolygon</a>,
+                    <a class="xref" href="RT_ST_PixelAsPolygons.html" title="ST_PixelAsPolygons">ST_PixelAsPolygons</a>,
+                    <a class="xref" href="RT_ST_PixelAsPoint.html" title="ST_PixelAsPoint">ST_PixelAsPoint</a>,
+                    <a class="xref" href="RT_ST_PixelAsPoints.html" title="ST_PixelAsPoints">ST_PixelAsPoints</a>,
+                    <a class="xref" href="RT_ST_PixelAsCentroids.html" title="ST_PixelAsCentroids">ST_PixelAsCentroids</a>
+                </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="RT_ST_PixelAsPoints.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="RT_reference.html#Raster_Pixel_Accessors">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="RT_ST_PixelAsCentroids.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_PixelAsPoints </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_PixelAsCentroids</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

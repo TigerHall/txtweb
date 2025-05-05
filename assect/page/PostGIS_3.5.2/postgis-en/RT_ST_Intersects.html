@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_Intersects</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="RT_ST_Disjoint.html" title="ST_Disjoint"/>
+    <link rel="next" href="RT_ST_Overlaps.html" title="ST_Overlaps"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_Intersects</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="RT_ST_Disjoint.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">11.17. Raster and Raster Band Spatial Relationships</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="RT_ST_Overlaps.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="RT_ST_Intersects">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_Intersects — Return true if raster rastA spatially intersects raster rastB.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">boolean <strong class="fsfunc">ST_Intersects</strong>(</code>
+                        raster 
+                        <var class="pdparam">rastA</var>
+                    , 
+                        integer 
+                        <var class="pdparam">nbandA</var>
+                    , 
+                        raster 
+                        <var class="pdparam">rastB</var>
+                    , 
+                        integer 
+                        <var class="pdparam">nbandB</var>
+                    <code>)</code>;</p>
+          <p><code class="funcdef">boolean <strong class="fsfunc">ST_Intersects</strong>(</code>
+                        raster 
+                        <var class="pdparam">rastA</var>
+                    , 
+                        raster 
+                        <var class="pdparam">rastB</var>
+                    <code>)</code>;</p>
+          <p><code class="funcdef">boolean <strong class="fsfunc">ST_Intersects</strong>(</code>
+                        raster 
+                        <var class="pdparam">rast</var>
+                    , 
+                        integer 
+                        <var class="pdparam">nband</var>
+                    , 
+                        geometry 
+                        <var class="pdparam">geommin</var>
+                    <code>)</code>;</p>
+          <p><code class="funcdef">boolean <strong class="fsfunc">ST_Intersects</strong>(</code>
+                        raster 
+                        <var class="pdparam">rast</var>
+                    , 
+                        geometry 
+                        <var class="pdparam">geommin</var>
+                    , 
+                        integer 
+                        <var class="pdparam">nband=NULL</var>
+                    <code>)</code>;</p>
+          <p><code class="funcdef">boolean <strong class="fsfunc">ST_Intersects</strong>(</code>
+                        geometry 
+                        <var class="pdparam">geommin</var>
+                    , 
+                        raster 
+                        <var class="pdparam">rast</var>
+                    , 
+                        integer 
+                        <var class="pdparam">nband=NULL</var>
+                    <code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm36741">
+        <h2>Description</h2>
+        <p>
+                Return true if raster rastA spatially intersects raster rastB. If the band number is not provided (or set to NULL), only the convex hull of the raster is considered in the test. If the band number is provided, only those pixels with value (not NODATA) are considered in the test.
+            </p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>
+                    This function will make use of any indexes that may be available on the rasters.
+                </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p>
+                Enhanced: 2.0.0 support raster/raster intersects was introduced.
+            </p>
+        <div class="warning">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Warning]" src="../images/warning.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>
+                    Changed: 2.1.0 The behavior of the ST_Intersects(raster, geometry) variants changed to match that of ST_Intersects(geometry, raster).
+                </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="refsection" id="idm36749">
+        <h2>Examples</h2>
+        <pre class="programlisting">
+-- different bands of same raster
+SELECT ST_Intersects(rast, 2, rast, 3) FROM dummy_rast WHERE rid = 2;
+
+ st_intersects
+---------------
+ t
+            </pre>
+      </div>
+      <div class="refsection" id="idm36752">
+        <h2>See Also</h2>
+        <p>
+                <a class="xref" href="RT_ST_Intersection.html" title="ST_Intersection">ST_Intersection</a>,
+                <a class="xref" href="RT_ST_Disjoint.html" title="ST_Disjoint">ST_Disjoint</a>
+            </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="RT_ST_Disjoint.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="RT_reference.html#Raster_Relationships">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="RT_ST_Overlaps.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_Disjoint </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_Overlaps</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

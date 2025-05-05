@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_AsSVG</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_AsMVT.html" title="ST_AsMVT"/>
+    <link rel="next" href="ST_AsTWKB.html" title="ST_AsTWKB"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_AsSVG</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_AsMVT.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.9.3. Other Formats</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_AsTWKB.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_AsSVG">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_AsSVG — Returns SVG path data for a geometry.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">text <strong class="fsfunc">ST_AsSVG</strong>(</code>geometry  <var class="pdparam">geom</var>, integer  <var class="pdparam">rel=0</var>, integer  <var class="pdparam">maxdecimaldigits=15</var><code>)</code>;</p>
+          <p><code class="funcdef">text <strong class="fsfunc">ST_AsSVG</strong>(</code>geography  <var class="pdparam">geog</var>, integer  <var class="pdparam">rel=0</var>, integer  <var class="pdparam">maxdecimaldigits=15</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm11238">
+        <h2>Description</h2>
+        <p>Return the geometry as Scalar Vector Graphics (SVG) path data. Use 1 as second
+			argument to have the path data implemented in terms of relative
+			moves, the default (or 0) uses absolute moves. Third argument may
+			be used to reduce the maximum number of decimal digits used in
+			output (defaults to 15). Point geometries will be rendered as
+			cx/cy when 'rel' arg is 0, x/y when 'rel' is 1. Multipoint
+			geometries are delimited by commas (","), GeometryCollection
+			geometries are delimited by semicolons (";").</p>
+        <p>For working with PostGIS SVG graphics, checkout <a class="link" href="https://github.com/dr-jts/pg_svg" target="_top">pg_svg</a> library which
+        provides plpgsql functions for working with outputs from ST_AsSVG.</p>
+        <p class="enhanced">Enhanced: 3.4.0 to support all curve types</p>
+        <p class="changed">Changed: 2.0.0 to use default args and support named args</p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p class="availability">Availability: 1.2.2. Availability: 1.4.0  Changed in PostGIS 1.4.0 to include L command in absolute path to conform to <a class="link" href="http://www.w3.org/TR/SVG/paths.html#PathDataBNF" target="_top">http://www.w3.org/TR/SVG/paths.html#PathDataBNF</a></p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method supports Circular Strings and Curves.
+        </p>
+      </div>
+      <div class="refsection" id="idm11252">
+        <h2>Examples</h2>
+        <pre class="programlisting">SELECT ST_AsSVG('POLYGON((0 0,0 1,1 1,1 0,0 0))'::geometry);
+
+st_assvg
+--------
+M 0 0 L 0 -1 1 -1 1 0 Z</pre>
+        <p>Circular string</p>
+        <pre class="programlisting">SELECT ST_AsSVG( ST_GeomFromText('CIRCULARSTRING(-2 0,0 2,2 0,0 2,2 4)') );
+
+st_assvg
+--------
+M -2 0 A 2 2 0 0 1 2 0 A 2 2 0 0 1 2 -4</pre>
+        <p>Multi-curve</p>
+        <pre class="programlisting">SELECT ST_AsSVG('MULTICURVE((5 5,3 5,3 3,0 3),
+ CIRCULARSTRING(0 0,2 1,2 2))'::geometry, 0, 0);
+ st_assvg
+------------------------------------------------
+ M 5 -5 L 3 -5 3 -3 0 -3 M 0 0 A 2 2 0 0 0 2 -2
+ </pre>
+        <p>Multi-surface</p>
+        <pre class="programlisting">SELECT ST_AsSVG('MULTISURFACE(
+CURVEPOLYGON(CIRCULARSTRING(-2 0,-1 -1,0 0,1 -1,2 0,0 2,-2 0),
+    (-1 0,0 0.5,1 0,0 1,-1 0)),
+((7 8,10 10,6 14,4 11,7 8)))'::geometry, 0, 2);
+
+st_assvg
+---------------------------------------------------------
+M -2 0 A 1 1 0 0 0 0 0 A 1 1 0 0 0 2 0 A 2 2 0 0 0 -2 0 Z
+M -1 0 L 0 -0.5 1 0 0 -1 -1 0 Z
+M 7 -8 L 10 -10 6 -14 4 -11 Z
+ </pre>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_AsMVT.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#idm10493">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_AsTWKB.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_AsMVT </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_AsTWKB</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

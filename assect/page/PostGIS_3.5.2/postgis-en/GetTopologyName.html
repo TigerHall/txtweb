@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>GetTopologyName</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="GetTopologySRID.html" title="GetTopologySRID"/>
+    <link rel="next" href="ST_GetFaceEdges.html" title="ST_GetFaceEdges"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">GetTopologyName</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="GetTopologySRID.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">9.7. Topology Accessors</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_GetFaceEdges.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="GetTopologyName">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>GetTopologyName — Returns the name of a topology (schema) given the id of the topology.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">varchar <strong class="fsfunc">GetTopologyName</strong>(</code>integer <var class="pdparam">topology_id</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm25297">
+        <h2>Description</h2>
+        <p>Returns the topology name (schema) of a topology from the topology.topology table given the topology id of the topology.</p>
+        <p class="availability">Availability: 1.1</p>
+      </div>
+      <div class="refsection" id="idm25301">
+        <h2>Examples</h2>
+        <pre class="programlisting">SELECT topology.GetTopologyName(1) As topo_name;
+ topo_name
+-----------
+ ma_topo</pre>
+      </div>
+      <div class="refsection" id="idm25304">
+        <h2>See Also</h2>
+        <p>
+	<a class="xref" href="CreateTopology.html" title="CreateTopology">CreateTopology</a>,
+	<a class="xref" href="DropTopology.html" title="DropTopology">DropTopology</a>,
+	<a class="xref" href="GetTopologyID.html" title="GetTopologyID">GetTopologyID</a>,
+	<a class="xref" href="GetTopologySRID.html" title="GetTopologySRID">GetTopologySRID</a>
+				</p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="GetTopologySRID.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="Topology.html#Topology_Accessors">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_GetFaceEdges.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">GetTopologySRID </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_GetFaceEdges</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

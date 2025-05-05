@@ -1,0 +1,998 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Chapter 9. Topology</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="CG_YMonotonePartition.html" title="CG_YMonotonePartition"/>
+    <link rel="next" href="getfaceedges_returntype.html" title="getfaceedges_returntype"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">Chapter 9. Topology</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="CG_YMonotonePartition.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; "> </th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="getfaceedges_returntype.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <section class="chapter" id="Topology">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h1 class="title">Chapter 9. Topology</h1>
+          </div>
+        </div>
+      </div>
+      <div class="toc">
+        <div class="toc-title">Table of Contents</div>
+        <ul class="toc">
+          <li>
+            <span class="section">
+              <a href="Topology.html#Topology_Types">9.1. Topology Types</a>
+            </span>
+          </li>
+          <li>
+            <span class="section">
+              <a href="Topology.html#Topology_Domains">9.2. Topology Domains</a>
+            </span>
+          </li>
+          <li>
+            <span class="section">
+              <a href="Topology.html#Topology_ManagementFunctions">9.3. Topology and TopoGeometry Management</a>
+            </span>
+          </li>
+          <li>
+            <span class="section">
+              <a href="Topology.html#Topology_StatsManagement">9.4. Topology Statistics Management</a>
+            </span>
+          </li>
+          <li>
+            <span class="section">
+              <a href="Topology.html#Topology_Constructors">9.5. Topology Constructors</a>
+            </span>
+          </li>
+          <li>
+            <span class="section">
+              <a href="Topology.html#Topology_Editing">9.6. Topology Editors</a>
+            </span>
+          </li>
+          <li>
+            <span class="section">
+              <a href="Topology.html#Topology_Accessors">9.7. Topology Accessors</a>
+            </span>
+          </li>
+          <li>
+            <span class="section">
+              <a href="Topology.html#Topology_Processing">9.8. Topology Processing</a>
+            </span>
+          </li>
+          <li>
+            <span class="section">
+              <a href="Topology.html#TopoGeometry_Constructors">9.9. TopoGeometry Constructors</a>
+            </span>
+          </li>
+          <li>
+            <span class="section">
+              <a href="Topology.html#TopoGeometry_Editors">9.10. TopoGeometry Editors</a>
+            </span>
+          </li>
+          <li>
+            <span class="section">
+              <a href="Topology.html#TopoGeom_Accessors">9.11. TopoGeometry Accessors</a>
+            </span>
+          </li>
+          <li>
+            <span class="section">
+              <a href="Topology.html#TopoGeometry_Outputs">9.12. TopoGeometry Outputs</a>
+            </span>
+          </li>
+          <li>
+            <span class="section">
+              <a href="Topology.html#Topology_Relationships">9.13. Topology Spatial Relationships</a>
+            </span>
+          </li>
+          <li>
+            <span class="section">
+              <a href="Topology.html#Topology_Import_Export">9.14. Importing and exporting Topologies</a>
+            </span>
+          </li>
+        </ul>
+      </div>
+      <p>The PostGIS Topology types and functions are used to manage topological objects such as faces, edges and nodes. </p>
+      <p>Sandro Santilli's presentation at PostGIS Day Paris 2011  conference gives a good synopsis of PostGIS Topology and where it is headed <a class="link" href="http://strk.kbt.io/projects/postgis/Paris2011_TopologyWithPostGIS_2_0.pdf" target="_top">Topology with PostGIS 2.0 slide deck</a>.</p>
+      <p>
+Vincent Picavet provides a good synopsis and overview of what is Topology,
+how is it used, and various FOSS4G tools that support it in <a class="link" href="https://gitlab.com/Oslandia/documentation/presentations/-/blob/master/2012/pgconf_eu_2012/pgconfeu2012_vincent_picavet_postgis_topology.pdf" target="_top">PostGIS Topology PGConf EU 2012</a>.
+    </p>
+      <p>An example of a topologically based GIS database is the <a class="link" href="https://www.census.gov/geo/maps-data/data/tiger.html" target="_top">US Census Topologically Integrated Geographic Encoding and Referencing System (TIGER)</a> database. If you want to experiment with PostGIS topology and need some data, check out <a class="xref" href="Topology_Load_Tiger.html" title="Topology_Load_Tiger">Topology_Load_Tiger</a>.</p>
+      <p>The PostGIS topology module has existed in prior versions of PostGIS but was never part of the Official PostGIS documentation.
+	    In PostGIS 2.0.0 major cleanup is going on to remove use of all deprecated functions in it, fix known usability issues, better document the features and functions, add new functions, and enhance to closer conform to SQL-MM standards.</p>
+      <p>Details of this project can be found at <a class="link" href="http://trac.osgeo.org/postgis/wiki/UsersWikiPostgisTopology" target="_top">PostGIS Topology Wiki</a></p>
+      <p>All functions and tables associated with this module are installed in a schema called <code class="varname">topology</code>.</p>
+      <p>Functions that are defined in SQL/MM standard are prefixed with ST_ and functions specific to PostGIS are not prefixed.</p>
+      <p>Topology support is build by default starting with PostGIS 2.0, and can be disabled specifying --without-topology configure option at build time as described in <a class="xref" href="postgis_installation.html" title="Chapter 2. PostGIS Installation">Chapter 2, <em>PostGIS Installation</em></a></p>
+      <section class="section" id="Topology_Types">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title" style="clear: both">9.1. Topology Types</h2>
+            </div>
+            <div>
+              <div class="abstract">
+                <div class="abstract-title">Abstract</div>
+                <p>This section lists the PostgreSQL data types installed by PostGIS Topology.  Note we describe the casting behavior of these which is very
+                    important especially when designing your own functions.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="toc">
+          <ul class="toc">
+            <li>
+              <span class="refentrytitle">
+                <a href="getfaceedges_returntype.html">getfaceedges_returntype</a>
+              </span>
+              <span class="refpurpose"> — 
+A composite type that consists of a sequence
+number and an edge number.
+			</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="topogeometry.html">TopoGeometry</a>
+              </span>
+              <span class="refpurpose"> — A composite type representing a topologically defined geometry.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="validatetopology_returntype.html">validatetopology_returntype</a>
+              </span>
+              <span class="refpurpose"> — A composite type that consists of an error message and id1 and id2 to denote location of error.  This is the return type for <code class="varname">ValidateTopology</code>.</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+      <section class="section" id="Topology_Domains">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title" style="clear: both">9.2. Topology Domains</h2>
+            </div>
+            <div>
+              <div class="abstract">
+                <div class="abstract-title">Abstract</div>
+                <p>This section lists the PostgreSQL domains installed by PostGIS Topology.  Domains can be used like object types as return objects of functions or table columns. The distinction between
+                    a domain and a type is that a domain is an existing type with a check constraint bound to it.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="toc">
+          <ul class="toc">
+            <li>
+              <span class="refentrytitle">
+                <a href="topoelement.html">TopoElement</a>
+              </span>
+              <span class="refpurpose"> — An array of 2 integers generally used to identify a TopoGeometry component.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="topoelementarray.html">TopoElementArray</a>
+              </span>
+              <span class="refpurpose"> — An array of TopoElement objects.</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+      <section class="section" id="Topology_ManagementFunctions">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title" style="clear: both">9.3. Topology and TopoGeometry Management</h2>
+            </div>
+            <div>
+              <div class="abstract">
+                <div class="abstract-title">Abstract</div>
+                <p>This section lists the Topology functions for building new Topology schemas, validating topologies, and managing TopoGeometry Columns</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="toc">
+          <ul class="toc">
+            <li>
+              <span class="refentrytitle">
+                <a href="AddTopoGeometryColumn.html">AddTopoGeometryColumn</a>
+              </span>
+              <span class="refpurpose"> — Adds a topogeometry column to an existing table, registers this new column as a layer in topology.layer and returns the new layer_id.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RenameTopoGeometryColumn.html">RenameTopoGeometryColumn</a>
+              </span>
+              <span class="refpurpose"> — Renames a topogeometry column</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="DropTopology.html">DropTopology</a>
+              </span>
+              <span class="refpurpose"> — Use with caution: Drops a topology schema and deletes its reference from  topology.topology table and references to tables in that schema from the geometry_columns table.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RenameTopology.html">RenameTopology</a>
+              </span>
+              <span class="refpurpose"> — Renames a topology</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="DropTopoGeometryColumn.html">DropTopoGeometryColumn</a>
+              </span>
+              <span class="refpurpose"> — Drops the topogeometry column from the table named <code class="varname">table_name</code> in schema <code class="varname">schema_name</code> and unregisters the columns from topology.layer table.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="Populate_Topology_Layer.html">Populate_Topology_Layer</a>
+              </span>
+              <span class="refpurpose"> — Adds missing entries to topology.layer table by reading metadata from topo tables.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="TopologySummary.html">TopologySummary</a>
+              </span>
+              <span class="refpurpose"> — Takes a topology name and provides summary totals of types of objects in topology.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="ValidateTopology.html">ValidateTopology</a>
+              </span>
+              <span class="refpurpose"> — Returns a set of validatetopology_returntype objects detailing issues with topology.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="ValidateTopologyRelation.html">ValidateTopologyRelation</a>
+              </span>
+              <span class="refpurpose"> — Returns info about invalid topology relation records</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="FindTopology.html">FindTopology</a>
+              </span>
+              <span class="refpurpose"> — Returns a topology record by different means.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="FindLayer.html">FindLayer</a>
+              </span>
+              <span class="refpurpose"> — Returns a topology.layer record by different means.</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+      <section class="section" id="Topology_StatsManagement">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title" style="clear: both">9.4. Topology Statistics Management</h2>
+            </div>
+            <div>
+              <div class="abstract">
+                <div class="abstract-title">Abstract</div>
+                <p>
+This section discusses management of database statistics during
+topology building.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p>
+Adding elements to a topology triggers many database queries for
+finding existing edges that will be split, adding nodes and
+updating edges that will node with the new linework. For this reason
+it is useful that statistics about the data in the topology tables
+are up-to-date.
+</p>
+        <p>
+PostGIS Topology population and editing functions do not automatically
+update the statistics because a updating stats after each and every
+change in a topology would be overkill, so it is the caller's duty
+to take care of that.
+</p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>
+That the statistics updated by autovacuum
+will NOT be visible to transactions which started before autovacuum
+process completed, so long-running transactions will need to run
+ANALYZE themselves, to use updated statistics.
+</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </section>
+      <section class="section" id="Topology_Constructors">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title" style="clear: both">9.5. Topology Constructors</h2>
+            </div>
+            <div>
+              <div class="abstract">
+                <div class="abstract-title">Abstract</div>
+                <p>This section covers the topology functions for creating new topologies.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="toc">
+          <ul class="toc">
+            <li>
+              <span class="refentrytitle">
+                <a href="CreateTopology.html">CreateTopology</a>
+              </span>
+              <span class="refpurpose"> — Creates a new topology schema and registers it in the topology.topology table.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="CopyTopology.html">CopyTopology</a>
+              </span>
+              <span class="refpurpose"> — Makes a copy of a topology (nodes, edges, faces, layers and TopoGeometries) into a new schema</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="ST_InitTopoGeo.html">ST_InitTopoGeo</a>
+              </span>
+              <span class="refpurpose"> — Creates a new topology schema and registers it in the topology.topology table.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="ST_CreateTopoGeo.html">ST_CreateTopoGeo</a>
+              </span>
+              <span class="refpurpose"> — 
+Adds a collection of geometries to a given empty topology and returns a message detailing success.
+				</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="TopoGeo_AddPoint.html">TopoGeo_AddPoint</a>
+              </span>
+              <span class="refpurpose"> — 
+Adds a point to an existing topology using a tolerance and possibly splitting an existing edge.
+				</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="TopoGeo_AddLineString.html">TopoGeo_AddLineString</a>
+              </span>
+              <span class="refpurpose"> — 
+Adds a linestring to an existing topology using a tolerance and possibly splitting existing edges/faces.
+				</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="TopoGeo_AddPolygon.html">TopoGeo_AddPolygon</a>
+              </span>
+              <span class="refpurpose"> — Adds a polygon to an existing topology using a tolerance and possibly splitting existing edges/faces. Returns face identifiers.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="TopoGeo_LoadGeometry.html">TopoGeo_LoadGeometry</a>
+              </span>
+              <span class="refpurpose"> — Load a geometry into an existing topology, snapping and splitting as needed.</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+      <section class="section" id="Topology_Editing">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title" style="clear: both">9.6. Topology Editors</h2>
+            </div>
+            <div>
+              <div class="abstract">
+                <div class="abstract-title">Abstract</div>
+                <p>This section covers topology functions for adding, moving, deleting, and splitting edges, faces, and nodes. All of these functions are defined by ISO SQL/MM.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="toc">
+          <ul class="toc">
+            <li>
+              <span class="refentrytitle">
+                <a href="ST_AddIsoNode.html">ST_AddIsoNode</a>
+              </span>
+              <span class="refpurpose"> — Adds an isolated node to a face in a topology and returns the nodeid of the new node. If face is null, the node is still created.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="ST_AddIsoEdge.html">ST_AddIsoEdge</a>
+              </span>
+              <span class="refpurpose"> — Adds an isolated edge defined by geometry <code class="varname">alinestring</code> to a topology connecting two existing isolated nodes <code class="varname">anode</code> and <code class="varname">anothernode</code> and returns the edge id of the new edge.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="ST_AddEdgeNewFaces.html">ST_AddEdgeNewFaces</a>
+              </span>
+              <span class="refpurpose"> — Add a new edge and, if in doing so it splits a face, delete the original face and replace it with two new faces.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="ST_AddEdgeModFace.html">ST_AddEdgeModFace</a>
+              </span>
+              <span class="refpurpose"> — Add a new edge and, if in doing so it splits a face, modify the original face and add a new face.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="ST_RemEdgeNewFace.html">ST_RemEdgeNewFace</a>
+              </span>
+              <span class="refpurpose"> — 
+Removes an edge and, if the removed edge separated two faces,
+delete the original faces and replace them with a new face.
+        </span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="ST_RemEdgeModFace.html">ST_RemEdgeModFace</a>
+              </span>
+              <span class="refpurpose"> — 
+Removes an edge, and if the edge separates two faces
+deletes one face and modifies the other face to cover the space of both.
+        </span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="ST_ChangeEdgeGeom.html">ST_ChangeEdgeGeom</a>
+              </span>
+              <span class="refpurpose"> — 
+Changes the shape of an edge without affecting the topology structure.
+				</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="ST_ModEdgeSplit.html">ST_ModEdgeSplit</a>
+              </span>
+              <span class="refpurpose"> — Split an edge by creating a new node along an existing edge, modifying the original edge and adding a new edge.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="ST_ModEdgeHeal.html">ST_ModEdgeHeal</a>
+              </span>
+              <span class="refpurpose"> — 
+Heals two edges by deleting the node connecting them, modifying the first edge
+and deleting the second edge. Returns the id of the deleted node.
+				</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="ST_NewEdgeHeal.html">ST_NewEdgeHeal</a>
+              </span>
+              <span class="refpurpose"> — 
+Heals two edges by deleting the node connecting them, deleting both edges,
+and replacing them with an edge whose direction is the same as the first
+edge provided.
+				</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="ST_MoveIsoNode.html">ST_MoveIsoNode</a>
+              </span>
+              <span class="refpurpose"> — Moves an isolated node in a topology from one point to another.  If new <code class="varname">apoint</code> geometry exists as a node an error is thrown. Returns description of move.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="ST_NewEdgesSplit.html">ST_NewEdgesSplit</a>
+              </span>
+              <span class="refpurpose"> — Split an edge by creating a new node along an existing edge, deleting the original edge and replacing it with two new edges.  Returns the id of the new node created that joins the new edges.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="ST_RemoveIsoNode.html">ST_RemoveIsoNode</a>
+              </span>
+              <span class="refpurpose"> — Removes an isolated node and returns description of action. If the node is not isolated (is start or end of an edge), then an exception is thrown.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="ST_RemoveIsoEdge.html">ST_RemoveIsoEdge</a>
+              </span>
+              <span class="refpurpose"> — Removes an isolated edge and returns description of action. If the edge is not isolated, then an exception is thrown.</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+      <section class="section" id="Topology_Accessors">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title" style="clear: both">9.7. Topology Accessors</h2>
+            </div>
+          </div>
+        </div>
+        <div class="toc">
+          <ul class="toc">
+            <li>
+              <span class="refentrytitle">
+                <a href="GetEdgeByPoint.html">GetEdgeByPoint</a>
+              </span>
+              <span class="refpurpose"> — Finds the edge-id of an edge that intersects a given point.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="GetFaceByPoint.html">GetFaceByPoint</a>
+              </span>
+              <span class="refpurpose"> — Finds face intersecting a given point.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="GetFaceContainingPoint.html">GetFaceContainingPoint</a>
+              </span>
+              <span class="refpurpose"> — Finds the face containing a point.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="GetNodeByPoint.html">GetNodeByPoint</a>
+              </span>
+              <span class="refpurpose"> — Finds the node-id of a node at a point location.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="GetTopologyID.html">GetTopologyID</a>
+              </span>
+              <span class="refpurpose"> — Returns the id of a topology in the topology.topology table given the name of the topology.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="GetTopologySRID.html">GetTopologySRID</a>
+              </span>
+              <span class="refpurpose"> — Returns the SRID of a topology in the topology.topology table given the name of the topology.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="GetTopologyName.html">GetTopologyName</a>
+              </span>
+              <span class="refpurpose"> — Returns the name of a topology (schema) given the id of the topology.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="ST_GetFaceEdges.html">ST_GetFaceEdges</a>
+              </span>
+              <span class="refpurpose"> — Returns a set of ordered edges that bound <code class="varname">aface</code>.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="ST_GetFaceGeometry.html">ST_GetFaceGeometry</a>
+              </span>
+              <span class="refpurpose"> — Returns the polygon in the given topology with the specified face id.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="GetRingEdges.html">GetRingEdges</a>
+              </span>
+              <span class="refpurpose"> — 
+Returns the ordered set of signed edge identifiers met by walking on an
+a given edge side.
+				</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="GetNodeEdges.html">GetNodeEdges</a>
+              </span>
+              <span class="refpurpose"> — 
+Returns an ordered set of edges incident to the given node.
+				</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+      <section class="section" id="Topology_Processing">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title" style="clear: both">9.8. Topology Processing</h2>
+            </div>
+            <div>
+              <div class="abstract">
+                <div class="abstract-title">Abstract</div>
+                <p>This section covers the functions for processing topologies in non-standard ways.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="toc">
+          <ul class="toc">
+            <li>
+              <span class="refentrytitle">
+                <a href="TopologyPolygonize.html">Polygonize</a>
+              </span>
+              <span class="refpurpose"> — Finds and registers all faces defined by topology edges.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="AddNode.html">AddNode</a>
+              </span>
+              <span class="refpurpose"> — Adds a point node to the node table in the specified topology schema and returns the nodeid of new node. If point already exists as node, the existing nodeid is returned.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="AddEdge.html">AddEdge</a>
+              </span>
+              <span class="refpurpose"> — Adds a linestring edge to the edge table and associated start and end points to the point nodes table of the specified topology schema using the specified linestring geometry and returns the edgeid of the new (or existing) edge.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="AddFace.html">AddFace</a>
+              </span>
+              <span class="refpurpose"> — Registers a face primitive to a topology and gets its identifier.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="TP_ST_Simplify.html">ST_Simplify</a>
+              </span>
+              <span class="refpurpose"> — Returns a "simplified" geometry version of the given TopoGeometry using
+				the Douglas-Peucker algorithm.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="TP_RemoveUnusedPrimitives.html">RemoveUnusedPrimitives</a>
+              </span>
+              <span class="refpurpose"> — Removes topology primitives which not needed to define existing TopoGeometry objects.</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+      <section class="section" id="TopoGeometry_Constructors">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title" style="clear: both">9.9. TopoGeometry Constructors</h2>
+            </div>
+            <div>
+              <div class="abstract">
+                <div class="abstract-title">Abstract</div>
+                <p>This section covers the topology functions for creating new topogeometries.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="toc">
+          <ul class="toc">
+            <li>
+              <span class="refentrytitle">
+                <a href="CreateTopoGeom.html">CreateTopoGeom</a>
+              </span>
+              <span class="refpurpose"> — Creates a new topo geometry object from topo element array - tg_type: 1:[multi]point, 2:[multi]line, 3:[multi]poly, 4:collection</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="toTopoGeom.html">toTopoGeom</a>
+              </span>
+              <span class="refpurpose"> — Converts a simple Geometry into a topo geometry.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="TopoElementArray_Agg.html">TopoElementArray_Agg</a>
+              </span>
+              <span class="refpurpose"> — Returns a <code class="varname">topoelementarray</code> for a set of element_id, type arrays (topoelements).</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="TopoElement.html">TopoElement</a>
+              </span>
+              <span class="refpurpose"> — Converts a topogeometry to a topoelement.</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+      <section class="section" id="TopoGeometry_Editors">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title" style="clear: both">9.10. TopoGeometry Editors</h2>
+            </div>
+            <div>
+              <div class="abstract">
+                <div class="abstract-title">Abstract</div>
+                <p>This section covers the topology functions for editing existing topogeometries.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="toc">
+          <ul class="toc">
+            <li>
+              <span class="refentrytitle">
+                <a href="clearTopoGeom.html">clearTopoGeom</a>
+              </span>
+              <span class="refpurpose"> — Clears the content of a topo geometry.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="TopoGeom_addElement.html">TopoGeom_addElement</a>
+              </span>
+              <span class="refpurpose"> — Adds an element to the definition of a TopoGeometry.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="TopoGeom_remElement.html">TopoGeom_remElement</a>
+              </span>
+              <span class="refpurpose"> — Removes an element from the definition of a TopoGeometry.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="TopoGeom_addTopoGeom.html">TopoGeom_addTopoGeom</a>
+              </span>
+              <span class="refpurpose"> — Adds element of a TopoGeometry to the definition of another TopoGeometry.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="toTopoGeom_editor_proxy.html">toTopoGeom</a>
+              </span>
+              <span class="refpurpose"> — Adds a geometry shape to an existing topo geometry.</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+      <section class="section" id="TopoGeom_Accessors">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title" style="clear: both">9.11. TopoGeometry Accessors</h2>
+            </div>
+          </div>
+        </div>
+        <div class="toc">
+          <ul class="toc">
+            <li>
+              <span class="refentrytitle">
+                <a href="GetTopoGeomElementArray.html">GetTopoGeomElementArray</a>
+              </span>
+              <span class="refpurpose"> — Returns a <code class="varname">topoelementarray</code> (an array of topoelements) containing the topological elements and type of the given TopoGeometry (primitive elements).</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="GetTopoGeomElements.html">GetTopoGeomElements</a>
+              </span>
+              <span class="refpurpose"> — Returns a set of <code class="varname">topoelement</code> objects containing the topological element_id,element_type of the given TopoGeometry (primitive elements).</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="TG_ST_SRID.html">ST_SRID</a>
+              </span>
+              <span class="refpurpose"> — Returns the spatial reference identifier for a topogeometry.</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+      <section class="section" id="TopoGeometry_Outputs">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title" style="clear: both">9.12. TopoGeometry Outputs</h2>
+            </div>
+          </div>
+        </div>
+        <div class="toc">
+          <ul class="toc">
+            <li>
+              <span class="refentrytitle">
+                <a href="AsGML.html">AsGML</a>
+              </span>
+              <span class="refpurpose"> — Returns the GML representation of a topogeometry.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="AsTopoJSON.html">AsTopoJSON</a>
+              </span>
+              <span class="refpurpose"> — Returns the TopoJSON representation of a topogeometry.</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+      <section class="section" id="Topology_Relationships">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title" style="clear: both">9.13. Topology Spatial Relationships</h2>
+            </div>
+            <div>
+              <div class="abstract">
+                <div class="abstract-title">Abstract</div>
+                <p>This section lists the Topology functions used to check relationships between topogeometries and topology primitives</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="toc">
+          <ul class="toc">
+            <li>
+              <span class="refentrytitle">
+                <a href="TG_Equals.html">Equals</a>
+              </span>
+              <span class="refpurpose"> — Returns true if two topogeometries are composed of the same topology primitives.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="TG_Intersects.html">Intersects</a>
+              </span>
+              <span class="refpurpose"> — Returns true if any pair of primitives from the two topogeometries intersect.</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+      <section class="section" id="Topology_Import_Export">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title" style="clear: both">9.14. Importing and exporting Topologies</h2>
+            </div>
+          </div>
+        </div>
+        <div class="toc">
+          <ul class="toc">
+            <li>
+              <span class="section">
+                <a href="Topology.html#pgtopo_export">9.14.1. Using the Topology exporter</a>
+              </span>
+            </li>
+            <li>
+              <span class="section">
+                <a href="Topology.html#pgtopo_import">9.14.2. Using the Topology importer</a>
+              </span>
+            </li>
+          </ul>
+        </div>
+        <p>
+Once you have created topologies, and maybe associated topological layers,
+you might want to export them into a file-based format for backup or transfer
+into another database.
+    </p>
+        <p>
+Using the standard dump/restore tools of PostgreSQL is
+problematic because topologies are composed by a set of tables (4 for
+primitives, an arbitrary number for layers) and records in metadata tables
+(topology.topology and topology.layer). Additionally, topology identifiers
+are not univoque across databases so that parameter of your topology
+will need to be changes upon restoring it.
+    </p>
+        <p>
+In order to simplify export/restore of topologies a pair of
+executables are provided: <code class="filename">pgtopo_export</code>
+and <code class="filename">pgtopo_import</code>. Example usage:
+    </p>
+        <pre class="programlisting">
+pgtopo_export dev_db topo1 | pgtopo_import topo1 | psql staging_db
+</pre>
+        <section class="section" id="pgtopo_export">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h3 class="title">9.14.1. Using the Topology exporter</h3>
+              </div>
+            </div>
+          </div>
+          <p>
+The <code class="filename">pgtopo_export</code> script takes the name of a
+database and a topology and outputs a dump file which can be used
+to import the topology (and associated layers) into a new database.
+        </p>
+          <p>
+By default <code class="filename">pgtopo_export</code> writes the
+dump file to the standard output so that it can be piped to
+<code class="filename">pgtopo_import</code> or redirected to a file
+(refusing to write to terminal). You can optionally specify
+an output filename with the <code class="code">-f</code> commandline switch.
+        </p>
+          <p>
+By default <code class="filename">pgtopo_export</code> includes a dump
+of all layers defined against the given topology. This may be more
+data than you need, or may be non-working (in case your layer tables
+have complex dependencies) in which case you can request skipping the
+layers with the <code class="code">--skip-layers</code> switch and deal with those
+separately.
+        </p>
+          <p>
+Invoking <code class="filename">pgtopo_export</code> with the
+<code class="code">--help</code> (or <code class="code">-h</code> for short) switch
+will always print short usage string.
+        </p>
+          <p>
+The dump file format is a compressed tar archive of a
+<code class="filename">pgtopo_export</code> directory containing
+at least a <code class="filename">pgtopo_dump_version</code> file with
+format version info. As of version <code class="code">1</code> the directory
+contains tab-delimited CSV files with data of the topology
+primitive tables (node, edge_data, face, relation), the
+topology and layer records associated with it and
+(unless <code class="code">--skip-layers</code> is given) a custom-format
+PostgreSQL dump of tables reported as being layers of the given
+topology.
+        </p>
+        </section>
+        <section class="section" id="pgtopo_import">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h3 class="title">9.14.2. Using the Topology importer</h3>
+              </div>
+            </div>
+          </div>
+          <p>
+The <code class="filename">pgtopo_import</code> script takes a
+<code class="code">pgtopo_export</code> format topology dump and a
+name to give to  the topology to be created and outputs
+an SQL script reconstructing the topology and associated
+layers.
+        </p>
+          <p>
+The generated SQL file will contain statements that create
+a topology with the given name, load primitive data in it,
+restores and registers all topology layers by properly
+linking all TopoGeometry values to their correct topology.
+        </p>
+          <p>
+By default <code class="filename">pgtopo_import</code> reads the dump
+from the standard input so that it can be used in conjunction
+with <code class="filename">pgtopo_export</code> in a pipeline.
+You can optionally specify an input filename with the
+<code class="code">-f</code> commandline switch.
+        </p>
+          <p>
+By default <code class="filename">pgtopo_import</code> includes in the output
+SQL file the code to restore all layers found in the dump.
+        </p>
+          <p>
+This may be unwanted or non-working in case your target database already
+have tables with the same name as the ones in the dump. In that case
+you can request skipping the layers with the <code class="code">--skip-layers</code>
+switch and deal with those separately (or later).
+        </p>
+          <p>
+SQL to only load and link layers to a named topology can be generated
+using the <code class="code">--only-layers</code> switch. This can be useful to load
+layers AFTER resolving the naming conflicts or to link layers to a
+different topology (say a spatially-simplified version of the starting
+topology).
+        </p>
+        </section>
+      </section>
+    </section>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="CG_YMonotonePartition.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; "> </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="getfaceedges_returntype.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">CG_YMonotonePartition </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> getfaceedges_returntype</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

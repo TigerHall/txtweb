@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_Contains</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_3DIntersects.html" title="ST_3DIntersects"/>
+    <link rel="next" href="ST_ContainsProperly.html" title="ST_ContainsProperly"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_Contains</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_3DIntersects.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.11.1. Topological Relationships</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_ContainsProperly.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_Contains">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_Contains — Tests if every point of B lies in A, and their interiors have a point in common</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">boolean <strong class="fsfunc">ST_Contains</strong>(</code>geometry 
+      <var class="pdparam">geomA</var>, geometry 
+      <var class="pdparam">geomB</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm12816">
+        <h2>Description</h2>
+        <p>Returns TRUE if geometry A contains geometry B.
+    A contains B if and only if all points of B lie inside (i.e. in the interior or boundary of) A
+    (or equivalently, no points of B lie in the exterior of A),
+    and the interiors of A and B have at least one point in common.
+    </p>
+        <p>In mathematical terms:
+    <span class="emphasis"><em>ST_Contains(A, B) ⇔ (A ⋂ B = B) ∧ (Int(A) ⋂ Int(B) ≠ ∅) </em></span></p>
+        <p>The contains relationship is reflexive: every geometry contains itself.
+    (In contrast, in the <a class="xref" href="ST_ContainsProperly.html" title="ST_ContainsProperly">ST_ContainsProperly</a>
+    predicate a geometry does <span class="emphasis"><em>not</em></span> properly contain itself.)
+    The relationship is antisymmetric: if <code class="code">ST_Contains(A,B) = true</code> and <code class="code">ST_Contains(B,A) = true</code>, then
+    the two geometries must be topologically equal (<code class="code">ST_Equals(A,B) = true</code>).
+    </p>
+        <p>ST_Contains is the converse of <a class="xref" href="ST_Within.html" title="ST_Within">ST_Within</a>.
+    So, <code class="code">ST_Contains(A,B) = ST_Within(B,A)</code>.</p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>Because the interiors must have a common point, a subtlety of the definition is that
+    polygons and lines do <span class="emphasis"><em>not</em></span> contain lines and points lying fully in their boundary.
+    For further details see <a class="link" href="http://lin-ear-th-inking.blogspot.com/2007/06/subtleties-of-ogc-covers-spatial.html" target="_top">Subtleties of OGC Covers, Contains, Within</a>.
+    The <a class="xref" href="ST_Covers.html" title="ST_Covers">ST_Covers</a> predicate provides a more inclusive relationship.
+    </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>
+            This function automatically includes a bounding box comparison
+            that makes use of any spatial indexes that are available on the geometries.
+        
+    To avoid index use, use the function <code class="function">_ST_Contains</code>.</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p>Performed by the GEOS module</p>
+        <p class="enhanced">Enhanced: 2.3.0 Enhancement to PIP short-circuit extended to support MultiPoints with few points. Prior versions only supported point in polygon.</p>
+        <div class="important">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Important]" src="../images/important.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p class="enhanced">Enhanced: 3.0.0 enabled support for <code class="varname">GEOMETRYCOLLECTION</code></p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="important">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Important]" src="../images/important.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>Do not use this function with invalid geometries. You will get unexpected results.</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p>NOTE: this is the "allowable" version that returns a
+      boolean, not an integer.</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method implements the <a class="link" href="http://www.opengeospatial.org/standards/sfs" target="_top">OGC Simple Features
+            Implementation Specification for SQL 1.1.</a>
+         s2.1.1.2 // s2.1.13.3
+    - same as within(geometry B, geometry A)</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method implements the SQL/MM specification.
+         SQL-MM 3: 5.1.31</p>
+      </div>
+      <div class="refsection" id="idm12855">
+        <h2>Examples</h2>
+        <p><code class="function">ST_Contains</code> returns <code class="varname">TRUE</code> in the following situations:</p>
+        <div class="informaltable">
+          <table style="border-collapse: collapse; border-top: 1px solid ; border-bottom: 1px solid ; border-left: 1px solid ; border-right: 1px solid ; ">
+            <colgroup>
+              <col/>
+              <col/>
+            </colgroup>
+            <tbody>
+              <tr>
+                <td style="border-right: 1px solid ; border-bottom: 1px solid ; ">
+                  <div class="informalfigure">
+                    <div class="mediaobject">
+                      <img src="../images/st_contains01.png"/>
+                      <div class="caption">
+                        <p><code class="varname">LINESTRING</code> / <code class="varname">MULTIPOINT</code></p>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td style="border-bottom: 1px solid ; ">
+                  <div class="informalfigure">
+                    <div class="mediaobject">
+                      <img src="../images/st_contains02.png"/>
+                      <div class="caption">
+                        <p><code class="varname">POLYGON</code> / <code class="varname">POINT</code></p>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td style="border-right: 1px solid ; ">
+                  <div class="informalfigure">
+                    <div class="mediaobject">
+                      <img src="../images/st_contains03.png"/>
+                      <div class="caption">
+                        <p><code class="varname">POLYGON</code> / <code class="varname">LINESTRING</code></p>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div class="informalfigure">
+                    <div class="mediaobject">
+                      <img src="../images/st_contains04.png"/>
+                      <div class="caption">
+                        <p><code class="varname">POLYGON</code> / <code class="varname">POLYGON</code></p>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p><code class="function">ST_Contains</code> returns <code class="varname">FALSE</code> in the following situations:</p>
+        <div class="informaltable">
+          <table style="border-collapse: collapse; border-top: 1px solid ; border-bottom: 1px solid ; border-left: 1px solid ; border-right: 1px solid ; ">
+            <colgroup>
+              <col/>
+              <col/>
+            </colgroup>
+            <tbody>
+              <tr>
+                <td style="border-right: 1px solid ; ">
+                  <div class="informalfigure">
+                    <div class="mediaobject">
+                      <img src="../images/st_contains05.png"/>
+                      <div class="caption">
+                        <p><code class="varname">POLYGON</code> / <code class="varname">MULTIPOINT</code></p>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div class="informalfigure">
+                    <div class="mediaobject">
+                      <img src="../images/st_contains06.png"/>
+                      <div class="caption">
+                        <p><code class="varname">POLYGON</code> / <code class="varname">LINESTRING</code></p>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>Due to the interior intersection condition <code class="function">ST_Contains</code> returns <code class="varname">FALSE</code> in the following situations
+     (whereas <code class="function">ST_Covers</code> returns <code class="varname">TRUE</code>):</p>
+        <div class="informaltable">
+          <table style="border-collapse: collapse; border-top: 1px solid ; border-bottom: 1px solid ; border-left: 1px solid ; border-right: 1px solid ; ">
+            <colgroup>
+              <col/>
+              <col/>
+            </colgroup>
+            <tbody>
+              <tr>
+                <td style="border-right: 1px solid ; ">
+                  <div class="informalfigure">
+                    <div class="mediaobject">
+                      <img src="../images/st_contains07.png"/>
+                      <div class="caption">
+                        <p><code class="varname">LINESTRING</code> / <code class="varname">POINT</code></p>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div class="informalfigure">
+                    <div class="mediaobject">
+                      <img src="../images/st_contains08.png"/>
+                      <div class="caption">
+                        <p><code class="varname">POLYGON</code> / <code class="varname">LINESTRING</code></p>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <pre class="programlisting">
+-- A circle within a circle
+SELECT ST_Contains(smallc, bigc) As smallcontainsbig,
+     ST_Contains(bigc,smallc) As bigcontainssmall,
+     ST_Contains(bigc, ST_Union(smallc, bigc)) as bigcontainsunion,
+     ST_Equals(bigc, ST_Union(smallc, bigc)) as bigisunion,
+     ST_Covers(bigc, ST_ExteriorRing(bigc)) As bigcoversexterior,
+     ST_Contains(bigc, ST_ExteriorRing(bigc)) As bigcontainsexterior
+FROM (SELECT ST_Buffer(ST_GeomFromText('POINT(1 2)'), 10) As smallc,
+       ST_Buffer(ST_GeomFromText('POINT(1 2)'), 20) As bigc) As foo;
+
+-- Result
+  smallcontainsbig | bigcontainssmall | bigcontainsunion | bigisunion | bigcoversexterior | bigcontainsexterior
+------------------+------------------+------------------+------------+-------------------+---------------------
+ f                | t                | t                | t          | t        | f
+
+-- Example demonstrating difference between contains and contains properly
+SELECT ST_GeometryType(geomA) As geomtype, ST_Contains(geomA,geomA) AS acontainsa, ST_ContainsProperly(geomA, geomA) AS acontainspropa,
+   ST_Contains(geomA, ST_Boundary(geomA)) As acontainsba, ST_ContainsProperly(geomA, ST_Boundary(geomA)) As acontainspropba
+FROM (VALUES ( ST_Buffer(ST_Point(1,1), 5,1) ),
+       ( ST_MakeLine(ST_Point(1,1), ST_Point(-1,-1) ) ),
+       ( ST_Point(1,1) )
+    ) As foo(geomA);
+
+  geomtype    | acontainsa | acontainspropa | acontainsba | acontainspropba
+--------------+------------+----------------+-------------+-----------------
+ST_Polygon    | t          | f              | f           | f
+ST_LineString | t          | f              | f           | f
+ST_Point      | t          | t              | f           | f
+
+ </pre>
+      </div>
+      <div class="refsection" id="idm12962">
+        <h2>See Also</h2>
+        <p><a class="xref" href="ST_Boundary.html" title="ST_Boundary">ST_Boundary</a>, <a class="xref" href="ST_ContainsProperly.html" title="ST_ContainsProperly">ST_ContainsProperly</a>, <a class="xref" href="ST_Covers.html" title="ST_Covers">ST_Covers</a>, <a class="xref" href="ST_CoveredBy.html" title="ST_CoveredBy">ST_CoveredBy</a>, <a class="xref" href="ST_Equals.html" title="ST_Equals">ST_Equals</a>, <a class="xref" href="ST_Within.html" title="ST_Within">ST_Within</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_3DIntersects.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#idm12747">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_ContainsProperly.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_3DIntersects </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_ContainsProperly</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

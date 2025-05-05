@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>GeometryType</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_Letters.html" title="ST_Letters"/>
+    <link rel="next" href="ST_Boundary.html" title="ST_Boundary"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">GeometryType</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_Letters.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.4. Geometry Accessors</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_Boundary.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="GeometryType">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>GeometryType — Returns the type of a geometry as text.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">text <strong class="fsfunc">GeometryType</strong>(</code>geometry  <var class="pdparam">geomA</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm4504">
+        <h2>Description</h2>
+        <p>Returns the type of the geometry as a string. Eg:
+		'LINESTRING', 'POLYGON', 'MULTIPOINT', etc.</p>
+        <p>OGC SPEC s2.1.1.1 - Returns the name of the instantiable
+		subtype of Geometry of which this Geometry instance is a member.
+		The name of the instantiable subtype of Geometry is returned as a
+		string.</p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>This function also indicates if the geometry is measured,
+		  by returning a string of the form 'POINTM'.</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p class="enhanced">Enhanced: 2.0.0 support for Polyhedral surfaces, Triangles and TIN was introduced.</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method implements the <a class="link" href="http://www.opengeospatial.org/standards/sfs" target="_top">OGC Simple Features
+            Implementation Specification for SQL 1.1.</a>
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method supports Circular Strings and Curves.
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports 3d and will not drop the z-index.
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports Polyhedral surfaces.
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports Triangles and Triangulated Irregular Network Surfaces (TIN).
+        </p>
+      </div>
+      <div class="refsection" id="idm4532">
+        <h2>Examples</h2>
+        <pre class="programlisting">SELECT GeometryType(ST_GeomFromText('LINESTRING(77.29 29.07,77.42 29.26,77.27 29.31,77.29 29.07)'));
+ geometrytype
+--------------
+ LINESTRING
+</pre>
+        <pre class="programlisting">SELECT ST_GeometryType(ST_GeomFromEWKT('POLYHEDRALSURFACE( ((0 0 0, 0 0 1, 0 1 1, 0 1 0, 0 0 0)),
+		((0 0 0, 0 1 0, 1 1 0, 1 0 0, 0 0 0)), ((0 0 0, 1 0 0, 1 0 1, 0 0 1, 0 0 0)),
+		((1 1 0, 1 1 1, 1 0 1, 1 0 0, 1 1 0)),
+		((0 1 0, 0 1 1, 1 1 1, 1 1 0, 0 1 0)), ((0 0 1, 1 0 1, 1 1 1, 0 1 1, 0 0 1)) )'));
+			--result
+			POLYHEDRALSURFACE
+			</pre>
+        <pre class="programlisting">SELECT GeometryType(geom) as result
+  FROM
+    (SELECT
+       ST_GeomFromEWKT('TIN (((
+                0 0 0,
+                0 0 1,
+                0 1 0,
+                0 0 0
+            )), ((
+                0 0 0,
+                0 1 0,
+                1 1 0,
+                0 0 0
+            ))
+            )')  AS geom
+    ) AS g;
+ result
+--------
+ TIN    </pre>
+      </div>
+      <div class="refsection" id="idm4537">
+        <h2>See Also</h2>
+        <p>
+          <a class="xref" href="ST_GeometryType.html" title="ST_GeometryType">ST_GeometryType</a>
+        </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_Letters.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Geometry_Accessors">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_Boundary.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_Letters </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_Boundary</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

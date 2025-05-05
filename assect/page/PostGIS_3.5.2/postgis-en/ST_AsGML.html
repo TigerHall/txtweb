@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_AsGML</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_AsGeoJSON.html" title="ST_AsGeoJSON"/>
+    <link rel="next" href="ST_AsKML.html" title="ST_AsKML"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_AsGML</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_AsGeoJSON.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.9.3. Other Formats</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_AsKML.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_AsGML">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_AsGML — Return the geometry as a GML version 2 or 3 element.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">text <strong class="fsfunc">ST_AsGML</strong>(</code>geometry  <var class="pdparam">geom</var>, integer  <var class="pdparam">maxdecimaldigits=15</var>, integer  <var class="pdparam">options=0</var><code>)</code>;</p>
+          <p><code class="funcdef">text <strong class="fsfunc">ST_AsGML</strong>(</code>geography  <var class="pdparam">geog</var>, integer  <var class="pdparam">maxdecimaldigits=15</var>, integer  <var class="pdparam">options=0</var>, text  <var class="pdparam">nprefix=null</var>, text  <var class="pdparam">id=null</var><code>)</code>;</p>
+          <p><code class="funcdef">text <strong class="fsfunc">ST_AsGML</strong>(</code>integer  <var class="pdparam">version</var>, geometry  <var class="pdparam">geom</var>, integer  <var class="pdparam">maxdecimaldigits=15</var>, integer  <var class="pdparam">options=0</var>, text  <var class="pdparam">nprefix=null</var>, text  <var class="pdparam">id=null</var><code>)</code>;</p>
+          <p><code class="funcdef">text <strong class="fsfunc">ST_AsGML</strong>(</code>integer  <var class="pdparam">version</var>, geography  <var class="pdparam">geog</var>, integer  <var class="pdparam">maxdecimaldigits=15</var>, integer  <var class="pdparam">options=0</var>, text  <var class="pdparam">nprefix=null</var>, text  <var class="pdparam">id=null</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm10813">
+        <h2>Description</h2>
+        <p>Return the geometry as a Geography Markup Language (GML) element. The version parameter,
+			if specified, may be either 2 or 3. If no version parameter is
+			specified then the default is assumed to be 2. The <code class="varname">maxdecimaldigits</code> argument
+			may be used to reduce the maximum number of decimal places
+			used in output (defaults to 15).</p>
+        <div class="warning">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Warning]" src="../images/warning.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>Using the <em class="parameter"><code>maxdecimaldigits</code></em> parameter
+            can cause output geometry to become invalid.
+            To avoid this use <a class="xref" href="ST_ReducePrecision.html" title="ST_ReducePrecision">ST_ReducePrecision</a>
+            with a suitable gridsize first.
+            </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p>GML 2 refer to 2.1.2 version, GML 3 to 3.1.1 version</p>
+        <p>The 'options' argument is a bitfield. It could be used to define CRS output type
+					in GML output, and to declare data as lat/lon:
+						  </p>
+        <div class="itemizedlist">
+          <ul class="itemizedlist" style="list-style-type: disc; ">
+            <li class="listitem">
+              <p>0: GML Short CRS (e.g EPSG:4326), default value</p>
+            </li>
+            <li class="listitem">
+              <p>1: GML Long CRS (e.g urn:ogc:def:crs:EPSG::4326)</p>
+            </li>
+            <li class="listitem">
+              <p>2: For GML 3 only, remove srsDimension attribute from output.</p>
+            </li>
+            <li class="listitem">
+              <p>4: For GML 3 only, use &lt;LineString&gt; rather than &lt;Curve&gt; tag for lines.</p>
+            </li>
+            <li class="listitem">
+              <p>16: Declare that data are lat/lon (e.g srid=4326). Default is to assume that data are planars.
+								  This option is useful for GML 3.1.1 output only, related to axis order. So if you set it, it will swap the coordinates
+								  so order is lat lon instead of database lon lat.</p>
+            </li>
+            <li class="listitem">
+              <p>32: Output the box of the geometry (envelope).</p>
+            </li>
+          </ul>
+        </div>
+        <p>
+						</p>
+        <p>The 'namespace prefix' argument may be used to specify a custom
+namespace prefix or no prefix (if empty). If null or omitted 'gml' prefix is used</p>
+        <p class="availability">Availability: 1.3.2</p>
+        <p class="availability">Availability: 1.5.0 geography support was introduced.</p>
+        <p class="enhanced">Enhanced: 2.0.0 prefix support was introduced. Option 4 for GML3 was introduced to allow using LineString instead of Curve tag for lines. GML3 Support for Polyhedral surfaces and TINS was introduced. Option 32 was introduced to output the box.</p>
+        <p class="changed">Changed: 2.0.0 use default named args</p>
+        <p class="enhanced">Enhanced: 2.1.0 id support was introduced, for GML 3.</p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>Only version 3+ of ST_AsGML supports Polyhedral Surfaces and TINS.</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method implements the SQL/MM specification.
+         SQL-MM IEC 13249-3: 17.2</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports 3d and will not drop the z-index.
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports Polyhedral surfaces.
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports Triangles and Triangulated Irregular Network Surfaces (TIN).
+        </p>
+      </div>
+      <div class="refsection" id="idm10860">
+        <h2>Examples: Version 2</h2>
+        <pre class="programlisting">
+SELECT ST_AsGML(ST_GeomFromText('POLYGON((0 0,0 1,1 1,1 0,0 0))',4326));
+		st_asgml
+		--------
+		&lt;gml:Polygon srsName="EPSG:4326"&gt;&lt;gml:outerBoundaryIs&gt;&lt;gml:LinearRing&gt;&lt;gml:coordinates&gt;0,0 0,1 1,1 1,0 0,0&lt;/gml:coordinates&gt;&lt;/gml:LinearRing&gt;&lt;/gml:outerBoundaryIs&gt;&lt;/gml:Polygon&gt;
+
+</pre>
+      </div>
+      <div class="refsection" id="idm10863">
+        <h2>Examples: Version 3</h2>
+        <pre class="programlisting">
+-- Flip coordinates and output extended EPSG (16 | 1)--
+SELECT ST_AsGML(3, ST_GeomFromText('POINT(5.234234233242 6.34534534534)',4326), 5, 17);
+			st_asgml
+			--------
+		&lt;gml:Point srsName="urn:ogc:def:crs:EPSG::4326"&gt;&lt;gml:pos&gt;6.34535 5.23423&lt;/gml:pos&gt;&lt;/gml:Point&gt;
+
+</pre>
+        <pre class="programlisting">
+-- Output the envelope (32) --
+SELECT ST_AsGML(3, ST_GeomFromText('LINESTRING(1 2, 3 4, 10 20)',4326), 5, 32);
+		st_asgml
+		--------
+	&lt;gml:Envelope srsName="EPSG:4326"&gt;
+		&lt;gml:lowerCorner&gt;1 2&lt;/gml:lowerCorner&gt;
+		&lt;gml:upperCorner&gt;10 20&lt;/gml:upperCorner&gt;
+	&lt;/gml:Envelope&gt;
+
+</pre>
+        <pre class="programlisting">
+-- Output the envelope (32) , reverse (lat lon instead of lon lat) (16), long srs (1)= 32 | 16 | 1 = 49 --
+SELECT ST_AsGML(3, ST_GeomFromText('LINESTRING(1 2, 3 4, 10 20)',4326), 5, 49);
+	st_asgml
+	--------
+&lt;gml:Envelope srsName="urn:ogc:def:crs:EPSG::4326"&gt;
+	&lt;gml:lowerCorner&gt;2 1&lt;/gml:lowerCorner&gt;
+	&lt;gml:upperCorner&gt;20 10&lt;/gml:upperCorner&gt;
+&lt;/gml:Envelope&gt;
+
+</pre>
+        <pre class="programlisting">
+-- Polyhedral Example --
+SELECT ST_AsGML(3, ST_GeomFromEWKT('POLYHEDRALSURFACE( ((0 0 0, 0 0 1, 0 1 1, 0 1 0, 0 0 0)),
+((0 0 0, 0 1 0, 1 1 0, 1 0 0, 0 0 0)), ((0 0 0, 1 0 0, 1 0 1, 0 0 1, 0 0 0)),
+((1 1 0, 1 1 1, 1 0 1, 1 0 0, 1 1 0)),
+((0 1 0, 0 1 1, 1 1 1, 1 1 0, 0 1 0)), ((0 0 1, 1 0 1, 1 1 1, 0 1 1, 0 0 1)) )'));
+	st_asgml
+	--------
+ &lt;gml:PolyhedralSurface&gt;
+&lt;gml:polygonPatches&gt;
+   &lt;gml:PolygonPatch&gt;
+		&lt;gml:exterior&gt;
+			  &lt;gml:LinearRing&gt;
+				   &lt;gml:posList srsDimension="3"&gt;0 0 0 0 0 1 0 1 1 0 1 0 0 0 0&lt;/gml:posList&gt;
+			  &lt;/gml:LinearRing&gt;
+		&lt;/gml:exterior&gt;
+   &lt;/gml:PolygonPatch&gt;
+   &lt;gml:PolygonPatch&gt;
+		&lt;gml:exterior&gt;
+			  &lt;gml:LinearRing&gt;
+				   &lt;gml:posList srsDimension="3"&gt;0 0 0 0 1 0 1 1 0 1 0 0 0 0 0&lt;/gml:posList&gt;
+			  &lt;/gml:LinearRing&gt;
+		&lt;/gml:exterior&gt;
+   &lt;/gml:PolygonPatch&gt;
+   &lt;gml:PolygonPatch&gt;
+		&lt;gml:exterior&gt;
+			  &lt;gml:LinearRing&gt;
+				   &lt;gml:posList srsDimension="3"&gt;0 0 0 1 0 0 1 0 1 0 0 1 0 0 0&lt;/gml:posList&gt;
+			  &lt;/gml:LinearRing&gt;
+		&lt;/gml:exterior&gt;
+   &lt;/gml:PolygonPatch&gt;
+   &lt;gml:PolygonPatch&gt;
+		&lt;gml:exterior&gt;
+			  &lt;gml:LinearRing&gt;
+				   &lt;gml:posList srsDimension="3"&gt;1 1 0 1 1 1 1 0 1 1 0 0 1 1 0&lt;/gml:posList&gt;
+			  &lt;/gml:LinearRing&gt;
+		&lt;/gml:exterior&gt;
+   &lt;/gml:PolygonPatch&gt;
+   &lt;gml:PolygonPatch&gt;
+		&lt;gml:exterior&gt;
+			  &lt;gml:LinearRing&gt;
+				   &lt;gml:posList srsDimension="3"&gt;0 1 0 0 1 1 1 1 1 1 1 0 0 1 0&lt;/gml:posList&gt;
+			  &lt;/gml:LinearRing&gt;
+		&lt;/gml:exterior&gt;
+   &lt;/gml:PolygonPatch&gt;
+   &lt;gml:PolygonPatch&gt;
+		&lt;gml:exterior&gt;
+			  &lt;gml:LinearRing&gt;
+				   &lt;gml:posList srsDimension="3"&gt;0 0 1 1 0 1 1 1 1 0 1 1 0 0 1&lt;/gml:posList&gt;
+			  &lt;/gml:LinearRing&gt;
+		&lt;/gml:exterior&gt;
+   &lt;/gml:PolygonPatch&gt;
+&lt;/gml:polygonPatches&gt;
+&lt;/gml:PolyhedralSurface&gt;
+
+</pre>
+      </div>
+      <div class="refsection" id="idm10869">
+        <h2>See Also</h2>
+        <p>
+          <a class="xref" href="ST_GeomFromGML.html" title="ST_GeomFromGML">ST_GeomFromGML</a>
+        </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_AsGeoJSON.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#idm10493">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_AsKML.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_AsGeoJSON </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_AsKML</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

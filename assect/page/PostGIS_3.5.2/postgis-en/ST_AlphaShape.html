@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_AlphaShape</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="CG_3DUnion.html" title="CG_3DUnion"/>
+    <link rel="next" href="CG_AlphaShape.html" title="CG_AlphaShape"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_AlphaShape</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="CG_3DUnion.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">8.3. SFCGAL Processing and Relationship Functions</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="CG_AlphaShape.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_AlphaShape">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_AlphaShape — Computes an Alpha-shape enclosing a geometry</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_AlphaShape</strong>(</code>geometry <var class="pdparam">geom</var>, float  <var class="pdparam">alpha</var>, boolean  <var class="pdparam">allow_holes = false</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm22352">
+        <h2>Description</h2>
+        <div class="warning">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Warning]" src="../images/warning.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>
+                        <a class="xref" href="ST_AlphaShape.html" title="ST_AlphaShape">ST_AlphaShape</a> is deprecated as of 3.5.0. Use <a class="xref" href="CG_AlphaShape.html" title="CG_AlphaShape">CG_AlphaShape</a> instead.
+                    </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p>Computes the
+                <a class="link" href="https://en.wikipedia.org/wiki/Alpha_shape" target="_top">Alpha-Shape</a>
+                of the points in a geometry.
+                An alpha-shape is a (usually) concave polygonal geometry which contains all the vertices of the input,
+                and whose vertices are a subset of the input vertices.
+                An alpha-shape provides a closer fit to the shape of the input
+                than the shape produced by the <a class="link" href="ST_ConvexHull.html" title="ST_ConvexHull">convex hull</a>.
+            </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="CG_3DUnion.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference_sfcgal.html#sfcgal_processing">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="CG_AlphaShape.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">CG_3DUnion </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> CG_AlphaShape</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_SquareGrid</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_Hexagon.html" title="ST_Hexagon"/>
+    <link rel="next" href="ST_Square.html" title="ST_Square"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_SquareGrid</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_Hexagon.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.3. Geometry Constructors</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_Square.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_SquareGrid">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_SquareGrid — Returns a set of grid squares and cell indices that completely cover the bounds of the geometry argument.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">setof record <strong class="fsfunc">ST_SquareGrid</strong>(</code>float8 <var class="pdparam">size</var>, geometry <var class="pdparam">bounds</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm4388">
+        <h2>Description</h2>
+        <p>Starts with the concept of a square tiling of the plane.
+            For a given planar SRS, and a given edge size, starting at the origin of the SRS,
+            there is one unique square tiling of the plane, Tiling(SRS, Size).
+            This function answers the question: what grids in a given Tiling(SRS, Size)
+            overlap with a given bounds.</p>
+        <p>The SRS for the output squares is the SRS provided by the bounds geometry.</p>
+        <p>Doubling or edge size of the square generates a new parent tiling that
+            perfectly fits with the original tiling. Standard web map tilings in mercator
+            are just powers-of-two square grids in the mercator plane.</p>
+        <p class="availability">Availability: 3.1.0</p>
+      </div>
+      <div class="refsection" id="idm4394">
+        <h2>Example: Generating a 1 degree grid for a country</h2>
+        <p>The grid will fill the whole bounds of the country, so if you want just squares
+            that touch the country you will have to filter afterwards with ST_Intersects.</p>
+        <pre class="programlisting">WITH grid AS (
+SELECT (ST_SquareGrid(1, ST_Transform(geom,4326))).*
+FROM admin0 WHERE name = 'Canada'
+)
+  SELEcT ST_AsText(geom)
+  FROM grid</pre>
+      </div>
+      <div class="refsection" id="idm4398">
+        <h2>Example: Counting points in squares (using single chopped grid)</h2>
+        <p>To do a point summary against a square tiling, generate a square grid using the
+        extent of the points as the bounds, then spatially join to that grid. Note the estimated extent might be off from actual extent, so be cautious and at very least make sure you've analyzed your table.</p>
+        <pre class="programlisting">SELECT COUNT(*), squares.geom
+    FROM
+    pointtable AS pts
+    INNER JOIN
+    ST_SquareGrid(
+        1000,
+        ST_SetSRID(ST_EstimatedExtent('pointtable', 'geom'), 3857)
+    ) AS squares
+    ON ST_Intersects(pts.geom, squares.geom)
+    GROUP BY squares.geom</pre>
+      </div>
+      <div class="refsection" id="idm4402">
+        <h2>Example: Counting points in squares using set of grid per point</h2>
+        <p>This yields the same result as the first example but will be slower for a large number of points</p>
+        <pre class="programlisting">SELECT COUNT(*), squares.geom
+    FROM
+    pointtable AS pts
+    INNER JOIN
+    ST_SquareGrid(
+        1000,
+       pts.geom
+    ) AS squares
+    ON ST_Intersects(pts.geom, squares.geom)
+    GROUP BY squares.geom</pre>
+      </div>
+      <div class="refsection" id="idm4406">
+        <h2>See Also</h2>
+        <p><a class="xref" href="ST_TileEnvelope.html" title="ST_TileEnvelope">ST_TileEnvelope</a>, <a class="xref" href="ST_HexagonGrid.html" title="ST_HexagonGrid">ST_HexagonGrid</a>
+            , <a class="xref" href="ST_EstimatedExtent.html" title="ST_EstimatedExtent">ST_EstimatedExtent</a>
+            , <a class="xref" href="ST_SetSRID.html" title="ST_SetSRID">ST_SetSRID</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_Hexagon.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Geometry_Constructors">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_Square.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_Hexagon </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_Square</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

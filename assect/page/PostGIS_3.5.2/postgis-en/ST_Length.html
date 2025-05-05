@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_Length</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_HausdorffDistance.html" title="ST_HausdorffDistance"/>
+    <link rel="next" href="ST_Length2D.html" title="ST_Length2D"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_Length</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_HausdorffDistance.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.12. Measurement Functions</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_Length2D.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_Length">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_Length — Returns the 2D length of a linear geometry.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">float <strong class="fsfunc">ST_Length</strong>(</code>geometry <var class="pdparam">a_2dlinestring</var><code>)</code>;</p>
+          <p><code class="funcdef">float <strong class="fsfunc">ST_Length</strong>(</code>geography <var class="pdparam">geog</var>, boolean <var class="pdparam">use_spheroid = true</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm14880">
+        <h2>Description</h2>
+        <p>For geometry types: returns the 2D Cartesian length of the geometry if it is a LineString, MultiLineString, ST_Curve, ST_MultiCurve.
+				For areal geometries 0 is returned; use <a class="xref" href="ST_Perimeter.html" title="ST_Perimeter">ST_Perimeter</a> instead.
+				The units of length is determined by the
+				spatial reference system of the geometry.</p>
+        <p>For geography types: computation is performed using the inverse geodesic calculation. Units of length are in meters.
+				If PostGIS is compiled with PROJ version 4.8.0 or later, the spheroid is specified by the SRID, otherwise it is exclusive to WGS84.
+				If <code class="varname">use_spheroid = false</code>, then the calculation is based on a sphere instead of a spheroid.
+				</p>
+        <p>Currently for geometry this is an alias for ST_Length2D, but this may change to support higher dimensions.</p>
+        <div class="warning">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Warning]" src="../images/warning.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p class="changed">Changed: 2.0.0 Breaking change -- in prior versions applying this to a MULTI/POLYGON of type geography would give you the perimeter of the POLYGON/MULTIPOLYGON.  In 2.0.0
+			this was changed to return 0 to be in line with geometry behavior.  Please use ST_Perimeter if you want the perimeter of a polygon</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>For geography the calculation defaults to using a spheroidal model.  To use the faster but less accurate spherical calculation use ST_Length(gg,false);</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method implements the <a class="link" href="http://www.opengeospatial.org/standards/sfs" target="_top">OGC Simple Features
+            Implementation Specification for SQL 1.1.</a>
+         s2.1.5.1</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method implements the SQL/MM specification.
+         SQL-MM 3: 7.1.2, 9.3.4</p>
+        <p class="availability">Availability: 1.5.0 geography support was introduced in 1.5.</p>
+      </div>
+      <div class="refsection" id="idm14901">
+        <h2>Geometry Examples</h2>
+        <p>Return length in feet for line string. Note this is in feet because EPSG:2249 is
+				Massachusetts State Plane Feet</p>
+        <pre class="programlisting">
+SELECT ST_Length(ST_GeomFromText('LINESTRING(743238 2967416,743238 2967450,743265 2967450,
+743265.625 2967416,743238 2967416)',2249));
+
+st_length
+---------
+ 122.630744000095
+
+
+--Transforming WGS 84 LineString to Massachusetts state plane meters
+SELECT ST_Length(
+	ST_Transform(
+		ST_GeomFromEWKT('SRID=4326;LINESTRING(-72.1260 42.45, -72.1240 42.45666, -72.123 42.1546)'),
+		26986
+	)
+);
+
+st_length
+---------
+34309.4563576191
+			</pre>
+      </div>
+      <div class="refsection" id="idm14905">
+        <h2>Geography Examples</h2>
+        <p>Return length of WGS 84 geography line</p>
+        <pre class="programlisting">
+-- the default calculation uses a spheroid
+SELECT ST_Length(the_geog) As length_spheroid,  ST_Length(the_geog,false) As length_sphere
+FROM (SELECT ST_GeographyFromText(
+'SRID=4326;LINESTRING(-72.1260 42.45, -72.1240 42.45666, -72.123 42.1546)') As the_geog)
+ As foo;
+
+ length_spheroid  |  length_sphere
+------------------+------------------
+ 34310.5703627288 | 34346.2060960742
+			</pre>
+      </div>
+      <div class="refsection" id="idm14909">
+        <h2>See Also</h2>
+        <p><a class="xref" href="ST_GeographyFromText.html" title="ST_GeographyFromText">ST_GeographyFromText</a>, <a class="xref" href="ST_GeomFromEWKT.html" title="ST_GeomFromEWKT">ST_GeomFromEWKT</a>, <a class="xref" href="ST_Length_Spheroid.html" title="ST_LengthSpheroid">ST_LengthSpheroid</a>, <a class="xref" href="ST_Perimeter.html" title="ST_Perimeter">ST_Perimeter</a>, <a class="xref" href="ST_Transform.html" title="ST_Transform">ST_Transform</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_HausdorffDistance.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Measurement_Functions">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_Length2D.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_HausdorffDistance </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_Length2D</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

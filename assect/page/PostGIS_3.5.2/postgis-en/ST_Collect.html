@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_Collect</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="UpdateGeometrySRID.html" title="UpdateGeometrySRID"/>
+    <link rel="next" href="ST_LineFromMultiPoint.html" title="ST_LineFromMultiPoint"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_Collect</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="UpdateGeometrySRID.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.3. Geometry Constructors</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_LineFromMultiPoint.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_Collect">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_Collect — Creates a GeometryCollection or Multi* geometry from a set of geometries.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_Collect</strong>(</code>geometry <var class="pdparam">g1</var>, geometry <var class="pdparam">g2</var><code>)</code>;</p>
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_Collect</strong>(</code>geometry[] <var class="pdparam">g1_array</var><code>)</code>;</p>
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_Collect</strong>(</code>geometry set <var class="pdparam">g1field</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm3601">
+        <h2>Description</h2>
+        <p> Collects geometries into a geometry collection.
+			The result is either a Multi* or a
+			GeometryCollection, depending on whether the input geometries have the same or different types
+			(homogeneous or heterogeneous).
+			The input geometries are left unchanged within the collection.
+			</p>
+        <p><span class="bold"><strong>Variant 1:</strong></span> accepts two input geometries</p>
+        <p><span class="bold"><strong>Variant 2:</strong></span> accepts an array of geometries</p>
+        <p><span class="bold"><strong>Variant 3:</strong></span> aggregate function accepting a rowset of geometries.</p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>
+		If any of the input geometries are collections (Multi* or GeometryCollection)
+		ST_Collect returns a GeometryCollection (since that is the only type
+		which can contain nested collections).
+		To prevent this, use <a class="xref" href="ST_Dump.html" title="ST_Dump">ST_Dump</a> in a subquery to expand the
+		input collections to their atomic elements (see example below).
+		</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>ST_Collect and <a class="xref" href="ST_Union.html" title="ST_Union">ST_Union</a> appear similar, but in fact operate quite differently.
+		ST_Collect aggregates geometries into a collection without changing them in any way.
+		ST_Union geometrically merges geometries where they overlap,
+		and splits linestrings at intersections.
+		It may return single geometries when it dissolves boundaries.
+		</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p class="availability">Availability: 1.4.0 -  ST_Collect(geomarray) was introduced. ST_Collect was enhanced to handle more geometries faster.</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports 3d and will not drop the z-index.
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method supports Circular Strings and Curves.
+        </p>
+      </div>
+      <div class="refsection" id="idm3625">
+        <h2>Examples - Two-input variant</h2>
+        <p>Collect 2D points.</p>
+        <pre class="programlisting">
+SELECT ST_AsText( ST_Collect( ST_GeomFromText('POINT(1 2)'),
+	ST_GeomFromText('POINT(-2 3)') ));
+
+st_astext
+----------
+MULTIPOINT((1 2),(-2 3))
+</pre>
+        <p>Collect 3D points.</p>
+        <pre class="programlisting">
+SELECT ST_AsEWKT( ST_Collect( ST_GeomFromEWKT('POINT(1 2 3)'),
+		ST_GeomFromEWKT('POINT(1 2 4)') ) );
+
+		st_asewkt
+-------------------------
+ MULTIPOINT(1 2 3,1 2 4)
+ </pre>
+        <p>Collect curves.</p>
+        <pre class="programlisting">
+SELECT ST_AsText( ST_Collect( 'CIRCULARSTRING(220268 150415,220227 150505,220227 150406)',
+		'CIRCULARSTRING(220227 150406,2220227 150407,220227 150406)'));
+
+		st_astext
+------------------------------------------------------------------------------------
+MULTICURVE(CIRCULARSTRING(220268 150415,220227 150505,220227 150406),
+ CIRCULARSTRING(220227 150406,2220227 150407,220227 150406))
+</pre>
+      </div>
+      <div class="refsection" id="idm3633">
+        <h2>Examples - Array variant</h2>
+        <p>Using an array constructor for a subquery.</p>
+        <pre class="programlisting">
+SELECT ST_Collect( ARRAY( SELECT geom FROM sometable ) );
+</pre>
+        <p>Using an array constructor for values.</p>
+        <pre class="programlisting">
+SELECT ST_AsText(  ST_Collect(
+		ARRAY[ ST_GeomFromText('LINESTRING(1 2, 3 4)'),
+			ST_GeomFromText('LINESTRING(3 4, 4 5)') ] )) As wktcollect;
+
+--wkt collect --
+MULTILINESTRING((1 2,3 4),(3 4,4 5))
+</pre>
+      </div>
+      <div class="refsection" id="idm3639">
+        <h2>Examples - Aggregate variant</h2>
+        <p>Creating multiple collections by grouping geometries in a table.</p>
+        <pre class="programlisting">
+SELECT stusps, ST_Collect(f.geom) as geom
+	 FROM (SELECT stusps, (ST_Dump(geom)).geom As geom
+				FROM
+				somestatetable ) As f
+	GROUP BY stusps
+</pre>
+      </div>
+      <div class="refsection" id="idm3643">
+        <h2>See Also</h2>
+        <p><a class="xref" href="ST_Dump.html" title="ST_Dump">ST_Dump</a>, <a class="xref" href="ST_Union.html" title="ST_Union">ST_Union</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="UpdateGeometrySRID.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Geometry_Constructors">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_LineFromMultiPoint.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">UpdateGeometrySRID </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_LineFromMultiPoint</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

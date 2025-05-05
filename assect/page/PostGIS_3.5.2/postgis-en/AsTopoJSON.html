@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>AsTopoJSON</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="AsGML.html" title="AsGML"/>
+    <link rel="next" href="TG_Equals.html" title="Equals"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">AsTopoJSON</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="AsGML.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">9.12. TopoGeometry Outputs</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="TG_Equals.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="AsTopoJSON">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>AsTopoJSON — Returns the TopoJSON representation of a topogeometry.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">text <strong class="fsfunc">AsTopoJSON</strong>(</code>topogeometry  <var class="pdparam">tg</var>, regclass  <var class="pdparam">edgeMapTable</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm26246">
+        <h2>Description</h2>
+        <p>Returns the TopoJSON representation of a topogeometry. If <code class="varname">edgeMapTable</code> is not null, it will be used as a lookup/storage mapping of edge identifiers to arc indices. This is to be able to allow for a compact "arcs" array in the final document.
+</p>
+        <p>
+The table, if given, is expected to have an "arc_id" field of type "serial" and an "edge_id" of type integer; the code will query the table for "edge_id" so it is recommended to add an index on that field.
+</p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>
+Arc indices in the TopoJSON output are 0-based but they are 1-based
+in the "edgeMapTable" table.
+</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p>
+A full TopoJSON document will be need to contain, in
+addition to the snippets returned by this function,
+the actual arcs plus some headers. See the <a class="link" href="http://github.com/mbostock/topojson-specification/blob/master/README.md" target="_top">TopoJSON specification</a>.
+		</p>
+        <p class="availability">Availability: 2.1.0 </p>
+        <p class="enhanced">Enhanced: 2.2.1 added support for puntal inputs</p>
+      </div>
+      <div class="refsection" id="idm26257">
+        <h2>See Also</h2>
+        <p>
+          <a class="xref" href="ST_AsGeoJSON.html" title="ST_AsGeoJSON">ST_AsGeoJSON</a>
+        </p>
+      </div>
+      <div class="refsection" id="idm26261">
+        <h2>Examples</h2>
+        <pre class="programlisting">
+CREATE TEMP TABLE edgemap(arc_id serial, edge_id int unique);
+
+-- header
+SELECT '{ "type": "Topology", "transform": { "scale": [1,1], "translate": [0,0] }, "objects": {'
+
+-- objects
+UNION ALL SELECT '"' || feature_name || '": ' || AsTopoJSON(feature, 'edgemap')
+FROM features.big_parcels WHERE feature_name = 'P3P4';
+
+-- arcs
+WITH edges AS (
+  SELECT m.arc_id, e.geom FROM edgemap m, city_data.edge e
+  WHERE e.edge_id = m.edge_id
+), points AS (
+  SELECT arc_id, (st_dumppoints(geom)).* FROM edges
+), compare AS (
+  SELECT p2.arc_id,
+         CASE WHEN p1.path IS NULL THEN p2.geom
+              ELSE ST_Translate(p2.geom, -ST_X(p1.geom), -ST_Y(p1.geom))
+         END AS geom
+  FROM points p2 LEFT OUTER JOIN points p1
+  ON ( p1.arc_id = p2.arc_id AND p2.path[1] = p1.path[1]+1 )
+  ORDER BY arc_id, p2.path
+), arcsdump AS (
+  SELECT arc_id, (regexp_matches( ST_AsGeoJSON(geom), '\[.*\]'))[1] as t
+  FROM compare
+), arcs AS (
+  SELECT arc_id, '[' || array_to_string(array_agg(t), ',') || ']' as a FROM arcsdump
+  GROUP BY arc_id
+  ORDER BY arc_id
+)
+SELECT '}, "arcs": [' UNION ALL
+SELECT array_to_string(array_agg(a), E',\n') from arcs
+
+-- footer
+UNION ALL SELECT ']}'::text as t;
+
+-- Result:
+{ "type": "Topology", "transform": { "scale": [1,1], "translate": [0,0] }, "objects": {
+"P3P4": { "type": "MultiPolygon", "arcs": [[[-1]],[[6,5,-5,-4,-3,1]]]}
+}, "arcs": [
+ [[25,30],[6,0],[0,10],[-14,0],[0,-10],[8,0]],
+ [[35,6],[0,8]],
+ [[35,6],[12,0]],
+ [[47,6],[0,8]],
+ [[47,14],[0,8]],
+ [[35,22],[12,0]],
+ [[35,14],[0,8]]
+ ]}
+</pre>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="AsGML.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="Topology.html#TopoGeometry_Outputs">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="TG_Equals.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">AsGML </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> Equals</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_MinkowskiSum</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="CG_GreeneApproxConvexPartition.html" title="CG_GreeneApproxConvexPartition"/>
+    <link rel="next" href="CG_MinkowskiSum.html" title="CG_MinkowskiSum"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_MinkowskiSum</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="CG_GreeneApproxConvexPartition.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">8.3. SFCGAL Processing and Relationship Functions</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="CG_MinkowskiSum.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_MinkowskiSum">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_MinkowskiSum — Performs Minkowski sum</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_MinkowskiSum</strong>(</code>geometry <var class="pdparam">geom1</var>, geometry <var class="pdparam">geom2</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm22885">
+        <h2>Description</h2>
+        <div class="warning">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Warning]" src="../images/warning.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>
+                <a class="xref" href="ST_MinkowskiSum.html" title="ST_MinkowskiSum">ST_MinkowskiSum</a> is deprecated as of 3.5.0. Use <a class="xref" href="CG_MinkowskiSum.html" title="CG_MinkowskiSum">CG_MinkowskiSum</a> instead.
+            </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p>This function performs a 2D minkowski sum of a point, line or polygon with a polygon.</p>
+        <p>A minkowski sum of two geometries A and B is the set of all points that are the sum of any point in A and B. Minkowski sums are often used in motion planning and computer-aided design. More details on <a class="link" href="https://en.wikipedia.org/wiki/Minkowski_addition" target="_top">Wikipedia Minkowski addition</a>.</p>
+        <p>The first parameter can be any 2D geometry (point, linestring, polygon). If a 3D geometry is passed, it will be converted to 2D by forcing Z to 0, leading to possible cases of invalidity. The second parameter must be a 2D polygon.</p>
+        <p>Implementation utilizes <a class="link" href="http://doc.cgal.org/latest/Minkowski_sum_2/" target="_top">CGAL 2D Minkowskisum</a>.</p>
+        <p class="availability">Availability: 2.1.0</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method needs SFCGAL backend.
+        </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="CG_GreeneApproxConvexPartition.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference_sfcgal.html#sfcgal_processing">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="CG_MinkowskiSum.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">CG_GreeneApproxConvexPartition </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> CG_MinkowskiSum</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

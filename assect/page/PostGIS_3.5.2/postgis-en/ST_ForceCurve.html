@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_ForceCurve</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_Force_Collection.html" title="ST_ForceCollection"/>
+    <link rel="next" href="ST_ForcePolygonCCW.html" title="ST_ForcePolygonCCW"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_ForceCurve</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_Force_Collection.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.5. Geometry Editors</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_ForcePolygonCCW.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_ForceCurve">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_ForceCurve — Upcast a geometry into its curved type, if applicable.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">geometry
+						<strong class="fsfunc">ST_ForceCurve</strong>(</code>geometry <var class="pdparam">g</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm7046">
+        <h2>Description</h2>
+        <p>
+                        Turns a geometry into its curved representation, if applicable:
+                        lines become compoundcurves, multilines become multicurves
+                        polygons become curvepolygons multipolygons become multisurfaces. If the geometry input is already a curved representation returns back same as input.
+                        </p>
+        <p class="availability">Availability: 2.2.0</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports 3d and will not drop the z-index.
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method supports Circular Strings and Curves.
+        </p>
+      </div>
+      <div class="refsection" id="idm7058">
+        <h2>Examples</h2>
+        <pre class="programlisting">SELECT ST_AsText(
+  ST_ForceCurve(
+	'POLYGON((0 0 2, 5 0 2, 0 5 2, 0 0 2),(1 1 2, 1 3 2, 3 1 2, 1 1 2))'::geometry
+  )
+);
+                              st_astext
+----------------------------------------------------------------------
+ CURVEPOLYGON Z ((0 0 2,5 0 2,0 5 2,0 0 2),(1 1 2,1 3 2,3 1 2,1 1 2))
+(1 row)</pre>
+      </div>
+      <div class="refsection" id="idm7061">
+        <h2>See Also</h2>
+        <p>
+          <a class="xref" href="ST_LineToCurve.html" title="ST_LineToCurve">ST_LineToCurve</a>
+        </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_Force_Collection.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Geometry_Editors">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_ForcePolygonCCW.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_ForceCollection </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> 
+				ST_ForcePolygonCCW
+			</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

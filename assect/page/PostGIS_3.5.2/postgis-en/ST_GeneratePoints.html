@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_GeneratePoints</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_FilterByM.html" title="ST_FilterByM"/>
+    <link rel="next" href="ST_GeometricMedian.html" title="ST_GeometricMedian"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_GeneratePoints</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_FilterByM.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.14. Geometry Processing</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_GeometricMedian.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_GeneratePoints">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_GeneratePoints — Generates a multipoint of random points contained in a Polygon or MultiPolygon.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_GeneratePoints</strong>(</code>geometry <var class="pdparam">g</var>, integer <var class="pdparam">npoints</var>, integer <var class="pdparam">seed = 0</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm16935">
+        <h2>Description</h2>
+        <p>
+            ST_GeneratePoints generates a multipoint consisting of a given number of pseudo-random points
+            which lie within the input area.
+            The optional <code class="varname">seed</code> is used to regenerate a deterministic sequence of points,
+            and must be greater than zero.
+        </p>
+        <p class="availability">Availability: 2.3.0</p>
+        <p class="enhanced">Enhanced: 3.0.0, added seed parameter</p>
+      </div>
+      <div class="refsection" id="idm16941">
+        <h2>Examples</h2>
+        <div class="informalfigure">
+          <div class="mediaobject">
+            <img src="../images/st_generatepoints01.png"/>
+            <div class="caption">
+              <p>Generated a multipoint consisting of 12 Points overlaid on top of original polygon using a random seed value 1996</p>
+            </div>
+          </div>
+        </div>
+        <p>
+                        </p>
+        <pre class="programlisting">SELECT ST_GeneratePoints(geom, 12, 1996)
+FROM (
+    SELECT ST_Buffer(
+        ST_GeomFromText(
+        'LINESTRING(50 50,150 150,150 50)'),
+        10, 'endcap=round join=round') AS geom
+) AS s;</pre>
+        <p>
+            </p>
+        <p>Given a table of polygons s, return 12 individual points per polygon. Results will be different each time you run.</p>
+        <pre class="programlisting">SELECT s.id, dp.path[1] AS pt_id, dp.geom
+FROM s, ST_DumpPoints(ST_GeneratePoints(s.geom,12)) AS dp;</pre>
+      </div>
+      <div class="refsection" id="idm16953">
+        <h2>See Also</h2>
+        <p>
+          <a class="xref" href="ST_DumpPoints.html" title="ST_DumpPoints">ST_DumpPoints</a>
+        </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_FilterByM.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Geometry_Processing">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_GeometricMedian.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_FilterByM </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> 
+              ST_GeometricMedian
+          </td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

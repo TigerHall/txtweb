@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_AsGeobuf</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_AsFlatGeobuf.html" title="ST_AsFlatGeobuf"/>
+    <link rel="next" href="ST_AsGeoJSON.html" title="ST_AsGeoJSON"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_AsGeobuf</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_AsFlatGeobuf.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.9.3. Other Formats</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_AsGeoJSON.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_AsGeobuf">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_AsGeobuf — Return a Geobuf representation of a set of rows.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">bytea <strong class="fsfunc">ST_AsGeobuf</strong>(</code>anyelement set  <var class="pdparam">row</var><code>)</code>;</p>
+          <p><code class="funcdef">bytea <strong class="fsfunc">ST_AsGeobuf</strong>(</code>anyelement  <var class="pdparam">row</var>, text  <var class="pdparam">geom_name</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm10594">
+        <h2>Description</h2>
+        <p>
+			Return a Geobuf representation (<a class="link" href="https://github.com/mapbox/geobuf" target="_top">https://github.com/mapbox/geobuf</a>) of a set of rows corresponding to a FeatureCollection.
+			Every input geometry is analyzed to determine maximum precision for optimal storage.
+			Note that Geobuf in its current form cannot be streamed so the full output will be assembled in memory.
+		</p>
+        <p><code class="varname">row</code> row data with at least a geometry column.</p>
+        <p><code class="varname">geom_name</code> is the name of the geometry column in the row data. If NULL it will default to the first found geometry column.</p>
+        <p class="availability">Availability: 2.4.0</p>
+      </div>
+      <div class="refsection" id="idm10603">
+        <h2>Examples</h2>
+        <pre class="programlisting">SELECT encode(ST_AsGeobuf(q, 'geom'), 'base64')
+    FROM (SELECT ST_GeomFromText('POLYGON((0 0,0 1,1 1,1 0,0 0))') AS geom) AS q;
+ st_asgeobuf
+----------------------------------
+ GAAiEAoOCgwIBBoIAAAAAgIAAAE=
+
+
+		</pre>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_AsFlatGeobuf.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#idm10493">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_AsGeoJSON.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_AsFlatGeobuf </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_AsGeoJSON</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

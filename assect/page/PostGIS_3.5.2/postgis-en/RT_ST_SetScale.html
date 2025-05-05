@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_SetScale</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="RT_ST_SetRotation.html" title="ST_SetRotation"/>
+    <link rel="next" href="RT_ST_SetSkew.html" title="ST_SetSkew"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_SetScale</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="RT_ST_SetRotation.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">11.7. Raster Editors</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="RT_ST_SetSkew.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="RT_ST_SetScale">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_SetScale — Sets the X and Y size of pixels in units of coordinate reference system. Number units/pixel width/height.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">raster <strong class="fsfunc">ST_SetScale</strong>(</code>raster  <var class="pdparam">rast</var>, float8  <var class="pdparam">xy</var><code>)</code>;</p>
+          <p><code class="funcdef">raster <strong class="fsfunc">ST_SetScale</strong>(</code>raster  <var class="pdparam">rast</var>, float8  <var class="pdparam">x</var>, float8  <var class="pdparam">y</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm30926">
+        <h2>Description</h2>
+        <p>Sets the X and Y size of pixels in units of coordinate reference system. Number units/pixel width/height.  If
+                only one unit passed in, assumed X and Y are the same number.</p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>ST_SetScale is different from <a class="xref" href="RT_ST_Rescale.html" title="ST_Rescale">ST_Rescale</a> in that ST_SetScale do not resample the raster to match the raster extent. It only changes the metadata (or georeference) of the raster to correct an originally mis-specified scaling. ST_Rescale results in a raster having different width and height computed to fit the geographic extent of the input raster. ST_SetScale do not modify the width, nor the height of the raster.</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p class="changed">Changed: 2.0.0 In WKTRaster versions this was called ST_SetPixelSize.  This was changed in 2.0.0.</p>
+      </div>
+      <div class="refsection" id="idm30933">
+        <h2>Examples</h2>
+        <pre class="programlisting">UPDATE dummy_rast
+    SET rast = ST_SetScale(rast, 1.5)
+WHERE rid = 2;
+
+SELECT ST_ScaleX(rast) As pixx, ST_ScaleY(rast) As pixy, Box3D(rast) As newbox
+FROM dummy_rast
+WHERE rid = 2;
+
+ pixx | pixy |                    newbox
+------+------+----------------------------------------------
+  1.5 |  1.5 | BOX(3427927.75 5793244 0, 3427935.25 5793251.5 0)
+                </pre>
+        <pre class="programlisting">UPDATE dummy_rast
+    SET rast = ST_SetScale(rast, 1.5, 0.55)
+WHERE rid = 2;
+
+SELECT ST_ScaleX(rast) As pixx, ST_ScaleY(rast) As pixy, Box3D(rast) As newbox
+FROM dummy_rast
+WHERE rid = 2;
+
+ pixx | pixy |                   newbox
+------+------+--------------------------------------------
+  1.5 | 0.55 | BOX(3427927.75 5793244 0,3427935.25 5793247 0)
+                </pre>
+      </div>
+      <div class="refsection" id="idm30937">
+        <h2>See Also</h2>
+        <p><a class="xref" href="RT_ST_ScaleX.html" title="ST_ScaleX">ST_ScaleX</a>, <a class="xref" href="RT_ST_ScaleY.html" title="ST_ScaleY">ST_ScaleY</a>, <a class="xref" href="RT_Box3D.html" title="Box3D">Box3D</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="RT_ST_SetRotation.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="RT_reference.html#Raster_Editors">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="RT_ST_SetSkew.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_SetRotation </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_SetSkew</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

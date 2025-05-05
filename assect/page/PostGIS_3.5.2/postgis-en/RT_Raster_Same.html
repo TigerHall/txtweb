@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>~=</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="RT_Raster_Contained.html" title="@"/>
+    <link rel="next" href="RT_Raster_Contains.html" title="~"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">~=</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="RT_Raster_Contained.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">11.16. Raster Operators</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="RT_Raster_Contains.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="RT_Raster_Same">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>~= — Returns <code class="varname">TRUE</code> if A's bounding box is the same as B's.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">boolean <strong class="fsfunc">~=</strong>(</code>
+                  raster 
+
+                  <var class="pdparam">A</var>
+                , 
+                  raster 
+
+                  <var class="pdparam">B</var>
+                <code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm36376">
+        <h2>Description</h2>
+        <p>The <code class="varname">~=</code> operator returns <code class="varname">TRUE</code> if the bounding box of raster A
+        is the same as the bounding box of raster B.</p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>This operand will make use of any indexes that may be available on the
+          rasters.</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p class="availability">Availability: 2.0.0</p>
+      </div>
+      <div class="refsection" id="idm36384">
+        <h2>Examples</h2>
+        <p>Very useful usecase is for taking two sets of single band rasters that are of the same chunk but represent different themes and creating a multi-band raster</p>
+        <pre class="programlisting">SELECT ST_AddBand(prec.rast, alt.rast) As new_rast
+    FROM prec INNER JOIN alt ON (prec.rast ~= alt.rast);
+        </pre>
+      </div>
+      <div class="refsection" id="idm36388">
+        <h2>See Also</h2>
+        <p><a class="xref" href="RT_ST_AddBand.html" title="ST_AddBand">ST_AddBand</a>, <a class="xref" href="RT_Raster_EQ.html" title="=">=</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="RT_Raster_Contained.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="RT_reference.html#RT_Operators">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="RT_Raster_Contains.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">@ </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ~</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

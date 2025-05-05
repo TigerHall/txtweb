@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_EstimatedExtent</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="Box3D.html" title="Box3D"/>
+    <link rel="next" href="ST_Expand.html" title="ST_Expand"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_EstimatedExtent</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="Box3D.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.18. Bounding Box Functions</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_Expand.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_EstimatedExtent">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_EstimatedExtent — Returns the estimated extent of a spatial table.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">box2d <strong class="fsfunc">ST_EstimatedExtent</strong>(</code>text  <var class="pdparam">schema_name</var>, text  <var class="pdparam">table_name</var>, text  <var class="pdparam">geocolumn_name</var>, boolean  <var class="pdparam">parent_only</var><code>)</code>;</p>
+          <p><code class="funcdef">box2d <strong class="fsfunc">ST_EstimatedExtent</strong>(</code>text  <var class="pdparam">schema_name</var>, text  <var class="pdparam">table_name</var>, text  <var class="pdparam">geocolumn_name</var><code>)</code>;</p>
+          <p><code class="funcdef">box2d <strong class="fsfunc">ST_EstimatedExtent</strong>(</code>text  <var class="pdparam">table_name</var>, text  <var class="pdparam">geocolumn_name</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm19223">
+        <h2>Description</h2>
+        <p>Returns the estimated extent of a spatial table as a <a class="xref" href="box2d_type.html" title="box2d">box2d</a>.
+            The	current schema is used if not specified.
+			The estimated extent is taken from the geometry column's statistics.
+            This is usually much faster than computing the exact extent of the table
+            using <a class="xref" href="ST_Extent.html" title="ST_Extent">ST_Extent</a> or <a class="xref" href="ST_3DExtent.html" title="ST_3DExtent">ST_3DExtent</a>.
+            </p>
+        <p>
+            The default behavior is to also use statistics collected from child tables (tables
+			with INHERITS) if available. If <code class="varname">parent_only</code> is set to TRUE, only
+			statistics for the given table are used and child tables are ignored.
+		</p>
+        <p>For PostgreSQL &gt;= 8.0.0 statistics are gathered by VACUUM
+		ANALYZE and the result extent will be about 95% of the actual one.
+        For PostgreSQL &lt; 8.0.0 statistics are gathered by running
+		<code class="code">update_geometry_stats()</code> and the result extent is exact.
+        </p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>
+            In the absence of statistics (empty table or no ANALYZE called) this function
+            returns NULL.  Prior to version 1.5.4 an exception was thrown instead.
+		    </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>
+            Escaping names for tables and/or namespaces that include special characters and quotes may require special handling. A user notes: "For schemas and tables, use identifier escaping rules to produce a double-quoted string, and afterwards remove the first and last double-quote character. For geometry column pass as is."
+            </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p class="availability">Availability: 1.0.0</p>
+        <p class="changed">Changed: 2.1.0. Up to 2.0.x this was called ST_Estimated_Extent.</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method supports Circular Strings and Curves.
+        </p>
+      </div>
+      <div class="refsection" id="idm19243">
+        <h2>Examples</h2>
+        <pre class="programlisting">SELECT ST_EstimatedExtent('ny', 'edges', 'geom');
+--result--
+BOX(-8877653 4912316,-8010225.5 5589284)
+
+SELECT ST_EstimatedExtent('feature_poly', 'geom');
+--result--
+BOX(-124.659652709961 24.6830825805664,-67.7798080444336 49.0012092590332)
+		</pre>
+      </div>
+      <div class="refsection" id="idm19246">
+        <h2>See Also</h2>
+        <p><a class="xref" href="ST_Extent.html" title="ST_Extent">ST_Extent</a>, <a class="xref" href="ST_3DExtent.html" title="ST_3DExtent">ST_3DExtent</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="Box3D.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#BBox_Functions">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_Expand.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">Box3D </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_Expand</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

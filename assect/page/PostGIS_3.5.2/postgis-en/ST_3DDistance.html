@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_3DDistance</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_Distance.html" title="ST_Distance"/>
+    <link rel="next" href="ST_DistanceSphere.html" title="ST_DistanceSphere"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_3DDistance</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_Distance.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.12. Measurement Functions</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_DistanceSphere.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_3DDistance">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_3DDistance — Returns the 3D cartesian minimum distance (based on spatial ref) between two geometries in
+		projected units. </p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">float <strong class="fsfunc">ST_3DDistance</strong>(</code>geometry 
+			<var class="pdparam">g1</var>, geometry 
+			<var class="pdparam">g2</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm14666">
+        <h2>Description</h2>
+        <p>Returns the 3-dimensional minimum cartesian distance between two geometries in
+		projected units (spatial ref units).</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports 3d and will not drop the z-index.
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports Polyhedral surfaces.
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method implements the SQL/MM specification.
+         SQL-MM ISO/IEC 13249-3</p>
+        <p class="availability">Availability: 2.0.0</p>
+        <p class="changed">Changed: 2.2.0 - In case of 2D and 3D, Z is no longer assumed to be 0 for missing Z.</p>
+        <p class="changed">Changed: 3.0.0 - SFCGAL version removed</p>
+      </div>
+      <div class="refsection" id="idm14684">
+        <h2>Examples</h2>
+        <pre class="programlisting">
+-- Geometry example - units in meters (SRID: 2163 US National Atlas Equal area) (3D point and line compared 2D point and line)
+-- Note: currently no vertical datum support so Z is not transformed and assumed to be same units as final.
+SELECT ST_3DDistance(
+			ST_Transform('SRID=4326;POINT(-72.1235 42.3521 4)'::geometry,2163),
+			ST_Transform('SRID=4326;LINESTRING(-72.1260 42.45 15, -72.123 42.1546 20)'::geometry,2163)
+		) As dist_3d,
+		ST_Distance(
+			ST_Transform('SRID=4326;POINT(-72.1235 42.3521)'::geometry,2163),
+			ST_Transform('SRID=4326;LINESTRING(-72.1260 42.45, -72.123 42.1546)'::geometry,2163)
+		) As dist_2d;
+
+     dist_3d      |     dist_2d
+------------------+-----------------
+ 127.295059324629 | 126.66425605671
+</pre>
+        <pre class="programlisting">
+-- Multilinestring and polygon both 3d and 2d distance
+-- Same example as 3D closest point example
+SELECT ST_3DDistance(poly, mline) As dist3d,
+    ST_Distance(poly, mline) As dist2d
+        FROM (SELECT  'POLYGON((175 150 5, 20 40 5, 35 45 5, 50 60 5, 100 100 5, 175 150 5))'::geometry as poly,
+               'MULTILINESTRING((175 155 2, 20 40 20, 50 60 -2, 125 100 1, 175 155 1), (1 10 2, 5 20 1))'::geometry as mline) as foo;
+      dist3d       | dist2d
+-------------------+--------
+ 0.716635696066337 |      0
+</pre>
+      </div>
+      <div class="refsection" id="idm14688">
+        <h2>See Also</h2>
+        <p><a class="xref" href="ST_Distance.html" title="ST_Distance">ST_Distance</a>, <a class="xref" href="ST_3DClosestPoint.html" title="ST_3DClosestPoint">ST_3DClosestPoint</a>, <a class="xref" href="ST_3DDWithin.html" title="ST_3DDWithin">ST_3DDWithin</a>, <a class="xref" href="ST_3DMaxDistance.html" title="ST_3DMaxDistance">ST_3DMaxDistance</a>, <a class="xref" href="ST_3DShortestLine.html" title="ST_3DShortestLine">ST_3DShortestLine</a>, <a class="xref" href="ST_Transform.html" title="ST_Transform">ST_Transform</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_Distance.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Measurement_Functions">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_DistanceSphere.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_Distance </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_DistanceSphere</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

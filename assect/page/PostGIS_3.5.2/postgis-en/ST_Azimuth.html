@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_Azimuth</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_Area.html" title="ST_Area"/>
+    <link rel="next" href="ST_Angle.html" title="ST_Angle"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_Azimuth</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_Area.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.12. Measurement Functions</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_Angle.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_Azimuth">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_Azimuth — Returns the north-based azimuth of a line between two points.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">float <strong class="fsfunc">ST_Azimuth</strong>(</code>geometry <var class="pdparam">origin</var>, geometry <var class="pdparam">target</var><code>)</code>;</p>
+          <p><code class="funcdef">float <strong class="fsfunc">ST_Azimuth</strong>(</code>geography <var class="pdparam">origin</var>, geography <var class="pdparam">target</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm14355">
+        <h2>Description</h2>
+        <p>Returns the azimuth in radians of the target point from the origin point,
+            or NULL if the two points are coincident.
+            The azimuth angle is a positive clockwise angle
+            referenced from the positive Y axis (geometry) or the North meridian (geography):
+            North = 0; Northeast = π/4; East = π/2; Southeast = 3π/4;
+            South = π; Southwest 5π/4; West = 3π/2; Northwest = 7π/4.</p>
+        <p>For the geography type, the azimuth solution is known as the
+                  <a class="link" href="https://en.wikipedia.org/wiki/Geodesics_on_an_ellipsoid" target="_top">inverse geodesic problem</a>.</p>
+        <p>The azimuth is a mathematical concept defined as the angle between a reference vector and a point, with angular units in radians.
+			The result value in radians can be converted to degrees using the PostgreSQL function <code class="varname">degrees()</code>.</p>
+        <p>Azimuth can be used in conjunction with <a class="xref" href="ST_Translate.html" title="ST_Translate">ST_Translate</a> to shift an object along its perpendicular axis. See
+				 the <code class="varname">upgis_lineshift()</code> function in the <a class="link" href="http://trac.osgeo.org/postgis/wiki/UsersWikiplpgsqlfunctions" target="_top">PostGIS wiki</a> for an implementation of this.</p>
+        <p class="availability">Availability: 1.1.0</p>
+        <p class="enhanced">Enhanced: 2.0.0 support for geography was introduced.</p>
+        <p class="enhanced">Enhanced: 2.2.0 measurement on spheroid performed with GeographicLib for improved accuracy and robustness.  Requires PROJ &gt;= 4.9.0 to take advantage of the new feature.</p>
+      </div>
+      <div class="refsection" id="idm14369">
+        <h2>Examples</h2>
+        <p>Geometry Azimuth in degrees </p>
+        <pre class="programlisting">
+SELECT degrees(ST_Azimuth( ST_Point(25, 45),  ST_Point(75, 100))) AS degA_B,
+       degrees(ST_Azimuth( ST_Point(75, 100), ST_Point(25, 45) )) AS degB_A;
+
+      dega_b       |     degb_a
+------------------+------------------
+ 42.2736890060937 | 222.273689006094
+</pre>
+        <div class="informaltable">
+          <table style="border-collapse: collapse; border-top: 1px solid ; border-bottom: 1px solid ; border-left: 1px solid ; border-right: 1px solid ; ">
+            <colgroup>
+              <col/>
+              <col/>
+            </colgroup>
+            <tbody>
+              <tr>
+                <td style="border-right: 1px solid ; ">
+                  <div class="informalfigure">
+                    <div class="mediaobject">
+                      <img src="../images/st_azimuth01.png"/>
+                      <div class="caption">
+                        <p>Blue: origin Point(25,45); Green: target Point(75, 100); Yellow: Y axis or North;
+                      Red: azimuth angle.</p>
+                      </div>
+                    </div>
+                  </div>
+                  <p>
+				</p>
+                </td>
+                <td>
+                  <div class="informalfigure">
+                    <div class="mediaobject">
+                      <img src="../images/st_azimuth02.png"/>
+                      <div class="caption">
+                        <p>Blue: origin Point(75, 100); Green: target Point(25, 45); Yellow: Y axis or North;
+                      Red: azimuth angle.</p>
+                      </div>
+                    </div>
+                  </div>
+                  <p>
+				</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="refsection" id="idm14393">
+        <h2>See Also</h2>
+        <p><a class="xref" href="ST_Angle.html" title="ST_Angle">ST_Angle</a>, <a class="xref" href="ST_Point.html" title="ST_Point">ST_Point</a>, <a class="xref" href="ST_Translate.html" title="ST_Translate">ST_Translate</a>, <a class="xref" href="ST_Project.html" title="ST_Project">ST_Project</a>, <a class="link" href="http://www.postgresql.org/docs/current/interactive/functions-math.html" target="_top">PostgreSQL Math Functions</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_Area.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Measurement_Functions">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_Angle.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_Area </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_Angle</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

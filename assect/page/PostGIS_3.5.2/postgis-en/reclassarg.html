@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>reclassarg</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="raster.html" title="raster"/>
+    <link rel="next" href="summarystats.html" title="summarystats"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">reclassarg</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="raster.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">11.1. Raster Support Data types</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="summarystats.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="reclassarg">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>reclassarg — A composite type used as input into the ST_Reclass function defining the behavior of reclassification.</p>
+      </div>
+      <div class="refsection" id="idm26939">
+        <h2>Description</h2>
+        <p>A composite type used as input into the ST_Reclass function defining the behavior of reclassification.</p>
+        <div class="variablelist">
+          <dl class="variablelist">
+            <dt>
+              <span class="term">
+                <code class="varname">nband integer</code>
+              </span>
+            </dt>
+            <dd>
+              <p>The band number of band to reclassify.</p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">reclassexpr text</code>
+              </span>
+            </dt>
+            <dd>
+              <p>range expression consisting of comma delimited range:map_range mappings. : to define mapping that defines how to map old band values to new band values. ( means &gt;, ) means less than, ] &lt; or equal, [ means &gt; or equal</p>
+              <pre class="programlisting">
+1. [a-b] = a &lt;= x &lt;= b
+
+2. (a-b] = a &lt; x &lt;= b
+
+3. [a-b) = a &lt;= x &lt; b
+
+4. (a-b) = a &lt; x &lt; b
+</pre>
+              <p>( notation is optional so a-b means the same as (a-b)</p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">pixeltype text</code>
+              </span>
+            </dt>
+            <dd>
+              <p>One of defined pixel types as described in <a class="xref" href="RT_ST_BandPixelType.html" title="ST_BandPixelType">ST_BandPixelType</a></p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">nodataval double precision</code>
+              </span>
+            </dt>
+            <dd>
+              <p>Value to treat as no data.  For image outputs that support transparency, these will be blank.</p>
+            </dd>
+          </dl>
+        </div>
+      </div>
+      <div class="refsection" id="idm26967">
+        <h2>Example: Reclassify band 2 as an 8BUI where 255 is nodata value</h2>
+        <pre class="programlisting">SELECT ROW(2, '0-100:1-10, 101-500:11-150,501 - 10000: 151-254', '8BUI', 255)::reclassarg;</pre>
+      </div>
+      <div class="refsection" id="idm26970">
+        <h2>Example: Reclassify band 1 as an 1BB and no nodata value defined</h2>
+        <pre class="programlisting">SELECT ROW(1, '0-100]:0, (100-255:1', '1BB', NULL)::reclassarg;</pre>
+      </div>
+      <div class="refsection" id="idm26973">
+        <h2>See Also</h2>
+        <p>
+          <a class="xref" href="RT_ST_Reclass.html" title="ST_Reclass">ST_Reclass</a>
+        </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="raster.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="RT_reference.html#Raster_Types">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="summarystats.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">raster </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> summarystats</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

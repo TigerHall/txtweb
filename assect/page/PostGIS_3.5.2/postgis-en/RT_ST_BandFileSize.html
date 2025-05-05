@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_BandFileSize</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="RT_ST_BandPath.html" title="ST_BandPath"/>
+    <link rel="next" href="RT_ST_BandFileTimestamp.html" title="ST_BandFileTimestamp"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_BandFileSize</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="RT_ST_BandPath.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">11.5. Raster Band Accessors</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="RT_ST_BandFileTimestamp.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="RT_ST_BandFileSize">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_BandFileSize — Returns the file size of a band stored in file system. If no bandnum specified, 1 is assumed.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">bigint <strong class="fsfunc">ST_BandFileSize</strong>(</code>raster  <var class="pdparam">rast</var>, integer  <var class="pdparam">bandnum=1</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm29663">
+        <h2>Description</h2>
+        <p>Returns the file size of a band stored in file system.  Throws an error if called with an in db band, or if outdb access is not enabled.</p>
+        <p>This function is typically used in conjunction with ST_BandPath() and ST_BandFileTimestamp() so a client can determine if the filename of a outdb raster as seen by it is the same as the one seen by the server.</p>
+        <p class="availability">Availability: 2.5.0</p>
+      </div>
+      <div class="refsection" id="idm29668">
+        <h2>Examples</h2>
+        <pre class="programlisting">SELECT ST_BandFileSize(rast,1) FROM dummy_rast WHERE rid = 1;
+
+ st_bandfilesize
+-----------------
+          240574
+                </pre>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="RT_ST_BandPath.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="RT_reference.html#RasterBand_Accessors">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="RT_ST_BandFileTimestamp.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_BandPath </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_BandFileTimestamp</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

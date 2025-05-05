@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>postgis_srs</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="postgis_srs_codes.html" title="postgis_srs_codes"/>
+    <link rel="next" href="postgis_srs_all.html" title="postgis_srs_all"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">postgis_srs</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="postgis_srs_codes.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.7. Spatial Reference System Functions</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="postgis_srs_all.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="postgis_srs">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>postgis_srs — Return a metadata record for the requested authority and srid.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">setof record <strong class="fsfunc">postgis_srs</strong>(</code>text  <var class="pdparam">auth_name</var>, text  <var class="pdparam">auth_srid</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm8683">
+        <h2>Description</h2>
+        <p>Returns a metadata record for the requested <code class="varname">auth_srid</code> for the given <code class="varname">auth_name</code>. The record will have the <code class="varname">auth_name</code>, <code class="varname">auth_srid</code>, <code class="varname">srname</code>, <code class="varname">srtext</code>, <code class="varname">proj4text</code>, and the corners of the area of usage, <code class="varname">point_sw</code> and <code class="varname">point_ne</code>.</p>
+        <p class="availability">Availability: 3.4.0</p>
+        <p>Proj version 6+</p>
+      </div>
+      <div class="refsection" id="idm8697">
+        <h2>Examples</h2>
+        <p>Get the metadata for EPSG:3005.</p>
+        <pre class="programlisting">
+SELECT * FROM postgis_srs('EPSG', '3005');
+
+auth_name | EPSG
+auth_srid | 3005
+srname    | NAD83 / BC Albers
+srtext    | PROJCS["NAD83 / BC Albers", ... ]]
+proj4text | +proj=aea +lat_0=45 +lon_0=-126 +lat_1=50 +lat_2=58.5 +x_0=1000000 +y_0=0 +datum=NAD83 +units=m +no_defs +type=crs
+point_sw  | 0101000020E6100000E17A14AE476161C00000000000204840
+point_ne  | 0101000020E610000085EB51B81E855CC0E17A14AE47014E40
+    </pre>
+      </div>
+      <div class="refsection" id="idm8701">
+        <h2>See Also</h2>
+        <p><a class="xref" href="postgis_srs_codes.html" title="postgis_srs_codes">postgis_srs_codes</a>, <a class="xref" href="postgis_srs_all.html" title="postgis_srs_all">postgis_srs_all</a>, <a class="xref" href="postgis_srs_search.html" title="postgis_srs_search">postgis_srs_search</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="postgis_srs_codes.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#SRS_Functions">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="postgis_srs_all.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">postgis_srs_codes </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> postgis_srs_all</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

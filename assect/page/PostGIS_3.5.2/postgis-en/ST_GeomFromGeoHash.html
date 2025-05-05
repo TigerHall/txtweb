@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_GeomFromGeoHash</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_Box2dFromGeoHash.html" title="ST_Box2dFromGeoHash"/>
+    <link rel="next" href="ST_GeomFromGML.html" title="ST_GeomFromGML"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_GeomFromGeoHash</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_Box2dFromGeoHash.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.8.3. Other Formats</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_GeomFromGML.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_GeomFromGeoHash">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_GeomFromGeoHash — Return a geometry from a GeoHash string.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_GeomFromGeoHash</strong>(</code>text  <var class="pdparam">geohash</var>, integer  <var class="pdparam">precision=full_precision_of_geohash</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm9785">
+        <h2>Description</h2>
+        <p>Return a geometry from a GeoHash string. The geometry will be a polygon representing the GeoHash bounds.</p>
+        <p>If no <code class="varname">precision</code> is specified ST_GeomFromGeoHash returns a polygon based on full precision of the input GeoHash string.</p>
+        <p>If <code class="varname">precision</code> is specified ST_GeomFromGeoHash will use that many characters from the GeoHash to create the polygon.</p>
+        <p class="availability">Availability: 2.1.0</p>
+      </div>
+      <div class="refsection" id="idm9793">
+        <h2>Examples</h2>
+        <pre class="programlisting">SELECT ST_AsText(ST_GeomFromGeoHash('9qqj7nmxncgyy4d0dbxqz0'));
+                                                        st_astext
+--------------------------------------------------------------------------------------------------------------------------
+ POLYGON((-115.172816 36.114646,-115.172816 36.114646,-115.172816 36.114646,-115.172816 36.114646,-115.172816 36.114646))
+
+SELECT ST_AsText(ST_GeomFromGeoHash('9qqj7nmxncgyy4d0dbxqz0', 4));
+                                                          st_astext
+------------------------------------------------------------------------------------------------------------------------------
+ POLYGON((-115.3125 36.03515625,-115.3125 36.2109375,-114.9609375 36.2109375,-114.9609375 36.03515625,-115.3125 36.03515625))
+
+SELECT ST_AsText(ST_GeomFromGeoHash('9qqj7nmxncgyy4d0dbxqz0', 10));
+                                                                                       st_astext
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ POLYGON((-115.17282128334 36.1146408319473,-115.17282128334 36.1146461963654,-115.172810554504 36.1146461963654,-115.172810554504 36.1146408319473,-115.17282128334 36.1146408319473))
+
+		</pre>
+      </div>
+      <div class="refsection" id="idm9796">
+        <h2>See Also</h2>
+        <p><a class="xref" href="ST_GeoHash.html" title="ST_GeoHash">ST_GeoHash</a>,<a class="xref" href="ST_Box2dFromGeoHash.html" title="ST_Box2dFromGeoHash">ST_Box2dFromGeoHash</a>, <a class="xref" href="ST_PointFromGeoHash.html" title="ST_PointFromGeoHash">ST_PointFromGeoHash</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_Box2dFromGeoHash.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#idm9736">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_GeomFromGML.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_Box2dFromGeoHash </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_GeomFromGML</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

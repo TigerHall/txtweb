@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Populate_Geometry_Columns</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="Find_SRID.html" title="Find_SRID"/>
+    <link rel="next" href="UpdateGeometrySRID.html" title="UpdateGeometrySRID"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">Populate_Geometry_Columns</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="Find_SRID.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.2. Table Management Functions</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="UpdateGeometrySRID.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="Populate_Geometry_Columns">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>Populate_Geometry_Columns — Ensures geometry columns are defined with type modifiers or have appropriate spatial constraints.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">text <strong class="fsfunc">Populate_Geometry_Columns</strong>(</code>boolean  <var class="pdparam">use_typmod=true</var><code>)</code>;</p>
+          <p><code class="funcdef">int <strong class="fsfunc">Populate_Geometry_Columns</strong>(</code>oid <var class="pdparam">relation_oid</var>, boolean  <var class="pdparam">use_typmod=true</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm3456">
+        <h2>Description</h2>
+        <p>Ensures geometry columns have appropriate type modifiers or spatial constraints to ensure they are registered correctly in the <code class="varname">geometry_columns</code> view.
+			By default will convert all geometry
+			columns with no type modifier to ones with type modifiers.
+			</p>
+        <p>For backwards compatibility and for spatial needs such as table inheritance where each child table may have different geometry type, the old check constraint behavior is still supported.
+		If you need the old behavior, you need to pass in the new optional argument as false <code class="varname">use_typmod=false</code>. When this is done geometry columns will be created with no type modifiers
+		but will have 3 constraints defined.  In particular,
+		this means that every geometry column belonging to a table has at least
+		three constraints:</p>
+        <div class="itemizedlist">
+          <ul class="itemizedlist" style="list-style-type: disc; ">
+            <li class="listitem">
+              <p><code class="varname">enforce_dims_geom</code> - ensures every
+			geometry has the same dimension (see <a class="xref" href="ST_NDims.html" title="ST_NDims">ST_NDims</a>)</p>
+            </li>
+            <li class="listitem">
+              <p><code class="varname">enforce_geotype_geom</code> - ensures every
+			geometry is of the same type (see <a class="xref" href="GeometryType.html" title="GeometryType">GeometryType</a>)</p>
+            </li>
+            <li class="listitem">
+              <p><code class="varname">enforce_srid_geom</code> - ensures every
+			geometry is in the same projection (see <a class="xref" href="ST_SRID.html" title="ST_SRID">ST_SRID</a>)</p>
+            </li>
+          </ul>
+        </div>
+        <p>If a table <code class="varname">oid</code> is provided, this function
+		tries to determine the srid, dimension, and geometry type of all
+		geometry columns in the table, adding constraints as necessary. If
+		successful, an appropriate row is inserted into the geometry_columns
+		table, otherwise, the exception is caught and an error notice is raised
+		describing the problem.</p>
+        <p>If the <code class="varname">oid</code> of a view is provided, as with a
+		table oid, this function tries to determine the srid, dimension, and
+		type of all the geometries in the view, inserting appropriate entries
+		into the <code class="varname">geometry_columns</code> table, but nothing is done
+		to enforce constraints.</p>
+        <p>The parameterless variant is a simple wrapper for the parameterized
+		variant that first truncates and repopulates the geometry_columns table
+		for every spatial table and view in the database, adding spatial
+		constraints to tables where appropriate.  It returns a summary of the
+		number of geometry columns detected in the database and the number that
+		were inserted into the <code class="varname">geometry_columns</code> table.  The
+		parameterized version simply returns the number of rows inserted into
+		the <code class="varname">geometry_columns</code> table.</p>
+        <p class="availability">Availability: 1.4.0</p>
+        <p class="changed">Changed: 2.0.0 By default, now uses type modifiers instead of check constraints to constrain geometry types.  You can still use check
+		    constraint behavior instead by using the new  <code class="varname">use_typmod</code> and setting it to false.</p>
+        <p class="enhanced">Enhanced: 2.0.0 <code class="varname">use_typmod</code> optional argument was introduced that allows controlling if columns are created with typmodifiers or with check constraints.</p>
+      </div>
+      <div class="refsection" id="idm3488">
+        <h2>Examples</h2>
+        <pre class="programlisting">
+CREATE TABLE public.myspatial_table(gid serial, geom geometry);
+INSERT INTO myspatial_table(geom) VALUES(ST_GeomFromText('LINESTRING(1 2, 3 4)',4326) );
+-- This will now use typ modifiers.  For this to work, there must exist data
+SELECT Populate_Geometry_Columns('public.myspatial_table'::regclass);
+
+populate_geometry_columns
+--------------------------
+                        1
+
+
+\d myspatial_table
+
+                                   Table "public.myspatial_table"
+ Column |           Type            |                           Modifiers
+--------+---------------------------+---------------------------------------------------------------
+ gid    | integer                   | not null default nextval('myspatial_table_gid_seq'::regclass)
+ geom   | geometry(LineString,4326) |
+</pre>
+        <pre class="programlisting">-- This will change the geometry columns to use constraints if they are not typmod or have constraints already.
+--For this to work, there must exist data
+CREATE TABLE public.myspatial_table_cs(gid serial, geom geometry);
+INSERT INTO myspatial_table_cs(geom) VALUES(ST_GeomFromText('LINESTRING(1 2, 3 4)',4326) );
+SELECT Populate_Geometry_Columns('public.myspatial_table_cs'::regclass, false);
+populate_geometry_columns
+--------------------------
+                        1
+\d myspatial_table_cs
+
+                          Table "public.myspatial_table_cs"
+ Column |   Type   |                            Modifiers
+--------+----------+------------------------------------------------------------------
+ gid    | integer  | not null default nextval('myspatial_table_cs_gid_seq'::regclass)
+ geom   | geometry |
+Check constraints:
+    "enforce_dims_geom" CHECK (st_ndims(geom) = 2)
+    "enforce_geotype_geom" CHECK (geometrytype(geom) = 'LINESTRING'::text OR geom IS NULL)
+    "enforce_srid_geom" CHECK (st_srid(geom) = 4326)</pre>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="Find_SRID.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Management_Functions">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="UpdateGeometrySRID.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">Find_SRID </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> UpdateGeometrySRID</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

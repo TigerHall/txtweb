@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_PixelWidth</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="RT_ST_PixelHeight.html" title="ST_PixelHeight"/>
+    <link rel="next" href="RT_ST_ScaleX.html" title="ST_ScaleX"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_PixelWidth</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="RT_ST_PixelHeight.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">11.4. Raster Accessors</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="RT_ST_ScaleX.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="RT_ST_PixelWidth">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_PixelWidth — Returns the pixel width in geometric units of the spatial reference system.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">double precision <strong class="fsfunc">ST_PixelWidth</strong>(</code>raster  <var class="pdparam">rast</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm28975">
+        <h2>Description</h2>
+        <p>Returns the width of a pixel in geometric units of the spatial reference system. In the common case where
+            there is no skew, the pixel width is just the scale ratio between geometric coordinates and raster pixels.</p>
+        <p>The following diagram demonstrates the relationship:</p>
+        <p>
+            </p>
+        <div class="informalfigure">
+          <div class="mediaobject">
+            <img src="../images/raster_xscale_yscale_xskew_yskew.png"/>
+            <div class="caption">
+              <p>Pixel Width: Pixel size in the i direction</p>
+              <p>Pixel Height: Pixel size in the j direction</p>
+            </div>
+          </div>
+        </div>
+        <p>
+            </p>
+      </div>
+      <div class="refsection" id="idm28987">
+        <h2>Examples: Rasters with no skew</h2>
+        <pre class="programlisting">SELECT ST_Width(rast) As rastwidth, ST_PixelWidth(rast) As pixwidth,
+    ST_ScaleX(rast) As scalex, ST_ScaleY(rast) As scaley, ST_SkewX(rast) As skewx,
+    ST_SkewY(rast) As skewy
+    FROM dummy_rast;
+
+    rastwidth | pixwidth | scalex | scaley | skewx | skewy
+    -----------+----------+--------+--------+-------+----------
+    10 |        2 |      2 |      3 |     0 |        0
+     5 |     0.05 |   0.05 |  -0.05 |     0 |        0
+        </pre>
+      </div>
+      <div class="refsection" id="idm28990">
+        <h2>Examples: Rasters with skew different than 0</h2>
+        <pre class="programlisting">SELECT ST_Width(rast) As rastwidth, ST_PixelWidth(rast) As pixwidth,
+    ST_ScaleX(rast) As scalex, ST_ScaleY(rast) As scaley, ST_SkewX(rast) As skewx,
+    ST_SkewY(rast) As skewy
+    FROM (SELECT ST_SetSkew(rast,0.5,0.5) As rast
+    FROM dummy_rast) As skewed;
+
+    rastwidth |     pixwidth      | scalex | scaley | skewx | skewy
+    -----------+-------------------+--------+--------+-------+----------
+    10 |  2.06155281280883 |      2 |      3 |   0.5 |      0.5
+     5 | 0.502493781056044 |   0.05 |  -0.05 |   0.5 |      0.5
+        </pre>
+      </div>
+      <div class="refsection" id="idm28993">
+        <h2>See Also</h2>
+        <p><a class="xref" href="RT_ST_PixelHeight.html" title="ST_PixelHeight">ST_PixelHeight</a>, <a class="xref" href="RT_ST_ScaleX.html" title="ST_ScaleX">ST_ScaleX</a>, <a class="xref" href="RT_ST_ScaleY.html" title="ST_ScaleY">ST_ScaleY</a>, <a class="xref" href="RT_ST_SkewX.html" title="ST_SkewX">ST_SkewX</a>, <a class="xref" href="RT_ST_SkewY.html" title="ST_SkewY">ST_SkewY</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="RT_ST_PixelHeight.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="RT_reference.html#Raster_Accessors">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="RT_ST_ScaleX.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_PixelHeight </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_ScaleX</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

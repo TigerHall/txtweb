@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_Transform</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="RT_ST_Resize.html" title="ST_Resize"/>
+    <link rel="next" href="RT_ST_SetBandNoDataValue.html" title="ST_SetBandNoDataValue"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_Transform</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="RT_ST_Resize.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">11.7. Raster Editors</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="RT_ST_SetBandNoDataValue.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="RT_ST_Transform">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_Transform — Reprojects a raster in a known spatial reference system to another known spatial reference system using specified resampling algorithm. Options are NearestNeighbor, Bilinear, Cubic, CubicSpline, Lanczos defaulting to NearestNeighbor.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">raster <strong class="fsfunc">ST_Transform</strong>(</code>raster  <var class="pdparam">rast</var>, integer  <var class="pdparam">srid</var>, text  <var class="pdparam">algorithm=NearestNeighbor</var>, double precision  <var class="pdparam">maxerr=0.125</var>, double precision  <var class="pdparam">scalex</var>, double precision  <var class="pdparam">scaley</var><code>)</code>;</p>
+          <p><code class="funcdef">raster <strong class="fsfunc">ST_Transform</strong>(</code>raster  <var class="pdparam">rast</var>, integer  <var class="pdparam">srid</var>, double precision  <var class="pdparam">scalex</var>, double precision  <var class="pdparam">scaley</var>, text  <var class="pdparam">algorithm=NearestNeighbor</var>, double precision  <var class="pdparam">maxerr=0.125</var><code>)</code>;</p>
+          <p><code class="funcdef">raster <strong class="fsfunc">ST_Transform</strong>(</code>raster  <var class="pdparam">rast</var>, raster  <var class="pdparam">alignto</var>, text  <var class="pdparam">algorithm=NearestNeighbor</var>, double precision  <var class="pdparam">maxerr=0.125</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm31584">
+        <h2>Description</h2>
+        <p>Reprojects a raster in a known spatial reference system to another known spatial reference system using specified pixel warping algorithm.
+                    Uses 'NearestNeighbor' if no algorithm is specified and maxerror percent of 0.125 if no maxerr is specified.</p>
+        <p>Algorithm options are: 'NearestNeighbor', 'Bilinear', 'Cubic', 'CubicSpline', and 'Lanczos'.  Refer to: <a class="link" href="http://www.gdal.org/gdalwarp.html" target="_top">GDAL Warp resampling methods</a> for more details.</p>
+        <p>
+                    ST_Transform is often confused with ST_SetSRID(). ST_Transform actually changes the coordinates of a raster (and resamples the pixel values) from one spatial reference system to another, while ST_SetSRID() simply changes the SRID identifier of the raster.
+                </p>
+        <p>
+                    Unlike the other variants, Variant 3 requires a reference raster as <code class="varname">alignto</code>. The transformed raster will be transformed to the spatial reference system (SRID) of the reference raster and be aligned (ST_SameAlignment = TRUE) to the reference raster.
+                </p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>
+                        If you find your transformation support is not working right, you may need to set the environment variable PROJSO to the .so or .dll projection library your PostGIS is using.  This just needs to have the name of the file. So for example on windows, you would in Control Panel -&gt; System -&gt; Environment Variables add a system variable called <code class="varname">PROJSO</code> and set it to <code class="varname">libproj.dll</code> (if you are using proj 4.6.1).  You'll have to restart your PostgreSQL service/daemon after this change.
+                    </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="warning">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Warning]" src="../images/warning.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>
+                        When transforming a coverage of tiles, you almost always want to use a reference raster to insure same alignment and no gaps in your tiles as demonstrated in example: Variant 3.
+                    </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p class="availability">Availability: 2.0.0  Requires GDAL 1.6.1+</p>
+        <p class="enhanced">Enhanced: 2.1.0 Addition of ST_Transform(rast, alignto) variant</p>
+      </div>
+      <div class="refsection" id="idm31600">
+        <h2>Examples</h2>
+        <pre class="programlisting">SELECT ST_Width(mass_stm) As w_before, ST_Width(wgs_84) As w_after,
+  ST_Height(mass_stm) As h_before, ST_Height(wgs_84) As h_after
+    FROM
+    ( SELECT rast As mass_stm, ST_Transform(rast,4326) As wgs_84
+  ,  ST_Transform(rast,4326, 'Bilinear') AS wgs_84_bilin
+        FROM aerials.o_2_boston
+            WHERE ST_Intersects(rast,
+                ST_Transform(ST_MakeEnvelope(-71.128, 42.2392,-71.1277, 42.2397, 4326),26986) )
+        LIMIT 1) As foo;
+
+ w_before | w_after | h_before | h_after
+----------+---------+----------+---------
+      200 |     228 |      200 |     170
+                    </pre>
+        <div class="informaltable">
+          <table style="border-collapse: collapse; border-top: 1px solid ; border-bottom: 1px solid ; border-left: 1px solid ; border-right: 1px solid ; ">
+            <colgroup>
+              <col/>
+              <col/>
+              <col/>
+            </colgroup>
+            <tbody>
+              <tr>
+                <td style="border-right: 1px solid ; "><div class="informalfigure"><div class="mediaobject"><img src="../images/rt_st_transform01.png"/><div class="caption"><p>original mass state plane meters (mass_stm)</p></div></div></div>
+         </td>
+                <td style="border-right: 1px solid ; "><div class="informalfigure"><div class="mediaobject"><img src="../images/rt_st_transform02.png"/><div class="caption"><p>After transform to wgs 84 long lat (wgs_84)</p></div></div></div>
+         </td>
+                <td><div class="informalfigure"><div class="mediaobject"><img src="../images/rt_st_transform03.png"/><div class="caption"><p>After transform to wgs 84 long lat with bilinear algorithm instead of NN default (wgs_84_bilin)</p></div></div></div>
+         </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="refsection" id="idm31631">
+        <h2>Examples: Variant 3</h2>
+        <p>The following shows the difference between using ST_Transform(raster, srid) and ST_Transform(raster, alignto)</p>
+        <pre class="programlisting">
+WITH foo AS (
+    SELECT 0 AS rid, ST_AddBand(ST_MakeEmptyRaster(2, 2, -500000, 600000, 100, -100, 0, 0, 2163), 1, '16BUI', 1, 0) AS rast UNION ALL
+    SELECT 1, ST_AddBand(ST_MakeEmptyRaster(2, 2, -499800, 600000, 100, -100, 0, 0, 2163), 1, '16BUI', 2, 0) AS rast UNION ALL
+    SELECT 2, ST_AddBand(ST_MakeEmptyRaster(2, 2, -499600, 600000, 100, -100, 0, 0, 2163), 1, '16BUI', 3, 0) AS rast UNION ALL
+
+    SELECT 3, ST_AddBand(ST_MakeEmptyRaster(2, 2, -500000, 599800, 100, -100, 0, 0, 2163), 1, '16BUI', 10, 0) AS rast UNION ALL
+    SELECT 4, ST_AddBand(ST_MakeEmptyRaster(2, 2, -499800, 599800, 100, -100, 0, 0, 2163), 1, '16BUI', 20, 0) AS rast UNION ALL
+    SELECT 5, ST_AddBand(ST_MakeEmptyRaster(2, 2, -499600, 599800, 100, -100, 0, 0, 2163), 1, '16BUI', 30, 0) AS rast UNION ALL
+
+    SELECT 6, ST_AddBand(ST_MakeEmptyRaster(2, 2, -500000, 599600, 100, -100, 0, 0, 2163), 1, '16BUI', 100, 0) AS rast UNION ALL
+    SELECT 7, ST_AddBand(ST_MakeEmptyRaster(2, 2, -499800, 599600, 100, -100, 0, 0, 2163), 1, '16BUI', 200, 0) AS rast UNION ALL
+    SELECT 8, ST_AddBand(ST_MakeEmptyRaster(2, 2, -499600, 599600, 100, -100, 0, 0, 2163), 1, '16BUI', 300, 0) AS rast
+), bar AS (
+    SELECT
+        ST_Transform(rast, 4269) AS alignto
+    FROM foo
+    LIMIT 1
+), baz AS (
+    SELECT
+        rid,
+        rast,
+        ST_Transform(rast, 4269) AS not_aligned,
+        ST_Transform(rast, alignto) AS aligned
+    FROM foo
+    CROSS JOIN bar
+)
+SELECT
+    ST_SameAlignment(rast) AS rast,
+    ST_SameAlignment(not_aligned) AS not_aligned,
+    ST_SameAlignment(aligned) AS aligned
+FROM baz
+
+ rast | not_aligned | aligned
+------+-------------+---------
+ t    | f           | t
+                </pre>
+        <div class="informaltable">
+          <table style="border-collapse: collapse; border-top: 1px solid ; border-bottom: 1px solid ; border-left: 1px solid ; border-right: 1px solid ; ">
+            <colgroup>
+              <col/>
+              <col/>
+            </colgroup>
+            <tbody>
+              <tr>
+                <td style="border-right: 1px solid ; ">
+                  <div class="informalfigure">
+                    <div class="mediaobject">
+                      <img src="../images/rt_st_transform04.png"/>
+                      <div class="caption">
+                        <p>not_aligned</p>
+                      </div>
+                    </div>
+                  </div>
+                  <p>
+                          </p>
+                </td>
+                <td>
+                  <div class="informalfigure">
+                    <div class="mediaobject">
+                      <img src="../images/rt_st_transform05.png"/>
+                      <div class="caption">
+                        <p>aligned</p>
+                      </div>
+                    </div>
+                  </div>
+                  <p>
+                        </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="refsection" id="idm31655">
+        <h2>See Also</h2>
+        <p><a class="xref" href="ST_Transform.html" title="ST_Transform">ST_Transform</a>, <a class="xref" href="RT_ST_SetSRID.html" title="ST_SetSRID">ST_SetSRID</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="RT_ST_Resize.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="RT_reference.html#Raster_Editors">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="RT_ST_SetBandNoDataValue.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_Resize </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_SetBandNoDataValue</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

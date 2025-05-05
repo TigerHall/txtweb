@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_CollectionExtract</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_AddPoint.html" title="ST_AddPoint"/>
+    <link rel="next" href="ST_CollectionHomogenize.html" title="ST_CollectionHomogenize"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_CollectionExtract</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_AddPoint.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.5. Geometry Editors</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_CollectionHomogenize.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_CollectionExtract">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_CollectionExtract — 
+Given a geometry collection, returns a multi-geometry containing only elements of a specified type.
+			</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_CollectionExtract</strong>(</code>geometry  <var class="pdparam">collection</var><code>)</code>;</p>
+        </div>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_CollectionExtract</strong>(</code>geometry  <var class="pdparam">collection</var>, integer  <var class="pdparam">type</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm6556">
+        <h2>Description</h2>
+        <p>Given a geometry collection, returns a homogeneous multi-geometry.</p>
+        <p>If the <em class="parameter"><code>type</code></em> is not specified, returns a multi-geometry containing only geometries of the highest dimension.
+            So polygons are preferred over lines, which are preferred over points.
+            </p>
+        <p>If the <em class="parameter"><code>type</code></em> is specified, returns a multi-geometry containing only that type.
+            If there are no sub-geometries of the right type, an EMPTY geometry is returned.
+            Only points, lines and polygons are supported. The type numbers are:</p>
+        <div class="itemizedlist">
+          <ul class="itemizedlist" style="list-style-type: disc; ">
+            <li class="listitem">
+              <p>1 == POINT</p>
+            </li>
+            <li class="listitem">
+              <p>2 == LINESTRING</p>
+            </li>
+            <li class="listitem">
+              <p>3 == POLYGON</p>
+            </li>
+          </ul>
+        </div>
+        <p>For atomic geometry inputs, the geometry is returned unchanged
+            if the input type matches the requested type.
+            Otherwise, the result is an EMPTY geometry of the specified type.
+            If required, these can be converted to multi-geometries using <a class="xref" href="ST_Multi.html" title="ST_Multi">ST_Multi</a>.
+            </p>
+        <div class="warning">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Warning]" src="../images/warning.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>MultiPolygon results are not checked for validity.
+            If the polygon components are adjacent or overlapping the result will be invalid.
+            (For example, this can occur when applying this function to an <a class="xref" href="ST_Split.html" title="ST_Split">ST_Split</a> result.)
+            This situation can be checked with <a class="xref" href="ST_IsValid.html" title="ST_IsValid">ST_IsValid</a> and repaired with <a class="xref" href="ST_MakeValid.html" title="ST_MakeValid">ST_MakeValid</a>.
+            </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p class="availability">Availability: 1.5.0</p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>
+            Prior to 1.5.3 this function returned atomic inputs unchanged, no matter type.
+            In 1.5.3 non-matching single geometries returned a NULL result.
+            In 2.0.0 non-matching single geometries return an EMPTY result of the requested type.
+			</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="refsection" id="idm6580">
+        <h2>Examples</h2>
+        <p>Extract highest-dimension type:</p>
+        <pre class="programlisting">
+SELECT ST_AsText(ST_CollectionExtract(
+        'GEOMETRYCOLLECTION( POINT(0 0), LINESTRING(1 1, 2 2) )'));
+    st_astext
+    ---------------
+    MULTILINESTRING((1 1, 2 2))
+</pre>
+        <p>Extract points (type 1 == POINT):</p>
+        <pre class="programlisting">
+SELECT ST_AsText(ST_CollectionExtract(
+        'GEOMETRYCOLLECTION(GEOMETRYCOLLECTION(POINT(0 0)))',
+        1 ));
+    st_astext
+    ---------------
+    MULTIPOINT((0 0))
+</pre>
+        <p>Extract lines (type 2 == LINESTRING):</p>
+        <pre class="programlisting">
+SELECT ST_AsText(ST_CollectionExtract(
+        'GEOMETRYCOLLECTION(GEOMETRYCOLLECTION(LINESTRING(0 0, 1 1)),LINESTRING(2 2, 3 3))',
+        2 ));
+    st_astext
+    ---------------
+    MULTILINESTRING((0 0, 1 1), (2 2, 3 3))
+</pre>
+      </div>
+      <div class="refsection" id="idm6588">
+        <h2>See Also</h2>
+        <p><a class="xref" href="ST_CollectionHomogenize.html" title="ST_CollectionHomogenize">ST_CollectionHomogenize</a>, <a class="xref" href="ST_Multi.html" title="ST_Multi">ST_Multi</a>,
+                <a class="xref" href="ST_IsValid.html" title="ST_IsValid">ST_IsValid</a>, <a class="xref" href="ST_MakeValid.html" title="ST_MakeValid">ST_MakeValid</a>
+            </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_AddPoint.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Geometry_Editors">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_CollectionHomogenize.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_AddPoint </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_CollectionHomogenize</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_FromGDALRaster</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="RT_Retile.html" title="ST_Retile"/>
+    <link rel="next" href="RT_ST_GeoReference.html" title="ST_GeoReference"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_FromGDALRaster</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="RT_Retile.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">11.3. Raster Constructors</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="RT_ST_GeoReference.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="RT_ST_FromGDALRaster">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_FromGDALRaster — Returns a raster from a supported GDAL raster file.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">raster <strong class="fsfunc">ST_FromGDALRaster</strong>(</code>bytea  <var class="pdparam">gdaldata</var>, integer  <var class="pdparam">srid=NULL</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm28764">
+        <h2>Description</h2>
+        <p>
+                    Returns a raster from a supported GDAL raster file. <code class="varname">gdaldata</code> is of type bytea and should be the contents of the GDAL raster file.
+                </p>
+        <p>
+                    If <code class="varname">srid</code> is NULL, the function will try to automatically assign the SRID from the GDAL raster. If <code class="varname">srid</code> is provided, the value provided will override any automatically assigned SRID.
+                </p>
+        <p class="availability">Availability: 2.1.0</p>
+      </div>
+      <div class="refsection" id="idm28772">
+        <h2>Examples</h2>
+        <pre class="programlisting">
+WITH foo AS (
+    SELECT ST_AsPNG(ST_AddBand(ST_AddBand(ST_AddBand(ST_MakeEmptyRaster(2, 2, 0, 0, 0.1, -0.1, 0, 0, 4326), 1, '8BUI', 1, 0), 2, '8BUI', 2, 0), 3, '8BUI', 3, 0)) AS png
+),
+bar AS (
+    SELECT 1 AS rid, ST_FromGDALRaster(png) AS rast FROM foo
+    UNION ALL
+    SELECT 2 AS rid, ST_FromGDALRaster(png, 3310) AS rast FROM foo
+)
+SELECT
+    rid,
+    ST_Metadata(rast) AS metadata,
+    ST_SummaryStats(rast, 1) AS stats1,
+    ST_SummaryStats(rast, 2) AS stats2,
+    ST_SummaryStats(rast, 3) AS stats3
+FROM bar
+ORDER BY rid;
+
+ rid |         metadata          |    stats1     |    stats2     |     stats3
+-----+---------------------------+---------------+---------------+----------------
+   1 | (0,0,2,2,1,-1,0,0,0,3)    | (4,4,1,0,1,1) | (4,8,2,0,2,2) | (4,12,3,0,3,3)
+   2 | (0,0,2,2,1,-1,0,0,3310,3) | (4,4,1,0,1,1) | (4,8,2,0,2,2) | (4,12,3,0,3,3)
+(2 rows)
+                </pre>
+      </div>
+      <div class="refsection" id="idm28775">
+        <h2>See Also</h2>
+        <p>
+                    <a class="xref" href="RT_ST_AsGDALRaster.html" title="ST_AsGDALRaster">ST_AsGDALRaster</a>
+                </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="RT_Retile.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="RT_reference.html#Raster_Constructors">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="RT_ST_GeoReference.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_Retile </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_GeoReference</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

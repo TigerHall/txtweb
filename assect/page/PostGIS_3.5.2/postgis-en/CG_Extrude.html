@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>CG_Extrude</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_Extrude.html" title="ST_Extrude"/>
+    <link rel="next" href="CG_ExtrudeStraightSkeleton.html" title="CG_ExtrudeStraightSkeleton"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">CG_Extrude</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_Extrude.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">8.3. SFCGAL Processing and Relationship Functions</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="CG_ExtrudeStraightSkeleton.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="CG_Extrude">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>CG_Extrude — Extrude a surface to a related volume</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">geometry <strong class="fsfunc">CG_Extrude</strong>(</code>geometry <var class="pdparam">geom</var>, float <var class="pdparam">x</var>, float <var class="pdparam">y</var>, float <var class="pdparam">z</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm22718">
+        <h2>Description</h2>
+        <p class="availability">Availability: 3.5.0</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method needs SFCGAL backend.
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports 3d and will not drop the z-index.
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports Polyhedral surfaces.
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports Triangles and Triangulated Irregular Network Surfaces (TIN).
+        </p>
+      </div>
+      <div class="refsection" id="idm22737">
+        <h2>Examples</h2>
+        <p>3D images were generated using PostGIS <a class="xref" href="ST_AsX3D.html" title="ST_AsX3D">ST_AsX3D</a> and rendering in HTML using <a class="link" href="http://www.x3dom.org" target="_top">X3Dom HTML Javascript rendering library</a>.</p>
+        <div class="informaltable">
+          <table style="border-collapse: collapse; border-top: 1px solid ; border-bottom: 1px solid ; border-left: 1px solid ; border-right: 1px solid ; ">
+            <colgroup>
+              <col/>
+              <col/>
+            </colgroup>
+            <tbody>
+              <tr>
+                <td style="border-right: 1px solid ; border-bottom: 1px solid ; "><p>
+                                    </p><pre class="programlisting">SELECT ST_Buffer(ST_GeomFromText('POINT(100 90)'),
+                                    50, 'quad_segs=2'),0,0,30);</pre><p>
+                                </p><div class="informalfigure"><div class="mediaobject"><img src="../images/st_extrude01.png"/><div class="caption"><p>Original octagon formed from buffering point</p></div></div></div>
+                        </td>
+                <td style="border-bottom: 1px solid ; "><p>
+                                </p><pre class="programlisting">CG_Extrude(ST_Buffer(ST_GeomFromText('POINT(100 90)'),
+                                50, 'quad_segs=2'),0,0,30);</pre><p>
+                            </p><div class="informalfigure"><div class="mediaobject"><img src="../images/st_extrude02.png"/><div class="caption"><p>Hexagon extruded 30 units along Z produces a PolyhedralSurfaceZ</p></div></div></div>
+                    </td>
+              </tr>
+              <tr>
+                <td style="border-right: 1px solid ; "><p>
+                            </p><pre class="programlisting">SELECT ST_GeomFromText('LINESTRING(50 50, 100 90, 95 150)')</pre><p>
+                            </p><div class="informalfigure"><div class="mediaobject"><img src="../images/st_extrude03.png"/><div class="caption"><p>Original linestring</p></div></div></div>
+                    </td>
+                <td><p>
+                            </p><pre class="programlisting">SELECT CG_Extrude(
+                            ST_GeomFromText('LINESTRING(50 50, 100 90, 95 150)'),0,0,10));</pre><p>
+                        </p><div class="informalfigure"><div class="mediaobject"><img src="../images/st_extrude04.png"/><div class="caption"><p>LineString Extruded along Z produces a PolyhedralSurfaceZ</p></div></div></div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="refsection" id="idm22783">
+        <h2>See Also</h2>
+        <p><a class="xref" href="ST_AsX3D.html" title="ST_AsX3D">ST_AsX3D</a>, <a class="xref" href="CG_ExtrudeStraightSkeleton.html" title="CG_ExtrudeStraightSkeleton">CG_ExtrudeStraightSkeleton</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_Extrude.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference_sfcgal.html#sfcgal_processing">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="CG_ExtrudeStraightSkeleton.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_Extrude </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> CG_ExtrudeStraightSkeleton</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

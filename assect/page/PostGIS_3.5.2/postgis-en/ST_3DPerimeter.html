@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_3DPerimeter</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_Perimeter2D.html" title="ST_Perimeter2D"/>
+    <link rel="next" href="ST_ShortestLine.html" title="ST_ShortestLine"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_3DPerimeter</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_Perimeter2D.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.12. Measurement Functions</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_ShortestLine.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_3DPerimeter">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_3DPerimeter — Returns the 3D perimeter of a polygonal geometry.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">float <strong class="fsfunc">ST_3DPerimeter</strong>(</code>geometry  <var class="pdparam">geomA</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm15343">
+        <h2>Description</h2>
+        <p>Returns the 3-dimensional perimeter of the geometry, if it
+			is a polygon or multi-polygon. If the geometry is 2-dimensional, then the 2-dimensional perimeter is returned.  </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports 3d and will not drop the z-index.
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method implements the SQL/MM specification.
+         SQL-MM ISO/IEC 13249-3: 8.1, 10.5</p>
+        <p class="changed">Changed: 2.0.0 In prior versions this used to be called ST_Perimeter3D</p>
+      </div>
+      <div class="refsection" id="idm15355">
+        <h2>Examples</h2>
+        <p>Perimeter of a slightly elevated polygon in the air in Massachusetts state plane feet</p>
+        <pre class="programlisting">SELECT ST_3DPerimeter(geom), ST_Perimeter2d(geom), ST_Perimeter(geom) FROM
+			(SELECT ST_GeomFromEWKT('SRID=2249;POLYGON((743238 2967416 2,743238 2967450 1,
+743265.625 2967416 1,743238 2967416 2))') As geom) As foo;
+
+  ST_3DPerimeter  |  st_perimeter2d  |   st_perimeter
+------------------+------------------+------------------
+ 105.465793597674 | 105.432997272188 | 105.432997272188
+
+</pre>
+      </div>
+      <div class="refsection" id="idm15359">
+        <h2>See Also</h2>
+        <p><a class="xref" href="ST_GeomFromEWKT.html" title="ST_GeomFromEWKT">ST_GeomFromEWKT</a>, <a class="xref" href="ST_Perimeter.html" title="ST_Perimeter">ST_Perimeter</a>, <a class="xref" href="ST_Perimeter2D.html" title="ST_Perimeter2D">ST_Perimeter2D</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_Perimeter2D.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Measurement_Functions">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_ShortestLine.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_Perimeter2D </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_ShortestLine</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

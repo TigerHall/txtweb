@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_Box2dFromGeoHash</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_WKBToSQL.html" title="ST_WKBToSQL"/>
+    <link rel="next" href="ST_GeomFromGeoHash.html" title="ST_GeomFromGeoHash"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_Box2dFromGeoHash</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_WKBToSQL.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.8.3. Other Formats</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_GeomFromGeoHash.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_Box2dFromGeoHash">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_Box2dFromGeoHash — Return a BOX2D from a GeoHash string.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">box2d <strong class="fsfunc">ST_Box2dFromGeoHash</strong>(</code>text  <var class="pdparam">geohash</var>, integer  <var class="pdparam">precision=full_precision_of_geohash</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm9753">
+        <h2>Description</h2>
+        <p>Return a BOX2D from a GeoHash string.</p>
+        <p>If no <code class="varname">precision</code> is specified ST_Box2dFromGeoHash returns a BOX2D based on full precision of the input GeoHash string.</p>
+        <p>If <code class="varname">precision</code> is specified ST_Box2dFromGeoHash will use that many characters from the GeoHash to create the BOX2D. Lower precision values results in larger BOX2Ds and larger values increase the precision.</p>
+        <p class="availability">Availability: 2.1.0</p>
+      </div>
+      <div class="refsection" id="idm9761">
+        <h2>Examples</h2>
+        <pre class="programlisting">SELECT ST_Box2dFromGeoHash('9qqj7nmxncgyy4d0dbxqz0');
+
+                st_geomfromgeohash
+--------------------------------------------------
+ BOX(-115.172816 36.114646,-115.172816 36.114646)
+
+SELECT ST_Box2dFromGeoHash('9qqj7nmxncgyy4d0dbxqz0', 0);
+
+ st_box2dfromgeohash
+----------------------
+ BOX(-180 -90,180 90)
+
+ SELECT ST_Box2dFromGeoHash('9qqj7nmxncgyy4d0dbxqz0', 10);
+                            st_box2dfromgeohash
+---------------------------------------------------------------------------
+ BOX(-115.17282128334 36.1146408319473,-115.172810554504 36.1146461963654)
+
+		</pre>
+      </div>
+      <div class="refsection" id="idm9764">
+        <h2>See Also</h2>
+        <p><a class="xref" href="ST_GeoHash.html" title="ST_GeoHash">ST_GeoHash</a>, <a class="xref" href="ST_GeomFromGeoHash.html" title="ST_GeomFromGeoHash">ST_GeomFromGeoHash</a>, <a class="xref" href="ST_PointFromGeoHash.html" title="ST_PointFromGeoHash">ST_PointFromGeoHash</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_WKBToSQL.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#idm9736">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_GeomFromGeoHash.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_WKBToSQL </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_GeomFromGeoHash</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

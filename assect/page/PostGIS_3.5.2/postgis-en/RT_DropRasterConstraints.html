@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>DropRasterConstraints</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="RT_AddRasterConstraints.html" title="AddRasterConstraints"/>
+    <link rel="next" href="RT_AddOverviewConstraints.html" title="AddOverviewConstraints"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">DropRasterConstraints</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="RT_AddRasterConstraints.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">11.2. Raster Management</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="RT_AddOverviewConstraints.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="RT_DropRasterConstraints">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>DropRasterConstraints — Drops PostGIS raster constraints that refer to a raster table column. Useful if you need to reload data or update your raster column data.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">boolean <strong class="fsfunc">DropRasterConstraints</strong>(</code>name 
+            <var class="pdparam">rasttable</var>, name 
+            <var class="pdparam">rastcolumn</var>, boolean 
+            <var class="pdparam">srid</var>, boolean 
+            <var class="pdparam">scale_x</var>, boolean 
+            <var class="pdparam">scale_y</var>, boolean 
+            <var class="pdparam">blocksize_x</var>, boolean 
+            <var class="pdparam">blocksize_y</var>, boolean 
+            <var class="pdparam">same_alignment</var>, boolean 
+            <var class="pdparam">regular_blocking</var>, boolean 
+            <var class="pdparam">num_bands=true</var>, boolean 
+            <var class="pdparam">pixel_types=true</var>, boolean 
+            <var class="pdparam">nodata_values=true</var>, boolean 
+                <var class="pdparam">out_db=true</var>
+            , boolean 
+            <var class="pdparam">extent=true</var><code>)</code>;</p>
+          <p><code class="funcdef">boolean <strong class="fsfunc">DropRasterConstraints</strong>(</code>name 
+            <var class="pdparam">rastschema</var>, name 
+            <var class="pdparam">rasttable</var>, name 
+            <var class="pdparam">rastcolumn</var>, boolean 
+            <var class="pdparam">srid=true</var>, boolean 
+            <var class="pdparam">scale_x=true</var>, boolean 
+            <var class="pdparam">scale_y=true</var>, boolean 
+            <var class="pdparam">blocksize_x=true</var>, boolean 
+            <var class="pdparam">blocksize_y=true</var>, boolean 
+            <var class="pdparam">same_alignment=true</var>, boolean 
+            <var class="pdparam">regular_blocking=false</var>, boolean 
+            <var class="pdparam">num_bands=true</var>, boolean 
+            <var class="pdparam">pixel_types=true</var>, boolean 
+            <var class="pdparam">nodata_values=true</var>, boolean 
+                <var class="pdparam">out_db=true</var>
+            , boolean 
+            <var class="pdparam">extent=true</var><code>)</code>;</p>
+          <p><code class="funcdef">boolean <strong class="fsfunc">DropRasterConstraints</strong>(</code>name 
+            <var class="pdparam">rastschema</var>, name 
+            <var class="pdparam">rasttable</var>, name 
+            <var class="pdparam">rastcolumn</var>, text[] 
+            <var class="pdparam">constraints</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm27342">
+        <h2>Description</h2>
+        <p>Drops PostGIS raster constraints that refer to a raster table column that were added by <a class="xref" href="RT_AddRasterConstraints.html" title="AddRasterConstraints">AddRasterConstraints</a>. Useful if you need to load more data or update your raster column data.
+        You do not need to do this if you want to get rid of a raster table or a raster column. </p>
+        <p>To drop a raster table use the standard </p>
+        <pre class="programlisting">DROP TABLE mytable</pre>
+        <p>To drop just a  raster column and leave the rest of the table, use standard SQL </p>
+        <pre class="programlisting">ALTER TABLE mytable DROP COLUMN rast</pre>
+        <p>the table will disappear from the <code class="varname">raster_columns</code> catalog if the column or table is dropped.  However if only the constraints are dropped, the
+        raster column will still be listed in the <code class="varname">raster_columns</code> catalog, but there will be no other information about it aside from the column name and table.</p>
+        <p class="availability">Availability: 2.0.0</p>
+      </div>
+      <div class="refsection" id="idm27354">
+        <h2>Examples</h2>
+        <pre class="programlisting">
+SELECT DropRasterConstraints ('myrasters','rast');
+----RESULT output ---
+t
+
+-- verify change in raster_columns --
+SELECT srid, scale_x, scale_y, blocksize_x, blocksize_y, num_bands, pixel_types, nodata_values
+    FROM raster_columns
+    WHERE r_table_name = 'myrasters';
+
+ srid | scale_x | scale_y | blocksize_x | blocksize_y | num_bands | pixel_types| nodata_values
+------+---------+---------+-------------+-------------+-----------+-------------+---------------
+    0 |         |         |             |             |           |             |
+        </pre>
+      </div>
+      <div class="refsection" id="idm27357">
+        <h2>See Also</h2>
+        <p>
+          <a class="xref" href="RT_AddRasterConstraints.html" title="AddRasterConstraints">AddRasterConstraints</a>
+        </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="RT_AddRasterConstraints.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="RT_reference.html#Raster_Management_Functions">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="RT_AddOverviewConstraints.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">AddRasterConstraints </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> AddOverviewConstraints</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

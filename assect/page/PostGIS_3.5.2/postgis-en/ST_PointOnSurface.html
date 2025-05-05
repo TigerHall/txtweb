@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_PointOnSurface</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_OffsetCurve.html" title="ST_OffsetCurve"/>
+    <link rel="next" href="ST_Polygonize.html" title="ST_Polygonize"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_PointOnSurface</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_OffsetCurve.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.14. Geometry Processing</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_Polygonize.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_PointOnSurface">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_PointOnSurface — Computes a point guaranteed to lie in a polygon, or on a geometry.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_PointOnSurface</strong>(</code>geometry 
+            <var class="pdparam">g1</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm17425">
+        <h2>Description</h2>
+        <p>Returns a <code class="varname">POINT</code> which is guaranteed to lie in the interior of a surface
+        (<code class="varname">POLYGON</code>, <code class="varname">MULTIPOLYGON</code>, and <code class="varname">CURVEPOLYGON</code>).
+        In PostGIS this function also works on line and point geometries.
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method implements the <a class="link" href="http://www.opengeospatial.org/standards/sfs" target="_top">OGC Simple Features
+            Implementation Specification for SQL 1.1.</a>
+         s3.2.14.2 // s3.2.18.2</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method implements the SQL/MM specification.
+         SQL-MM 3: 8.1.5, 9.5.6.
+         The specifications define ST_PointOnSurface for surface geometries only.
+         PostGIS extends the function to support all common geometry types.
+         Other databases (Oracle, DB2, ArcSDE) seem to support this function only for surfaces.
+         SQL Server 2008 supports all common geometry types.</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports 3d and will not drop the z-index.
+        </p>
+      </div>
+      <div class="refsection" id="idm17445">
+        <h2>Examples</h2>
+        <div class="informaltable">
+          <table style="border-collapse: collapse; border-top: 1px solid ; border-bottom: 1px solid ; border-left: 1px solid ; border-right: 1px solid ; ">
+            <colgroup>
+              <col/>
+              <col/>
+            </colgroup>
+            <tbody>
+              <tr>
+                <td style="border-right: 1px solid ; border-bottom: 1px solid ; ">
+                  <div class="informalfigure">
+                    <div class="mediaobject">
+                      <img src="../images/st_pointonsurface01.png"/>
+                      <div class="caption">
+                        <p>Point on surface of a
+                    <code class="varname">MULTIPOINT</code></p>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td style="border-bottom: 1px solid ; ">
+                  <div class="informalfigure">
+                    <div class="mediaobject">
+                      <img src="../images/st_pointonsurface02.png"/>
+                      <div class="caption">
+                        <p>Point on surface of a
+                    <code class="varname">LINESTRING</code></p>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td style="border-right: 1px solid ; ">
+                  <div class="informalfigure">
+                    <div class="mediaobject">
+                      <img src="../images/st_pointonsurface03.png"/>
+                      <div class="caption">
+                        <p>Point on surface of a
+                    <code class="varname">POLYGON</code></p>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div class="informalfigure">
+                    <div class="mediaobject">
+                      <img src="../images/st_pointonsurface04.png"/>
+                      <div class="caption">
+                        <p>Point on surface of a
+                    <code class="varname">GEOMETRYCOLLECTION</code></p>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <pre class="programlisting">SELECT ST_AsText(ST_PointOnSurface('POINT(0 5)'::geometry));
+------------
+ POINT(0 5)
+
+SELECT ST_AsText(ST_PointOnSurface('LINESTRING(0 5, 0 10)'::geometry));
+------------
+ POINT(0 5)
+
+SELECT ST_AsText(ST_PointOnSurface('POLYGON((0 0, 0 5, 5 5, 5 0, 0 0))'::geometry));
+----------------
+ POINT(2.5 2.5)
+
+SELECT ST_AsEWKT(ST_PointOnSurface(ST_GeomFromEWKT('LINESTRING(0 5 1, 0 0 1, 0 10 2)')));
+----------------
+ POINT(0 0 1)
+</pre>
+        <p><span class="bold"><strong>Example:</strong></span>
+        The result of ST_PointOnSurface is guaranteed to lie within polygons,
+        whereas the point computed by <a class="xref" href="ST_Centroid.html" title="ST_Centroid">ST_Centroid</a> may be outside.
+        </p>
+        <div class="informalfigure">
+          <div class="mediaobject">
+            <img src="../images/st_pointonsurface.png"/>
+            <div class="caption">
+              <p>Red: point on surface; Green: centroid</p>
+            </div>
+          </div>
+        </div>
+        <pre class="programlisting">
+SELECT ST_AsText(ST_PointOnSurface(geom)) AS pt_on_surf,
+       ST_AsText(ST_Centroid(geom)) AS centroid
+    FROM (SELECT 'POLYGON ((130 120, 120 190, 30 140, 50 20, 190 20,
+                      170 100, 90 60, 90 130, 130 120))'::geometry AS geom) AS t;
+
+   pt_on_surf    |                  centroid
+-----------------+---------------------------------------------
+ POINT(62.5 110) | POINT(100.18264840182648 85.11415525114155)
+</pre>
+      </div>
+      <div class="refsection" id="idm17499">
+        <h2>See Also</h2>
+        <p><a class="xref" href="ST_Centroid.html" title="ST_Centroid">ST_Centroid</a>, <a class="xref" href="ST_MaximumInscribedCircle.html" title="ST_MaximumInscribedCircle">ST_MaximumInscribedCircle</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_OffsetCurve.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Geometry_Processing">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_Polygonize.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_OffsetCurve </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_Polygonize</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

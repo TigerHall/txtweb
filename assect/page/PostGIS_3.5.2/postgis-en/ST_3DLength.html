@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_3DLength</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_Length2D.html" title="ST_Length2D"/>
+    <link rel="next" href="ST_Length_Spheroid.html" title="ST_LengthSpheroid"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_3DLength</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_Length2D.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.12. Measurement Functions</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_Length_Spheroid.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_3DLength">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_3DLength — Returns the 3D length of a linear geometry.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">float <strong class="fsfunc">ST_3DLength</strong>(</code>geometry  <var class="pdparam">a_3dlinestring</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm14951">
+        <h2>Description</h2>
+        <p>Returns the 3-dimensional or 2-dimensional length of the geometry if it is a
+			LineString or MultiLineString. For 2-d lines it will just return the 2-d length (same as ST_Length and ST_Length2D)</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports 3d and will not drop the z-index.
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method implements the SQL/MM specification.
+         SQL-MM IEC 13249-3: 7.1, 10.3</p>
+        <p class="changed">Changed: 2.0.0 In prior versions this used to be called ST_Length3D</p>
+      </div>
+      <div class="refsection" id="idm14963">
+        <h2>Examples</h2>
+        <p>Return length in feet for a 3D cable. Note this is in feet because EPSG:2249 is
+				Massachusetts State Plane Feet</p>
+        <pre class="programlisting">
+SELECT ST_3DLength(ST_GeomFromText('LINESTRING(743238 2967416 1,743238 2967450 1,743265 2967450 3,
+743265.625 2967416 3,743238 2967416 3)',2249));
+ST_3DLength
+-----------
+122.704716741457
+		</pre>
+      </div>
+      <div class="refsection" id="idm14967">
+        <h2>See Also</h2>
+        <p><a class="xref" href="ST_Length.html" title="ST_Length">ST_Length</a>, <a class="xref" href="ST_Length2D.html" title="ST_Length2D">ST_Length2D</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_Length2D.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Measurement_Functions">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_Length_Spheroid.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_Length2D </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_LengthSpheroid</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

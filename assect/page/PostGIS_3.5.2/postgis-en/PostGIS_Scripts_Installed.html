@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>PostGIS_Scripts_Installed</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="PostGIS_Scripts_Build_Date.html" title="PostGIS_Scripts_Build_Date"/>
+    <link rel="next" href="PostGIS_Scripts_Released.html" title="PostGIS_Scripts_Released"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">PostGIS_Scripts_Installed</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="PostGIS_Scripts_Build_Date.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.21. Version Functions</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="PostGIS_Scripts_Released.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="PostGIS_Scripts_Installed">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>PostGIS_Scripts_Installed — Returns version of the PostGIS scripts installed in this
+			database.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">text <strong class="fsfunc">PostGIS_Scripts_Installed</strong>(</code><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm20698">
+        <h2>Description</h2>
+        <p>Returns version of the PostGIS scripts installed in this
+			database.</p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>If the output of this function doesn't match the output of
+			  <a class="xref" href="PostGIS_Scripts_Released.html" title="PostGIS_Scripts_Released">PostGIS_Scripts_Released</a>
+			  you probably missed to properly upgrade an existing database.
+			  See the <a class="link" href="postgis_administration.html#upgrading" title="3.4. Upgrading spatial databases">Upgrading</a> section for
+			  more info.</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p class="availability">Availability: 0.9.0</p>
+      </div>
+      <div class="refsection" id="idm20706">
+        <h2>Examples</h2>
+        <pre class="programlisting">SELECT PostGIS_Scripts_Installed();
+  postgis_scripts_installed
+-------------------------
+ 3.4.0dev 3.3.0rc2-993-g61bdf43a7
+(1 row)</pre>
+      </div>
+      <div class="refsection" id="idm20709">
+        <h2>See Also</h2>
+        <p><a class="xref" href="PostGIS_Full_Version.html" title="PostGIS_Full_Version">PostGIS_Full_Version</a>, <a class="xref" href="PostGIS_Scripts_Released.html" title="PostGIS_Scripts_Released">PostGIS_Scripts_Released</a>, <a class="xref" href="PostGIS_Version.html" title="PostGIS_Version">PostGIS_Version</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="PostGIS_Scripts_Build_Date.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Version_Functions">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="PostGIS_Scripts_Released.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">PostGIS_Scripts_Build_Date </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> PostGIS_Scripts_Released</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>AddGeometryColumn</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="geography.html" title="geography"/>
+    <link rel="next" href="DropGeometryColumn.html" title="DropGeometryColumn"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">AddGeometryColumn</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="geography.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.2. Table Management Functions</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="DropGeometryColumn.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="AddGeometryColumn">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>AddGeometryColumn — Adds a geometry column to an existing table.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">text <strong class="fsfunc">AddGeometryColumn</strong>(</code>varchar 
+			<var class="pdparam">table_name</var>, varchar 
+			<var class="pdparam">column_name</var>, integer 
+			<var class="pdparam">srid</var>, varchar 
+			<var class="pdparam">type</var>, integer 
+			<var class="pdparam">dimension</var>, boolean 
+			<var class="pdparam">use_typmod=true</var><code>)</code>;</p>
+          <p><code class="funcdef">text <strong class="fsfunc">AddGeometryColumn</strong>(</code>varchar 
+			<var class="pdparam">schema_name</var>, varchar 
+			<var class="pdparam">table_name</var>, varchar 
+			<var class="pdparam">column_name</var>, integer 
+			<var class="pdparam">srid</var>, varchar 
+			<var class="pdparam">type</var>, integer 
+			<var class="pdparam">dimension</var>, boolean 
+			<var class="pdparam">use_typmod=true</var><code>)</code>;</p>
+          <p><code class="funcdef">text <strong class="fsfunc">AddGeometryColumn</strong>(</code>varchar 
+			<var class="pdparam">catalog_name</var>, varchar 
+			<var class="pdparam">schema_name</var>, varchar 
+			<var class="pdparam">table_name</var>, varchar 
+			<var class="pdparam">column_name</var>, integer 
+			<var class="pdparam">srid</var>, varchar 
+			<var class="pdparam">type</var>, integer 
+			<var class="pdparam">dimension</var>, boolean 
+			<var class="pdparam">use_typmod=true</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm3250">
+        <h2>Description</h2>
+        <p>Adds a geometry column to an existing table of attributes. The
+		<code class="varname">schema_name</code> is the name of the table schema. The <code class="varname">srid</code>
+		must be an integer value reference to an entry in the SPATIAL_REF_SYS
+		table. The <code class="varname">type</code> must be a string
+		corresponding to the geometry type, eg, 'POLYGON' or
+		'MULTILINESTRING' .  An error is thrown if the schemaname doesn't exist
+		(or not visible in the current search_path) or the specified SRID,
+		geometry type, or dimension is invalid.</p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p class="changed">Changed: 2.0.0 This function no longer updates geometry_columns since geometry_columns is a view that reads from system catalogs.  It by default
+			also does not create constraints, but instead uses the built in type modifier behavior of PostgreSQL.  So for example building a wgs84 POINT column with this function is now
+			equivalent to: <code class="code">ALTER TABLE some_table ADD COLUMN geom geometry(Point,4326);</code> </p>
+                <p class="changed">Changed: 2.0.0 If you require the old behavior of constraints use the default <code class="varname">use_typmod</code>, but set it to false.</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p class="changed">Changed: 2.0.0 Views can no longer be manually registered in geometry_columns, however views built against geometry typmod tables geometries and used without wrapper functions will register themselves correctly
+		            because they inherit the typmod behavior of their parent table column.
+		            Views that use geometry functions that output other geometries will need to be cast to typmod geometries for these view geometry columns to be registered correctly
+		            in geometry_columns. Refer to <a class="xref" href="using_postgis_dbmanagement.html#Manual_Register_Spatial_Column" title="4.6.3. Manually Registering Geometry Columns">Section 4.6.3, “Manually Registering Geometry Columns”</a>.
+			</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method implements the <a class="link" href="http://www.opengeospatial.org/standards/sfs" target="_top">OGC Simple Features
+            Implementation Specification for SQL 1.1.</a>
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports 3d and will not drop the z-index.
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method supports Circular Strings and Curves.
+        </p>
+        <p class="enhanced">Enhanced: 2.0.0 use_typmod argument introduced.  Defaults to creating typmod geometry column instead of constraint-based.</p>
+      </div>
+      <div class="refsection" id="idm3278">
+        <h2>Examples</h2>
+        <pre class="programlisting">-- Create schema to hold data
+CREATE SCHEMA my_schema;
+-- Create a new simple PostgreSQL table
+CREATE TABLE my_schema.my_spatial_table (id serial);
+
+-- Describing the table shows a simple table with a single "id" column.
+postgis=# \d my_schema.my_spatial_table
+							 Table "my_schema.my_spatial_table"
+ Column |  Type   |                                Modifiers
+--------+---------+-------------------------------------------------------------------------
+ id     | integer | not null default nextval('my_schema.my_spatial_table_id_seq'::regclass)
+
+-- Add a spatial column to the table
+SELECT AddGeometryColumn ('my_schema','my_spatial_table','geom',4326,'POINT',2);
+
+-- Add a point using the old constraint based behavior
+SELECT AddGeometryColumn ('my_schema','my_spatial_table','geom_c',4326,'POINT',2, false);
+
+--Add a curvepolygon using old constraint behavior
+SELECT AddGeometryColumn ('my_schema','my_spatial_table','geomcp_c',4326,'CURVEPOLYGON',2, false);
+
+-- Describe the table again reveals the addition of a new geometry columns.
+\d my_schema.my_spatial_table
+                            addgeometrycolumn
+-------------------------------------------------------------------------
+ my_schema.my_spatial_table.geomcp_c SRID:4326 TYPE:CURVEPOLYGON DIMS:2
+(1 row)
+
+                                    Table "my_schema.my_spatial_table"
+  Column  |         Type         |                                Modifiers
+----------+----------------------+-------------------------------------------------------------------------
+ id       | integer              | not null default nextval('my_schema.my_spatial_table_id_seq'::regclass)
+ geom     | geometry(Point,4326) |
+ geom_c   | geometry             |
+ geomcp_c | geometry             |
+Check constraints:
+    "enforce_dims_geom_c" CHECK (st_ndims(geom_c) = 2)
+    "enforce_dims_geomcp_c" CHECK (st_ndims(geomcp_c) = 2)
+    "enforce_geotype_geom_c" CHECK (geometrytype(geom_c) = 'POINT'::text OR geom_c IS NULL)
+    "enforce_geotype_geomcp_c" CHECK (geometrytype(geomcp_c) = 'CURVEPOLYGON'::text OR geomcp_c IS NULL)
+    "enforce_srid_geom_c" CHECK (st_srid(geom_c) = 4326)
+    "enforce_srid_geomcp_c" CHECK (st_srid(geomcp_c) = 4326)
+
+-- geometry_columns view also registers the new columns --
+SELECT f_geometry_column As col_name, type, srid, coord_dimension As ndims
+    FROM geometry_columns
+    WHERE f_table_name = 'my_spatial_table' AND f_table_schema = 'my_schema';
+
+ col_name |     type     | srid | ndims
+----------+--------------+------+-------
+ geom     | Point        | 4326 |     2
+ geom_c   | Point        | 4326 |     2
+ geomcp_c | CurvePolygon | 4326 |     2
+</pre>
+      </div>
+      <div class="refsection" id="idm3281">
+        <h2>See Also</h2>
+        <p><a class="xref" href="DropGeometryColumn.html" title="DropGeometryColumn">DropGeometryColumn</a>, <a class="xref" href="DropGeometryTable.html" title="DropGeometryTable">DropGeometryTable</a>, <a class="xref" href="using_postgis_dbmanagement.html#geometry_columns" title="4.6.2. GEOMETRY_COLUMNS View">Section 4.6.2, “GEOMETRY_COLUMNS View”</a>, <a class="xref" href="using_postgis_dbmanagement.html#Manual_Register_Spatial_Column" title="4.6.3. Manually Registering Geometry Columns">Section 4.6.3, “Manually Registering Geometry Columns”</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="geography.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Management_Functions">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="DropGeometryColumn.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">geography </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> DropGeometryColumn</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

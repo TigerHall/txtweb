@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_Contour</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="RT_ST_GDALDrivers.html" title="ST_GDALDrivers"/>
+    <link rel="next" href="RT_ST_InterpolateRaster.html" title="ST_InterpolateRaster"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_Contour</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="RT_ST_GDALDrivers.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">11.2. Raster Management</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="RT_ST_InterpolateRaster.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="RT_ST_Contour">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_Contour — Generates a set of vector contours from the provided raster
+            band, using the <a class="link" href="https://gdal.org/api/gdal_alg.html?highlight=contour#_CPPv421GDALContourGenerateEx15GDALRasterBandHPv12CSLConstList16GDALProgressFuncPv" target="_top">GDAL contouring algorithm</a>.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">setof record <strong class="fsfunc">ST_Contour</strong>(</code>raster <var class="pdparam">rast</var>, integer <var class="pdparam">bandnumber=1</var>, double precision <var class="pdparam">level_interval=100.0</var>, double precision <var class="pdparam">level_base=0.0</var>, double precision[] <var class="pdparam">fixed_levels=ARRAY[]</var>, boolean <var class="pdparam">polygonize=false</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm27611">
+        <h2>Description</h2>
+        <p>
+            Generates a set of vector contours from the provided raster
+            band, using the <a class="link" href="https://gdal.org/api/gdal_alg.html?highlight=contour#_CPPv421GDALContourGenerateEx15GDALRasterBandHPv12CSLConstList16GDALProgressFuncPv" target="_top">GDAL contouring algorithm</a>.</p>
+        <p>
+            When the <code class="varname">fixed_levels</code> parameter is a non-empty
+            array, the <code class="varname">level_interval</code> and <code class="varname">level_base</code> parameters are ignored.
+        </p>
+        <p>
+            Input parameters are:
+        </p>
+        <div class="variablelist">
+          <dl class="variablelist">
+            <dt>
+              <span class="term">
+                <code class="varname">rast</code>
+              </span>
+            </dt>
+            <dd>
+              <p>The raster to generate the contour of</p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">bandnumber</code>
+              </span>
+            </dt>
+            <dd>
+              <p>The band to generate the contour of</p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">level_interval</code>
+              </span>
+            </dt>
+            <dd>
+              <p>The elevation interval between contours generated</p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">level_base</code>
+              </span>
+            </dt>
+            <dd>
+              <p>The "base" relative to which contour intervals are applied,
+                this is normally zero, but could be different.
+                To generate 10m contours at 5, 15, 25, ... the LEVEL_BASE would be 5.</p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">fixed_levels</code>
+              </span>
+            </dt>
+            <dd>
+              <p>The elevation interval between contours generated</p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">polygonize</code>
+              </span>
+            </dt>
+            <dd>
+              <p>If <code class="literal">true</code>, contour polygons will be created, rather than polygon lines.</p>
+            </dd>
+          </dl>
+        </div>
+        <p>
+            Return values are a set of records with the following attributes:
+        </p>
+        <div class="variablelist">
+          <dl class="variablelist">
+            <dt>
+              <span class="term">
+                <code class="varname">geom</code>
+              </span>
+            </dt>
+            <dd>
+              <p>The geometry of the contour line.</p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">id</code>
+              </span>
+            </dt>
+            <dd>
+              <p>A unique identifier given to the contour line by GDAL.</p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">value</code>
+              </span>
+            </dt>
+            <dd>
+              <p>The raster value the line represents. For an elevation DEM input, this would be the elevation of the output contour.</p>
+            </dd>
+          </dl>
+        </div>
+        <p class="availability">Availability: 3.2.0</p>
+      </div>
+      <div class="refsection" id="idm27670">
+        <h2>Example</h2>
+        <pre class="programlisting">WITH c AS (
+SELECT (ST_Contour(rast, 1, fixed_levels =&gt; ARRAY[100.0, 200.0, 300.0])).*
+FROM dem_grid WHERE rid = 1
+)
+SELECT st_astext(geom), id, value
+FROM c;</pre>
+      </div>
+      <div class="refsection" id="idm27673">
+        <h2>See Also</h2>
+        <p>
+        <a class="xref" href="RT_ST_InterpolateRaster.html" title="ST_InterpolateRaster">ST_InterpolateRaster</a>
+        </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="RT_ST_GDALDrivers.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="RT_reference.html#Raster_Management_Functions">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="RT_ST_InterpolateRaster.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_GDALDrivers </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_InterpolateRaster</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

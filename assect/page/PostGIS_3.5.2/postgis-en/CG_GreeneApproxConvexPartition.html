@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>CG_GreeneApproxConvexPartition</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="CG_ExtrudeStraightSkeleton.html" title="CG_ExtrudeStraightSkeleton"/>
+    <link rel="next" href="ST_MinkowskiSum.html" title="ST_MinkowskiSum"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">CG_GreeneApproxConvexPartition</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="CG_ExtrudeStraightSkeleton.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">8.3. SFCGAL Processing and Relationship Functions</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_MinkowskiSum.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="CG_GreeneApproxConvexPartition">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>CG_GreeneApproxConvexPartition — Computes approximal convex partition of the polygon geometry</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">geometry <strong class="fsfunc">CG_GreeneApproxConvexPartition</strong>(</code>geometry <var class="pdparam">geom</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm22839">
+        <h2>Description</h2>
+        <p>Computes approximal monotone convex partition of the polygon geometry.
+        </p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>
+                A partition of a polygon P is a set of polygons such that the interiors of the polygons do not intersect and the union of the polygons is equal to the interior of the original polygon P.
+                CG_ApproxConvexPartition and CG_GreeneApproxConvexPartition functions produce approximately optimal convex partitions. Both these functions produce convex decompositions by first decomposing the polygon into simpler polygons; CG_ApproxConvexPartition uses a triangulation and CG_GreeneApproxConvexPartition a monotone partition. These two functions both guarantee that they will produce no more than four times the optimal number of convex pieces but they differ in their runtime complexities. Though the triangulation-based approximation algorithm often results in fewer convex pieces, this is not always the case.
+        </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p class="availability">Availability: 3.5.0 - requires SFCGAL &gt;= 1.5.0.</p>
+        <p class="sfcgal_requirement">Requires SFCGAL &gt;= 1.5.0</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method needs SFCGAL backend.
+        </p>
+      </div>
+      <div class="refsection" id="idm22850">
+        <h2>Examples</h2>
+        <p>
+            </p>
+        <div class="informalfigure">
+          <div class="mediaobject">
+            <img src="../images/cg_greeneapproxconvexpartition01.png"/>
+            <div class="caption">
+              <p>Greene Approximal Convex Partition (same example As <a class="xref" href="CG_YMonotonePartition.html" title="CG_YMonotonePartition">CG_YMonotonePartition</a>,  <a class="xref" href="CG_ApproxConvexPartition.html" title="CG_ApproxConvexPartition">CG_ApproxConvexPartition</a> and <a class="xref" href="CG_OptimalConvexPartition.html" title="CG_OptimalConvexPartition">CG_OptimalConvexPartition</a>)</p>
+            </div>
+          </div>
+        </div>
+        <p>
+            </p>
+        <pre class="programlisting">SELECT ST_AsText(CG_GreeneApproxConvexPartition('POLYGON((156 150,83 181,89 131,148 120,107 61,32 159,0 45,41 86,45 1,177 2,67 24,109 31,170 60,180 110,156 150))'::geometry));</pre>
+        <p>
+            </p>
+        <pre class="screen">GEOMETRYCOLLECTION(POLYGON((32 159,0 45,41 86,32 159)),POLYGON((45 1,177 2,67 24,45 1)),POLYGON((67 24,109 31,170 60,107 61,67 24)),POLYGON((41 86,45 1,67 24,41 86)),POLYGON((107 61,32 159,41 86,67 24,107 61)),POLYGON((148 120,107 61,170 60,148 120)),POLYGON((148 120,170 60,180 110,156 150,148 120)),POLYGON((156 150,83 181,89 131,148 120,156 150)))</pre>
+        <p>
+        </p>
+      </div>
+      <div class="refsection" id="idm22864">
+        <h2>See Also</h2>
+        <p><a class="xref" href="CG_YMonotonePartition.html" title="CG_YMonotonePartition">CG_YMonotonePartition</a>, <a class="xref" href="CG_ApproxConvexPartition.html" title="CG_ApproxConvexPartition">CG_ApproxConvexPartition</a>, <a class="xref" href="CG_OptimalConvexPartition.html" title="CG_OptimalConvexPartition">CG_OptimalConvexPartition</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="CG_ExtrudeStraightSkeleton.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference_sfcgal.html#sfcgal_processing">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_MinkowskiSum.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">CG_ExtrudeStraightSkeleton </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_MinkowskiSum</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

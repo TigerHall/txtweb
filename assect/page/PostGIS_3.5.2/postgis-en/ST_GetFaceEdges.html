@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_GetFaceEdges</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="GetTopologyName.html" title="GetTopologyName"/>
+    <link rel="next" href="ST_GetFaceGeometry.html" title="ST_GetFaceGeometry"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_GetFaceEdges</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="GetTopologyName.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">9.7. Topology Accessors</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_GetFaceGeometry.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_GetFaceEdges">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_GetFaceEdges — Returns a set of ordered edges that bound <code class="varname">aface</code>.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">getfaceedges_returntype <strong class="fsfunc">ST_GetFaceEdges</strong>(</code>varchar  <var class="pdparam">atopology</var>, integer  <var class="pdparam">aface</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm25327">
+        <h2>Description</h2>
+        <p>Returns a set of ordered edges that bound <code class="varname">aface</code>. Each output consists of a sequence and edgeid. Sequence numbers start with value 1.</p>
+        <p>
+Enumeration of each ring edges start from the edge with smallest identifier.
+Order of edges follows a left-hand-rule (bound face is on the left of each directed edge).
+		</p>
+        <p class="availability">Availability: 2.0 </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method implements the SQL/MM specification.
+         SQL-MM 3 Topo-Geo and Topo-Net 3: Routine Details: X.3.5</p>
+      </div>
+      <div class="refsection" id="idm25337">
+        <h2>Examples</h2>
+        <pre class="programlisting">
+-- Returns the edges bounding face 1
+SELECT (topology.ST_GetFaceEdges('tt', 1)).*;
+-- result --
+ sequence | edge
+----------+------
+        1 |   -4
+        2 |    5
+        3 |    7
+        4 |   -6
+        5 |    1
+        6 |    2
+        7 |    3
+(7 rows)
+</pre>
+        <pre class="programlisting">
+-- Returns the sequence, edge id
+-- and geometry of the edges that bound face 1
+-- If you just need geom and seq, can use ST_GetFaceGeometry
+SELECT t.seq, t.edge, geom
+FROM topology.ST_GetFaceEdges('tt',1) As t(seq,edge)
+	INNER JOIN tt.edge AS e ON abs(t.edge) = e.edge_id;
+</pre>
+      </div>
+      <div class="refsection" id="idm25341">
+        <h2>See Also</h2>
+        <p>
+<a class="xref" href="GetRingEdges.html" title="GetRingEdges">GetRingEdges</a>,
+<a class="xref" href="AddFace.html" title="AddFace">AddFace</a>,
+<a class="xref" href="ST_GetFaceGeometry.html" title="ST_GetFaceGeometry">ST_GetFaceGeometry</a>
+				</p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="GetTopologyName.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="Topology.html#Topology_Accessors">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_GetFaceGeometry.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">GetTopologyName </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_GetFaceGeometry</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>&lt;&lt;-&gt;&gt;</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="geometry_distance_box.html" title="&lt;#&gt;"/>
+    <link rel="next" href="ST_3DIntersects.html" title="ST_3DIntersects"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">&lt;&lt;-&gt;&gt;</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="geometry_distance_box.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.10.2. Distance Operators</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_3DIntersects.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="geometry_distance_centroid_nd">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>&lt;&lt;-&gt;&gt; — 
+Returns the n-D distance between the A and B geometries or bounding boxes
+			</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">double precision <strong class="fsfunc">&lt;&lt;-&gt;&gt;</strong>(</code>
+				  geometry 
+
+				  <var class="pdparam">A</var>
+				, 
+				  geometry 
+
+				  <var class="pdparam">B</var>
+				<code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm12728">
+        <h2>Description</h2>
+        <p>
+The <code class="varname">&lt;&lt;-&gt;&gt;</code> operator returns the n-D (euclidean)
+distance between the centroids of the bounding boxes of two geometries.
+Useful for doing nearest neighbor
+<span class="strong"><strong>approximate</strong></span> distance ordering.
+      </p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>
+This operand will make use of n-D GiST indexes that may be available on
+the geometries.  It is different from other operators that use spatial
+indexes in that the spatial index is only used when the operator is in
+the ORDER BY clause.
+      </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>
+Index only kicks in if one of the geometries is a constant (not in a
+subquery/cte).  e.g. 'SRID=3005;POINT(1011102 450541)'::geometry instead
+of a.geom
+      </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p class="availability">Availability: 2.2.0 -- KNN only available for PostgreSQL 9.1+</p>
+      </div>
+      <div class="refsection" id="idm12738">
+        <h2>See Also</h2>
+        <p>
+<a class="xref" href="geometry_distance_knn.html" title="&lt;-&gt;">&lt;-&gt;</a>
+      </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="geometry_distance_box.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#operators-distance">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_3DIntersects.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">&lt;#&gt; </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_3DIntersects</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

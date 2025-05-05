@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_Rotate</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_Affine.html" title="ST_Affine"/>
+    <link rel="next" href="ST_RotateX.html" title="ST_RotateX"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_Rotate</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_Affine.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.16. Affine Transformations</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_RotateX.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_Rotate">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_Rotate — Rotates a geometry about an origin point.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_Rotate</strong>(</code>geometry <var class="pdparam">geomA</var>, float <var class="pdparam">rotRadians</var><code>)</code>;</p>
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_Rotate</strong>(</code>geometry <var class="pdparam">geomA</var>, float <var class="pdparam">rotRadians</var>, float <var class="pdparam">x0</var>, float <var class="pdparam">y0</var><code>)</code>;</p>
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_Rotate</strong>(</code>geometry <var class="pdparam">geomA</var>, float <var class="pdparam">rotRadians</var>, geometry <var class="pdparam">pointOrigin</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm18435">
+        <h2>Description</h2>
+        <p>Rotates geometry rotRadians counter-clockwise about the origin point. The rotation origin can be
+			specified either as a POINT geometry, or as x and y coordinates. If the origin is not
+			specified, the geometry is rotated about POINT(0 0).</p>
+        <p class="enhanced">Enhanced: 2.0.0 support for Polyhedral surfaces, Triangles and TIN was introduced.</p>
+        <p class="enhanced">Enhanced: 2.0.0 additional parameters for specifying the origin of rotation were added.</p>
+        <p class="availability">Availability: 1.1.2. Name changed from Rotate to ST_Rotate in 1.2.2</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports 3d and will not drop the z-index.
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method supports Circular Strings and Curves.
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports Polyhedral surfaces.
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports Triangles and Triangulated Irregular Network Surfaces (TIN).
+        </p>
+      </div>
+      <div class="refsection" id="idm18457">
+        <h2>Examples</h2>
+        <pre class="programlisting">
+--Rotate 180 degrees
+SELECT ST_AsEWKT(ST_Rotate('LINESTRING (50 160, 50 50, 100 50)', pi()));
+               st_asewkt
+---------------------------------------
+ LINESTRING(-50 -160,-50 -50,-100 -50)
+(1 row)
+
+--Rotate 30 degrees counter-clockwise at x=50, y=160
+SELECT ST_AsEWKT(ST_Rotate('LINESTRING (50 160, 50 50, 100 50)', pi()/6, 50, 160));
+                                 st_asewkt
+---------------------------------------------------------------------------
+ LINESTRING(50 160,105 64.7372055837117,148.301270189222 89.7372055837117)
+(1 row)
+
+--Rotate 60 degrees clockwise from centroid
+SELECT ST_AsEWKT(ST_Rotate(geom, -pi()/3, ST_Centroid(geom)))
+FROM (SELECT 'LINESTRING (50 160, 50 50, 100 50)'::geometry AS geom) AS foo;
+                           st_asewkt
+--------------------------------------------------------------
+ LINESTRING(116.4225 130.6721,21.1597 75.6721,46.1597 32.3708)
+(1 row)
+		</pre>
+      </div>
+      <div class="refsection" id="idm18460">
+        <h2>See Also</h2>
+        <p><a class="xref" href="ST_Affine.html" title="ST_Affine">ST_Affine</a>, <a class="xref" href="ST_RotateX.html" title="ST_RotateX">ST_RotateX</a>, <a class="xref" href="ST_RotateY.html" title="ST_RotateY">ST_RotateY</a>, <a class="xref" href="ST_RotateZ.html" title="ST_RotateZ">ST_RotateZ</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_Affine.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Affine_Transformation">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_RotateX.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_Affine </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_RotateX</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

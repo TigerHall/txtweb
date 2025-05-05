@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_AsBinary</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_AsText.html" title="ST_AsText"/>
+    <link rel="next" href="ST_AsEWKB.html" title="ST_AsEWKB"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_AsBinary</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_AsText.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.9.2. Well-Known Binary (WKB)</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_AsEWKB.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_AsBinary">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_AsBinary — Return the OGC/ISO Well-Known Binary (WKB) representation of the geometry/geography without SRID meta data.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">bytea <strong class="fsfunc">ST_AsBinary</strong>(</code>geometry  <var class="pdparam">g1</var><code>)</code>;</p>
+          <p><code class="funcdef">bytea <strong class="fsfunc">ST_AsBinary</strong>(</code>geometry  <var class="pdparam">g1</var>, text <var class="pdparam">NDR_or_XDR</var><code>)</code>;</p>
+          <p><code class="funcdef">bytea <strong class="fsfunc">ST_AsBinary</strong>(</code>geography  <var class="pdparam">g1</var><code>)</code>;</p>
+          <p><code class="funcdef">bytea <strong class="fsfunc">ST_AsBinary</strong>(</code>geography  <var class="pdparam">g1</var>, text <var class="pdparam">NDR_or_XDR</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm10341">
+        <h2>Description</h2>
+        <p>Returns the OGC/ISO <a class="link" href="using_postgis_dbmanagement.html#OpenGISWKBWKT" title="4.1.3. WKT and WKB">Well-Known Binary</a> (WKB) representation of the geometry.
+            The first function variant defaults to encoding using server machine endian.
+            The second function variant takes a text argument
+			specifying the endian encoding, either little-endian ('NDR') or big-endian ('XDR').</p>
+        <p>WKB format is useful to read geometry data from the
+			database and maintaining full numeric precision.
+            This avoids the precision rounding that can happen with text formats such as WKT.</p>
+        <p>To perform the inverse conversion of WKB to PostGIS geometry use <a class="xref" href="ST_GeomFromWKB.html" title="ST_GeomFromWKB">ST_GeomFromWKB</a>.</p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>The OGC/ISO WKB format does not include the SRID.  To get the EWKB format which does include the SRID use <a class="xref" href="ST_AsEWKB.html" title="ST_AsEWKB">ST_AsEWKB</a></p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>The default behavior in PostgreSQL 9.0 has been changed to output bytea in hex encoding.
+                If your GUI tools require the old behavior, then SET bytea_output='escape' in your database.</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p class="enhanced">Enhanced: 2.0.0 support for Polyhedral surfaces, Triangles and TIN was introduced.</p>
+        <p class="enhanced">Enhanced: 2.0.0 support for higher coordinate dimensions was introduced.</p>
+        <p class="enhanced">Enhanced: 2.0.0 support for specifying endian with geography was introduced.</p>
+        <p class="availability">Availability: 1.5.0 geography support was introduced.</p>
+        <p class="changed">Changed: 2.0.0 Inputs to this function can not be unknown -- must be geometry.  Constructs such as <code class="code">ST_AsBinary('POINT(1 2)')</code> are no longer valid and you will get an <code class="code">n st_asbinary(unknown)  is not unique error</code>.  Code like that
+			needs to be changed to <code class="code">ST_AsBinary('POINT(1 2)'::geometry);</code>.  If that is not possible, then install <code class="filename">legacy.sql</code>.</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method implements the <a class="link" href="http://www.opengeospatial.org/standards/sfs" target="_top">OGC Simple Features
+            Implementation Specification for SQL 1.1.</a>
+         s2.1.1.1</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method implements the SQL/MM specification.
+         SQL-MM 3: 5.1.37</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method supports Circular Strings and Curves.
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports Polyhedral surfaces.
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports Triangles and Triangulated Irregular Network Surfaces (TIN).
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports 3d and will not drop the z-index.
+        </p>
+      </div>
+      <div class="refsection" id="idm10387">
+        <h2>Examples</h2>
+        <pre class="programlisting">SELECT ST_AsBinary(ST_GeomFromText('POLYGON((0 0,0 1,1 1,1 0,0 0))',4326));
+
+		   st_asbinary
+--------------------------------
+\x01030000000100000005000000000000000000000000000000000000000000000000000000000000
+000000f03f000000000000f03f000000000000f03f000000000000f03f0000000000000000000000
+00000000000000000000000000
+</pre>
+        <pre class="programlisting">SELECT ST_AsBinary(ST_GeomFromText('POLYGON((0 0,0 1,1 1,1 0,0 0))',4326), 'XDR');
+		   st_asbinary
+--------------------------------
+\x000000000300000001000000050000000000000000000000000000000000000000000000003ff000
+00000000003ff00000000000003ff00000000000003ff00000000000000000000000000000000000
+00000000000000000000000000
+</pre>
+      </div>
+      <div class="refsection" id="idm10391">
+        <h2>See Also</h2>
+        <p>
+<a class="xref" href="ST_GeomFromWKB.html" title="ST_GeomFromWKB">ST_GeomFromWKB</a>,
+<a class="xref" href="ST_AsEWKB.html" title="ST_AsEWKB">ST_AsEWKB</a>,
+<a class="xref" href="ST_AsTWKB.html" title="ST_AsTWKB">ST_AsTWKB</a>,
+<a class="xref" href="ST_AsText.html" title="ST_AsText">ST_AsText</a>,
+			</p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_AsText.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#idm10303">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_AsEWKB.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_AsText </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_AsEWKB</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

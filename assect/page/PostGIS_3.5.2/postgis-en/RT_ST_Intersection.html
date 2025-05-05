@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_Intersection</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="RT_ST_Grayscale.html" title="ST_Grayscale"/>
+    <link rel="next" href="RT_ST_MapAlgebra.html" title="ST_MapAlgebra (callback function version)"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_Intersection</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="RT_ST_Grayscale.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">11.12. Raster Processing: Map Algebra</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="RT_ST_MapAlgebra.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="RT_ST_Intersection">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_Intersection — Returns a raster or a set of geometry-pixelvalue pairs representing the shared portion of two rasters or the geometrical intersection of a vectorization of the raster and a geometry.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">setof geomval <strong class="fsfunc">ST_Intersection</strong>(</code>geometry  <var class="pdparam">geom</var>, raster  <var class="pdparam">rast</var>, integer  <var class="pdparam">band_num=1</var><code>)</code>;</p>
+          <p><code class="funcdef">setof geomval <strong class="fsfunc">ST_Intersection</strong>(</code>raster  <var class="pdparam">rast</var>, geometry  <var class="pdparam">geom</var><code>)</code>;</p>
+          <p><code class="funcdef">setof geomval <strong class="fsfunc">ST_Intersection</strong>(</code>raster  <var class="pdparam">rast</var>, integer  <var class="pdparam">band</var>, geometry  <var class="pdparam">geomin</var><code>)</code>;</p>
+          <p><code class="funcdef">raster <strong class="fsfunc">ST_Intersection</strong>(</code>raster  <var class="pdparam">rast1</var>, raster  <var class="pdparam">rast2</var>, double precision[]  <var class="pdparam">nodataval</var><code>)</code>;</p>
+          <p><code class="funcdef">raster <strong class="fsfunc">ST_Intersection</strong>(</code>raster  <var class="pdparam">rast1</var>, raster  <var class="pdparam">rast2</var>, text  <var class="pdparam">returnband</var>, double precision[]  <var class="pdparam">nodataval</var><code>)</code>;</p>
+          <p><code class="funcdef">raster <strong class="fsfunc">ST_Intersection</strong>(</code>raster  <var class="pdparam">rast1</var>, integer  <var class="pdparam">band1</var>, raster  <var class="pdparam">rast2</var>, integer  <var class="pdparam">band2</var>, double precision[]  <var class="pdparam">nodataval</var><code>)</code>;</p>
+          <p><code class="funcdef">raster <strong class="fsfunc">ST_Intersection</strong>(</code>raster  <var class="pdparam">rast1</var>, integer  <var class="pdparam">band1</var>, raster  <var class="pdparam">rast2</var>, integer  <var class="pdparam">band2</var>, text  <var class="pdparam">returnband</var>, double precision[]  <var class="pdparam">nodataval</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm33584">
+        <h2>Description</h2>
+        <p>
+                        Returns a raster or a set of geometry-pixelvalue pairs representing the shared portion of two rasters or the geometrical intersection of a vectorization of the raster and a geometry.
+                    </p>
+        <p>
+                        The first three variants, returning a setof geomval, works in vector space. The raster is first vectorized (using <a class="xref" href="RT_ST_DumpAsPolygons.html" title="ST_DumpAsPolygons">ST_DumpAsPolygons</a>) into a set of geomval rows and those rows are then intersected with the geometry using the <a class="xref" href="ST_Intersection.html" title="ST_Intersection">ST_Intersection</a> (geometry, geometry) PostGIS function. Geometries intersecting only with a nodata value area of a raster returns an empty geometry. They are normally excluded from the results by the proper usage of <a class="xref" href="RT_ST_Intersects.html" title="ST_Intersects">ST_Intersects</a> in the WHERE clause.
+                    </p>
+        <p>
+                        You can access the geometry and the value parts of the resulting set of geomval by surrounding them with parenthesis and adding '.geom' or '.val' at the end of the expression. e.g. (ST_Intersection(rast, geom)).geom
+                    </p>
+        <p>
+                        The other variants, returning a raster, works in raster space. They are using the two rasters version of ST_MapAlgebraExpr to perform the intersection.
+                    </p>
+        <p>
+                        The extent of the resulting raster corresponds to the geometrical intersection of the two raster extents. The resulting raster includes 'BAND1', 'BAND2' or 'BOTH' bands, following what is passed as the <code class="varname">returnband</code> parameter. Nodata value areas present in any band results in nodata value areas in every bands of the result. In other words, any pixel intersecting with a nodata value pixel becomes a nodata value pixel in the result.
+                    </p>
+        <p>
+                        Rasters resulting from ST_Intersection must have a nodata value assigned for areas not intersecting. You can define or replace the nodata value for any resulting band by providing a <code class="varname">nodataval[]</code> array of one or two nodata values depending if you request 'BAND1', 'BAND2' or 'BOTH' bands. The first value in the array replace the nodata value in the first band and the second value replace the nodata value in the second band. If one input band do not have a nodata value defined and none are provided as an array, one is chosen using the ST_MinPossibleValue function. All variant accepting an array of nodata value can also accept a single value which will be assigned to each requested band.
+                    </p>
+        <p>
+                        In all variants, if no band number is specified band 1 is assumed.  If you need an intersection between a raster and geometry that returns a raster, refer to <a class="xref" href="RT_ST_Clip.html" title="ST_Clip">ST_Clip</a>.
+                    </p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>
+                            To get more control on the resulting extent or on what to return when encountering a nodata value, use the two rasters version of <a class="xref" href="RT_ST_MapAlgebraExpr2.html" title="ST_MapAlgebraExpr">ST_MapAlgebraExpr</a>.
+                        </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>
+                            To compute the intersection of a raster band with a geometry in raster space, use <a class="xref" href="RT_ST_Clip.html" title="ST_Clip">ST_Clip</a>. ST_Clip works on multiple bands rasters and does not return a band corresponding to the rasterized geometry.
+                        </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>
+                            ST_Intersection should be used in conjunction with <a class="xref" href="RT_ST_Intersects.html" title="ST_Intersects">ST_Intersects</a> and an index on the raster column and/or the geometry column.
+                        </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p>
+                        Enhanced: 2.0.0 - Intersection in the raster space was introduced. In earlier pre-2.0.0 versions, only intersection performed in vector space were supported.
+                    </p>
+      </div>
+      <div class="refsection" id="idm33609">
+        <h2>Examples: Geometry, Raster -- resulting in geometry vals</h2>
+        <pre class="programlisting">
+SELECT
+    foo.rid,
+    foo.gid,
+    ST_AsText((foo.geomval).geom) As geomwkt,
+    (foo.geomval).val
+FROM (
+    SELECT
+        A.rid,
+        g.gid,
+        ST_Intersection(A.rast, g.geom) As geomval
+    FROM dummy_rast AS A
+    CROSS JOIN (
+        VALUES
+            (1, ST_Point(3427928, 5793243.85) ),
+            (2, ST_GeomFromText('LINESTRING(3427927.85 5793243.75,3427927.8 5793243.75,3427927.8 5793243.8)')),
+            (3, ST_GeomFromText('LINESTRING(1 2, 3 4)'))
+    ) As g(gid,geom)
+    WHERE A.rid = 2
+) As foo;
+
+ rid | gid |      geomwkt                                               | val
+-----+-----+---------------------------------------------------------------------------------------------
+   2 |   1 | POINT(3427928 5793243.85)                                  | 249
+   2 |   1 | POINT(3427928 5793243.85)                                  | 253
+   2 |   2 | POINT(3427927.85 5793243.75)                               | 254
+   2 |   2 | POINT(3427927.8 5793243.8)                                 | 251
+   2 |   2 | POINT(3427927.8 5793243.8)                                 | 253
+   2 |   2 | LINESTRING(3427927.8 5793243.75,3427927.8 5793243.8)   | 252
+   2 |   2 | MULTILINESTRING((3427927.8 5793243.8,3427927.8 5793243.75),...) | 250
+   2 |   3 | GEOMETRYCOLLECTION EMPTY
+                    </pre>
+      </div>
+      <div class="refsection" id="idm33612">
+        <h2>See Also</h2>
+        <p>
+                        <a class="xref" href="geomval.html" title="geomval">geomval</a>,
+                        <a class="xref" href="RT_ST_Intersects.html" title="ST_Intersects">ST_Intersects</a>,
+                        <a class="xref" href="RT_ST_MapAlgebraExpr2.html" title="ST_MapAlgebraExpr">ST_MapAlgebraExpr</a>,
+                        <a class="xref" href="RT_ST_Clip.html" title="ST_Clip">ST_Clip</a>,
+                        <a class="xref" href="ST_AsText.html" title="ST_AsText">ST_AsText</a>
+                    </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="RT_ST_Grayscale.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="RT_reference.html#Raster_Processing_MapAlgebra">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="RT_ST_MapAlgebra.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_Grayscale </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_MapAlgebra (callback function version)</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

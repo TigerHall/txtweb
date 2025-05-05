@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_DumpValues</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="RT_ST_SetValues.html" title="ST_SetValues"/>
+    <link rel="next" href="RT_ST_PixelOfValue.html" title="ST_PixelOfValue"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_DumpValues</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="RT_ST_SetValues.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">11.6. Raster Pixel Accessors and Setters</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="RT_ST_PixelOfValue.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="RT_ST_DumpValues">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_DumpValues — 
+                    Get the values of the specified band as a 2-dimension array.
+                </p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">setof record <strong class="fsfunc">ST_DumpValues</strong>(</code>
+                            raster  <var class="pdparam">rast</var>
+                        , 
+                            integer[]  <var class="pdparam">nband=NULL</var>
+                        , 
+                            boolean  <var class="pdparam">exclude_nodata_value=true</var>
+                        <code>)</code>;</p>
+          <p><code class="funcdef">double precision[][] <strong class="fsfunc">ST_DumpValues</strong>(</code>
+                            raster  <var class="pdparam">rast</var>
+                        , 
+                            integer  <var class="pdparam">nband</var>
+                        , 
+                            boolean  <var class="pdparam">exclude_nodata_value=true</var>
+                        <code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm30718">
+        <h2>Description</h2>
+        <p>
+                    Get the values of the specified band as a 2-dimension array (first index is row, second is column). If <code class="varname">nband</code> is NULL or not provided, all raster bands are processed.
+                </p>
+        <p class="availability">Availability: 2.1.0</p>
+      </div>
+      <div class="refsection" id="idm30723">
+        <h2>Examples</h2>
+        <pre class="programlisting">
+WITH foo AS (
+    SELECT ST_AddBand(ST_AddBand(ST_AddBand(ST_MakeEmptyRaster(3, 3, 0, 0, 1, -1, 0, 0, 0), 1, '8BUI'::text, 1, 0), 2, '32BF'::text, 3, -9999), 3, '16BSI', 0, 0) AS rast
+)
+SELECT
+    (ST_DumpValues(rast)).*
+FROM foo;
+
+ nband |                       valarray
+-------+------------------------------------------------------
+     1 | {{1,1,1},{1,1,1},{1,1,1}}
+     2 | {{3,3,3},{3,3,3},{3,3,3}}
+     3 | {{NULL,NULL,NULL},{NULL,NULL,NULL},{NULL,NULL,NULL}}
+(3 rows)
+                </pre>
+        <pre class="programlisting">
+WITH foo AS (
+    SELECT ST_AddBand(ST_AddBand(ST_AddBand(ST_MakeEmptyRaster(3, 3, 0, 0, 1, -1, 0, 0, 0), 1, '8BUI'::text, 1, 0), 2, '32BF'::text, 3, -9999), 3, '16BSI', 0, 0) AS rast
+)
+SELECT
+    (ST_DumpValues(rast, ARRAY[3, 1])).*
+FROM foo;
+
+ nband |                       valarray
+-------+------------------------------------------------------
+     3 | {{NULL,NULL,NULL},{NULL,NULL,NULL},{NULL,NULL,NULL}}
+     1 | {{1,1,1},{1,1,1},{1,1,1}}
+(2 rows)
+                </pre>
+        <pre class="programlisting">
+WITH foo AS (
+    SELECT ST_SetValue(ST_AddBand(ST_MakeEmptyRaster(3, 3, 0, 0, 1, -1, 0, 0, 0), 1, '8BUI', 1, 0), 1, 2, 5) AS rast
+)
+SELECT
+    (ST_DumpValues(rast, 1))[2][1]
+FROM foo;
+
+ st_dumpvalues
+---------------
+             5
+(1 row)
+                </pre>
+      </div>
+      <div class="refsection" id="idm30728">
+        <h2>See Also</h2>
+        <p>
+                    <a class="xref" href="RT_ST_Value.html" title="ST_Value">ST_Value</a>,
+                    <a class="xref" href="RT_ST_SetValue.html" title="ST_SetValue">ST_SetValue</a>,
+                    <a class="xref" href="RT_ST_SetValues.html" title="ST_SetValues">ST_SetValues</a>
+                </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="RT_ST_SetValues.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="RT_reference.html#Raster_Pixel_Accessors">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="RT_ST_PixelOfValue.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_SetValues </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_PixelOfValue</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

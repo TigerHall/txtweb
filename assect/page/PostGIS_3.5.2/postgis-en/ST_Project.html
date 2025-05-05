@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_Project</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_Normalize.html" title="ST_Normalize"/>
+    <link rel="next" href="ST_QuantizeCoordinates.html" title="ST_QuantizeCoordinates"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_Project</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_Normalize.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.5. Geometry Editors</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_QuantizeCoordinates.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_Project">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_Project — Returns a point projected from a start point by a distance and bearing (azimuth).</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_Project</strong>(</code>geometry 
+                <var class="pdparam">g1</var>, float 
+                <var class="pdparam">distance</var>, float 
+                <var class="pdparam">azimuth</var><code>)</code>;</p>
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_Project</strong>(</code>geometry 
+                <var class="pdparam">g1</var>, geometry 
+                <var class="pdparam">g2</var>, float 
+                <var class="pdparam">distance</var><code>)</code>;</p>
+          <p><code class="funcdef">geography <strong class="fsfunc">ST_Project</strong>(</code>geography 
+                <var class="pdparam">g1</var>, float 
+                <var class="pdparam">distance</var>, float 
+                <var class="pdparam">azimuth</var><code>)</code>;</p>
+          <p><code class="funcdef">geography <strong class="fsfunc">ST_Project</strong>(</code>geography 
+                <var class="pdparam">g1</var>, geography 
+                <var class="pdparam">g2</var>, float 
+                <var class="pdparam">distance</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm7368">
+        <h2>Description</h2>
+        <p>Returns a point projected from a point along a geodesic using a given distance and azimuth (bearing). This is known as the direct geodesic problem.</p>
+        <p>The two-point version uses the path from the first to the second point to implicitly define the azimuth and uses the distance as before.</p>
+        <p>The distance is given in meters.  Negative values are supported.</p>
+        <p>The azimuth (also known as heading or bearing) is given in radians.
+            It is measured clockwise from true north.</p>
+        <div class="itemizedlist">
+          <ul class="itemizedlist" style="list-style-type: disc; ">
+            <li class="listitem">
+              <p>North is azimuth zero (0 degrees)</p>
+            </li>
+            <li class="listitem">
+              <p>East is azimuth π/2 (90 degrees)</p>
+            </li>
+            <li class="listitem">
+              <p>South is azimuth π (180 degrees)</p>
+            </li>
+            <li class="listitem">
+              <p>West is azimuth 3π/2 (270 degrees)</p>
+            </li>
+          </ul>
+        </div>
+        <p>Negative azimuth values and values greater than 2π (360 degrees) are supported.</p>
+        <p class="availability">Availability: 2.0.0</p>
+        <p class="enhanced">Enhanced: 2.4.0 Allow negative distance and non-normalized azimuth.</p>
+        <p class="enhanced">Enhanced: 3.4.0 Allow geometry arguments and two-point form omitting azimuth.</p>
+      </div>
+      <div class="refsection" id="idm7387">
+        <h2>Example: Projected point at 100,000 meters and bearing 45 degrees </h2>
+        <pre class="programlisting">
+SELECT ST_AsText(ST_Project('POINT(0 0)'::geography, 100000, radians(45.0)));
+--------------------------------------------
+ POINT(0.635231029125537 0.639472334729198)
+</pre>
+      </div>
+      <div class="refsection" id="idm7390">
+        <h2>See Also</h2>
+        <p><a class="xref" href="ST_Azimuth.html" title="ST_Azimuth">ST_Azimuth</a>, <a class="xref" href="ST_Distance.html" title="ST_Distance">ST_Distance</a>, <a class="link" href="http://www.postgresql.org/docs/current/interactive/functions-math.html" target="_top">PostgreSQL function radians()</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_Normalize.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Geometry_Editors">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_QuantizeCoordinates.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_Normalize </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> 
+				ST_QuantizeCoordinates
+			</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

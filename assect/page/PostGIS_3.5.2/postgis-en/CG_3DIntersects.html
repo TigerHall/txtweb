@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>CG_3DIntersects</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="CG_Intersects.html" title="CG_Intersects"/>
+    <link rel="next" href="CG_Difference.html" title="CG_Difference"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">CG_3DIntersects</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="CG_Intersects.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">8.3. SFCGAL Processing and Relationship Functions</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="CG_Difference.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="CG_3DIntersects">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>CG_3DIntersects — Tests if two 3D geometries intersect</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">boolean <strong class="fsfunc">CG_3DIntersects</strong>(</code>
+                    geometry
+                    <var class="pdparam">geomA</var>
+                , 
+                    geometry
+                    <var class="pdparam">geomB</var>
+                <code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm21714">
+        <h2>Description</h2>
+        <p>Tests if two 3D geometries intersect. 3D geometries intersect if they have any point in common in the three-dimensional space.</p>
+        <p>Performed by the SFCGAL module</p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>NOTE: this is the "allowable" version that returns a boolean, not an integer.</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p class="availability">Availability: 3.5.0</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method needs SFCGAL backend.
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports Triangles and Triangulated Irregular Network Surfaces (TIN).
+        </p>
+      </div>
+      <div class="refsection" id="idm21729">
+        <h2>Geometry Examples</h2>
+        <pre class="programlisting">SELECT CG_3DIntersects('POINT(1.2 0.1 0)','POLYHEDRALSURFACE(((0 0 0,0.5 0.5 0,1 0 0,1 1 0,0 1 0,0 0 0)),((1 0 0,2 0 0,2 1 0,1 1 0,1 0 0),(1.2 0.2 0,1.2 0.8 0,1.8 0.8 0,1.8 0.2 0,1.2 0.2 0)))');
+        cg_3dintersects
+        ---------------
+        t
+        (1 row)
+    </pre>
+      </div>
+      <div class="refsection" id="idm21732">
+        <h2>See Also</h2>
+        <p><a class="xref" href="CG_Intersects.html" title="CG_Intersects">CG_Intersects</a>, <a class="xref" href="ST_3DIntersects.html" title="ST_3DIntersects">ST_3DIntersects</a>, <a class="xref" href="ST_Intersects.html" title="ST_Intersects">ST_Intersects</a>, <a class="xref" href="ST_Disjoint.html" title="ST_Disjoint">ST_Disjoint</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="CG_Intersects.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference_sfcgal.html#sfcgal_processing">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="CG_Difference.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">CG_Intersects </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> CG_Difference</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

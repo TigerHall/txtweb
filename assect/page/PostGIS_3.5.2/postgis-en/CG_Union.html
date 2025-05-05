@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>CG_Union</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="CG_3DIntersection.html" title="CG_3DIntersection"/>
+    <link rel="next" href="ST_3DUnion.html" title="ST_3DUnion"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">CG_Union</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="CG_3DIntersection.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">8.3. SFCGAL Processing and Relationship Functions</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_3DUnion.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="CG_Union">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>CG_Union — Computes the union of two geometries</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">geometry <strong class="fsfunc">CG_Union</strong>(</code>
+                            geometry
+                            <var class="pdparam">geomA</var>
+                        , 
+                            geometry
+                            <var class="pdparam">geomB</var>
+                        <code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm22184">
+        <h2>Description</h2>
+        <p>Computes the union of two geometries.</p>
+        <p>Performed by the SFCGAL module</p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>NOTE: this function returns a geometry representing the union.</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p class="availability">Availability: 3.5.0</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method needs SFCGAL backend.
+        </p>
+      </div>
+      <div class="refsection" id="idm22195">
+        <h2>Geometry Examples</h2>
+        <pre class="programlisting">SELECT CG_Union('POINT(.5 0)', 'LINESTRING(-1 0,1 0)');
+                cg_union
+                -----------
+                LINESTRING(-1 0,0.5 0,1 0)
+                (1 row)</pre>
+      </div>
+      <div class="refsection" id="idm22198">
+        <h2>See Also</h2>
+        <p><a class="xref" href="ST_3DUnion.html" title="ST_3DUnion">ST_3DUnion</a>, <a class="xref" href="ST_Union.html" title="ST_Union">ST_Union</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="CG_3DIntersection.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference_sfcgal.html#sfcgal_processing">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_3DUnion.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">CG_3DIntersection </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_3DUnion</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_CoveredBy</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_ContainsProperly.html" title="ST_ContainsProperly"/>
+    <link rel="next" href="ST_Covers.html" title="ST_Covers"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_CoveredBy</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_ContainsProperly.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.11.1. Topological Relationships</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_Covers.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_CoveredBy">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_CoveredBy — Tests if every point of A lies in B</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">boolean <strong class="fsfunc">ST_CoveredBy</strong>(</code>geometry 
+      <var class="pdparam">geomA</var>, geometry 
+      <var class="pdparam">geomB</var><code>)</code>;</p>
+          <p><code class="funcdef">boolean <strong class="fsfunc">ST_CoveredBy</strong>(</code>geography 
+      <var class="pdparam">geogA</var>, geography 
+      <var class="pdparam">geogB</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm13047">
+        <h2>Description</h2>
+        <p>Returns <code class="varname">true</code> if every point in Geometry/Geography A lies inside
+        (i.e. intersects the interior or boundary of)
+        Geometry/Geography B.
+        Equivalently, tests that no point of A lies outside (in the exterior of) B.
+        </p>
+        <p>In mathematical terms:
+    <span class="emphasis"><em>ST_CoveredBy(A, B) ⇔ A ⋂ B = A </em></span></p>
+        <p>ST_CoveredBy is the converse of <a class="xref" href="ST_Covers.html" title="ST_Covers">ST_Covers</a>.
+    So, <code class="code">ST_CoveredBy(A,B) = ST_Covers(B,A)</code>.</p>
+        <p>Generally this function should be used instead of <a class="xref" href="ST_Within.html" title="ST_Within">ST_Within</a>,
+    since it has a simpler definition
+    which does not have the quirk that "boundaries are not within their geometry".</p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>
+            This function automatically includes a bounding box comparison
+            that makes use of any spatial indexes that are available on the geometries.
+        
+         To avoid index use, use the function <code class="function">_ST_CoveredBy</code>.</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="important">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Important]" src="../images/important.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p class="enhanced">Enhanced: 3.0.0 enabled support for <code class="varname">GEOMETRYCOLLECTION</code></p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="important">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Important]" src="../images/important.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>Do not use this function with invalid geometries. You will get unexpected results.</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p>Performed by the GEOS module</p>
+        <p class="availability">Availability: 1.2.2</p>
+        <p>NOTE: this is the "allowable" version that returns a
+      boolean, not an integer.</p>
+        <p>Not an OGC standard, but Oracle has it too.</p>
+      </div>
+      <div class="refsection" id="idm13070">
+        <h2>Examples</h2>
+        <pre class="programlisting">
+  --a circle coveredby a circle
+SELECT ST_CoveredBy(smallc,smallc) As smallinsmall,
+  ST_CoveredBy(smallc, bigc) As smallcoveredbybig,
+  ST_CoveredBy(ST_ExteriorRing(bigc), bigc) As exteriorcoveredbybig,
+  ST_Within(ST_ExteriorRing(bigc),bigc) As exeriorwithinbig
+FROM (SELECT ST_Buffer(ST_GeomFromText('POINT(1 2)'), 10) As smallc,
+  ST_Buffer(ST_GeomFromText('POINT(1 2)'), 20) As bigc) As foo;
+  --Result
+ smallinsmall | smallcoveredbybig | exteriorcoveredbybig | exeriorwithinbig
+--------------+-------------------+----------------------+------------------
+ t            | t                 | t                    | f
+(1 row) </pre>
+      </div>
+      <div class="refsection" id="idm13073">
+        <h2>See Also</h2>
+        <p><a class="xref" href="ST_Contains.html" title="ST_Contains">ST_Contains</a>, <a class="xref" href="ST_Covers.html" title="ST_Covers">ST_Covers</a>, <a class="xref" href="ST_ExteriorRing.html" title="ST_ExteriorRing">ST_ExteriorRing</a>, <a class="xref" href="ST_Within.html" title="ST_Within">ST_Within</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_ContainsProperly.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#idm12747">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_Covers.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_ContainsProperly </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_Covers</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

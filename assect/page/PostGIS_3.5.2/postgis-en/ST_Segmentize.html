@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_Segmentize</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_Reverse.html" title="ST_Reverse"/>
+    <link rel="next" href="ST_SetPoint.html" title="ST_SetPoint"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_Segmentize</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_Reverse.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.5. Geometry Editors</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_SetPoint.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_Segmentize">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_Segmentize — Returns a modified geometry/geography having no segment longer than a
+			given distance.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_Segmentize</strong>(</code>geometry  <var class="pdparam">geom</var>, float  <var class="pdparam">max_segment_length</var><code>)</code>;</p>
+          <p><code class="funcdef">geography <strong class="fsfunc">ST_Segmentize</strong>(</code>geography  <var class="pdparam">geog</var>, float  <var class="pdparam">max_segment_length</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm7719">
+        <h2>Description</h2>
+        <p>Returns a modified geometry/geography having no segment longer than
+			<code class="varname">max_segment_length</code>.
+            Length is computed in 2D.
+            Segments are always split into equal-length subsegments.
+            </p>
+        <div class="itemizedlist">
+          <ul class="itemizedlist" style="list-style-type: disc; ">
+            <li class="listitem">
+              <p>For geometry, the maximum length is in the units of the spatial reference system.
+                </p>
+            </li>
+            <li class="listitem">
+              <p>For geography, the maximum length is in meters.
+                Distances are computed on the sphere.
+                Added vertices are created along the spherical great-circle arcs
+                defined by segment endpoints.
+                </p>
+            </li>
+          </ul>
+        </div>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>This only shortens long segments.
+            It does not lengthen segments shorter than the maximum length.
+            </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="warning">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Warning]" src="../images/warning.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>For inputs containing long segments,
+            specifying a relatively short <code class="varname">max_segment_length</code>
+            can cause a very large number of vertices to be added.
+            This can happen unintentionally if the argument is specified accidentally as a number of segments,
+            rather than a maximum length.
+            </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p class="availability">Availability: 1.2.2</p>
+        <p class="enhanced">Enhanced: 3.0.0 Segmentize geometry now produces equal-length subsegments</p>
+        <p class="enhanced">Enhanced: 2.3.0 Segmentize geography now produces equal-length subsegments</p>
+        <p class="enhanced">Enhanced: 2.1.0 support for geography was introduced.</p>
+        <p class="changed">Changed: 2.1.0 As a result of the introduction of geography support,
+            the usage <code class="code">ST_Segmentize('LINESTRING(1 2, 3 4)', 0.5)</code> causes an ambiguous function error.
+            The input needs to be properly typed as a geometry or geography.
+            Use ST_GeomFromText, ST_GeogFromText or a cast to the required type
+			(e.g. <code class="code">ST_Segmentize('LINESTRING(1 2, 3 4)'::geometry, 0.5) )</code></p>
+      </div>
+      <div class="refsection" id="idm7740">
+        <h2>Examples</h2>
+        <p>Segmentizing a line.  Long segments are split evenly, and short segments are not split.</p>
+        <pre class="programlisting">SELECT ST_AsText(ST_Segmentize(
+    'MULTILINESTRING((0 0, 0 1, 0 9),(1 10, 1 18))'::geometry,
+	5 ) );
+---------------------------------------------------
+MULTILINESTRING((0 0,0 1,0 5,0 9),(1 10,1 14,1 18))
+</pre>
+        <p>Segmentizing a polygon:</p>
+        <pre class="programlisting">
+SELECT ST_AsText(
+        ST_Segmentize(('POLYGON((0 0, 0 8, 30 0, 0 0))'::geometry), 10));
+-------------------------------------------------------
+POLYGON((0 0,0 8,7.5 6,15 4,22.5 2,30 0,20 0,10 0,0 0))
+</pre>
+        <p>Segmentizing a geographic line, using a maximum segment length of 2000 kilometers.
+            Vertices are added along the great-circle arc connecting the endpoints.
+            </p>
+        <pre class="programlisting">
+SELECT ST_AsText(
+        ST_Segmentize(('LINESTRING (0 0, 60 60)'::geography), 2000000));
+-------------------------------------------------------------
+LINESTRING(0 0,4.252632294621186 8.43596525986862,8.69579947419404 16.824093489701564,13.550465473227048 25.107950473646188,19.1066053508691 33.21091076089908,25.779290201459894 41.01711439406505,34.188839517966954 48.337222885886,45.238153936612264 54.84733442373889,60 60)
+</pre>
+        <div class="informalfigure">
+          <div class="mediaobject">
+            <img src="../images/st_segmentize01.png"/>
+            <div class="caption">
+              <p>A geographic line segmentized along a great circle arc</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="refsection" id="idm7754">
+        <h2>See Also</h2>
+        <p>
+          <a class="xref" href="ST_LineSubstring.html" title="ST_LineSubstring">ST_LineSubstring</a>
+        </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_Reverse.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Geometry_Editors">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_SetPoint.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_Reverse </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_SetPoint</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

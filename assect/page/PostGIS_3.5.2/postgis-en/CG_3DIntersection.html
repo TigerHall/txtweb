@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>CG_3DIntersection</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_3DIntersection.html" title="ST_3DIntersection"/>
+    <link rel="next" href="CG_Union.html" title="CG_Union"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">CG_3DIntersection</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_3DIntersection.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">8.3. SFCGAL Processing and Relationship Functions</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="CG_Union.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="CG_3DIntersection">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>CG_3DIntersection — Perform 3D intersection</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">geometry <strong class="fsfunc">CG_3DIntersection</strong>(</code>geometry <var class="pdparam">geom1</var>, geometry <var class="pdparam">geom2</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm22110">
+        <h2>Description</h2>
+        <p>Return a geometry that is the shared portion between geom1 and geom2.</p>
+        <p class="availability">Availability: 3.5.0</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method needs SFCGAL backend.
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method implements the SQL/MM specification.
+         SQL-MM IEC 13249-3: 5.1</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports 3d and will not drop the z-index.
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports Polyhedral surfaces.
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports Triangles and Triangulated Irregular Network Surfaces (TIN).
+        </p>
+      </div>
+      <div class="refsection" id="idm22134">
+        <h2>Examples</h2>
+        <p>3D images were generated using PostGIS <a class="xref" href="ST_AsX3D.html" title="ST_AsX3D">ST_AsX3D</a> and rendering in HTML using <a class="link" href="http://www.x3dom.org" target="_top">X3Dom HTML Javascript rendering library</a>.</p>
+        <div class="informaltable">
+          <table style="border-collapse: collapse; border-top: 1px solid ; border-bottom: 1px solid ; border-left: 1px solid ; border-right: 1px solid ; ">
+            <colgroup>
+              <col/>
+              <col/>
+            </colgroup>
+            <tbody>
+              <tr>
+                <td style="border-right: 1px solid ; "><p>
+                                    </p><pre class="programlisting">SELECT CG_Extrude(ST_Buffer(ST_GeomFromText('POINT(100 90)'),
+                                    50, 'quad_segs=2'),0,0,30) AS geom1,
+                                    CG_Extrude(ST_Buffer(ST_GeomFromText('POINT(80 80)'),
+                                    50, 'quad_segs=1'),0,0,30) AS geom2;
+                                </pre><p>
+                                </p><div class="informalfigure"><div class="mediaobject"><img src="../images/st_3ddifference01.png"/><div class="caption"><p>Original 3D geometries overlaid. geom2 is shown semi-transparent</p></div></div></div>
+                        </td>
+                <td><p>
+                                </p><pre class="programlisting">SELECT CG_3DIntersection(geom1,geom2)
+                                FROM ( SELECT CG_Extrude(ST_Buffer(ST_GeomFromText('POINT(100 90)'),
+                                50, 'quad_segs=2'),0,0,30) AS geom1,
+                                CG_Extrude(ST_Buffer(ST_GeomFromText('POINT(80 80)'),
+                                50, 'quad_segs=1'),0,0,30) AS geom2 ) As t;</pre><p>
+                            </p><div class="informalfigure"><div class="mediaobject"><img src="../images/st_3dintersection01.png"/><div class="caption"><p>Intersection of geom1 and geom2</p></div></div></div>
+                    </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>3D linestrings and polygons</p>
+        <pre class="programlisting">	SELECT ST_AsText(CG_3DIntersection(linestring, polygon)) As wkt
+    FROM  ST_GeomFromText('LINESTRING Z (2 2 6,1.5 1.5 7,1 1 8,0.5 0.5 8,0 0 10)') AS linestring
+    CROSS JOIN ST_GeomFromText('POLYGON((0 0 8, 0 1 8, 1 1 8, 1 0 8, 0 0 8))') AS polygon;
+
+    wkt
+    --------------------------------
+    LINESTRING Z (1 1 8,0.5 0.5 8)
+</pre>
+        <p>Cube (closed Polyhedral Surface) and Polygon Z</p>
+        <pre class="programlisting">SELECT ST_AsText(CG_3DIntersection(
+ST_GeomFromText('POLYHEDRALSURFACE Z( ((0 0 0, 0 0 1, 0 1 1, 0 1 0, 0 0 0)),
+((0 0 0, 0 1 0, 1 1 0, 1 0 0, 0 0 0)), ((0 0 0, 1 0 0, 1 0 1, 0 0 1, 0 0 0)),
+((1 1 0, 1 1 1, 1 0 1, 1 0 0, 1 1 0)),
+((0 1 0, 0 1 1, 1 1 1, 1 1 0, 0 1 0)), ((0 0 1, 1 0 1, 1 1 1, 0 1 1, 0 0 1)) )'),
+'POLYGON Z ((0 0 0, 0 0 0.5, 0 0.5 0.5, 0 0.5 0, 0 0 0))'::geometry))</pre>
+        <pre class="screen">TIN Z (((0 0 0,0 0 0.5,0 0.5 0.5,0 0 0)),((0 0.5 0,0 0 0,0 0.5 0.5,0 0.5 0)))</pre>
+        <p>Intersection of 2 solids that result in volumetric intersection is also a solid (ST_Dimension returns 3)</p>
+        <pre class="programlisting">SELECT ST_AsText(CG_3DIntersection( CG_Extrude(ST_Buffer('POINT(10 20)'::geometry,10,1),0,0,30),
+            CG_Extrude(ST_Buffer('POINT(10 20)'::geometry,10,1),2,0,10) ));</pre>
+        <pre class="screen">POLYHEDRALSURFACE Z (((13.3333333333333 13.3333333333333 10,20 20 0,20 20 10,13.3333333333333 13.3333333333333 10)),
+        ((20 20 10,16.6666666666667 23.3333333333333 10,13.3333333333333 13.3333333333333 10,20 20 10)),
+        ((20 20 0,16.6666666666667 23.3333333333333 10,20 20 10,20 20 0)),
+        ((13.3333333333333 13.3333333333333 10,10 10 0,20 20 0,13.3333333333333 13.3333333333333 10)),
+        ((16.6666666666667 23.3333333333333 10,12 28 10,13.3333333333333 13.3333333333333 10,16.6666666666667 23.3333333333333 10)),
+        ((20 20 0,9.99999999999995 30 0,16.6666666666667 23.3333333333333 10,20 20 0)),
+        ((10 10 0,9.99999999999995 30 0,20 20 0,10 10 0)),((13.3333333333333 13.3333333333333 10,12 12 10,10 10 0,13.3333333333333 13.3333333333333 10)),
+        ((12 28 10,12 12 10,13.3333333333333 13.3333333333333 10,12 28 10)),
+        ((16.6666666666667 23.3333333333333 10,9.99999999999995 30 0,12 28 10,16.6666666666667 23.3333333333333 10)),
+        ((10 10 0,0 20 0,9.99999999999995 30 0,10 10 0)),
+        ((12 12 10,11 11 10,10 10 0,12 12 10)),((12 28 10,11 11 10,12 12 10,12 28 10)),
+        ((9.99999999999995 30 0,11 29 10,12 28 10,9.99999999999995 30 0)),((0 20 0,2 20 10,9.99999999999995 30 0,0 20 0)),
+        ((10 10 0,2 20 10,0 20 0,10 10 0)),((11 11 10,2 20 10,10 10 0,11 11 10)),((12 28 10,11 29 10,11 11 10,12 28 10)),
+        ((9.99999999999995 30 0,2 20 10,11 29 10,9.99999999999995 30 0)),((11 11 10,11 29 10,2 20 10,11 11 10)))</pre>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_3DIntersection.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference_sfcgal.html#sfcgal_processing">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="CG_Union.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_3DIntersection </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> CG_Union</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

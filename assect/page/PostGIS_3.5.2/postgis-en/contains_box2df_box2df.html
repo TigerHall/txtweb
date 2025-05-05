@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>~(box2df,box2df)</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="contains_box2df_geometry.html" title="~(box2df,geometry)"/>
+    <link rel="next" href="ST_Geometry_Same.html" title="~="/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">~(box2df,box2df)</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="contains_box2df_geometry.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.10.1. Bounding Box Operators</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_Geometry_Same.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="contains_box2df_box2df">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>~(box2df,box2df) — Returns <code class="varname">TRUE</code> if a 2D float precision bounding box (BOX2DF) contains another 2D float precision bounding box (BOX2DF).</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">boolean <strong class="fsfunc">~</strong>(</code>
+				  box2df 
+
+				  <var class="pdparam">A</var>
+				, 
+				  box2df 
+
+				  <var class="pdparam">B</var>
+				<code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm12520">
+        <h2>Description</h2>
+        <p>The <code class="varname">~</code> operator returns <code class="varname">TRUE</code> if the 2D bounding box A contains the 2D bounding box B, using float precision. This means that if A is a (double precision) box2d, it will be internally converted to a float precision 2D bounding box (BOX2DF)</p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>This operand is intended to be used internally by BRIN indexes, more
+				than by users.</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p class="availability">Availability: 2.3.0 support for Block Range INdexes (BRIN) was introduced. Requires PostgreSQL 9.5+.</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method supports Circular Strings and Curves.
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports Polyhedral surfaces.
+        </p>
+      </div>
+      <div class="refsection" id="idm12536">
+        <h2>Examples</h2>
+        <pre class="programlisting">SELECT ST_MakeBox2D(ST_Point(0,0), ST_Point(5,5)) ~ ST_MakeBox2D(ST_Point(2,2), ST_Point(3,3)) AS contains;
+
+ contains
+----------
+ t
+(1 row)</pre>
+      </div>
+      <div class="refsection" id="idm12539">
+        <h2>See Also</h2>
+        <p>
+				<a class="xref" href="overlaps_geometry_box2df.html" title="&amp;&amp;(geometry,box2df)">&amp;&amp;(geometry,box2df)</a>,
+				<a class="xref" href="overlaps_box2df_geometry.html" title="&amp;&amp;(box2df,geometry)">&amp;&amp;(box2df,geometry)</a>,
+				<a class="xref" href="overlaps_box2df_box2df.html" title="&amp;&amp;(box2df,box2df)">&amp;&amp;(box2df,box2df)</a>,
+				<a class="xref" href="contains_geometry_box2df.html" title="~(geometry,box2df)">~(geometry,box2df)</a>,
+				<a class="xref" href="contains_box2df_geometry.html" title="~(box2df,geometry)">~(box2df,geometry)</a>,
+				<a class="xref" href="is_contained_geometry_box2df.html" title="@(geometry,box2df)">@(geometry,box2df)</a>,
+				<a class="xref" href="is_contained_box2df_geometry.html" title="@(box2df,geometry)">@(box2df,geometry)</a>,
+				<a class="xref" href="is_contained_box2df_box2df.html" title="@(box2df,box2df)">@(box2df,box2df)</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="contains_box2df_geometry.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#operators-bbox">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_Geometry_Same.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">~(box2df,geometry) </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ~=</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_AsMVT</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_AsMVTGeom.html" title="ST_AsMVTGeom"/>
+    <link rel="next" href="ST_AsSVG.html" title="ST_AsSVG"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_AsMVT</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_AsMVTGeom.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.9.3. Other Formats</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_AsSVG.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_AsMVT">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_AsMVT — Aggregate function returning a MVT representation of a set of rows.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">bytea <strong class="fsfunc">ST_AsMVT</strong>(</code>anyelement set  <var class="pdparam">row</var><code>)</code>;</p>
+          <p><code class="funcdef">bytea <strong class="fsfunc">ST_AsMVT</strong>(</code>anyelement  <var class="pdparam">row</var>, text  <var class="pdparam">name</var><code>)</code>;</p>
+          <p><code class="funcdef">bytea <strong class="fsfunc">ST_AsMVT</strong>(</code>anyelement  <var class="pdparam">row</var>, text  <var class="pdparam">name</var>, integer  <var class="pdparam">extent</var><code>)</code>;</p>
+          <p><code class="funcdef">bytea <strong class="fsfunc">ST_AsMVT</strong>(</code>anyelement  <var class="pdparam">row</var>, text  <var class="pdparam">name</var>, integer  <var class="pdparam">extent</var>, text  <var class="pdparam">geom_name</var><code>)</code>;</p>
+          <p><code class="funcdef">bytea <strong class="fsfunc">ST_AsMVT</strong>(</code>anyelement  <var class="pdparam">row</var>, text  <var class="pdparam">name</var>, integer  <var class="pdparam">extent</var>, text  <var class="pdparam">geom_name</var>, text  <var class="pdparam">feature_id_name</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm11170">
+        <h2>Description</h2>
+        <p>An aggregate function which returns a binary <a class="link" href="https://www.mapbox.com/vector-tiles/" target="_top">Mapbox Vector Tile</a>
+		representation of a set of rows corresponding to a tile layer.
+		The rows must contain a geometry column which will be encoded as a feature geometry.
+		The geometry must be in tile coordinate space
+		and valid as per the <a class="link" href="https://www.mapbox.com/vector-tiles/specification/" target="_top">MVT specification</a>.
+		<a class="xref" href="ST_AsMVTGeom.html" title="ST_AsMVTGeom">ST_AsMVTGeom</a> can be used to transform geometry into tile coordinate space.
+		Other row columns are encoded as feature attributes.
+		</p>
+        <p>The <a class="link" href="https://www.mapbox.com/vector-tiles/" target="_top">Mapbox Vector Tile</a> format
+		can store features with varying	sets of attributes.
+		To use this capability supply a JSONB column in the row data containing Json objects one level deep.
+		The keys and values in the JSONB values will be encoded as feature attributes.
+		</p>
+        <p>
+		Tiles with multiple layers can be created by concatenating multiple calls to this function
+		using <code class="varname">||</code> or <code class="varname">STRING_AGG</code>.
+		</p>
+        <div class="important">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Important]" src="../images/important.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>Do not call with a <code class="varname">GEOMETRYCOLLECTION</code> as an element in the row.
+			However you can use <a class="xref" href="ST_AsMVTGeom.html" title="ST_AsMVTGeom">ST_AsMVTGeom</a> to prepare a geometry collection for inclusion.</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p><code class="varname">row</code> row data with at least a geometry column.</p>
+        <p><code class="varname">name</code> is the name of the layer. Default is the string "default".</p>
+        <p><code class="varname">extent</code> is the tile extent in screen space as defined by the specification. Default is 4096.</p>
+        <p><code class="varname">geom_name</code> is the name of the geometry column in the row data. Default is the first geometry column. Note that PostgreSQL by default automatically <a class="link" href="https://www.postgresql.org/docs/current/sql-syntax-lexical.html#SQL-SYNTAX-IDENTIFIERS" target="_top">folds unquoted identifiers to lower case</a>, which means that unless the geometry column is quoted, e.g. <code class="varname">"MyMVTGeom"</code>, this parameter must be provided as lowercase.</p>
+        <p><code class="varname">feature_id_name</code> is the name of the Feature ID column in the row data. If NULL or negative the Feature ID is not set. The first column matching name and valid type (smallint, integer, bigint) will be used as Feature ID, and any subsequent column will be added as a property. JSON properties are not supported.</p>
+        <p class="enhanced">Enhanced: 3.0 - added support for Feature ID.</p>
+        <p class="enhanced">Enhanced: 2.5.0 - added support parallel query.</p>
+        <p class="availability">Availability: 2.4.0</p>
+      </div>
+      <div class="refsection" id="idm11200">
+        <h2>Examples</h2>
+        <pre class="programlisting">
+WITH mvtgeom AS
+(
+  SELECT ST_AsMVTGeom(geom, ST_TileEnvelope(12, 513, 412), extent =&gt; 4096, buffer =&gt; 64) AS geom, name, description
+  FROM points_of_interest
+  WHERE geom &amp;&amp; ST_TileEnvelope(12, 513, 412, margin =&gt; (64.0 / 4096))
+)
+SELECT ST_AsMVT(mvtgeom.*)
+FROM mvtgeom;
+
+
+        </pre>
+      </div>
+      <div class="refsection" id="idm11203">
+        <h2>See Also</h2>
+        <p>
+					<a class="xref" href="ST_AsMVTGeom.html" title="ST_AsMVTGeom">ST_AsMVTGeom</a>, <a class="xref" href="ST_TileEnvelope.html" title="ST_TileEnvelope">ST_TileEnvelope</a>
+				</p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_AsMVTGeom.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#idm10493">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_AsSVG.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_AsMVTGeom </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_AsSVG</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

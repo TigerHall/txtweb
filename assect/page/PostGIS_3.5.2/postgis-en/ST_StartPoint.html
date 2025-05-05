@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_StartPoint</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_Points.html" title="ST_Points"/>
+    <link rel="next" href="ST_Summary.html" title="ST_Summary"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_StartPoint</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_Points.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.4. Geometry Accessors</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_Summary.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_StartPoint">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_StartPoint — Returns the first point of a LineString.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_StartPoint</strong>(</code>geometry  <var class="pdparam">geomA</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm6146">
+        <h2>Description</h2>
+        <p>Returns the first point of a <code class="varname">LINESTRING</code>
+      or <code class="varname">CIRCULARLINESTRING</code> geometry
+	  as a <code class="varname">POINT</code>.
+      Returns <code class="varname">NULL</code> if the input
+	  is not a <code class="varname">LINESTRING</code> or <code class="varname">CIRCULARLINESTRING</code>.</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method implements the SQL/MM specification.
+         SQL-MM 3: 7.1.3</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports 3d and will not drop the z-index.
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method supports Circular Strings and Curves.
+        </p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p class="enhanced">Enhanced: 3.2.0 returns a point for all geometries. Prior behavior returns NULLs if input was not a LineString.</p>
+                <p class="changed">Changed: 2.0.0 no longer works with single geometry MultiLineStrings.  In older
+	  versions of PostGIS a single-line MultiLineString would work happily with this
+	  function and return the start point.  In 2.0.0 it just returns NULL like any other MultiLineString.
+	  The old behavior was an undocumented feature, but people who assumed they had their data stored as LINESTRING
+	  may experience these returning NULL in 2.0.0.</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="refsection" id="idm6170">
+        <h2>Examples</h2>
+        <p>Start point of a LineString</p>
+        <pre class="programlisting">SELECT ST_AsText(ST_StartPoint('LINESTRING(0 1, 0 2)'::geometry));
+ st_astext
+------------
+ POINT(0 1)
+</pre>
+        <p>Start point of a non-LineString is NULL</p>
+        <pre class="programlisting">
+SELECT ST_StartPoint('POINT(0 1)'::geometry) IS NULL AS is_null;
+  is_null
+----------
+ t
+</pre>
+        <p>Start point of a 3D LineString</p>
+        <pre class="programlisting">
+SELECT ST_AsEWKT(ST_StartPoint('LINESTRING(0 1 1, 0 2 2)'::geometry));
+ st_asewkt
+------------
+ POINT(0 1 1)
+</pre>
+        <p>Start point of a CircularString</p>
+        <pre class="programlisting">
+SELECT ST_AsText(ST_StartPoint('CIRCULARSTRING(5 2,-3 1.999999, -2 1, -4 2, 6 3)'::geometry));
+ st_astext
+------------
+ POINT(5 2)
+</pre>
+      </div>
+      <div class="refsection" id="idm6180">
+        <h2>See Also</h2>
+        <p><a class="xref" href="ST_EndPoint.html" title="ST_EndPoint">ST_EndPoint</a>, <a class="xref" href="ST_PointN.html" title="ST_PointN">ST_PointN</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_Points.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Geometry_Accessors">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_Summary.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_Points </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_Summary</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

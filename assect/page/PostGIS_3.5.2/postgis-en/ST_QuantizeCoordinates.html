@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_QuantizeCoordinates</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_Project.html" title="ST_Project"/>
+    <link rel="next" href="ST_RemovePoint.html" title="ST_RemovePoint"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">
+				ST_QuantizeCoordinates
+			</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_Project.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.5. Geometry Editors</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_RemovePoint.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_QuantizeCoordinates">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>
+				ST_QuantizeCoordinates
+			 — 
+				Sets least significant bits of coordinates to zero
+			</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">
+						geometry
+						<strong class="fsfunc">ST_QuantizeCoordinates</strong>
+					(</code>
+						geometry
+						<var class="pdparam">g</var>
+					, 
+						int
+						<var class="pdparam">prec_x</var>
+					, 
+						int
+						<var class="pdparam">prec_y</var>
+					, 
+						int
+						<var class="pdparam">prec_z</var>
+					, 
+						int
+						<var class="pdparam">prec_m</var>
+					<code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm7420">
+        <h2>Description</h2>
+        <p>
+				<code class="code">ST_QuantizeCoordinates</code> determines the number of bits
+				(<code class="code">N</code>) required to represent a coordinate value with a
+				specified number of digits after the decimal point, and then sets
+				all but the <code class="code">N</code> most significant bits to zero. The
+				resulting coordinate value will still round to the original value,
+				but will have improved compressiblity. This can result in a
+				significant disk usage reduction provided that the geometry column
+				is using a <a class="link" href="https://www.postgresql.org/docs/current/static/storage-toast.html#STORAGE-TOAST-ONDISK" target="_top">
+				compressible storage type</a>. The function allows
+				specification of a different number of digits after the decimal
+				point in each dimension; unspecified dimensions are assumed to have
+				the precision of the <code class="code">x</code> dimension. Negative digits are
+				interpreted to refer digits to the left of the decimal point, (i.e.,
+				<code class="code">prec_x=-2</code> will preserve coordinate values to the
+				nearest 100.
+			</p>
+        <p>
+				The coordinates produced by <code class="code">ST_QuantizeCoordinates</code> are
+				independent of the geometry that contains those coordinates and the
+				relative position of those coordinates within the geometry. As a result,
+				existing topological relationships between geometries are unaffected
+				by use of this function. The function may produce invalid geometry
+				when it is called with a number of digits lower than the intrinsic
+				precision of the geometry.
+			</p>
+        <p class="availability">Availability: 2.5.0</p>
+      </div>
+      <div class="refsection" id="idm7432">
+        <h2>Technical Background</h2>
+        <p>
+				PostGIS stores all coordinate values as double-precision floating
+				point integers, which can reliably represent 15 significant digits.
+				However, PostGIS may be used to manage data that intrinsically has
+				fewer than 15 significant digits. An example is TIGER data, which is
+				provided as geographic coordinates with six digits of precision
+				after the decimal point (thus requiring only nine significant digits
+				of longitude and eight significant digits of latitude.)
+			</p>
+        <p>
+				When 15 significant digits are available, there are many possible
+				representations of a number with 9 significant digits.  A double
+				precision floating point number uses 52 explicit bits to represent
+				the significand (mantissa) of the coordinate. Only 30 bits are needed
+				to represent a mantissa with 9 significant digits, leaving 22
+				insignificant bits; we can set their value to anything we like and
+				still end up with a number that rounds to our input value.  For
+				example, the value 100.123456 can be represented by the floating
+				point numbers closest to 100.123456000000, 100.123456000001, and
+				100.123456432199. All are equally valid, in that
+				<code class="code">ST_AsText(geom, 6)</code> will return the same result with
+				any of these inputs. As we can set these bits to any value,
+				<code class="code">ST_QuantizeCoordinates</code> sets the 22 insignificant
+				bits to zero. For a long coordinate sequence this creates a
+				pattern of blocks of consecutive zeros that is compressed
+				by PostgreSQL more efficiently.
+			</p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>
+					Only the on-disk size of the geometry is potentially affected by
+					<code class="code">ST_QuantizeCoordinates</code>.  <a class="xref" href="ST_MemSize.html" title="ST_MemSize">ST_MemSize</a>,
+					which reports the in-memory usage of the geometry, will return the
+					the same value regardless of the disk space used by a geometry.
+				</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="refsection" id="idm7442">
+        <h2>Examples</h2>
+        <pre class="programlisting">SELECT ST_AsText(ST_QuantizeCoordinates('POINT (100.123456 0)'::geometry, 4));
+st_astext
+-------------------------
+POINT(100.123455047607 0)
+			</pre>
+        <pre class="programlisting">WITH test AS (SELECT 'POINT (123.456789123456 123.456789123456)'::geometry AS geom)
+SELECT
+  digits,
+  encode(ST_QuantizeCoordinates(geom, digits), 'hex'),
+  ST_AsText(ST_QuantizeCoordinates(geom, digits))
+FROM test, generate_series(15, -15, -1) AS digits;
+
+digits  |                   encode                   |                st_astext
+--------+--------------------------------------------+------------------------------------------
+15      | 01010000005f9a72083cdd5e405f9a72083cdd5e40 | POINT(123.456789123456 123.456789123456)
+14      | 01010000005f9a72083cdd5e405f9a72083cdd5e40 | POINT(123.456789123456 123.456789123456)
+13      | 01010000005f9a72083cdd5e405f9a72083cdd5e40 | POINT(123.456789123456 123.456789123456)
+12      | 01010000005c9a72083cdd5e405c9a72083cdd5e40 | POINT(123.456789123456 123.456789123456)
+11      | 0101000000409a72083cdd5e40409a72083cdd5e40 | POINT(123.456789123456 123.456789123456)
+10      | 0101000000009a72083cdd5e40009a72083cdd5e40 | POINT(123.456789123455 123.456789123455)
+9       | 0101000000009072083cdd5e40009072083cdd5e40 | POINT(123.456789123418 123.456789123418)
+8       | 0101000000008072083cdd5e40008072083cdd5e40 | POINT(123.45678912336 123.45678912336)
+7       | 0101000000000070083cdd5e40000070083cdd5e40 | POINT(123.456789121032 123.456789121032)
+6       | 0101000000000040083cdd5e40000040083cdd5e40 | POINT(123.456789076328 123.456789076328)
+5       | 0101000000000000083cdd5e40000000083cdd5e40 | POINT(123.456789016724 123.456789016724)
+4       | 0101000000000000003cdd5e40000000003cdd5e40 | POINT(123.456787109375 123.456787109375)
+3       | 0101000000000000003cdd5e40000000003cdd5e40 | POINT(123.456787109375 123.456787109375)
+2       | 01010000000000000038dd5e400000000038dd5e40 | POINT(123.45654296875 123.45654296875)
+1       | 01010000000000000000dd5e400000000000dd5e40 | POINT(123.453125 123.453125)
+0       | 01010000000000000000dc5e400000000000dc5e40 | POINT(123.4375 123.4375)
+-1      | 01010000000000000000c05e400000000000c05e40 | POINT(123 123)
+-2      | 01010000000000000000005e400000000000005e40 | POINT(120 120)
+-3      | 010100000000000000000058400000000000005840 | POINT(96 96)
+-4      | 010100000000000000000058400000000000005840 | POINT(96 96)
+-5      | 010100000000000000000058400000000000005840 | POINT(96 96)
+-6      | 010100000000000000000058400000000000005840 | POINT(96 96)
+-7      | 010100000000000000000058400000000000005840 | POINT(96 96)
+-8      | 010100000000000000000058400000000000005840 | POINT(96 96)
+-9      | 010100000000000000000058400000000000005840 | POINT(96 96)
+-10     | 010100000000000000000058400000000000005840 | POINT(96 96)
+-11     | 010100000000000000000058400000000000005840 | POINT(96 96)
+-12     | 010100000000000000000058400000000000005840 | POINT(96 96)
+-13     | 010100000000000000000058400000000000005840 | POINT(96 96)
+-14     | 010100000000000000000058400000000000005840 | POINT(96 96)
+-15     | 010100000000000000000058400000000000005840 | POINT(96 96)
+</pre>
+      </div>
+      <div class="refsection" id="idm7446">
+        <h2>See Also</h2>
+        <p>
+          <a class="xref" href="ST_SnapToGrid.html" title="ST_SnapToGrid">ST_SnapToGrid</a>
+        </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_Project.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Geometry_Editors">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_RemovePoint.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_Project </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_RemovePoint</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

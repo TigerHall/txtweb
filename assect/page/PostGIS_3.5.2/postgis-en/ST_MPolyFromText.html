@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_MPolyFromText</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_MPointFromText.html" title="ST_MPointFromText"/>
+    <link rel="next" href="ST_PointFromText.html" title="ST_PointFromText"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_MPolyFromText</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_MPointFromText.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.8.1. Well-Known Text (WKT)</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_PointFromText.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_MPolyFromText">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_MPolyFromText — Makes a MultiPolygon Geometry from WKT with the given SRID. If SRID is
+			not given, it defaults to 0.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_MPolyFromText</strong>(</code>text  <var class="pdparam">WKT</var>, integer  <var class="pdparam">srid</var><code>)</code>;</p>
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_MPolyFromText</strong>(</code>text  <var class="pdparam">WKT</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm9278">
+        <h2>Description</h2>
+        <p>Makes a MultiPolygon from WKT with the given SRID. If SRID is
+			not given, it defaults to 0.</p>
+        <p>OGC SPEC 3.2.6.2 - option SRID is from the conformance suite</p>
+        <p>Throws an error if the WKT is not a MULTIPOLYGON</p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>If you are absolutely sure all your WKT geometries are multipolygons, don't use this function.
+				It is slower than ST_GeomFromText since it adds an additional validation step.
+			</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method implements the <a class="link" href="http://www.opengeospatial.org/standards/sfs" target="_top">OGC Simple Features
+            Implementation Specification for SQL 1.1.</a>
+         s3.2.6.2</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method implements the SQL/MM specification.
+         SQL-MM 3: 9.6.4</p>
+      </div>
+      <div class="refsection" id="idm9294">
+        <h2>Examples</h2>
+        <pre class="programlisting">SELECT ST_MPolyFromText('MULTIPOLYGON(((0 0 1,20 0 1,20 20 1,0 20 1,0 0 1),(5 5 3,5 7 3,7 7 3,7 5 3,5 5 3)))');
+SELECt ST_MPolyFromText('MULTIPOLYGON(((-70.916 42.1002,-70.9468 42.0946,-70.9765 42.0872,-70.9754 42.0875,-70.9749 42.0879,-70.9752 42.0881,-70.9754 42.0891,-70.9758 42.0894,-70.9759 42.0897,-70.9759 42.0899,-70.9754 42.0902,-70.9756 42.0906,-70.9753 42.0907,-70.9753 42.0917,-70.9757 42.0924,-70.9755 42.0928,-70.9755 42.0942,-70.9751 42.0948,-70.9755 42.0953,-70.9751 42.0958,-70.9751 42.0962,-70.9759 42.0983,-70.9767 42.0987,-70.9768 42.0991,-70.9771 42.0997,-70.9771 42.1003,-70.9768 42.1005,-70.977 42.1011,-70.9766 42.1019,-70.9768 42.1026,-70.9769 42.1033,-70.9775 42.1042,-70.9773 42.1043,-70.9776 42.1043,-70.9778 42.1048,-70.9773 42.1058,-70.9774 42.1061,-70.9779 42.1065,-70.9782 42.1078,-70.9788 42.1085,-70.9798 42.1087,-70.9806 42.109,-70.9807 42.1093,-70.9806 42.1099,-70.9809 42.1109,-70.9808 42.1112,-70.9798 42.1116,-70.9792 42.1127,-70.979 42.1129,-70.9787 42.1134,-70.979 42.1139,-70.9791 42.1141,-70.9987 42.1116,-71.0022 42.1273,
+	-70.9408 42.1513,-70.9315 42.1165,-70.916 42.1002)))',4326);
+</pre>
+      </div>
+      <div class="refsection" id="idm9297">
+        <h2>See Also</h2>
+        <p><a class="xref" href="ST_GeomFromText.html" title="ST_GeomFromText">ST_GeomFromText</a>, <a class="xref" href="ST_SRID.html" title="ST_SRID">ST_SRID</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_MPointFromText.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#idm8784">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_PointFromText.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_MPointFromText </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_PointFromText</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

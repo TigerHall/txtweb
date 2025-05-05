@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>AddNode</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="TopologyPolygonize.html" title="Polygonize"/>
+    <link rel="next" href="AddEdge.html" title="AddEdge"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">AddNode</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="TopologyPolygonize.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">9.8. Topology Processing</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="AddEdge.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="AddNode">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>AddNode — Adds a point node to the node table in the specified topology schema and returns the nodeid of new node. If point already exists as node, the existing nodeid is returned.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">integer <strong class="fsfunc">AddNode</strong>(</code>varchar  <var class="pdparam">toponame</var>, geometry  <var class="pdparam">apoint</var>, boolean  <var class="pdparam">allowEdgeSplitting=false</var>, boolean  <var class="pdparam">computeContainingFace=false</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm25488">
+        <h2>Description</h2>
+        <p>
+Adds a point node to the node table in the specified topology schema.
+The <a class="xref" href="AddEdge.html" title="AddEdge">AddEdge</a> function automatically adds start and end
+points of an edge when called so not necessary to explicitly add nodes
+of an edge.
+                </p>
+        <p>
+If any edge crossing the node is found either an exception is raised or
+the edge is split, depending on the <code class="varname">allowEdgeSplitting</code>
+parameter value.
+	</p>
+        <p>
+If <code class="varname">computeContainingFace</code> is true a newly added node would
+get the correct containing face computed.
+	</p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>If the <code class="varname">apoint</code> geometry already exists as a node, the node is not added but the existing nodeid is returned.</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p class="availability">Availability: 2.0.0</p>
+      </div>
+      <div class="refsection" id="idm25500">
+        <h2>Examples</h2>
+        <pre class="programlisting">SELECT topology.AddNode('ma_topo', ST_GeomFromText('POINT(227641.6 893816.5)', 26986) ) As nodeid;
+-- result --
+nodeid
+--------
+ 4
+
+</pre>
+      </div>
+      <div class="refsection" id="idm25503">
+        <h2>See Also</h2>
+        <p><a class="xref" href="AddEdge.html" title="AddEdge">AddEdge</a>, <a class="xref" href="CreateTopology.html" title="CreateTopology">CreateTopology</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="TopologyPolygonize.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="Topology.html#Topology_Processing">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="AddEdge.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">Polygonize </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> AddEdge</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

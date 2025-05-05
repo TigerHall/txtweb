@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_AsEncodedPolyline</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_AsHEXEWKB.html" title="ST_AsHEXEWKB"/>
+    <link rel="next" href="ST_AsFlatGeobuf.html" title="ST_AsFlatGeobuf"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_AsEncodedPolyline</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_AsHEXEWKB.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.9.3. Other Formats</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_AsFlatGeobuf.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_AsEncodedPolyline">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_AsEncodedPolyline — Returns an Encoded Polyline from a LineString geometry.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">text <strong class="fsfunc">ST_AsEncodedPolyline</strong>(</code>geometry <var class="pdparam">geom</var>, integer  <var class="pdparam">precision=5</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm10510">
+        <h2>Description</h2>
+        <p>Returns the geometry as an Encoded Polyline. This format is used by Google Maps with precision=5 and by Open Source Routing Machine with precision=5 and 6.</p>
+        <p>Optional <code class="varname">precision</code> specifies how many decimal places will be preserved in Encoded Polyline. Value should be the same on encoding and decoding, or coordinates will be incorrect.</p>
+        <p class="availability">Availability: 2.2.0</p>
+      </div>
+      <div class="refsection" id="idm10516">
+        <h2>Examples</h2>
+        <p>Basic </p>
+        <pre class="programlisting">
+	SELECT ST_AsEncodedPolyline(GeomFromEWKT('SRID=4326;LINESTRING(-120.2 38.5,-120.95 40.7,-126.453 43.252)'));
+	--result--
+	|_p~iF~ps|U_ulLnnqC_mqNvxq`@
+	</pre>
+        <p>Use in conjunction with geography linestring and geography segmentize, and put on google maps</p>
+        <pre class="programlisting">-- the SQL for Boston to San Francisco, segments every 100 KM
+	SELECT ST_AsEncodedPolyline(
+		ST_Segmentize(
+			ST_GeogFromText('LINESTRING(-71.0519 42.4935,-122.4483 37.64)'),
+				100000)::geometry) As encodedFlightPath;</pre>
+        <p>javascript will look something like this where $ variable you replace with query result</p>
+        <pre class="programlisting">
+&lt;script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=geometry"&gt;&lt;/script&gt;
+&lt;script type="text/javascript"&gt;
+	 flightPath = new google.maps.Polyline({
+			path:  google.maps.geometry.encoding.decodePath("$encodedFlightPath"),
+			map: map,
+			strokeColor: '#0000CC',
+			strokeOpacity: 1.0,
+			strokeWeight: 4
+		});
+&lt;/script&gt;
+
+</pre>
+      </div>
+      <div class="refsection" id="idm10524">
+        <h2>See Also</h2>
+        <p><a class="xref" href="ST_LineFromEncodedPolyline.html" title="ST_LineFromEncodedPolyline">ST_LineFromEncodedPolyline</a>, <a class="xref" href="ST_Segmentize.html" title="ST_Segmentize">ST_Segmentize</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_AsHEXEWKB.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#idm10493">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_AsFlatGeobuf.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_AsHEXEWKB </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_AsFlatGeobuf</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

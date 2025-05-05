@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_SimplifyPolygonHull</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_SimplifyPreserveTopology.html" title="ST_SimplifyPreserveTopology"/>
+    <link rel="next" href="ST_SimplifyVW.html" title="ST_SimplifyVW"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_SimplifyPolygonHull</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_SimplifyPreserveTopology.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.14. Geometry Processing</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_SimplifyVW.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_SimplifyPolygonHull">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_SimplifyPolygonHull — Computes a simplifed topology-preserving outer or inner hull of a polygonal geometry.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_SimplifyPolygonHull</strong>(</code>geometry  <var class="pdparam">param_geom</var>, float  <var class="pdparam">vertex_fraction</var>, boolean  <var class="pdparam">is_outer = true</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm17802">
+        <h2>Description</h2>
+        <p>Computes a simplified topology-preserving outer or inner hull of a polygonal geometry.
+        An outer hull completely covers the input geometry.
+        An inner hull is completely covered by the input geometry.
+        The result is a polygonal geometry formed by a subset of the input vertices.
+        MultiPolygons and holes are handled and produce a result with the same structure as the input.
+        </p>
+        <p>The reduction in vertex count is controlled by the <code class="varname">vertex_fraction</code> parameter,
+        which is a number in the range 0 to 1.
+        Lower values produce simpler results, with smaller vertex count and less concaveness.
+        For both outer and inner hulls a vertex fraction of 1.0 produces the original geometry.
+        For outer hulls a value of 0.0 produces the convex hull (for a single polygon);
+        for inner hulls it produces a triangle.</p>
+        <p>
+        The simplification process operates by progressively removing concave corners that contain the least amount of area, until the vertex count target is reached.
+        It prevents edges from crossing, so the result is always a valid polygonal geometry.
+        </p>
+        <p>To get better results with geometries that contain relatively long line segments, it might be necessary to "segmentize" the input, as shown below.</p>
+        <p>Performed by the GEOS module.</p>
+        <p class="availability">Availability: 3.3.0.</p>
+        <p class="geos_requirement">Requires GEOS &gt;= 3.11.0.</p>
+      </div>
+      <div class="refsection" id="idm17812">
+        <h2>Examples</h2>
+        <p>
+    </p>
+        <div class="informalfigure">
+          <div class="mediaobject">
+            <img src="../images/st_simplifypolygonhull02.png"/>
+            <div class="caption">
+              <p>Outer hull of a Polygon</p>
+            </div>
+          </div>
+        </div>
+        <p>
+    </p>
+        <pre class="programlisting">SELECT ST_SimplifyPolygonHull(
+  'POLYGON ((131 158, 136 163, 161 165, 173 156, 179 148, 169 140, 186 144, 190 137, 185 131, 174 128, 174 124, 166 119, 158 121, 158 115, 165 107, 161 97, 166 88, 166 79, 158 57, 145 57, 112 53, 111 47, 93 43, 90 48, 88 40, 80 39, 68 32, 51 33, 40 31, 39 34, 49 38, 34 38, 25 34, 28 39, 36 40, 44 46, 24 41, 17 41, 14 46, 19 50, 33 54, 21 55, 13 52, 11 57, 22 60, 34 59, 41 68, 75 72, 62 77, 56 70, 46 72, 31 69, 46 76, 52 82, 47 84, 56 90, 66 90, 64 94, 56 91, 33 97, 36 100, 23 100, 22 107, 29 106, 31 112, 46 116, 36 118, 28 131, 53 132, 59 127, 62 131, 76 130, 80 135, 89 137, 87 143, 73 145, 80 150, 88 150, 85 157, 99 162, 116 158, 115 165, 123 165, 122 170, 134 164, 131 158))',
+    0.3);
+</pre>
+        <p>
+    </p>
+        <p>
+    </p>
+        <div class="informalfigure">
+          <div class="mediaobject">
+            <img src="../images/st_simplifypolygonhull03.png"/>
+            <div class="caption">
+              <p>Inner hull of a Polygon</p>
+            </div>
+          </div>
+        </div>
+        <p>
+    </p>
+        <pre class="programlisting">SELECT ST_SimplifyPolygonHull(
+  'POLYGON ((131 158, 136 163, 161 165, 173 156, 179 148, 169 140, 186 144, 190 137, 185 131, 174 128, 174 124, 166 119, 158 121, 158 115, 165 107, 161 97, 166 88, 166 79, 158 57, 145 57, 112 53, 111 47, 93 43, 90 48, 88 40, 80 39, 68 32, 51 33, 40 31, 39 34, 49 38, 34 38, 25 34, 28 39, 36 40, 44 46, 24 41, 17 41, 14 46, 19 50, 33 54, 21 55, 13 52, 11 57, 22 60, 34 59, 41 68, 75 72, 62 77, 56 70, 46 72, 31 69, 46 76, 52 82, 47 84, 56 90, 66 90, 64 94, 56 91, 33 97, 36 100, 23 100, 22 107, 29 106, 31 112, 46 116, 36 118, 28 131, 53 132, 59 127, 62 131, 76 130, 80 135, 89 137, 87 143, 73 145, 80 150, 88 150, 85 157, 99 162, 116 158, 115 165, 123 165, 122 170, 134 164, 131 158))',
+    0.3, false);
+</pre>
+        <p>
+    </p>
+        <p>
+    </p>
+        <div class="informalfigure">
+          <div class="mediaobject">
+            <img src="../images/st_simplifypolygonhull01.png"/>
+            <div class="caption">
+              <p>Outer hull simplification of a MultiPolygon, with segmentization</p>
+            </div>
+          </div>
+        </div>
+        <p>
+    </p>
+        <pre class="programlisting">SELECT ST_SimplifyPolygonHull(
+  ST_Segmentize(ST_Letters('xt'), 2.0),
+    0.1);
+</pre>
+        <p>
+    </p>
+      </div>
+      <div class="refsection" id="idm17838">
+        <h2>See Also</h2>
+        <p><a class="xref" href="ST_ConvexHull.html" title="ST_ConvexHull">ST_ConvexHull</a>, <a class="xref" href="ST_SimplifyVW.html" title="ST_SimplifyVW">ST_SimplifyVW</a>, <a class="xref" href="ST_ConcaveHull.html" title="ST_ConcaveHull">ST_ConcaveHull</a>, <a class="xref" href="ST_Segmentize.html" title="ST_Segmentize">ST_Segmentize</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_SimplifyPreserveTopology.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Geometry_Processing">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_SimplifyVW.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_SimplifyPreserveTopology </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_SimplifyVW</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

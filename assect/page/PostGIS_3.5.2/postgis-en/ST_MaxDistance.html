@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_MaxDistance</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_3DLongestLine.html" title="ST_3DLongestLine"/>
+    <link rel="next" href="ST_3DMaxDistance.html" title="ST_3DMaxDistance"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_MaxDistance</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_3DLongestLine.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.12. Measurement Functions</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_3DMaxDistance.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_MaxDistance">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_MaxDistance — Returns the 2D largest distance between two geometries in
+		projected units.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">float <strong class="fsfunc">ST_MaxDistance</strong>(</code>geometry  <var class="pdparam">g1</var>, geometry  <var class="pdparam">g2</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm15134">
+        <h2>Description</h2>
+        <p>Returns the 2-dimensional maximum distance between two geometries, in  projected units.
+    The maximum distance always occurs between two vertices.
+    This is the length of the line returned by <a class="xref" href="ST_LongestLine.html" title="ST_LongestLine">ST_LongestLine</a>.
+    </p>
+        <p>If g1 and g2 are the same geometry, returns the distance between
+    the two vertices farthest apart in that geometry.
+    </p>
+        <p class="availability">Availability: 1.5.0</p>
+      </div>
+      <div class="refsection" id="idm15140">
+        <h2>Examples</h2>
+        <p>Maximum distance between a point and lines.</p>
+        <pre class="programlisting">SELECT ST_MaxDistance('POINT(0 0)'::geometry, 'LINESTRING ( 2 0, 0 2 )'::geometry);
+-----------------
+ 2
+
+SELECT ST_MaxDistance('POINT(0 0)'::geometry, 'LINESTRING ( 2 2, 2 2 )'::geometry);
+------------------
+ 2.82842712474619
+</pre>
+        <p>Maximum distance between vertices of a single geometry.</p>
+        <pre class="programlisting">
+SELECT ST_MaxDistance('POLYGON ((10 10, 10 0, 0 0, 10 10))'::geometry,
+                      'POLYGON ((10 10, 10 0, 0 0, 10 10))'::geometry);
+------------------
+ 14.142135623730951
+</pre>
+      </div>
+      <div class="refsection" id="idm15146">
+        <h2>See Also</h2>
+        <p><a class="xref" href="ST_Distance.html" title="ST_Distance">ST_Distance</a>, <a class="xref" href="ST_LongestLine.html" title="ST_LongestLine">ST_LongestLine</a>, <a class="xref" href="ST_DFullyWithin.html" title="ST_DFullyWithin">ST_DFullyWithin</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_3DLongestLine.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Measurement_Functions">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_3DMaxDistance.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_3DLongestLine </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_3DMaxDistance</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

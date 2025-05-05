@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>AddTopoGeometryColumn</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="topoelementarray.html" title="TopoElementArray"/>
+    <link rel="next" href="RenameTopoGeometryColumn.html" title="RenameTopoGeometryColumn"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">AddTopoGeometryColumn</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="topoelementarray.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">9.3. Topology and TopoGeometry Management</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="RenameTopoGeometryColumn.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="AddTopoGeometryColumn">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>AddTopoGeometryColumn — Adds a topogeometry column to an existing table, registers this new column as a layer in topology.layer and returns the new layer_id.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">integer <strong class="fsfunc">AddTopoGeometryColumn</strong>(</code>varchar 
+                        <var class="pdparam">topology_name</var>, varchar 
+                        <var class="pdparam">schema_name</var>, varchar 
+                        <var class="pdparam">table_name</var>, varchar 
+                        <var class="pdparam">column_name</var>, varchar 
+                        <var class="pdparam">feature_type</var><code>)</code>;</p>
+          <p><code class="funcdef">integer <strong class="fsfunc">AddTopoGeometryColumn</strong>(</code>varchar 
+                        <var class="pdparam">topology_name</var>, varchar 
+                        <var class="pdparam">schema_name</var>, varchar 
+                        <var class="pdparam">table_name</var>, varchar 
+                        <var class="pdparam">column_name</var>, varchar 
+                        <var class="pdparam">feature_type</var>, integer 
+                        <var class="pdparam">child_layer</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm23736">
+        <h2>Description</h2>
+        <p>Each TopoGeometry object belongs to a specific Layer of a specific Topology. Before creating a TopoGeometry object you need to create its TopologyLayer.
+                    A Topology Layer is an association of a feature-table with the topology. It also contain type and hierarchy information. We create a layer using the AddTopoGeometryColumn() function: </p>
+        <p>This function will both add the requested column to the table and add a record to the topology.layer table with all the given info.</p>
+        <p>If you don't specify [child_layer] (or set it to NULL) this layer would contain Basic TopoGeometries (composed by primitive topology elements).
+                    Otherwise this layer will contain hierarchical TopoGeometries (composed by TopoGeometries from the child_layer).</p>
+        <p>Once the layer is created (its id is returned by the AddTopoGeometryColumn function) you're ready to construct TopoGeometry objects in it</p>
+        <p>Valid <code class="varname">feature_type</code>s are: POINT, MULTIPOINT, LINE, MULTILINE, POLYGON, MULTIPOLYGON, COLLECTION</p>
+        <p class="availability">Availability: 1.1</p>
+      </div>
+      <div class="refsection" id="idm23745">
+        <h2>Examples</h2>
+        <pre class="programlisting">-- Note for this example we created our new table in the ma_topo schema
+-- though we could have created it in a different schema -- in which case topology_name and schema_name would be different
+CREATE SCHEMA ma;
+CREATE TABLE ma.parcels(gid serial, parcel_id varchar(20) PRIMARY KEY, address text);
+SELECT topology.AddTopoGeometryColumn('ma_topo', 'ma', 'parcels', 'topo', 'POLYGON');</pre>
+        <pre class="programlisting">
+CREATE SCHEMA ri;
+CREATE TABLE ri.roads(gid serial PRIMARY KEY, road_name text);
+SELECT topology.AddTopoGeometryColumn('ri_topo', 'ri', 'roads', 'topo', 'LINE');
+</pre>
+      </div>
+      <div class="refsection" id="idm23749">
+        <h2>See Also</h2>
+        <p>
+				  <a class="xref" href="DropTopoGeometryColumn.html" title="DropTopoGeometryColumn">DropTopoGeometryColumn</a>,
+				  <a class="xref" href="toTopoGeom.html" title="toTopoGeom">toTopoGeom</a>,
+				  <a class="xref" href="CreateTopology.html" title="CreateTopology">CreateTopology</a>,
+				  <a class="xref" href="CreateTopoGeom.html" title="CreateTopoGeom">CreateTopoGeom</a>
+				</p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="topoelementarray.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="Topology.html#Topology_ManagementFunctions">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="RenameTopoGeometryColumn.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">TopoElementArray </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> RenameTopoGeometryColumn</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_VoronoiPolygons</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_VoronoiLines.html" title="ST_VoronoiLines"/>
+    <link rel="next" href="ST_CoverageInvalidEdges.html" title="ST_CoverageInvalidEdges"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_VoronoiPolygons</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_VoronoiLines.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.14. Geometry Processing</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_CoverageInvalidEdges.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_VoronoiPolygons">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_VoronoiPolygons — Returns the cells of the Voronoi diagram of the vertices of a geometry.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_VoronoiPolygons</strong>(</code>
+                geometry <var class="pdparam">geom</var>
+            , 
+                float8 <var class="pdparam">tolerance = 0.0</var>
+            , 
+                geometry <var class="pdparam">extend_to = NULL</var>
+            <code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm18074">
+        <h2>Description</h2>
+        <p>
+            Computes a two-dimensional <a class="link" href="https://en.wikipedia.org/wiki/Voronoi_diagram" target="_top">Voronoi diagram</a> from the vertices of
+            the supplied geometry.
+            The result is a GEOMETRYCOLLECTION of POLYGONs that covers an envelope larger than the extent of the input vertices.
+            Returns null if input geometry is null. Returns an empty geometry collection if the input geometry contains only one vertex.
+            Returns an empty geometry collection if the <code class="varname">extend_to</code> envelope has zero area.
+        </p>
+        <p>
+            Optional parameters:
+            </p>
+        <div class="itemizedlist">
+          <ul class="itemizedlist" style="list-style-type: disc; ">
+            <li class="listitem">
+              <p> <code class="varname">tolerance</code>: The distance within which vertices will be considered equivalent.  Robustness of the algorithm can be improved by supplying a nonzero tolerance distance.  (default = 0.0) </p>
+            </li>
+            <li class="listitem">
+              <p> <code class="varname">extend_to</code>: If present, the diagram is extended to cover the envelope of the supplied geometry,
+                    unless smaller than the default envelope (default = NULL, default envelope is the bounding box of the input expanded by about 50%).
+                    </p>
+            </li>
+          </ul>
+        </div>
+        <p>
+        </p>
+        <p>Performed by the GEOS module.</p>
+        <p class="availability">Availability: 2.3.0</p>
+      </div>
+      <div class="refsection" id="idm18089">
+        <h2>Examples</h2>
+        <div class="informalfigure">
+          <div class="mediaobject">
+            <img src="../images/st_voronoi01.png"/>
+            <div class="caption">
+              <p>Points overlaid on top of Voronoi diagram</p>
+            </div>
+          </div>
+        </div>
+        <pre class="programlisting">
+SELECT ST_VoronoiPolygons(
+                'MULTIPOINT (50 30, 60 30, 100 100,10 150, 110 120)'::geometry
+            ) AS geom;
+</pre>
+        <pre class="screen"><em class="lineannotation"><span class="lineannotation">ST_AsText output</span></em>
+GEOMETRYCOLLECTION(POLYGON((-110 43.3333333333333,-110 270,100.5 270,59.3478260869565 132.826086956522,36.8181818181818 92.2727272727273,-110 43.3333333333333)),
+POLYGON((55 -90,-110 -90,-110 43.3333333333333,36.8181818181818 92.2727272727273,55 79.2857142857143,55 -90)),
+POLYGON((230 47.5,230 -20.7142857142857,55 79.2857142857143,36.8181818181818 92.2727272727273,59.3478260869565 132.826086956522,230 47.5)),POLYGON((230 -20.7142857142857,230 -90,55 -90,55 79.2857142857143,230 -20.7142857142857)),
+POLYGON((100.5 270,230 270,230 47.5,59.3478260869565 132.826086956522,100.5 270)))
+</pre>
+        <div class="informalfigure">
+          <div class="mediaobject">
+            <img src="../images/st_voronoi02.png"/>
+            <div class="caption">
+              <p>Voronoi diagram, with tolerance of 30 units</p>
+            </div>
+          </div>
+        </div>
+        <pre class="programlisting">
+SELECT ST_VoronoiPolygons(
+            'MULTIPOINT (50 30, 60 30, 100 100,10 150, 110 120)'::geometry,
+            30) AS geom;
+</pre>
+        <pre class="screen"><em class="lineannotation"><span class="lineannotation">ST_AsText output</span></em>
+GEOMETRYCOLLECTION(POLYGON((-110 43.3333333333333,-110 270,100.5 270,59.3478260869565 132.826086956522,36.8181818181818 92.2727272727273,-110 43.3333333333333)),
+POLYGON((230 47.5,230 -45.7142857142858,36.8181818181818 92.2727272727273,59.3478260869565 132.826086956522,230 47.5)),POLYGON((230 -45.7142857142858,230 -90,-110 -90,-110 43.3333333333333,36.8181818181818 92.2727272727273,230 -45.7142857142858)),
+POLYGON((100.5 270,230 270,230 47.5,59.3478260869565 132.826086956522,100.5 270)))
+</pre>
+      </div>
+      <div class="refsection" id="idm18109">
+        <h2>See Also</h2>
+        <p>
+            <a class="xref" href="ST_DelaunayTriangles.html" title="ST_DelaunayTriangles">ST_DelaunayTriangles</a>,
+            <a class="xref" href="ST_VoronoiLines.html" title="ST_VoronoiLines">ST_VoronoiLines</a>
+        </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_VoronoiLines.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Geometry_Processing">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_CoverageInvalidEdges.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_VoronoiLines </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_CoverageInvalidEdges</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

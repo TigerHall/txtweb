@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Appendix A. Appendix</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ch14.html" title="Chapter 14. Reporting Problems"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">Appendix A. Appendix</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ch14.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; "> </th>
+            <td style="width: 20%; text-align: right; "> </td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <section class="appendix" id="release_notes">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h1 class="title">Appendix A. Appendix</h1>
+          </div>
+          <div>
+            <h3 class="subtitle">
+              <em>Release Notes</em>
+            </h3>
+          </div>
+        </div>
+      </div>
+      <div class="toc">
+        <div class="toc-title">Table of Contents</div>
+        <ul class="toc">
+          <li>
+            <span class="section">
+              <a href="release_notes.html#idm52838">A.1. PostGIS 3.5.2</a>
+            </span>
+          </li>
+          <li>
+            <span class="section">
+              <a href="release_notes.html#idm52850">A.2. PostGIS 3.5.1</a>
+            </span>
+          </li>
+          <li>
+            <span class="section">
+              <a href="release_notes.html#idm52891">A.3. PostGIS 3.5.0</a>
+            </span>
+          </li>
+        </ul>
+      </div>
+      <section class="section" id="idm52838">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title" style="clear: both">A.1. PostGIS 3.5.2</h2>
+            </div>
+          </div>
+        </div>
+        <p>2025/01/18</p>
+        <p>This version requires PostgreSQL 12-17, GEOS 3.8 or higher, and Proj 6.1+.
+            To take advantage of all features, GEOS 3.12+ is needed.
+            To take advantage of all SFCGAL features, SFCGAL 1.5.0+ is needed.</p>
+        <section class="simplesect" id="idm52842">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h3 class="title">Bug Fixes</h3>
+              </div>
+            </div>
+          </div>
+          <p><a class="link" href="https://trac.osgeo.org/postgis/ticket/5677" target="_top">#5677</a>, Retain SRID during unary union (Paul Ramsey)</p>
+          <p><a class="link" href="https://trac.osgeo.org/postgis/ticket/5833" target="_top">#5833</a>, pg_upgrade fix for postgis_sfcgal (Regina Obe)</p>
+          <p><a class="link" href="https://trac.osgeo.org/postgis/ticket/5564" target="_top">#5564</a>, BRIN crash fix and support for parallel in PG17+ (Paul Ramsey, Regina Obe)</p>
+        </section>
+      </section>
+      <section class="section" id="idm52850">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title" style="clear: both">A.2. PostGIS 3.5.1</h2>
+            </div>
+          </div>
+        </div>
+        <p>2024/12/22</p>
+        <p>This version requires PostgreSQL 12-17, GEOS 3.8 or higher, and Proj 6.1+.
+            To take advantage of all features, GEOS 3.12+ is needed.
+            To take advantage of all SFCGAL features, SFCGAL 1.5.0+ is needed.</p>
+        <section class="simplesect" id="idm52854">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h3 class="title">Breaking Changes</h3>
+              </div>
+            </div>
+          </div>
+          <p><a class="link" href="https://trac.osgeo.org/postgis/ticket/5677" target="_top">#5677</a>, Retain SRID during unary union (Paul Ramsey)</p>
+          <p><a class="link" href="https://trac.osgeo.org/postgis/ticket/5792" target="_top">#5792</a>, [topology] Prevent topology corruption with TopoGeo_addPoint near almost
+                        collinear edges (Sandro Santilli)</p>
+          <p><a class="link" href="https://trac.osgeo.org/postgis/ticket/5795" target="_top">#5795</a>, [topology] Fix ST_NewEdgesSplit can cause invalid topology
+                        (Björn Harrtell)</p>
+          <p><a class="link" href="https://trac.osgeo.org/postgis/ticket/5794" target="_top">#5794</a>, [topology] Fix crash in TopoGeo_addPoint (Sandro Santilli)</p>
+          <p><a class="link" href="https://trac.osgeo.org/postgis/ticket/5785" target="_top">#5785</a>, [raster] ST_MapAlgebra segfaults when expression references
+                        a supernumerary rast argument (Dian M Fay)</p>
+          <p><a class="link" href="https://trac.osgeo.org/postgis/ticket/5787" target="_top">#5787</a>, Check that ST_ChangeEdgeGeom doesn't change winding of rings
+                        (Sandro Santilli)</p>
+          <p><a class="link" href="https://trac.osgeo.org/postgis/ticket/5791" target="_top">#5791</a>, Add legacy stubs for old transaction functions
+                        to allow pg_upgrade (Regina Obe)</p>
+          <p><a class="link" href="https://trac.osgeo.org/postgis/ticket/5800" target="_top">#5800</a>, PROJ compiled version reading the wrong minor and micro
+                        (Regina Obe)</p>
+          <p><a class="link" href="https://trac.osgeo.org/postgis/ticket/5790" target="_top">#5790</a>, Non-schema qualified calls causing issue with
+                        materialized views (Regina Obe)</p>
+          <p><a class="link" href="https://trac.osgeo.org/postgis/ticket/5812" target="_top">#5812</a>, Performance regression in ST_Within (Paul Ramsey)</p>
+          <p><a class="link" href="https://trac.osgeo.org/postgis/ticket/5815" target="_top">#5815</a>, Remove hash/merge promise from &lt;&gt; operator (Paul Ramsey)</p>
+          <p><a class="link" href="https://trac.osgeo.org/postgis/ticket/5823" target="_top">#5823</a>, Build support for Pg18 (Paul Ramsey)</p>
+        </section>
+        <section class="simplesect" id="idm52880">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h3 class="title">Enhancements</h3>
+              </div>
+            </div>
+          </div>
+          <p><a class="link" href="https://trac.osgeo.org/postgis/ticket/5782" target="_top">#5782</a>, Improve robustness of min distance calculation (Sandro Santilli)</p>
+          <p>[topology] Speedup topology building when closing large rings with many
+                    holes (Björn Harrtell)</p>
+          <p><a class="link" href="https://trac.osgeo.org/postgis/ticket/5810" target="_top">#5810</a>, Update tiger geocoder to handle TIGER 2024 data (Regina Obe)</p>
+        </section>
+        <section class="simplesect" id="idm52887">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h3 class="title">Breaking Changes</h3>
+              </div>
+            </div>
+          </div>
+          <p><a class="link" href="https://trac.osgeo.org/postgis/ticket/5799" target="_top">#5799</a>, make ST_TileEnvelope clip envelopes to tile plane
+           extent (Paul Ramsey)</p>
+        </section>
+      </section>
+      <section class="section" id="idm52891">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title" style="clear: both">A.3. PostGIS 3.5.0</h2>
+            </div>
+          </div>
+        </div>
+        <p>2024/09/25</p>
+        <p>This version requires PostgreSQL 12-17, GEOS 3.8 or higher, and Proj 6.1+.
+            To take advantage of all features, GEOS 3.12+ is needed.
+            To take advantage of all SFCGAL features, SFCGAL 1.5.0+ is needed.</p>
+        <p>Many thanks to our translation teams, in particular:</p>
+        <p>Dapeng Wang, Zuo Chenwei from HighGo (Chinese Team)</p>
+        <p>Teramoto Ikuhiro (Japanese Team)</p>
+        <p>Vincent Bre (French Team)</p>
+        <section class="simplesect" id="idm52899">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h3 class="title">Breaking Changes</h3>
+              </div>
+            </div>
+          </div>
+          <p><a class="link" href="https://trac.osgeo.org/postgis/ticket/5546" target="_top">#5546</a>, TopoGeometry &lt;&gt; TopoGeometry is now ambiguous, to get
+           the old behaviour, assuming your TopoGeometry objects
+           are named tg1 and tg2, use: (
+              id(tg1) &lt;&gt; id(tg2) OR
+              topology_id(tg1) &lt;&gt; topology_id(tg2) OR
+              layer_id(tg1) &lt;&gt; layer_id(tg2) OR
+              type(tg1) &lt;&gt; type(tg2)
+           ) (Sandro Santilli)</p>
+          <p><a class="link" href="https://trac.osgeo.org/postgis/ticket/5536" target="_top">#5536</a>, comments are not anymore included in PostGIS extensions
+           (Sandro Santilli)</p>
+          <p>xmllint is now required to build comments (Sandro Santilli)</p>
+          <p>DocBook5 XSL is now required to build html (Sandro Santilli)</p>
+          <p><a class="link" href="https://trac.osgeo.org/postgis/ticket/5602" target="_top">#5602</a>, Drop support for GEOS 3.6 and 3.7 (Regina Obe)</p>
+          <p><a class="link" href="https://trac.osgeo.org/postgis/ticket/5571" target="_top">#5571</a>, Improve ST_GeneratePoints performance, but old
+           seeded pseudo random points will need to be regenerated.</p>
+          <p><a class="link" href="https://trac.osgeo.org/postgis/ticket/5596" target="_top">#5596</a>, GH-749, Allow promoting column as an id
+           in ST_AsGeoJson(record,..).
+           Views and materialized views that use the ST_AsGeoJSON(record ..)
+           will need rebuilding to upgrade to new signature
+           (Jan Tojnar)</p>
+          <p><a class="link" href="https://trac.osgeo.org/postgis/ticket/5496" target="_top">#5496</a>, ST_Clip all variants replaced, will require
+           rebuilding of materialized views that use them (funding from The National Institute for Agricultural
+            and Food Research and Technology (INIA-CSIC)), 
+            Regina Obe</p>
+          <p><a class="link" href="https://trac.osgeo.org/postgis/ticket/5659" target="_top">#5659</a>, ST_DFullyWithin behaviour has changed to
+           be ST_Contains(ST_Buffer(A, R), B) (Paul Ramsey)</p>
+          <p>Remove the WFS_locks extra package. (Paul Ramsey)</p>
+          <p><a class="link" href="https://trac.osgeo.org/postgis/ticket/5747" target="_top">5747</a>, <a class="link" href="https://github.com/postgis/postgis/pull/776" target="_top">GH-776</a>, ST_Length: Return 0 for CurvePolygon (Dan Baston)</p>
+          <p><a class="link" href="https://trac.osgeo.org/postgis/ticket/5770" target="_top">5770</a>, support for GEOS 3.13 and RelateNG. Most functionality
+           remains the same, but new GEOS predicate implementation
+           has a few small changes.</p>
+          <p>Boundary Node Rule relate matrices might be different when
+        using the "multi-valent end point" rule.</p>
+          <p>Relate matrices for situations with invalid MultiPolygons
+        with shared boundaries might be different. Run ST_MakeValid
+        to get valid inputs to feed to the calculation.</p>
+          <p>Zero length LineStrings are treated as if they are the
+        equivalent Point object.</p>
+        </section>
+        <section class="simplesect" id="idm52926">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h3 class="title">Deprecated signatures</h3>
+              </div>
+            </div>
+          </div>
+          <p><a class="link" href="https://github.com/postgis/postgis/pull/761" target="_top">GH-761</a>, ST_StraightSkeleton =&gt; CG_StraightSkeleton (Loïc Bartoletti)</p>
+          <p><a class="link" href="https://git.osgeo.org/gitea/postgis/postgis/pulls/189" target="_top">GH-189</a>, All SFCGAL functions now use the prefix CG_, with the old ones using
+            ST_ being deprecated. (Loïc Bartoletti)</p>
+        </section>
+        <section class="simplesect" id="idm52932">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h3 class="title">New features</h3>
+              </div>
+            </div>
+          </div>
+          <p>Improvements in the 'postgis' script:
+                    </p>
+          <div class="itemizedlist">
+            <ul class="itemizedlist" style="list-style-type: disc; ">
+              <li class="listitem">
+                <p>new command list-enabled</p>
+              </li>
+              <li class="listitem">
+                <p>new command list-all</p>
+              </li>
+              <li class="listitem">
+                <p>command upgrade upgrades all databases that need to be</p>
+              </li>
+              <li class="listitem">
+                <p>command status reports status of all databases</p>
+              </li>
+            </ul>
+          </div>
+          <p>
+                    (Sandro Santilli)</p>
+          <p><a class="link" href="https://trac.osgeo.org/postgis/ticket/5742" target="_top">#5742</a>, expose version of PROJ at compile time (Sandro Santilli)</p>
+          <p><a class="link" href="https://trac.osgeo.org/postgis/ticket/5721" target="_top">#5721</a>, postgis_topology: Allow sharing sequences between different topologies (Lars Opsahl)</p>
+          <p><a class="link" href="https://trac.osgeo.org/postgis/ticket/5667" target="_top">#5667</a>, postgis_topology: TopoGeo_LoadGeometry (Sandro Santilli)</p>
+          <p><a class="link" href="https://trac.osgeo.org/postgis/ticket/5055" target="_top">#5055</a>, add explicit &lt;&gt; geometry operator to prevent non-unique
+                        error with &lt;&gt; and != (Paul Ramsey)</p>
+          <p>Add ST_HasZ/ST_HasM (Loïc Bartoletti)</p>
+          <p><a class="link" href="https://git.osgeo.org/gitea/postgis/postgis/pulls/123" target="_top">GT-123</a>, postgis_sfcgal: CG_YMonotonePartition, CG_ApproxConvexPartition,
+                            CG_GreeneApproxConvexPartition and CG_OptimalConvexPartition
+                            (Loïc Bartoletti)</p>
+          <p><a class="link" href="https://git.osgeo.org/gitea/postgis/postgis/pulls/156" target="_top">GT-156</a>, postgis_sfcgal: CG_Visibility (Loïc Bartoletti)</p>
+          <p><a class="link" href="https://git.osgeo.org/gitea/postgis/postgis/pulls/157" target="_top">GT-157</a>, postgis_sfcgal: Add ST_ExtrudeStraightSkeleton (Loïc Bartoletti)</p>
+          <p><a class="link" href="https://trac.osgeo.org/postgis/ticket/5496" target="_top">#5496</a>, postgis_raster: ST_Clip support for touched (Regina Obe)</p>
+          <p><a class="link" href="https://github.com/postgis/postgis/pull/760" target="_top">GH-760</a>, postgis_sfcgal: CG_Intersection, CG_3DIntersects, CG_Intersects,
+                            CG_Difference, CG_Union (and aggregate), CG_Triangulate, CG_Area,
+                            CG_3DDistance, CG_Distance (Loïc Bartoletti)</p>
+          <p><a class="link" href="https://trac.osgeo.org/postgis/ticket/5687" target="_top">#5687</a>, Don't rely on search_path to determine postgis schema
+                        Fix for PG17 security change (Regina Obe)</p>
+          <p><a class="link" href="https://trac.osgeo.org/postgis/ticket/5705" target="_top">#5705</a>, <a class="link" href="https://github.com/postgis/postgis/pull/767" target="_top">GH-767</a>, ST_RemoveIrrelevantPointsForView  (Sam Peters)</p>
+          <p><a class="link" href="https://trac.osgeo.org/postgis/ticket/5706" target="_top">#5706</a>, <a class="link" href="https://github.com/postgis/postgis/pull/768" target="_top">GH-768</a>, ST_RemoveSmallParts (Sam Peters)</p>
+        </section>
+        <section class="simplesect" id="idm52971">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h3 class="title">Enhancements</h3>
+              </div>
+            </div>
+          </div>
+          <p><a class="link" href="https://trac.osgeo.org/postgis/ticket/5550" target="_top">5550</a>, Fix upgrades from 2.x in sandboxed systems (Sandro Santilli)</p>
+          <p><a class="link" href="https://trac.osgeo.org/postgis/ticket/3587" target="_top">#3587</a>, postgis_topology: faster load of big lines in topologies (Sandro Santilli)</p>
+          <p><a class="link" href="https://trac.osgeo.org/postgis/ticket/5670" target="_top">#5670</a>, postgis_topology: faster ST_CreateTopoGeo (Sandro Santilli)</p>
+          <p><a class="link" href="https://trac.osgeo.org/postgis/ticket/5531" target="_top">#5531</a>, documentation format upgraded to DocBook 5 (Sandro Santilli)</p>
+          <p><a class="link" href="https://trac.osgeo.org/postgis/ticket/5543" target="_top">#5543</a>, allow building without documentation (Sandro Santilli)</p>
+          <p><a class="link" href="https://trac.osgeo.org/postgis/ticket/5596" target="_top">#5596</a>, <a class="link" href="https://github.com/postgis/postgis/pull/749" target="_top">GH-749</a>, Allow promoting column as an id
+                            in ST_AsGeoJson(record,..). (Jan Tojnar)</p>
+          <p><a class="link" href="https://github.com/postgis/postgis/pull/744" target="_top">GH-744</a>, Don't create docbook.css for the HTML manual,
+                                use style.css instead (Chris Mayo)</p>
+          <p>Faster implementation of point-in-poly cached index (Paul Ramsey)</p>
+          <p>Improve performance of ST_GeneratePoints (Paul Ramsey)</p>
+          <p><a class="link" href="https://trac.osgeo.org/postgis/ticket/5361" target="_top">#5361</a>, ST_CurveN, ST_NumCurves and consistency in
+                            accessors on curved geometry (Paul Ramsey)</p>
+          <p><a class="link" href="https://github.com/postgis/postgis/pull/761" target="_top">GH-761</a>, postgis_sfcgal: Add an optional parameter to CG_StraightSkeleton
+                                (was ST_StraightSkeleton) to use m as a distance in result (Hannes Janetzek, Loïc Bartoletti)</p>
+        </section>
+      </section>
+    </section>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ch14.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; "> </td>
+            <td style="width: 40%; text-align: right; "> </td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">Chapter 14. Reporting Problems </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> </td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

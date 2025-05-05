@@ -1,0 +1,466 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Chapter 8. SFCGAL Functions Reference</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="PostGIS_HasBBox.html" title="PostGIS_HasBBox"/>
+    <link rel="next" href="postgis_sfcgal_version.html" title="postgis_sfcgal_version"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">Chapter 8. SFCGAL Functions Reference</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="PostGIS_HasBBox.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; "> </th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="postgis_sfcgal_version.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <section class="chapter" id="reference_sfcgal">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h1 class="title">Chapter 8. SFCGAL Functions Reference</h1>
+          </div>
+        </div>
+      </div>
+      <div class="toc">
+        <div class="toc-title">Table of Contents</div>
+        <ul class="toc">
+          <li>
+            <span class="section">
+              <a href="reference_sfcgal.html#sfcgal_management">8.1. SFCGAL Management Functions</a>
+            </span>
+          </li>
+          <li>
+            <span class="section">
+              <a href="reference_sfcgal.html#sfcgal_accessors">8.2. SFCGAL Accessors and Setters</a>
+            </span>
+          </li>
+          <li>
+            <span class="section">
+              <a href="reference_sfcgal.html#sfcgal_processing">8.3. SFCGAL Processing and Relationship Functions</a>
+            </span>
+          </li>
+        </ul>
+      </div>
+      <p>
+        SFCGAL is a C++ wrapper library around CGAL that provides advanced 2D and 3D spatial functions.
+        For robustness, geometry coordinates have an exact rational number representation.
+    </p>
+      <p>
+        Installation instructions for the library can be found on the SFCGAL home page (<a class="link" href="http://www.sfcgal.org" target="_top">http://www.sfcgal.org</a>).
+        To enable the functions use <code class="code">create extension postgis_sfcgal</code>.
+    </p>
+      <section class="section" id="sfcgal_management">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title" style="clear: both">8.1. SFCGAL Management Functions</h2>
+            </div>
+            <div>
+              <div class="abstract">
+                <div class="abstract-title">Abstract</div>
+                <p>This section lists functions for determining version of SFCGAL and library dependencies you are running.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="toc">
+          <ul class="toc">
+            <li>
+              <span class="refentrytitle">
+                <a href="postgis_sfcgal_version.html">postgis_sfcgal_version</a>
+              </span>
+              <span class="refpurpose"> — Returns the version of SFCGAL in use</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="postgis_sfcgal_full_version.html">postgis_sfcgal_full_version</a>
+              </span>
+              <span class="refpurpose"> — Returns the full version of SFCGAL in use including CGAL and Boost versions</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+      <section class="section" id="sfcgal_accessors">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title" style="clear: both">8.2. SFCGAL Accessors and Setters</h2>
+            </div>
+            <div>
+              <div class="abstract">
+                <div class="abstract-title">Abstract</div>
+                <p>These functions access or set properties of geometries. Geometries primarily supported by these functions are TINS and Polyhedral Surfaces.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="toc">
+          <ul class="toc">
+            <li>
+              <span class="refentrytitle">
+                <a href="CG_ForceLHR.html">CG_ForceLHR</a>
+              </span>
+              <span class="refpurpose"> — Force LHR orientation</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="CG_IsPlanar.html">CG_IsPlanar</a>
+              </span>
+              <span class="refpurpose"> — Check if a surface is or not planar</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="CG_IsSolid.html">CG_IsSolid</a>
+              </span>
+              <span class="refpurpose"> — Test if the geometry is a solid. No validity check is performed.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="CG_MakeSolid.html">CG_MakeSolid</a>
+              </span>
+              <span class="refpurpose"> — Cast the geometry into a solid. No check is performed. To obtain a valid solid, the input geometry must be a closed Polyhedral Surface or a closed TIN.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="CG_Orientation.html">CG_Orientation</a>
+              </span>
+              <span class="refpurpose"> — Determine surface orientation</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="CG_Area.html">CG_Area</a>
+              </span>
+              <span class="refpurpose"> — Calculates the area of a geometry</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="CG_3DArea.html">CG_3DArea</a>
+              </span>
+              <span class="refpurpose"> — Computes area of 3D surface geometries.  Will return 0 for solids.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="CG_Volume.html">CG_Volume</a>
+              </span>
+              <span class="refpurpose"> — Computes the volume of a 3D solid. If applied to surface (even closed) geometries will return 0.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="ST_ForceLHR.html">ST_ForceLHR</a>
+              </span>
+              <span class="refpurpose"> — Force LHR orientation</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="ST_IsPlanar.html">ST_IsPlanar</a>
+              </span>
+              <span class="refpurpose"> — Check if a surface is or not planar</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="ST_IsSolid.html">ST_IsSolid</a>
+              </span>
+              <span class="refpurpose"> — Test if the geometry is a solid. No validity check is performed.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="ST_MakeSolid.html">ST_MakeSolid</a>
+              </span>
+              <span class="refpurpose"> — Cast the geometry into a solid. No check is performed. To obtain a valid solid, the input geometry must be a closed Polyhedral Surface or a closed TIN.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="ST_Orientation.html">ST_Orientation</a>
+              </span>
+              <span class="refpurpose"> — Determine surface orientation</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="ST_3DArea.html">ST_3DArea</a>
+              </span>
+              <span class="refpurpose"> — Computes area of 3D surface geometries.  Will return 0 for solids.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="ST_Volume.html">ST_Volume</a>
+              </span>
+              <span class="refpurpose"> — Computes the volume of a 3D solid. If applied to surface (even closed) geometries will return 0.</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+      <section class="section" id="sfcgal_processing">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title" style="clear: both">8.3. SFCGAL Processing and Relationship Functions</h2>
+            </div>
+          </div>
+        </div>
+        <div class="toc">
+          <ul class="toc">
+            <li>
+              <span class="refentrytitle">
+                <a href="CG_Intersection.html">CG_Intersection</a>
+              </span>
+              <span class="refpurpose"> — Computes the intersection of two geometries</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="CG_Intersects.html">CG_Intersects</a>
+              </span>
+              <span class="refpurpose"> — Tests if two geometries intersect (they have at least one point in common)</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="CG_3DIntersects.html">CG_3DIntersects</a>
+              </span>
+              <span class="refpurpose"> — Tests if two 3D geometries intersect</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="CG_Difference.html">CG_Difference</a>
+              </span>
+              <span class="refpurpose"> — Computes the geometric difference between two geometries</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="ST_3DDifference.html">ST_3DDifference</a>
+              </span>
+              <span class="refpurpose"> — Perform 3D difference</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="CG_3DDifference.html">CG_3DDifference</a>
+              </span>
+              <span class="refpurpose"> — Perform 3D difference</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="CG_Distance.html">CG_Distance</a>
+              </span>
+              <span class="refpurpose"> — Computes the minimum distance between two geometries</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="CG_3DDistance.html">CG_3DDistance</a>
+              </span>
+              <span class="refpurpose"> — Computes the minimum 3D distance between two geometries</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="ST_3DConvexHull.html">ST_3DConvexHull</a>
+              </span>
+              <span class="refpurpose"> — Computes the 3D convex hull of a geometry.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="CG_3DConvexHull.html">CG_3DConvexHull</a>
+              </span>
+              <span class="refpurpose"> — Computes the 3D convex hull of a geometry.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="ST_3DIntersection.html">ST_3DIntersection</a>
+              </span>
+              <span class="refpurpose"> — Perform 3D intersection</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="CG_3DIntersection.html">CG_3DIntersection</a>
+              </span>
+              <span class="refpurpose"> — Perform 3D intersection</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="CG_Union.html">CG_Union</a>
+              </span>
+              <span class="refpurpose"> — Computes the union of two geometries</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="ST_3DUnion.html">ST_3DUnion</a>
+              </span>
+              <span class="refpurpose"> — Perform 3D union.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="CG_3DUnion.html">CG_3DUnion</a>
+              </span>
+              <span class="refpurpose"> — Perform 3D union using postgis_sfcgal.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="ST_AlphaShape.html">ST_AlphaShape</a>
+              </span>
+              <span class="refpurpose"> — Computes an Alpha-shape enclosing a geometry</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="CG_AlphaShape.html">CG_AlphaShape</a>
+              </span>
+              <span class="refpurpose"> — Computes an Alpha-shape enclosing a geometry</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="CG_ApproxConvexPartition.html">CG_ApproxConvexPartition</a>
+              </span>
+              <span class="refpurpose"> — Computes approximal convex partition of the polygon geometry</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="ST_ApproximateMedialAxis.html">ST_ApproximateMedialAxis</a>
+              </span>
+              <span class="refpurpose"> — Compute the approximate medial axis of an areal geometry.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="CG_ApproximateMedialAxis.html">CG_ApproximateMedialAxis</a>
+              </span>
+              <span class="refpurpose"> — Compute the approximate medial axis of an areal geometry.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="ST_ConstrainedDelaunayTriangles.html">ST_ConstrainedDelaunayTriangles</a>
+              </span>
+              <span class="refpurpose"> — 
+                Return a constrained Delaunay triangulation around the given input geometry.
+            </span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="CG_ConstrainedDelaunayTriangles.html">CG_ConstrainedDelaunayTriangles</a>
+              </span>
+              <span class="refpurpose"> — 
+                Return a constrained Delaunay triangulation around the given input geometry.
+            </span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="ST_Extrude.html">ST_Extrude</a>
+              </span>
+              <span class="refpurpose"> — Extrude a surface to a related volume</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="CG_Extrude.html">CG_Extrude</a>
+              </span>
+              <span class="refpurpose"> — Extrude a surface to a related volume</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="CG_ExtrudeStraightSkeleton.html">CG_ExtrudeStraightSkeleton</a>
+              </span>
+              <span class="refpurpose"> — Straight Skeleton Extrusion</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="CG_GreeneApproxConvexPartition.html">CG_GreeneApproxConvexPartition</a>
+              </span>
+              <span class="refpurpose"> — Computes approximal convex partition of the polygon geometry</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="ST_MinkowskiSum.html">ST_MinkowskiSum</a>
+              </span>
+              <span class="refpurpose"> — Performs Minkowski sum</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="CG_MinkowskiSum.html">CG_MinkowskiSum</a>
+              </span>
+              <span class="refpurpose"> — Performs Minkowski sum</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="ST_OptimalAlphaShape.html">ST_OptimalAlphaShape</a>
+              </span>
+              <span class="refpurpose"> — Computes an Alpha-shape enclosing a geometry using an "optimal" alpha value.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="CG_OptimalAlphaShape.html">CG_OptimalAlphaShape</a>
+              </span>
+              <span class="refpurpose"> — Computes an Alpha-shape enclosing a geometry using an "optimal" alpha value.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="CG_OptimalConvexPartition.html">CG_OptimalConvexPartition</a>
+              </span>
+              <span class="refpurpose"> — Computes an optimal convex partition of the polygon geometry</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="CG_StraightSkeleton.html">CG_StraightSkeleton</a>
+              </span>
+              <span class="refpurpose"> — Compute a straight skeleton from a geometry</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="ST_StraightSkeleton.html">ST_StraightSkeleton</a>
+              </span>
+              <span class="refpurpose"> — Compute a straight skeleton from a geometry</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="ST_Tesselate.html">ST_Tesselate</a>
+              </span>
+              <span class="refpurpose"> — Perform surface Tessellation of a polygon or polyhedralsurface and returns as a TIN or collection of TINS</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="CG_Tesselate.html">CG_Tesselate</a>
+              </span>
+              <span class="refpurpose"> — Perform surface Tessellation of a polygon or polyhedralsurface and returns as a TIN or collection of TINS</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="CG_Triangulate.html">CG_Triangulate</a>
+              </span>
+              <span class="refpurpose"> — Triangulates a polygonal geometry</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="CG_Visibility.html">CG_Visibility</a>
+              </span>
+              <span class="refpurpose"> — Compute a visibility polygon from a point or a segment in a polygon geometry</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="CG_YMonotonePartition.html">CG_YMonotonePartition</a>
+              </span>
+              <span class="refpurpose"> — Computes y-monotone partition of the polygon geometry</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+    </section>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="PostGIS_HasBBox.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; "> </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="postgis_sfcgal_version.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">PostGIS_HasBBox </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> postgis_sfcgal_version</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

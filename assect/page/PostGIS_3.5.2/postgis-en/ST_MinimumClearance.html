@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_MinimumClearance</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_3DMaxDistance.html" title="ST_3DMaxDistance"/>
+    <link rel="next" href="ST_MinimumClearanceLine.html" title="ST_MinimumClearanceLine"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_MinimumClearance</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_3DMaxDistance.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.12. Measurement Functions</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_MinimumClearanceLine.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_MinimumClearance">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_MinimumClearance — Returns the minimum clearance of a geometry, a measure of a geometry's robustness.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">float <strong class="fsfunc">ST_MinimumClearance</strong>(</code>geometry <var class="pdparam">g</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm15202">
+        <h2>Description</h2>
+        <p>
+		It is possible for a geometry to meet the criteria for validity according to <a class="xref" href="ST_IsValid.html" title="ST_IsValid">ST_IsValid</a> (polygons)
+		or <a class="xref" href="ST_IsSimple.html" title="ST_IsSimple">ST_IsSimple</a> (lines),
+        but to become invalid if one of its vertices is moved by a small distance.
+        This can happen due to loss of precision during conversion to text formats (such as WKT, KML, GML, GeoJSON),
+        or binary formats that do not use double-precision floating point coordinates (e.g. MapInfo TAB).
+		</p>
+        <p>
+		The minimum clearance is a quantitative measure of a geometry's robustness to change in coordinate precision.
+        It is the largest distance by which vertices of the geometry can be moved without creating an invalid geometry.
+        Larger values of minimum clearance indicate greater robustness.
+		</p>
+        <p>
+        If a geometry has a minimum clearance of <code class="varname">e</code>, then:
+        </p>
+        <div class="itemizedlist">
+          <ul class="itemizedlist" style="list-style-type: disc; ">
+            <li class="listitem">
+              <p>
+                    No two distinct vertices in the geometry are closer than the distance <code class="varname">e</code>.
+                </p>
+            </li>
+            <li class="listitem">
+              <p>
+                    No vertex is closer than <code class="varname">e</code> to a line segment of which it is not an endpoint.
+                </p>
+            </li>
+          </ul>
+        </div>
+        <p>
+		</p>
+        <p>
+		If no minimum clearance exists for a geometry (e.g. a single point, or a MultiPoint whose points are identical),
+        the return value is <code class="varname">Infinity</code>.
+		</p>
+        <p>
+        To avoid validity issues caused by precision loss,
+		<a class="xref" href="ST_ReducePrecision.html" title="ST_ReducePrecision">ST_ReducePrecision</a> can reduce coordinate precision
+        while ensuring that polygonal geometry remains valid.
+		</p>
+        <p class="availability">Availability: 2.3.0</p>
+      </div>
+      <div class="refsection" id="idm15222">
+        <h2>Examples</h2>
+        <pre class="programlisting">
+SELECT ST_MinimumClearance('POLYGON ((0 0, 1 0, 1 1, 0.5 3.2e-4, 0 0))');
+ st_minimumclearance
+---------------------
+             0.00032
+     </pre>
+      </div>
+      <div class="refsection" id="idm15225">
+        <h2>See Also</h2>
+        <p>
+			<a class="xref" href="ST_MinimumClearanceLine.html" title="ST_MinimumClearanceLine">ST_MinimumClearanceLine</a>,
+            <a class="xref" href="ST_IsSimple.html" title="ST_IsSimple">ST_IsSimple</a>,
+            <a class="xref" href="ST_IsValid.html" title="ST_IsValid">ST_IsValid</a>,
+            <a class="xref" href="ST_ReducePrecision.html" title="ST_ReducePrecision">ST_ReducePrecision</a>
+		</p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_3DMaxDistance.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Measurement_Functions">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_MinimumClearanceLine.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_3DMaxDistance </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_MinimumClearanceLine</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

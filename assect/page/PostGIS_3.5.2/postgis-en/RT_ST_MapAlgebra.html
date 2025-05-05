@@ -1,0 +1,490 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_MapAlgebra (callback function version)</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="RT_ST_Intersection.html" title="ST_Intersection"/>
+    <link rel="next" href="RT_ST_MapAlgebra_expr.html" title="ST_MapAlgebra (expression version)"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_MapAlgebra (callback function version)</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="RT_ST_Intersection.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">11.12. Raster Processing: Map Algebra</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="RT_ST_MapAlgebra_expr.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="RT_ST_MapAlgebra">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_MapAlgebra (callback function version) — 
+                        Callback function version - Returns a one-band raster given one or more input rasters, band indexes and one user-specified callback function.
+                    </p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">raster <strong class="fsfunc">ST_MapAlgebra</strong>(</code>rastbandarg[]  <var class="pdparam">rastbandargset</var>, regprocedure  <var class="pdparam">callbackfunc</var>, text  <var class="pdparam">pixeltype=NULL</var>, text  <var class="pdparam">extenttype=INTERSECTION</var>, raster  <var class="pdparam">customextent=NULL</var>, integer  <var class="pdparam">distancex=0</var>, integer  <var class="pdparam">distancey=0</var>, text[]  <var class="pdparam">VARIADIC userargs=NULL</var><code>)</code>;</p>
+          <p><code class="funcdef">raster <strong class="fsfunc">ST_MapAlgebra</strong>(</code>raster  <var class="pdparam">rast</var>, integer[]  <var class="pdparam">nband</var>, regprocedure  <var class="pdparam">callbackfunc</var>, text  <var class="pdparam">pixeltype=NULL</var>, text  <var class="pdparam">extenttype=FIRST</var>, raster  <var class="pdparam">customextent=NULL</var>, integer  <var class="pdparam">distancex=0</var>, integer  <var class="pdparam">distancey=0</var>, text[]  <var class="pdparam">VARIADIC userargs=NULL</var><code>)</code>;</p>
+          <p><code class="funcdef">raster <strong class="fsfunc">ST_MapAlgebra</strong>(</code>raster  <var class="pdparam">rast</var>, integer  <var class="pdparam">nband</var>, regprocedure  <var class="pdparam">callbackfunc</var>, text  <var class="pdparam">pixeltype=NULL</var>, text  <var class="pdparam">extenttype=FIRST</var>, raster  <var class="pdparam">customextent=NULL</var>, integer  <var class="pdparam">distancex=0</var>, integer  <var class="pdparam">distancey=0</var>, text[]  <var class="pdparam">VARIADIC userargs=NULL</var><code>)</code>;</p>
+          <p><code class="funcdef">raster <strong class="fsfunc">ST_MapAlgebra</strong>(</code>raster  <var class="pdparam">rast1</var>, integer  <var class="pdparam">nband1</var>, raster  <var class="pdparam">rast2</var>, integer  <var class="pdparam">nband2</var>, regprocedure  <var class="pdparam">callbackfunc</var>, text  <var class="pdparam">pixeltype=NULL</var>, text  <var class="pdparam">extenttype=INTERSECTION</var>, raster  <var class="pdparam">customextent=NULL</var>, integer  <var class="pdparam">distancex=0</var>, integer  <var class="pdparam">distancey=0</var>, text[]  <var class="pdparam">VARIADIC userargs=NULL</var><code>)</code>;</p>
+          <p><code class="funcdef">raster <strong class="fsfunc">ST_MapAlgebra</strong>(</code>raster <var class="pdparam">rast</var>, integer <var class="pdparam">nband</var>, regprocedure  <var class="pdparam">callbackfunc</var>, float8[]  <var class="pdparam">mask</var>, boolean  <var class="pdparam">weighted</var>, text  <var class="pdparam">pixeltype=NULL</var>, text  <var class="pdparam">extenttype=INTERSECTION</var>, raster  <var class="pdparam">customextent=NULL</var>, text[]  <var class="pdparam">VARIADIC userargs=NULL</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm33779">
+        <h2>Description</h2>
+        <p>
+                        Returns a one-band raster given one or more input rasters, band indexes and one user-specified callback function.
+                    </p>
+        <div class="variablelist">
+          <dl class="variablelist">
+            <dt>
+              <span class="term">
+                <code class="varname">rast,rast1,rast2, rastbandargset</code>
+              </span>
+            </dt>
+            <dd>
+              <p>
+                                    Rasters on which the map algebra process is evaluated.</p>
+              <p><code class="varname">rastbandargset</code> allows the use of a map algebra operation on many rasters and/or many bands. See example Variant 1.
+                                </p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">nband, nband1, nband2</code>
+              </span>
+            </dt>
+            <dd>
+              <p>
+                                    Band numbers of the raster to be evaluated. nband can be an integer or integer[] denoting the bands. nband1 is band on rast1 and nband2 is band on rast2 for the 2 raster/2band case.
+                                </p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">callbackfunc</code>
+              </span>
+            </dt>
+            <dd>
+              <p>
+                                    The <code class="varname">callbackfunc</code> parameter must be the name and signature of an SQL or PL/pgSQL function, cast to a regprocedure. An example PL/pgSQL function example is:
+                                </p>
+              <pre class="programlisting">
+CREATE OR REPLACE FUNCTION sample_callbackfunc(value double precision[][][], position integer[][], VARIADIC userargs text[])
+    RETURNS double precision
+    AS $$
+    BEGIN
+        RETURN 0;
+    END;
+    $$ LANGUAGE 'plpgsql' IMMUTABLE;
+                                    </pre>
+              <p>
+                                    The <code class="varname">callbackfunc</code> must have three arguments: a 3-dimension double precision array, a 2-dimension integer array and a variadic 1-dimension text array. The first argument <code class="varname">value</code> is the set of values (as double precision) from all input rasters. The three dimensions (where indexes are 1-based) are: raster #, row y, column x. The second argument <code class="varname">position</code> is the set of pixel positions from the output raster and input rasters. The outer dimension (where indexes are 0-based) is the raster #.  The position at outer dimension index 0 is the output raster's pixel position.  For each outer dimension, there are two elements in the inner dimension for X and Y.  The third argument <code class="varname">userargs</code> is for passing through any user-specified arguments.
+                                </p>
+              <p>
+                                    Passing a <span class="type">regprocedure</span> argument to a SQL function requires the full function signature to be passed, then cast to a <span class="type">regprocedure</span> type. To pass the above example PL/pgSQL function as an argument, the SQL for the argument is:
+                                </p>
+              <pre class="programlisting">
+'sample_callbackfunc(double precision[], integer[], text[])'::regprocedure
+                                    </pre>
+              <p>
+                                    Note that the argument contains the name of the function, the types of the function arguments, quotes around the name and argument types, and a cast to a <span class="type">regprocedure</span>.
+                                </p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">mask</code>
+              </span>
+            </dt>
+            <dd>
+              <p>
+                                    An n-dimensional array (matrix) of numbers used to filter what cells get passed to map algebra call-back function. 0 means a neighbor cell value should be treated as no-data and 1 means value should be treated as data.  If weight is set to true, then the values, are used as multipliers to multiple the pixel value of that value in the neighborhood position.
+                                </p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">weighted</code>
+              </span>
+            </dt>
+            <dd>
+              <p>
+                                    boolean (true/false) to denote if a mask value should be weighted (multiplied by original value) or not (only applies to proto that takes a mask).
+                                </p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">pixeltype</code>
+              </span>
+            </dt>
+            <dd>
+              <p>
+                                    If <code class="varname">pixeltype</code> is passed in, the one band of the new raster will be of that pixeltype. If pixeltype is passed NULL or left out, the new raster band will have the same pixeltype as the specified band of the first raster (for extent types: INTERSECTION, UNION, FIRST, CUSTOM) or the specified band of the appropriate raster (for extent types: SECOND, LAST).  If in doubt, always specify <code class="varname">pixeltype</code>.
+                                </p>
+              <p>
+                                    The resulting pixel type of the output raster must be one listed in <a class="xref" href="RT_ST_BandPixelType.html" title="ST_BandPixelType">ST_BandPixelType</a> or left out or set to NULL.
+                                </p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">extenttype</code>
+              </span>
+            </dt>
+            <dd>
+              <p>
+                                    Possible values are INTERSECTION (default), UNION, FIRST (default for one raster variants), SECOND, LAST, CUSTOM.
+                                </p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">customextent</code>
+              </span>
+            </dt>
+            <dd>
+              <p>
+                                    If <code class="varname">extentype</code> is CUSTOM, a raster must be provided for <code class="varname">customextent</code>. See example 4 of Variant 1.
+                                </p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">distancex</code>
+              </span>
+            </dt>
+            <dd>
+              <p>
+                                    The distance in pixels from the reference cell in x direction. So width of resulting matrix would be <code class="code">2*distancex + 1</code>.If not specified only the reference cell is considered (neighborhood of 0).
+                                </p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">distancey</code>
+              </span>
+            </dt>
+            <dd>
+              <p>
+                                    The distance in pixels from reference cell in y direction. Height of resulting matrix would be <code class="code">2*distancey + 1</code> .If not specified only the reference cell is considered (neighborhood of 0).
+                                </p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">userargs</code>
+              </span>
+            </dt>
+            <dd>
+              <p>
+                                    The third argument to the <code class="varname">callbackfunc</code> is a <span class="type">variadic text</span> array. All trailing text arguments are passed through to the specified <code class="varname">callbackfunc</code>, and are contained in the <code class="varname">userargs</code> argument.
+                                </p>
+            </dd>
+          </dl>
+        </div>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>
+                            For more information about the VARIADIC keyword, please refer to the PostgreSQL documentation and the "SQL Functions with Variable Numbers of Arguments" section of <a class="link" href="http://www.postgresql.org/docs/current/static/xfunc-sql.html" target="_top">Query Language (SQL) Functions</a>.
+                        </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>
+                            The <span class="type">text[]</span> argument to the <code class="varname">callbackfunc</code> is required, regardless of whether you choose to pass any arguments to the callback function for processing or not.
+                        </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p>
+                        Variant 1 accepts an array of <code class="varname">rastbandarg</code> allowing the use of a map algebra operation on many rasters and/or many bands. See example Variant 1.
+                    </p>
+        <p>
+                        Variants 2 and 3 operate upon one or more bands of one raster. See example Variant 2 and 3.
+                    </p>
+        <p>
+                        Variant 4 operate upon two rasters with one band per raster. See example Variant 4.
+                    </p>
+        <p class="availability">Availability: 2.2.0: Ability to add a mask</p>
+        <p class="availability">Availability: 2.1.0</p>
+      </div>
+      <div class="refsection" id="idm33878">
+        <h2>Examples: Variant 1</h2>
+        <p>One raster, one band</p>
+        <pre class="programlisting">
+WITH foo AS (
+    SELECT 1 AS rid, ST_AddBand(ST_MakeEmptyRaster(2, 2, 0, 0, 1, -1, 0, 0, 0), 1, '16BUI', 1, 0) AS rast
+)
+SELECT
+    ST_MapAlgebra(
+        ARRAY[ROW(rast, 1)]::rastbandarg[],
+        'sample_callbackfunc(double precision[], int[], text[])'::regprocedure
+    ) AS rast
+FROM foo
+                    </pre>
+        <p>One raster, several bands</p>
+        <pre class="programlisting">
+WITH foo AS (
+    SELECT 1 AS rid, ST_AddBand(ST_AddBand(ST_AddBand(ST_MakeEmptyRaster(2, 2, 0, 0, 1, -1, 0, 0, 0), 1, '16BUI', 1, 0), 2, '8BUI', 10, 0), 3, '32BUI', 100, 0) AS rast
+)
+SELECT
+    ST_MapAlgebra(
+        ARRAY[ROW(rast, 3), ROW(rast, 1), ROW(rast, 3), ROW(rast, 2)]::rastbandarg[],
+        'sample_callbackfunc(double precision[], int[], text[])'::regprocedure
+    ) AS rast
+FROM foo
+                    </pre>
+        <p>Several rasters, several bands</p>
+        <pre class="programlisting">
+WITH foo AS (
+    SELECT 1 AS rid, ST_AddBand(ST_AddBand(ST_AddBand(ST_MakeEmptyRaster(2, 2, 0, 0, 1, -1, 0, 0, 0), 1, '16BUI', 1, 0), 2, '8BUI', 10, 0), 3, '32BUI', 100, 0) AS rast UNION ALL
+    SELECT 2 AS rid, ST_AddBand(ST_AddBand(ST_AddBand(ST_MakeEmptyRaster(2, 2, 0, 1, 1, -1, 0, 0, 0), 1, '16BUI', 2, 0), 2, '8BUI', 20, 0), 3, '32BUI', 300, 0) AS rast
+)
+SELECT
+    ST_MapAlgebra(
+        ARRAY[ROW(t1.rast, 3), ROW(t2.rast, 1), ROW(t2.rast, 3), ROW(t1.rast, 2)]::rastbandarg[],
+        'sample_callbackfunc(double precision[], int[], text[])'::regprocedure
+    ) AS rast
+FROM foo t1
+CROSS JOIN foo t2
+WHERE t1.rid = 1
+    AND t2.rid = 2
+                    </pre>
+        <p>Complete example of tiles of a coverage with neighborhood.  This query only works with PostgreSQL 9.1 or higher.</p>
+        <pre class="programlisting">
+WITH foo AS (
+    SELECT 0 AS rid, ST_AddBand(ST_MakeEmptyRaster(2, 2, 0, 0, 1, -1, 0, 0, 0), 1, '16BUI', 1, 0) AS rast UNION ALL
+    SELECT 1, ST_AddBand(ST_MakeEmptyRaster(2, 2, 2, 0, 1, -1, 0, 0, 0), 1, '16BUI', 2, 0) AS rast UNION ALL
+    SELECT 2, ST_AddBand(ST_MakeEmptyRaster(2, 2, 4, 0, 1, -1, 0, 0, 0), 1, '16BUI', 3, 0) AS rast UNION ALL
+
+    SELECT 3, ST_AddBand(ST_MakeEmptyRaster(2, 2, 0, -2, 1, -1, 0, 0, 0), 1, '16BUI', 10, 0) AS rast UNION ALL
+    SELECT 4, ST_AddBand(ST_MakeEmptyRaster(2, 2, 2, -2, 1, -1, 0, 0, 0), 1, '16BUI', 20, 0) AS rast UNION ALL
+    SELECT 5, ST_AddBand(ST_MakeEmptyRaster(2, 2, 4, -2, 1, -1, 0, 0, 0), 1, '16BUI', 30, 0) AS rast UNION ALL
+
+    SELECT 6, ST_AddBand(ST_MakeEmptyRaster(2, 2, 0, -4, 1, -1, 0, 0, 0), 1, '16BUI', 100, 0) AS rast UNION ALL
+    SELECT 7, ST_AddBand(ST_MakeEmptyRaster(2, 2, 2, -4, 1, -1, 0, 0, 0), 1, '16BUI', 200, 0) AS rast UNION ALL
+    SELECT 8, ST_AddBand(ST_MakeEmptyRaster(2, 2, 4, -4, 1, -1, 0, 0, 0), 1, '16BUI', 300, 0) AS rast
+)
+SELECT
+    t1.rid,
+    ST_MapAlgebra(
+        ARRAY[ROW(ST_Union(t2.rast), 1)]::rastbandarg[],
+        'sample_callbackfunc(double precision[], int[], text[])'::regprocedure,
+        '32BUI',
+        'CUSTOM', t1.rast,
+        1, 1
+    ) AS rast
+FROM foo t1
+CROSS JOIN foo t2
+WHERE t1.rid = 4
+    AND t2.rid BETWEEN 0 AND 8
+    AND ST_Intersects(t1.rast, t2.rast)
+GROUP BY t1.rid, t1.rast
+                    </pre>
+        <p>Example like the prior one for tiles of a coverage with neighborhood but works with PostgreSQL 9.0.</p>
+        <pre class="programlisting">
+WITH src AS (
+    SELECT 0 AS rid, ST_AddBand(ST_MakeEmptyRaster(2, 2, 0, 0, 1, -1, 0, 0, 0), 1, '16BUI', 1, 0) AS rast UNION ALL
+    SELECT 1, ST_AddBand(ST_MakeEmptyRaster(2, 2, 2, 0, 1, -1, 0, 0, 0), 1, '16BUI', 2, 0) AS rast UNION ALL
+    SELECT 2, ST_AddBand(ST_MakeEmptyRaster(2, 2, 4, 0, 1, -1, 0, 0, 0), 1, '16BUI', 3, 0) AS rast UNION ALL
+
+    SELECT 3, ST_AddBand(ST_MakeEmptyRaster(2, 2, 0, -2, 1, -1, 0, 0, 0), 1, '16BUI', 10, 0) AS rast UNION ALL
+    SELECT 4, ST_AddBand(ST_MakeEmptyRaster(2, 2, 2, -2, 1, -1, 0, 0, 0), 1, '16BUI', 20, 0) AS rast UNION ALL
+    SELECT 5, ST_AddBand(ST_MakeEmptyRaster(2, 2, 4, -2, 1, -1, 0, 0, 0), 1, '16BUI', 30, 0) AS rast UNION ALL
+
+    SELECT 6, ST_AddBand(ST_MakeEmptyRaster(2, 2, 0, -4, 1, -1, 0, 0, 0), 1, '16BUI', 100, 0) AS rast UNION ALL
+    SELECT 7, ST_AddBand(ST_MakeEmptyRaster(2, 2, 2, -4, 1, -1, 0, 0, 0), 1, '16BUI', 200, 0) AS rast UNION ALL
+    SELECT 8, ST_AddBand(ST_MakeEmptyRaster(2, 2, 4, -4, 1, -1, 0, 0, 0), 1, '16BUI', 300, 0) AS rast
+)
+WITH foo AS (
+    SELECT
+        t1.rid,
+        ST_Union(t2.rast) AS rast
+    FROM src t1
+    JOIN src t2
+        ON ST_Intersects(t1.rast, t2.rast)
+        AND t2.rid BETWEEN 0 AND 8
+    WHERE t1.rid = 4
+    GROUP BY t1.rid
+), bar AS (
+    SELECT
+        t1.rid,
+        ST_MapAlgebra(
+            ARRAY[ROW(t2.rast, 1)]::rastbandarg[],
+            'raster_nmapalgebra_test(double precision[], int[], text[])'::regprocedure,
+            '32BUI',
+            'CUSTOM', t1.rast,
+            1, 1
+        ) AS rast
+    FROM src t1
+    JOIN foo t2
+        ON t1.rid = t2.rid
+)
+SELECT
+    rid,
+    (ST_Metadata(rast)),
+    (ST_BandMetadata(rast, 1)),
+    ST_Value(rast, 1, 1, 1)
+FROM bar;
+                    </pre>
+      </div>
+      <div class="refsection" id="idm33890">
+        <h2>Examples: Variants 2 and 3</h2>
+        <p>One raster, several bands</p>
+        <pre class="programlisting">
+WITH foo AS (
+    SELECT 1 AS rid, ST_AddBand(ST_AddBand(ST_AddBand(ST_MakeEmptyRaster(2, 2, 0, 0, 1, -1, 0, 0, 0), 1, '16BUI', 1, 0), 2, '8BUI', 10, 0), 3, '32BUI', 100, 0) AS rast
+)
+SELECT
+    ST_MapAlgebra(
+        rast, ARRAY[3, 1, 3, 2]::integer[],
+        'sample_callbackfunc(double precision[], int[], text[])'::regprocedure
+    ) AS rast
+FROM foo
+                    </pre>
+        <p>One raster, one band</p>
+        <pre class="programlisting">
+WITH foo AS (
+    SELECT 1 AS rid, ST_AddBand(ST_AddBand(ST_AddBand(ST_MakeEmptyRaster(2, 2, 0, 0, 1, -1, 0, 0, 0), 1, '16BUI', 1, 0), 2, '8BUI', 10, 0), 3, '32BUI', 100, 0) AS rast
+)
+SELECT
+    ST_MapAlgebra(
+        rast, 2,
+        'sample_callbackfunc(double precision[], int[], text[])'::regprocedure
+    ) AS rast
+FROM foo
+                    </pre>
+      </div>
+      <div class="refsection" id="idm33896">
+        <h2>Examples: Variant 4</h2>
+        <p>Two rasters, two bands</p>
+        <pre class="programlisting">
+WITH foo AS (
+    SELECT 1 AS rid, ST_AddBand(ST_AddBand(ST_AddBand(ST_MakeEmptyRaster(2, 2, 0, 0, 1, -1, 0, 0, 0), 1, '16BUI', 1, 0), 2, '8BUI', 10, 0), 3, '32BUI', 100, 0) AS rast UNION ALL
+    SELECT 2 AS rid, ST_AddBand(ST_AddBand(ST_AddBand(ST_MakeEmptyRaster(2, 2, 0, 1, 1, -1, 0, 0, 0), 1, '16BUI', 2, 0), 2, '8BUI', 20, 0), 3, '32BUI', 300, 0) AS rast
+)
+SELECT
+    ST_MapAlgebra(
+        t1.rast, 2,
+        t2.rast, 1,
+        'sample_callbackfunc(double precision[], int[], text[])'::regprocedure
+    ) AS rast
+FROM foo t1
+CROSS JOIN foo t2
+WHERE t1.rid = 1
+    AND t2.rid = 2
+                    </pre>
+      </div>
+      <div class="refsection" id="idm33900">
+        <h2>Examples: Using Masks</h2>
+        <pre class="programlisting">
+WITH foo AS (SELECT
+   ST_SetBandNoDataValue(
+ST_SetValue(ST_SetValue(ST_AsRaster(
+        ST_Buffer(
+            ST_GeomFromText('LINESTRING(50 50,100 90,100 50)'), 5,'join=bevel'),
+            200,200,ARRAY['8BUI'], ARRAY[100], ARRAY[0]), ST_Buffer('POINT(70 70)'::geometry,10,'quad_segs=1') ,50),
+  'LINESTRING(20 20, 100 100, 150 98)'::geometry,1),0)  AS rast )
+SELECT 'original' AS title, rast
+FROM foo
+UNION ALL
+SELECT 'no mask mean value' AS title, ST_MapAlgebra(rast,1,'ST_mean4ma(double precision[], int[], text[])'::regprocedure) AS rast
+FROM foo
+UNION ALL
+SELECT 'mask only consider neighbors, exclude center' AS title, ST_MapAlgebra(rast,1,'ST_mean4ma(double precision[], int[], text[])'::regprocedure,
+    '{{1,1,1}, {1,0,1}, {1,1,1}}'::double precision[], false) As rast
+FROM foo
+
+UNION ALL
+SELECT 'mask weighted only consider neighbors, exclude center multi other pixel values by 2' AS title, ST_MapAlgebra(rast,1,'ST_mean4ma(double precision[], int[], text[])'::regprocedure,
+    '{{2,2,2}, {2,0,2}, {2,2,2}}'::double precision[], true) As rast
+FROM foo;
+                    </pre>
+        <div class="informaltable">
+          <table style="border-collapse: collapse; border-top: 1px solid ; border-bottom: 1px solid ; border-left: 1px solid ; border-right: 1px solid ; ">
+            <colgroup>
+              <col/>
+              <col/>
+            </colgroup>
+            <tbody>
+              <tr>
+                <td style="border-right: 1px solid ; border-bottom: 1px solid ; ">
+                                        <p>
+                                            </p><div class="informalfigure"><div class="mediaobject"><img src="../images/st_mapalgebramask01.png"/><div class="caption"><p>original</p></div></div></div><p>
+                                        </p>
+                                    </td>
+                <td style="border-bottom: 1px solid ; ">
+                                        <p>
+                                            </p><div class="informalfigure"><div class="mediaobject"><img src="../images/st_mapalgebramask02.png"/><div class="caption"><p>no mask mean value (same as having all 1s in mask matrix)</p></div></div></div><p>
+                                        </p>
+                                    </td>
+              </tr>
+              <tr>
+                <td style="border-right: 1px solid ; ">
+                                        <p>
+                                            </p><div class="informalfigure"><div class="mediaobject"><img src="../images/st_mapalgebramask03.png"/><div class="caption"><p>mask only consider neighbors, exclude center</p></div></div></div><p>
+                                        </p>
+                                    </td>
+                <td>
+                                        <p>
+                                            </p><div class="informalfigure"><div class="mediaobject"><img src="../images/st_mapalgebramask04.png"/><div class="caption"><p>mask weighted only consider neighbors, exclude center multi other pixel values by 2</p></div></div></div><p>
+                                        </p>
+                                    </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="refsection" id="idm33940">
+        <h2>See Also</h2>
+        <p>
+                        <a class="xref" href="rastbandarg.html" title="rastbandarg">rastbandarg</a>,
+                        <a class="xref" href="RT_ST_Union.html" title="ST_Union">ST_Union</a>,
+                        <a class="xref" href="RT_ST_MapAlgebra_expr.html" title="ST_MapAlgebra (expression version)">ST_MapAlgebra (expression version)</a>
+                    </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="RT_ST_Intersection.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="RT_reference.html#Raster_Processing_MapAlgebra">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="RT_ST_MapAlgebra_expr.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_Intersection </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_MapAlgebra (expression version)</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

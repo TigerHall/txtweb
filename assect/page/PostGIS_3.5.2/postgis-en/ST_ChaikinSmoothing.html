@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_ChaikinSmoothing</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_Centroid.html" title="ST_Centroid"/>
+    <link rel="next" href="ST_ConcaveHull.html" title="ST_ConcaveHull"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_ChaikinSmoothing</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_Centroid.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.14. Geometry Processing</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_ConcaveHull.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_ChaikinSmoothing">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_ChaikinSmoothing — Returns a smoothed version of a geometry, using the Chaikin algorithm</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_ChaikinSmoothing</strong>(</code>geometry <var class="pdparam">geom</var>, integer <var class="pdparam">nIterations = 1</var>, boolean <var class="pdparam">preserveEndPoints = false</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm16540">
+        <h2>Description</h2>
+        <p>Smoothes a linear or polygonal geometry using
+        <a class="link" href="http://www.idav.ucdavis.edu/education/CAGDNotes/Chaikins-Algorithm/Chaikins-Algorithm.html" target="_top">Chaikin's algorithm</a>.
+        The degree of smoothing is controlled by the <code class="varname">nIterations</code> parameter.
+        On each iteration, each interior vertex is replaced
+        by two vertices located at 1/4 of the length of the line segments before and after the vertex.
+        A reasonable degree of smoothing is provided by 3 iterations; the maximum is limited to 5.
+        </p>
+        <p>If <code class="varname">preserveEndPoints</code> is true, the endpoints of Polygon rings are not smoothed.
+        The endpoints of LineStrings are always preserved.
+        </p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>The number of vertices doubles with each iteration,
+            so the result geometry may have many more points than the input.
+            To reduce the number of points use a simplification function on the result
+            (see <a class="xref" href="ST_Simplify.html" title="ST_Simplify">ST_Simplify</a>, <a class="xref" href="ST_SimplifyPreserveTopology.html" title="ST_SimplifyPreserveTopology">ST_SimplifyPreserveTopology</a>
+            and <a class="xref" href="ST_SimplifyVW.html" title="ST_SimplifyVW">ST_SimplifyVW</a>).
+        </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p>The result has interpolated values for the Z and M dimensions when present.</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports 3d and will not drop the z-index.
+        </p>
+        <p class="availability">Availability: 2.5.0</p>
+      </div>
+      <div class="refsection" id="idm16558">
+        <h2>Examples</h2>
+        <p>Smoothing a triangle:</p>
+        <pre class="programlisting">
+SELECT ST_AsText(ST_ChaikinSmoothing(geom)) smoothed
+FROM (SELECT  'POLYGON((0 0, 8 8, 0 16, 0 0))'::geometry geom) AS foo;
+
+                 smoothed
+───────────────────────────────────────────
+ POLYGON((2 2,6 6,6 10,2 14,0 12,0 4,2 2))
+</pre>
+        <p>Smoothing a Polygon using 1, 2 and 3 iterations:</p>
+        <div class="informaltable">
+          <table style="border-collapse: collapse; border-top: 1px solid ; border-bottom: 1px solid ; border-left: 1px solid ; border-right: 1px solid ; ">
+            <colgroup>
+              <col/>
+              <col/>
+              <col/>
+            </colgroup>
+            <tbody>
+              <tr>
+                <td style="border-right: 1px solid ; ">
+                  <div class="informalfigure">
+                    <div class="mediaobject">
+                      <img src="../images/st_chaikinsmoothing01.png"/>
+                      <div class="caption">
+                        <p>nIterations = 1</p>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td style="border-right: 1px solid ; ">
+                  <div class="informalfigure">
+                    <div class="mediaobject">
+                      <img src="../images/st_chaikinsmoothing02.png"/>
+                      <div class="caption">
+                        <p>nIterations = 2</p>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div class="informalfigure">
+                    <div class="mediaobject">
+                      <img src="../images/st_chaikinsmoothing03.png"/>
+                      <div class="caption">
+                        <p>nIterations = 3</p>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <pre class="programlisting">
+SELECT ST_ChaikinSmoothing(
+            'POLYGON ((20 20, 60 90, 10 150, 100 190, 190 160, 130 120, 190 50, 140 70, 120 10, 90 60, 20 20))',
+            generate_series(1, 3) );
+</pre>
+        <p>Smoothing a LineString using 1, 2 and 3 iterations:</p>
+        <div class="informaltable">
+          <table style="border-collapse: collapse; border-top: 1px solid ; border-bottom: 1px solid ; border-left: 1px solid ; border-right: 1px solid ; ">
+            <colgroup>
+              <col/>
+              <col/>
+              <col/>
+            </colgroup>
+            <tbody>
+              <tr>
+                <td style="border-right: 1px solid ; ">
+                  <div class="informalfigure">
+                    <div class="mediaobject">
+                      <img src="../images/st_chaikinsmoothing04.png"/>
+                      <div class="caption">
+                        <p>nIterations = 1</p>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td style="border-right: 1px solid ; ">
+                  <div class="informalfigure">
+                    <div class="mediaobject">
+                      <img src="../images/st_chaikinsmoothing05.png"/>
+                      <div class="caption">
+                        <p>nIterations = 2</p>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div class="informalfigure">
+                    <div class="mediaobject">
+                      <img src="../images/st_chaikinsmoothing06.png"/>
+                      <div class="caption">
+                        <p>nIterations = 3</p>
+                      </div>
+                    </div>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <pre class="programlisting">
+SELECT ST_ChaikinSmoothing(
+            'LINESTRING (10 140, 80 130, 100 190, 190 150, 140 20, 120 120, 50 30, 30 100)',
+            generate_series(1, 3) );
+</pre>
+      </div>
+      <div class="refsection" id="idm16622">
+        <h2>See Also</h2>
+        <p><a class="xref" href="ST_Simplify.html" title="ST_Simplify">ST_Simplify</a>, <a class="xref" href="ST_SimplifyPreserveTopology.html" title="ST_SimplifyPreserveTopology">ST_SimplifyPreserveTopology</a>, <a class="xref" href="ST_SimplifyVW.html" title="ST_SimplifyVW">ST_SimplifyVW</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_Centroid.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Geometry_Processing">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_ConcaveHull.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_Centroid </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_ConcaveHull</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

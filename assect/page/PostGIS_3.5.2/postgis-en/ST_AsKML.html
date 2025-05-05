@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_AsKML</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_AsGML.html" title="ST_AsGML"/>
+    <link rel="next" href="ST_AsLatLonText.html" title="ST_AsLatLonText"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_AsKML</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_AsGML.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.9.3. Other Formats</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_AsLatLonText.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_AsKML">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_AsKML — Return the geometry as a KML element.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">text <strong class="fsfunc">ST_AsKML</strong>(</code>geometry  <var class="pdparam">geom</var>, integer  <var class="pdparam">maxdecimaldigits=15</var>, text  <var class="pdparam">nprefix=NULL</var><code>)</code>;</p>
+          <p><code class="funcdef">text <strong class="fsfunc">ST_AsKML</strong>(</code>geography  <var class="pdparam">geog</var>, integer  <var class="pdparam">maxdecimaldigits=15</var>, text  <var class="pdparam">nprefix=NULL</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm10903">
+        <h2>Description</h2>
+        <p>Return the geometry as a Keyhole Markup Language (KML) element.
+			default maximum number of decimal places is 15,
+			default namespace is no prefix.</p>
+        <div class="warning">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Warning]" src="../images/warning.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>Using the <em class="parameter"><code>maxdecimaldigits</code></em> parameter
+            can cause output geometry to become invalid.
+            To avoid this use <a class="xref" href="ST_ReducePrecision.html" title="ST_ReducePrecision">ST_ReducePrecision</a>
+            with a suitable gridsize first.
+            </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>Requires PostGIS be compiled with Proj support.  Use <a class="xref" href="PostGIS_Full_Version.html" title="PostGIS_Full_Version">PostGIS_Full_Version</a> to confirm you have proj support compiled in.</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p class="availability">Availability: 1.2.2 - later variants that include version param came in 1.3.2</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p class="enhanced">Enhanced: 2.0.0 - Add prefix namespace, use default and named args</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p class="changed">Changed: 3.0.0 - Removed the "versioned" variant signature</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>AsKML output will not work with geometries that do not have an SRID</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports 3d and will not drop the z-index.
+        </p>
+      </div>
+      <div class="refsection" id="idm10925">
+        <h2>Examples</h2>
+        <pre class="programlisting">
+SELECT ST_AsKML(ST_GeomFromText('POLYGON((0 0,0 1,1 1,1 0,0 0))',4326));
+
+		st_askml
+		--------
+		&lt;Polygon&gt;&lt;outerBoundaryIs&gt;&lt;LinearRing&gt;&lt;coordinates&gt;0,0 0,1 1,1 1,0 0,0&lt;/coordinates&gt;&lt;/LinearRing&gt;&lt;/outerBoundaryIs&gt;&lt;/Polygon&gt;
+
+		--3d linestring
+		SELECT ST_AsKML('SRID=4326;LINESTRING(1 2 3, 4 5 6)');
+		&lt;LineString&gt;&lt;coordinates&gt;1,2,3 4,5,6&lt;/coordinates&gt;&lt;/LineString&gt;
+
+
+</pre>
+      </div>
+      <div class="refsection" id="idm10928">
+        <h2>See Also</h2>
+        <p><a class="xref" href="ST_AsSVG.html" title="ST_AsSVG">ST_AsSVG</a>, <a class="xref" href="ST_AsGML.html" title="ST_AsGML">ST_AsGML</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_AsGML.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#idm10493">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_AsLatLonText.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_AsGML </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_AsLatLonText</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_Extent</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_Expand.html" title="ST_Expand"/>
+    <link rel="next" href="ST_3DExtent.html" title="ST_3DExtent"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_Extent</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_Expand.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.18. Bounding Box Functions</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_3DExtent.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_Extent">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_Extent — Aggregate function that returns the bounding box of geometries.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">box2d <strong class="fsfunc">ST_Extent</strong>(</code>geometry set <var class="pdparam">geomfield</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm19377">
+        <h2>Description</h2>
+        <p>An aggregate function that returns a <a class="xref" href="box2d_type.html" title="box2d">box2d</a> bounding box
+        that bounds a set of geometries.
+        </p>
+        <p>The bounding box coordinates are in the spatial reference system of the input geometries.</p>
+        <p>ST_Extent is similar in concept to Oracle Spatial/Locator's SDO_AGGR_MBR.</p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>ST_Extent returns boxes with only X and Y ordinates even with 3D geometries.
+          To return XYZ ordinates use <a class="xref" href="ST_3DExtent.html" title="ST_3DExtent">ST_3DExtent</a>.</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>The returned <code class="code">box3d</code> value does not include a SRID.
+            Use <a class="xref" href="ST_SetSRID.html" title="ST_SetSRID">ST_SetSRID</a> to convert it into a geometry with SRID metadata.
+            The SRID is the same as the input geometries.</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p class="enhanced">Enhanced: 2.0.0 support for Polyhedral surfaces, Triangles and TIN was introduced.</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports Polyhedral surfaces.
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports Triangles and Triangulated Irregular Network Surfaces (TIN).
+        </p>
+      </div>
+      <div class="refsection" id="idm19399">
+        <h2>Examples</h2>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>Examples below use Massachusetts State Plane ft (SRID=2249)</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <pre class="programlisting">
+
+SELECT ST_Extent(geom) as bextent FROM sometable;
+					 st_bextent
+------------------------------------
+BOX(739651.875 2908247.25,794875.8125 2970042.75)
+
+
+--Return extent of each category of geometries
+SELECT ST_Extent(geom) as bextent
+FROM sometable
+GROUP BY category ORDER BY category;
+
+					  bextent                       |         name
+----------------------------------------------------+----------------
+ BOX(778783.5625 2951741.25,794875.8125 2970042.75) | A
+ BOX(751315.8125 2919164.75,765202.6875 2935417.25) | B
+ BOX(739651.875 2917394.75,756688.375 2935866)      | C
+
+ --Force back into a geometry
+ -- and render the extended text representation of that geometry
+SELECT ST_SetSRID(ST_Extent(geom),2249) as bextent FROM sometable;
+
+				bextent
+--------------------------------------------------------------------------------
+ SRID=2249;POLYGON((739651.875 2908247.25,739651.875 2970042.75,794875.8125 2970042.75,
+ 794875.8125 2908247.25,739651.875 2908247.25))
+		</pre>
+      </div>
+      <div class="refsection" id="idm19404">
+        <h2>See Also</h2>
+        <p>
+            <a class="xref" href="ST_EstimatedExtent.html" title="ST_EstimatedExtent">ST_EstimatedExtent</a>,
+            <a class="xref" href="ST_3DExtent.html" title="ST_3DExtent">ST_3DExtent</a>,
+            <a class="xref" href="ST_SetSRID.html" title="ST_SetSRID">ST_SetSRID</a>
+		</p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_Expand.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#BBox_Functions">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_3DExtent.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_Expand </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_3DExtent</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

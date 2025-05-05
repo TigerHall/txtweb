@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_Snap</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_SnapToGrid.html" title="ST_SnapToGrid"/>
+    <link rel="next" href="ST_SwapOrdinates.html" title="ST_SwapOrdinates"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_Snap</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_SnapToGrid.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.5. Geometry Editors</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_SwapOrdinates.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_Snap">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_Snap — 
+	Snap segments and vertices of input geometry
+	to vertices of a reference geometry.
+		</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_Snap</strong>(</code>geometry  <var class="pdparam">input</var>, geometry  <var class="pdparam">reference</var>, float  <var class="pdparam">tolerance</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm7982">
+        <h2>Description</h2>
+        <p>
+ Snaps the vertices and segments of a geometry to
+ another Geometry's vertices.
+ A snap distance tolerance is used to control where snapping is performed.
+  The result geometry is the input geometry with the vertices snapped.
+	If no snapping occurs then the input geometry is returned unchanged.
+		</p>
+        <p>
+ Snapping one geometry to another can improve
+ robustness for overlay operations by eliminating
+ nearly-coincident edges
+ (which cause problems during noding and intersection calculation).
+		</p>
+        <p>
+ Too much snapping can result in invalid topology
+ being created, so the number and location of snapped vertices
+ is decided using heuristics to determine when it
+ is safe to snap.
+ This can result in some potential snaps being omitted, however.
+		</p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>
+		  The returned geometry might lose its simplicity (see
+		  <a class="xref" href="ST_IsSimple.html" title="ST_IsSimple">ST_IsSimple</a>) and validity (see
+		  <a class="xref" href="ST_IsValid.html" title="ST_IsValid">ST_IsValid</a>).
+		  </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p>Performed by the GEOS module.</p>
+        <p class="availability">Availability: 2.0.0</p>
+      </div>
+      <div class="refsection" id="idm7993">
+        <h2>Examples</h2>
+        <div class="informaltable">
+          <table style="border-collapse: collapse; border-top: 1px solid ; border-bottom: 1px solid ; border-left: 1px solid ; border-right: 1px solid ; ">
+            <colgroup>
+              <col class="column1"/>
+              <col class="column2"/>
+            </colgroup>
+            <tbody>
+              <tr>
+                <td style="text-align: center; border-bottom: 1px solid ; " colspan="2"><div class="informalfigure"><div class="mediaobject"><img src="../images/st_snap01.png"/><div class="caption"><p>A multipolygon shown with a linestring (before any snapping)</p></div></div></div>
+					   </td>
+              </tr>
+              <tr>
+                <td style="border-right: 1px solid ; border-bottom: 1px solid ; "><div class="informalfigure"><div class="mediaobject"><img src="../images/st_snap02.png"/><div class="caption"><p>A multipolygon snapped to linestring to tolerance: 1.01 of distance.
+							  The new multipolygon is shown with reference linestring</p></div></div></div><p>
+				</p><pre class="programlisting">
+SELECT ST_AsText(ST_Snap(poly,line, ST_Distance(poly,line)*1.01)) AS polysnapped
+FROM (SELECT
+   ST_GeomFromText('MULTIPOLYGON(
+     ((26 125, 26 200, 126 200, 126 125, 26 125 ),
+      ( 51 150, 101 150, 76 175, 51 150 )),
+      (( 151 100, 151 200, 176 175, 151 100 )))') As poly,
+       ST_GeomFromText('LINESTRING (5 107, 54 84, 101 100)') As line
+	) As foo;
+
+                             polysnapped
+---------------------------------------------------------------------
+ MULTIPOLYGON(((26 125,26 200,126 200,126 125,101 100,26 125),
+ (51 150,101 150,76 175,51 150)),((151 100,151 200,176 175,151 100)))
+				</pre>
+					</td>
+                <td style="border-bottom: 1px solid ; "><div class="informalfigure"><div class="mediaobject"><img src="../images/st_snap04.png"/><div class="caption"><p>A multipolygon snapped to linestring to tolerance: 1.25 of distance.
+							  The new multipolygon is shown with reference linestring</p></div></div></div><p>
+				</p><pre class="programlisting">
+SELECT ST_AsText(
+    ST_Snap(poly,line, ST_Distance(poly,line)*1.25)
+  ) AS polysnapped
+FROM (SELECT
+  ST_GeomFromText('MULTIPOLYGON(
+    (( 26 125, 26 200, 126 200, 126 125, 26 125 ),
+      ( 51 150, 101 150, 76 175, 51 150 )),
+      (( 151 100, 151 200, 176 175, 151 100 )))') As poly,
+       ST_GeomFromText('LINESTRING (5 107, 54 84, 101 100)') As line
+	) As foo;
+
+                             polysnapped
+---------------------------------------------------------------------
+MULTIPOLYGON(((5 107,26 200,126 200,126 125,101 100,54 84,5 107),
+(51 150,101 150,76 175,51 150)),((151 100,151 200,176 175,151 100)))
+				</pre>
+						</td>
+              </tr>
+              <tr>
+                <td style="border-right: 1px solid ; "><div class="informalfigure"><div class="mediaobject"><img src="../images/st_snap03.png"/><div class="caption"><p>The linestring snapped to the original multipolygon  at tolerance 1.01 of distance.
+							  The new linestring is shown with reference multipolygon</p></div></div></div><p>
+				</p><pre class="programlisting">
+SELECT ST_AsText(
+   ST_Snap(line, poly, ST_Distance(poly,line)*1.01)
+  ) AS linesnapped
+FROM (SELECT
+  ST_GeomFromText('MULTIPOLYGON(
+     ((26 125, 26 200, 126 200, 126 125, 26 125),
+      (51 150, 101 150, 76 175, 51 150 )),
+      ((151 100, 151 200, 176 175, 151 100)))') As poly,
+       ST_GeomFromText('LINESTRING (5 107, 54 84, 101 100)') As line
+	) As foo;
+
+              linesnapped
+----------------------------------------
+ LINESTRING(5 107,26 125,54 84,101 100)
+				</pre><p>
+						  </p>
+					</td>
+                <td><div class="informalfigure"><div class="mediaobject"><img src="../images/st_snap05.png"/><div class="caption"><p>The linestring snapped to the original multipolygon  at tolerance 1.25 of distance.
+							  The new linestring is shown with reference multipolygon</p></div></div></div><p>
+				</p><pre class="programlisting">
+SELECT ST_AsText(
+ ST_Snap(line, poly, ST_Distance(poly,line)*1.25)
+  ) AS linesnapped
+FROM (SELECT
+  ST_GeomFromText('MULTIPOLYGON(
+     (( 26 125, 26 200, 126 200, 126 125, 26 125 ),
+      (51 150, 101 150, 76 175, 51 150 )),
+      ((151 100, 151 200, 176 175, 151 100 )))') As poly,
+       ST_GeomFromText('LINESTRING (5 107, 54 84, 101 100)') As line
+	) As foo;
+              linesnapped
+---------------------------------------
+LINESTRING(26 125,54 84,101 100)
+				</pre>
+					</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="refsection" id="idm8048">
+        <h2>See Also</h2>
+        <p>
+		<a class="xref" href="ST_SnapToGrid.html" title="ST_SnapToGrid">ST_SnapToGrid</a>
+		</p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_SnapToGrid.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Geometry_Editors">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_SwapOrdinates.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_SnapToGrid </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_SwapOrdinates</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

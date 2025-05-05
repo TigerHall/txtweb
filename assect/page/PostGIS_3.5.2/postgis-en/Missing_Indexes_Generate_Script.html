@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Missing_Indexes_Generate_Script</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="Loader_Generate_Nation_Script.html" title="Loader_Generate_Nation_Script"/>
+    <link rel="next" href="Normalize_Address.html" title="Normalize_Address"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">Missing_Indexes_Generate_Script</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="Loader_Generate_Nation_Script.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">12.2. Tiger Geocoder</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="Normalize_Address.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="Missing_Indexes_Generate_Script">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>Missing_Indexes_Generate_Script — Finds all tables with key columns used in geocoder joins that are missing indexes on those columns and will output the SQL DDL to
+            define the index for those tables.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">text <strong class="fsfunc">Missing_Indexes_Generate_Script</strong>(</code><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm38520">
+        <h2>Description</h2>
+        <p>Finds all tables in <code class="varname">tiger</code> and <code class="varname">tiger_data</code> schemas with key columns used in geocoder joins that are missing indexes on those columns and will output the SQL DDL to
+            define the index for those tables. This is a helper function that adds new indexes needed to make queries faster that may have been missing during the load process.
+            As the geocoder is improved, this function will be updated to accommodate new indexes being used. If this function outputs nothing, it means
+            all your tables have what we think are the key indexes already in place.</p>
+        <p class="availability">Availability: 2.0.0</p>
+      </div>
+      <div class="refsection" id="idm38526">
+        <h2>Examples</h2>
+        <pre class="programlisting">SELECT missing_indexes_generate_script();
+-- output: This was run on a database that was created before many corrections were made to the loading script ---
+CREATE INDEX idx_tiger_county_countyfp ON tiger.county USING btree(countyfp);
+CREATE INDEX idx_tiger_cousub_countyfp ON tiger.cousub USING btree(countyfp);
+CREATE INDEX idx_tiger_edges_tfidr ON tiger.edges USING btree(tfidr);
+CREATE INDEX idx_tiger_edges_tfidl ON tiger.edges USING btree(tfidl);
+CREATE INDEX idx_tiger_zip_lookup_all_zip ON tiger.zip_lookup_all USING btree(zip);
+CREATE INDEX idx_tiger_data_ma_county_countyfp ON tiger_data.ma_county USING btree(countyfp);
+CREATE INDEX idx_tiger_data_ma_cousub_countyfp ON tiger_data.ma_cousub USING btree(countyfp);
+CREATE INDEX idx_tiger_data_ma_edges_countyfp ON tiger_data.ma_edges USING btree(countyfp);
+CREATE INDEX idx_tiger_data_ma_faces_countyfp ON tiger_data.ma_faces USING btree(countyfp);
+        </pre>
+      </div>
+      <div class="refsection" id="idm38529">
+        <h2>See Also</h2>
+        <p><a class="xref" href="Loader_Generate_Script.html" title="Loader_Generate_Script">Loader_Generate_Script</a>, <a class="xref" href="Install_Missing_Indexes.html" title="Install_Missing_Indexes">Install_Missing_Indexes</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="Loader_Generate_Nation_Script.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="Extras.html#Tiger_Geocoder">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="Normalize_Address.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">Loader_Generate_Nation_Script </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> Normalize_Address</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

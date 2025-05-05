@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_AsGeoJSON</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_AsGeobuf.html" title="ST_AsGeobuf"/>
+    <link rel="next" href="ST_AsGML.html" title="ST_AsGML"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_AsGeoJSON</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_AsGeobuf.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.9.3. Other Formats</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_AsGML.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_AsGeoJSON">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_AsGeoJSON — Return a geometry or feature in GeoJSON format.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">text <strong class="fsfunc">ST_AsGeoJSON</strong>(</code>record  <var class="pdparam">feature</var>, text  <var class="pdparam">geom_column=""</var>, integer  <var class="pdparam">maxdecimaldigits=9</var>, boolean  <var class="pdparam">pretty_bool=false</var>, text  <var class="pdparam">id_column=''</var><code>)</code>;</p>
+          <p><code class="funcdef">text <strong class="fsfunc">ST_AsGeoJSON</strong>(</code>geometry  <var class="pdparam">geom</var>, integer  <var class="pdparam">maxdecimaldigits=9</var>, integer  <var class="pdparam">options=8</var><code>)</code>;</p>
+          <p><code class="funcdef">text <strong class="fsfunc">ST_AsGeoJSON</strong>(</code>geography  <var class="pdparam">geog</var>, integer  <var class="pdparam">maxdecimaldigits=9</var>, integer  <var class="pdparam">options=0</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm10654">
+        <h2>Description</h2>
+        <p>
+Returns a geometry as a GeoJSON "geometry" object,
+or a row as a GeoJSON "feature" object.
+        </p>
+        <p>
+The resulting GeoJSON geometry and feature representations conform
+with the <a class="link" href="https://tools.ietf.org/html/rfc7946" target="_top">GeoJSON
+specifications RFC 7946</a>, except when the parsed geometries
+are referenced with a CRS other than WGS84 longitude and latitude
+(<a class="link" href="https://epsg.io/4326" target="_top">EPSG:4326</a>, <a class="link" href="http://epsg.io/4326.gml" target="_top">urn:ogc:def:crs:OGC::CRS84</a>);
+the GeoJSON geometry object will then have a short CRS SRID identifier
+attached by default.
+
+2D and 3D Geometries are both supported.
+GeoJSON only supports SFS 1.1 geometry types
+(no curve support for example).
+        </p>
+        <p>
+The <code class="varname">geom_column</code> parameter is used to distinguish
+between multiple geometry columns.
+If omitted, the first geometry column in the record will be determined.
+Conversely, passing the parameter will save column type lookups.
+</p>
+        <p>The <code class="varname">maxdecimaldigits</code> argument may be used to reduce the maximum number of decimal places used in output (defaults to 9). If you are using EPSG:4326 and are outputting the geometry only for display, <code class="varname">maxdecimaldigits</code>=6 can be a good choice for many maps.</p>
+        <div class="warning">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Warning]" src="../images/warning.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>Using the <em class="parameter"><code>maxdecimaldigits</code></em> parameter
+            can cause output geometry to become invalid.
+            To avoid this use <a class="xref" href="ST_ReducePrecision.html" title="ST_ReducePrecision">ST_ReducePrecision</a>
+            with a suitable gridsize first.
+            </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p>The <code class="varname">options</code> argument can be used to add BBOX or CRS in GeoJSON output:
+			  </p>
+        <div class="itemizedlist">
+          <ul class="itemizedlist" style="list-style-type: disc; ">
+            <li class="listitem">
+              <p>0: means no option</p>
+            </li>
+            <li class="listitem">
+              <p>1: GeoJSON BBOX</p>
+            </li>
+            <li class="listitem">
+              <p>2: GeoJSON Short CRS (e.g EPSG:4326)</p>
+            </li>
+            <li class="listitem">
+              <p>4: GeoJSON Long CRS (e.g urn:ogc:def:crs:EPSG::4326)</p>
+            </li>
+            <li class="listitem">
+              <p>8: GeoJSON Short CRS if not EPSG:4326 (default)</p>
+            </li>
+          </ul>
+        </div>
+        <p>
+			</p>
+        <p>The <code class="varname">id_column</code> parameter is used to set the "id" member of the returned GeoJSON features. As per GeoJSON RFC, this SHOULD be used whenever a feature has a commonly used identifier, such as a primary key. When not specified, the produced features will not get an "id" member and any columns other than the geometry, including any potential keys, will just end up inside the feature’s "properties" member.</p>
+        <p>The GeoJSON specification states that polygons are oriented using the Right-Hand Rule,
+            and some clients require this orientation.
+            This can be ensured by using <a class="xref" href="ST_ForcePolygonCCW.html" title="ST_ForcePolygonCCW">
+				ST_ForcePolygonCCW
+			</a>.
+            The specification also requires that geometry be in the WGS84 coordinate system
+            (SRID = 4326).
+            If necessary geometry can be projected into WGS84 using <a class="xref" href="ST_Transform.html" title="ST_Transform">ST_Transform</a>:
+            <code class="code">ST_Transform( geom, 4326 )</code>.
+            </p>
+        <p>GeoJSON can be tested and viewed online at <a class="link" href="http://geojson.io/" target="_top">geojson.io</a>
+            and <a class="link" href="http://geojson.io/" target="_top">geojsonlint.com</a>.
+            It is widely supported by web mapping frameworks:
+                </p>
+        <div class="itemizedlist">
+          <ul class="itemizedlist" style="list-style-type: disc; ">
+            <li class="listitem">
+              <p>
+                <a class="link" href="https://openlayers.org/en/latest/examples/geojson.html" target="_top">OpenLayers GeoJSON Example</a>
+              </p>
+            </li>
+            <li class="listitem">
+              <p>
+                <a class="link" href="https://leafletjs.com/examples/geojson/" target="_top">Leaflet GeoJSON Example</a>
+              </p>
+            </li>
+            <li class="listitem">
+              <p>
+                <a class="link" href="https://www.mapbox.com/mapbox-gl-js/example/multiple-geometries/" target="_top">Mapbox GL GeoJSON Example</a>
+              </p>
+            </li>
+          </ul>
+        </div>
+        <p>
+            </p>
+        <p class="availability">Availability: 1.3.4</p>
+        <p class="availability">Availability: 1.5.0 geography support was introduced.</p>
+        <p class="changed">Changed: 2.0.0 support default args and named args.</p>
+        <p class="changed">Changed: 3.0.0 support records as input</p>
+        <p class="changed">Changed: 3.0.0 output SRID if not EPSG:4326.</p>
+        <p class="changed">Changed: 3.5.0 allow specifying the column containing the feature id</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports 3d and will not drop the z-index.
+        </p>
+      </div>
+      <div class="refsection" id="idm10712">
+        <h2>Examples</h2>
+        <p>Generate a FeatureCollection:</p>
+        <pre class="programlisting">SELECT json_build_object(
+    'type', 'FeatureCollection',
+    'features', json_agg(ST_AsGeoJSON(t.*, id_column =&gt; 'id')::json)
+    )
+FROM ( VALUES (1, 'one', 'POINT(1 1)'::geometry),
+              (2, 'two', 'POINT(2 2)'),
+              (3, 'three', 'POINT(3 3)')
+     ) as t(id, name, geom);</pre>
+        <pre class="screen">{"type" : "FeatureCollection", "features" : [{"type": "Feature", "geometry": {"type":"Point","coordinates":[1,1]}, "id": 1, "properties": {"name": "one"}}, {"type": "Feature", "geometry": {"type":"Point","coordinates":[2,2]}, "id": 2, "properties": {"name": "two"}}, {"type": "Feature", "geometry": {"type":"Point","coordinates":[3,3]}, "id": 3, "properties": {"name": "three"}}]}</pre>
+        <p>Generate a Feature:</p>
+        <pre class="programlisting">SELECT ST_AsGeoJSON(t.*, id_column =&gt; 'id')
+FROM (VALUES (1, 'one', 'POINT(1 1)'::geometry)) AS t(id, name, geom);</pre>
+        <pre class="screen">                                                  st_asgeojson
+-----------------------------------------------------------------------------------------------------------------
+ {"type": "Feature", "geometry": {"type":"Point","coordinates":[1,1]}, "id": 1, "properties": {"name": "one"}}
+</pre>
+        <p>Don't forget to transform your data to WGS84 longitude, latitude to conform with the GeoJSON specification:</p>
+        <pre class="programlisting">SELECT ST_AsGeoJSON(ST_Transform(geom,4326)) from fe_edges limit 1;</pre>
+        <pre class="screen">					   st_asgeojson
+-----------------------------------------------------------------------------------------------------------
+
+{"type":"MultiLineString","coordinates":[[[-89.734634999999997,31.492072000000000],
+[-89.734955999999997,31.492237999999997]]]}
+</pre>
+        <p>3D geometries are supported:</p>
+        <pre class="programlisting">SELECT ST_AsGeoJSON('LINESTRING(1 2 3, 4 5 6)');</pre>
+        <pre class="screen">{"type":"LineString","coordinates":[[1,2,3],[4,5,6]]}</pre>
+        <p>Options argument can be used to add BBOX and CRS in GeoJSON output:</p>
+        <pre class="programlisting"> SELECT ST_AsGeoJSON(ST_SetSRID('POINT(1 1)'::geometry, 4326), 9, 4|1);</pre>
+        <pre class="screen">
+  {"type":"Point","crs":{"type":"name","properties":{"name":"urn:ogc:def:crs:EPSG::4326"}},"bbox":[1.000000000,1.000000000,1.000000000,1.000000000],"coordinates":[1,1]}
+</pre>
+      </div>
+      <div class="refsection" id="idm10729">
+        <h2>See Also</h2>
+        <p><a class="xref" href="ST_GeomFromGeoJSON.html" title="ST_GeomFromGeoJSON">ST_GeomFromGeoJSON</a>, <a class="xref" href="ST_ForcePolygonCCW.html" title="ST_ForcePolygonCCW">
+				ST_ForcePolygonCCW
+			</a>, <a class="xref" href="ST_Transform.html" title="ST_Transform">ST_Transform</a> </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_AsGeobuf.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#idm10493">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_AsGML.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_AsGeobuf </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_AsGML</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

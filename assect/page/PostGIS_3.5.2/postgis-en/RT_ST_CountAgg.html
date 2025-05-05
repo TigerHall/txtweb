@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_CountAgg</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="RT_ST_Count.html" title="ST_Count"/>
+    <link rel="next" href="RT_ST_Histogram.html" title="ST_Histogram"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_CountAgg</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="RT_ST_Count.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">11.9. Raster Band Statistics and Analytics</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="RT_ST_Histogram.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="RT_ST_CountAgg">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_CountAgg — 
+                    Aggregate. Returns the number of pixels in a given band of a set of rasters. If no band is specified defaults to band 1. If exclude_nodata_value is set to true, will only count pixels that are not equal to the NODATA value.
+                </p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">bigint <strong class="fsfunc">ST_CountAgg</strong>(</code>raster  <var class="pdparam">rast</var>, integer  <var class="pdparam">nband</var>, boolean  <var class="pdparam">exclude_nodata_value</var>, double precision  <var class="pdparam">sample_percent</var><code>)</code>;</p>
+          <p><code class="funcdef">bigint <strong class="fsfunc">ST_CountAgg</strong>(</code>raster  <var class="pdparam">rast</var>, integer  <var class="pdparam">nband</var>, boolean  <var class="pdparam">exclude_nodata_value</var><code>)</code>;</p>
+          <p><code class="funcdef">bigint <strong class="fsfunc">ST_CountAgg</strong>(</code>raster  <var class="pdparam">rast</var>, boolean  <var class="pdparam">exclude_nodata_value</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm31909">
+        <h2>Description</h2>
+        <p>Returns the number of pixels in a given band of a set of rasters.  If no band is specified <code class="varname">nband</code> defaults to 1.</p>
+        <p>
+                    If <code class="varname">exclude_nodata_value</code> is set to true, will only count pixels with value not equal to the <code class="varname">NODATA</code> value of the raster. Set <code class="varname">exclude_nodata_value</code> to false to get count all pixels
+                </p>
+        <p>By default will sample all pixels. To get faster response, set <code class="varname">sample_percent</code> to value between zero (0) and one (1)</p>
+        <p class="availability">Availability: 2.2.0 </p>
+      </div>
+      <div class="refsection" id="idm31920">
+        <h2>Examples</h2>
+        <pre class="programlisting">
+WITH foo AS (
+    SELECT
+        rast.rast
+    FROM (
+        SELECT ST_SetValue(
+            ST_SetValue(
+                ST_SetValue(
+                    ST_AddBand(
+                        ST_MakeEmptyRaster(10, 10, 10, 10, 2, 2, 0, 0,0)
+                        , 1, '64BF', 0, 0
+                    )
+                    , 1, 1, 1, -10
+                )
+                , 1, 5, 4, 0
+            )
+            , 1, 5, 5, 3.14159
+        ) AS rast
+    ) AS rast
+    FULL JOIN (
+        SELECT generate_series(1, 10) AS id
+    ) AS id
+        ON 1 = 1
+)
+SELECT
+    ST_CountAgg(rast, 1, TRUE)
+FROM foo;
+
+ st_countagg
+-------------
+          20
+(1 row)
+                </pre>
+      </div>
+      <div class="refsection" id="idm31923">
+        <h2>See Also</h2>
+        <p>
+                    <a class="xref" href="RT_ST_Count.html" title="ST_Count">ST_Count</a>,
+                    <a class="xref" href="RT_ST_SummaryStats.html" title="ST_SummaryStats">ST_SummaryStats</a>,
+                    <a class="xref" href="RT_ST_SetBandNoDataValue.html" title="ST_SetBandNoDataValue">ST_SetBandNoDataValue</a>
+                </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="RT_ST_Count.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="RT_reference.html#RasterBand_Stats">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="RT_ST_Histogram.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_Count </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_Histogram</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

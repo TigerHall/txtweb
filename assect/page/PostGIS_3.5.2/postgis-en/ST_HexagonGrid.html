@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_HexagonGrid</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_TileEnvelope.html" title="ST_TileEnvelope"/>
+    <link rel="next" href="ST_Hexagon.html" title="ST_Hexagon"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_HexagonGrid</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_TileEnvelope.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.3. Geometry Constructors</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_Hexagon.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_HexagonGrid">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_HexagonGrid — Returns a set of hexagons and cell indices that completely cover the bounds of the geometry argument.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">setof record <strong class="fsfunc">ST_HexagonGrid</strong>(</code>float8 <var class="pdparam">size</var>, geometry <var class="pdparam">bounds</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm4299">
+        <h2>Description</h2>
+        <p>Starts with the concept of a hexagon tiling of the plane.
+			(Not a hexagon tiling of the globe, this is not the
+			<a class="link" href="https://github.com/uber/h3" target="_top">H3</a> tiling scheme.)
+			For a given planar SRS, and a given edge size, starting at the origin of the SRS,
+			there is one unique hexagonal tiling of the plane, Tiling(SRS, Size).
+			This function answers the question: what hexagons in a given Tiling(SRS, Size)
+			overlap with a given bounds.</p>
+        <p>
+          <span class="inlinemediaobject">
+            <img src="../images/st_hexagongrid01.png"/>
+          </span>
+        </p>
+        <p>The SRS for the output hexagons is the SRS provided by the bounds geometry.</p>
+        <p>Doubling or tripling the edge size of the hexagon generates a new parent tiling that
+			fits with the origin tiling. Unfortunately, it is not possible to generate parent
+			hexagon tilings that the child tiles perfectly fit inside.</p>
+        <p>
+          <span class="inlinemediaobject">
+            <img src="../images/st_hexagongrid02.png"/>
+          </span>
+        </p>
+        <p class="availability">Availability: 3.1.0</p>
+      </div>
+      <div class="refsection" id="idm4314">
+        <h2>Example: Counting points in hexagons</h2>
+        <p>To do a point summary against a hexagonal tiling, generate a hexagon grid using the
+		extent of the points as the bounds, then spatially join to that grid.</p>
+        <pre class="programlisting">SELECT COUNT(*), hexes.geom
+FROM
+    ST_HexagonGrid(
+        10000,
+        ST_SetSRID(ST_EstimatedExtent('pointtable', 'geom'), 3857)
+    ) AS hexes
+    INNER JOIN
+    pointtable AS pts
+    ON ST_Intersects(pts.geom, hexes.geom)
+GROUP BY hexes.geom;</pre>
+      </div>
+      <div class="refsection" id="idm4318">
+        <h2>Example: Generating hex coverage of polygons</h2>
+        <p>If we generate a set of hexagons for each polygon boundary and filter
+			out those that do not intersect their hexagons, we end up with a tiling for
+			each polygon.</p>
+        <p>
+          <span class="inlinemediaobject">
+            <img src="../images/st_hexagongrid03.png"/>
+          </span>
+        </p>
+        <p>Tiling states results in a hexagon coverage of each state, and multiple
+			hexagons overlapping at the borders between states.</p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>The LATERAL keyword is implied for set-returning functions when referring to a prior table in the FROM list. So CROSS JOIN LATERAL, CROSS JOIN, or just plain , are equivalent constructs for this example.</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <pre class="programlisting">SELECT admin1.gid, hex.geom
+FROM
+    admin1
+    CROSS JOIN
+    ST_HexagonGrid(100000, admin1.geom) AS hex
+WHERE
+    adm0_a3 = 'USA'
+    AND
+    ST_Intersects(admin1.geom, hex.geom)</pre>
+      </div>
+      <div class="refsection" id="idm4329">
+        <h2>See Also</h2>
+        <p><a class="xref" href="ST_EstimatedExtent.html" title="ST_EstimatedExtent">ST_EstimatedExtent</a>, <a class="xref" href="ST_SetSRID.html" title="ST_SetSRID">ST_SetSRID</a>, <a class="xref" href="ST_SquareGrid.html" title="ST_SquareGrid">ST_SquareGrid</a>, <a class="xref" href="ST_TileEnvelope.html" title="ST_TileEnvelope">ST_TileEnvelope</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_TileEnvelope.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Geometry_Constructors">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_Hexagon.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_TileEnvelope </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_Hexagon</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

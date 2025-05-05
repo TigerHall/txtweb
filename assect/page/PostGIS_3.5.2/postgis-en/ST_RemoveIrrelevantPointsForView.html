@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_RemoveIrrelevantPointsForView</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_RemoveRepeatedPoints.html" title="ST_RemoveRepeatedPoints"/>
+    <link rel="next" href="ST_RemoveSmallParts.html" title="ST_RemoveSmallParts"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_RemoveIrrelevantPointsForView</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_RemoveRepeatedPoints.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.5. Geometry Editors</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_RemoveSmallParts.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_RemoveIrrelevantPointsForView">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_RemoveIrrelevantPointsForView — Removes points that are irrelevant for rendering a specific rectangluar view of a geometry.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_RemoveIrrelevantPointsForView</strong>(</code>geometry  <var class="pdparam">geom</var>, box2d  <var class="pdparam">bounds</var>, boolean <var class="pdparam">cartesian_hint = false</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm7546">
+        <h2>Description</h2>
+        <p>Returns a <a class="xref" href="geometry.html" title="geometry">geometry</a> without points being irrelevant for rendering the geometry within a given rectangluar view.</p>
+        <p>This function can be used to quickly preprocess geometries that should be rendered only within certain bounds.</p>
+        <p>Only geometries of type (MULTI)POLYGON and (MULTI)LINESTRING are evaluated. Other geometries keep unchanged.</p>
+        <p>In contrast to <code class="code">ST_ClipByBox2D()</code> this function
+			</p>
+        <div class="itemizedlist">
+          <ul class="itemizedlist" style="list-style-type: disc; ">
+            <li class="listitem">
+              <p>sorts out points without computing new intersection points which avoids rounding errors and usually increases performance,</p>
+            </li>
+            <li class="listitem">
+              <p>returns a geometry with equal or similar point number,</p>
+            </li>
+            <li class="listitem">
+              <p>leads to the same rendering result within the specified view, and</p>
+            </li>
+            <li class="listitem">
+              <p>may introduce self-intersections which would make the resulting geometry invalid (see example below).</p>
+            </li>
+          </ul>
+        </div>
+        <p>
+		</p>
+        <p>If <code class="code">cartesian_hint</code> is set to <code class="code">true</code>,
+			the algorithm applies additional optimizations involving cartesian math
+			to further reduce the resulting point number.
+			Please note that using this option might introduce rendering artifacts
+			if the resulting coordinates are projected into another (non-cartesian)
+			coordinate system before rendering.
+		</p>
+        <div class="warning">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Warning]" src="../images/warning.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>For polygons, this function does currently not ensure that the result is valid.
+		This situation can be checked with <a class="xref" href="ST_IsValid.html" title="ST_IsValid">ST_IsValid</a> and repaired with <a class="xref" href="ST_MakeValid.html" title="ST_MakeValid">ST_MakeValid</a>.
+		</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p>
+			</p>
+        <div class="informalfigure">
+          <div class="mediaobject">
+            <img src="../images/st_removeirrelevantpointsforview.png"/>
+            <div class="caption">
+              <p>Example: ST_RemoveIrrelevantPointsForView() applied to a polygon. Blue points remain, the rendering result (light-blue area) within the grey view box remains as well.</p>
+            </div>
+          </div>
+        </div>
+        <p>
+		</p>
+        <p>
+			</p>
+        <div class="informalfigure">
+          <div class="mediaobject">
+            <img src="../images/st_removeirrelevantpointsforview_crossing.png"/>
+            <div class="caption">
+              <p>Example: Due to the fact that points are just sorted out and no new points are computed, the result of ST_RemoveIrrelevantPointsForView() may contain self-intersections.</p>
+            </div>
+          </div>
+        </div>
+        <p>
+		</p>
+        <p class="availability">Availability: 3.5.0</p>
+      </div>
+      <div class="refsection" id="idm7585">
+        <h2>Examples</h2>
+        <pre class="programlisting">
+			SELECT ST_AsText(
+			ST_RemoveIrrelevantPointsForView(
+			ST_GeomFromText('MULTIPOLYGON(((10 10, 20 10, 30 10, 40 10, 20 20, 10 20, 10 10)),((10 10, 20 10, 20 20, 10 20, 10 10)))'),
+			ST_MakeEnvelope(12,12,18,18), true));
+		
+		st_astext
+		---------
+		    MULTIPOLYGON(((10 10,40 10,20 20,10 20,10 10)),((10 10,20 10,20 20,10 20,10 10)))
+		</pre>
+        <pre class="programlisting">
+			SELECT ST_AsText(
+			ST_RemoveIrrelevantPointsForView(
+			ST_GeomFromText('MULTILINESTRING((0 0, 10 0,20 0,30 0), (0 15, 5 15, 10 15, 15 15, 20 15, 25 15, 30 15, 40 15), (13 13,15 15,17 17))'),
+			ST_MakeEnvelope(12,12,18,18), true));
+		
+		st_astext
+		---------
+			MULTILINESTRING((10 15,15 15,20 15),(13 13,15 15,17 17))
+		</pre>
+        <pre class="programlisting">
+			SELECT ST_AsText(
+			ST_RemoveIrrelevantPointsForView(
+			ST_GeomFromText('LINESTRING(0 0, 10 0,20 0,30 0)'),
+			ST_MakeEnvelope(12,12,18,18), true));
+		
+		st_astext
+		---------
+		    LINESTRING EMPTY
+		</pre>
+        <pre class="programlisting">
+			SELECT ST_AsText(
+			ST_RemoveIrrelevantPointsForView(
+			ST_GeomFromText('POLYGON((0 30, 15 30, 30 30, 30 0, 0 0, 0 30))'),
+			ST_MakeEnvelope(12,12,18,18), true));
+		
+		st_astext
+		---------
+		    POLYGON((15 30,30 0,0 0,15 30))
+		</pre>
+        <pre class="programlisting">
+			SELECT ST_AsText(
+			ST_RemoveIrrelevantPointsForView(
+			ST_GeomFromText('POLYGON((0 30, 15 30, 30 30, 30 0, 0 0, 0 30))'),
+			ST_MakeEnvelope(12,12,18,18)));
+		
+		st_astext
+		---------
+		    POLYGON((0 30,30 30,30 0,0 0,0 30))
+		</pre>
+      </div>
+      <div class="refsection" id="idm7592">
+        <h2>See Also</h2>
+        <p><a class="xref" href="ST_ClipByBox2D.html" title="ST_ClipByBox2D">ST_ClipByBox2D</a>, <a class="xref" href="ST_Intersection.html" title="ST_Intersection">ST_Intersection</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_RemoveRepeatedPoints.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Geometry_Editors">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_RemoveSmallParts.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_RemoveRepeatedPoints </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_RemoveSmallParts</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

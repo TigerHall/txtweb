@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_Histogram</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="RT_ST_CountAgg.html" title="ST_CountAgg"/>
+    <link rel="next" href="RT_ST_Quantile.html" title="ST_Quantile"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_Histogram</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="RT_ST_CountAgg.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">11.9. Raster Band Statistics and Analytics</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="RT_ST_Quantile.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="RT_ST_Histogram">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_Histogram — Returns a set of record summarizing a raster or raster coverage data distribution separate bin ranges. Number of bins are autocomputed if not specified.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">SETOF record <strong class="fsfunc">ST_Histogram</strong>(</code>raster  <var class="pdparam">rast</var>, integer  <var class="pdparam">nband=1</var>, boolean  <var class="pdparam">exclude_nodata_value=true</var>, integer  <var class="pdparam">bins=autocomputed</var>, double precision[]  <var class="pdparam">width=NULL</var>, boolean  <var class="pdparam">right=false</var><code>)</code>;</p>
+          <p><code class="funcdef">SETOF record <strong class="fsfunc">ST_Histogram</strong>(</code>raster  <var class="pdparam">rast</var>, integer  <var class="pdparam">nband</var>, integer  <var class="pdparam">bins</var>, double precision[]  <var class="pdparam">width=NULL</var>, boolean  <var class="pdparam">right=false</var><code>)</code>;</p>
+          <p><code class="funcdef">SETOF record <strong class="fsfunc">ST_Histogram</strong>(</code>raster  <var class="pdparam">rast</var>, integer  <var class="pdparam">nband</var>, boolean  <var class="pdparam">exclude_nodata_value</var>, integer  <var class="pdparam">bins</var>, boolean  <var class="pdparam">right</var><code>)</code>;</p>
+          <p><code class="funcdef">SETOF record <strong class="fsfunc">ST_Histogram</strong>(</code>raster  <var class="pdparam">rast</var>, integer  <var class="pdparam">nband</var>, integer  <var class="pdparam">bins</var>, boolean  <var class="pdparam">right</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm32007">
+        <h2>Description</h2>
+        <p>Returns set of records consisting of min, max, count, percent for a given raster band for each bin. If no band is specified <code class="varname">nband</code> defaults to 1. </p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>By default only considers pixel values not equal to the <code class="varname">nodata</code> value . Set <code class="varname">exclude_nodata_value</code> to false to get count all pixels.</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="variablelist">
+          <dl class="variablelist">
+            <dt>
+              <span class="term">
+                <code class="varname">width</code>
+              </span>
+            </dt>
+            <dd>
+              <p>width: an array indicating the width of each category/bin. If the number of bins is greater than the number of widths, the widths are repeated. </p>
+              <p>Example: 9 bins, widths are [a, b, c] will have the output be [a, b, c, a, b, c, a, b, c]</p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">bins</code>
+              </span>
+            </dt>
+            <dd>
+              <p>Number of breakouts -- this is the number of records you'll get back from the function if specified. If not specified
+                            then the number of breakouts is autocomputed.</p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">right</code>
+              </span>
+            </dt>
+            <dd>
+              <p>compute the histogram from the right rather than from the left (default). This changes the criteria for evaluating a value x from [a, b) to (a, b]</p>
+            </dd>
+          </dl>
+        </div>
+        <p class="changed">Changed: 3.1.0 Removed ST_Histogram(table_name, column_name) variant. </p>
+        <p class="availability">Availability: 2.0.0 </p>
+      </div>
+      <div class="refsection" id="idm32034">
+        <h2>Example: Single raster tile - compute histograms for bands 1, 2, 3 and autocompute bins</h2>
+        <pre class="programlisting">SELECT band, (stats).*
+FROM (SELECT rid, band, ST_Histogram(rast, band) As stats
+    FROM dummy_rast CROSS JOIN generate_series(1,3) As band
+     WHERE rid=2) As foo;
+
+ band |  min  |  max  | count | percent
+------+-------+-------+-------+---------
+    1 |   249 |   250 |     2 |    0.08
+    1 |   250 |   251 |     2 |    0.08
+    1 |   251 |   252 |     1 |    0.04
+    1 |   252 |   253 |     2 |    0.08
+    1 |   253 |   254 |    18 |    0.72
+    2 |    78 | 113.2 |    11 |    0.44
+    2 | 113.2 | 148.4 |     4 |    0.16
+    2 | 148.4 | 183.6 |     4 |    0.16
+    2 | 183.6 | 218.8 |     1 |    0.04
+    2 | 218.8 |   254 |     5 |     0.2
+    3 |    62 | 100.4 |    11 |    0.44
+    3 | 100.4 | 138.8 |     5 |     0.2
+    3 | 138.8 | 177.2 |     4 |    0.16
+    3 | 177.2 | 215.6 |     1 |    0.04
+    3 | 215.6 |   254 |     4 |    0.16</pre>
+      </div>
+      <div class="refsection" id="idm32037">
+        <h2>Example: Just band 2 but for 6 bins</h2>
+        <pre class="programlisting">SELECT (stats).*
+FROM (SELECT rid, ST_Histogram(rast, 2,6) As stats
+    FROM dummy_rast
+     WHERE rid=2) As foo;
+
+    min     |    max     | count | percent
+------------+------------+-------+---------
+         78 | 107.333333 |     9 |    0.36
+ 107.333333 | 136.666667 |     6 |    0.24
+ 136.666667 |        166 |     0 |       0
+        166 | 195.333333 |     4 |    0.16
+ 195.333333 | 224.666667 |     1 |    0.04
+ 224.666667 |        254 |     5 |     0.2
+(6 rows)
+
+-- Same as previous but we explicitly control the pixel value range of each bin.
+SELECT (stats).*
+FROM (SELECT rid, ST_Histogram(rast, 2,6,ARRAY[0.5,1,4,100,5]) As stats
+    FROM dummy_rast
+     WHERE rid=2) As foo;
+
+  min  |  max  | count | percent
+-------+-------+-------+----------
+    78 |  78.5 |     1 |     0.08
+  78.5 |  79.5 |     1 |     0.04
+  79.5 |  83.5 |     0 |        0
+  83.5 | 183.5 |    17 |   0.0068
+ 183.5 | 188.5 |     0 |        0
+ 188.5 |   254 |     6 | 0.003664
+(6 rows)</pre>
+      </div>
+      <div class="refsection" id="idm32040">
+        <h2>See Also</h2>
+        <p>
+                    <a class="xref" href="RT_ST_Count.html" title="ST_Count">ST_Count</a>,
+                    <a class="xref" href="RT_ST_SummaryStats.html" title="ST_SummaryStats">ST_SummaryStats</a>,
+                    <a class="xref" href="RT_ST_SummaryStatsAgg.html" title="ST_SummaryStatsAgg">ST_SummaryStatsAgg</a>
+                </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="RT_ST_CountAgg.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="RT_reference.html#RasterBand_Stats">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="RT_ST_Quantile.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_CountAgg </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_Quantile</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

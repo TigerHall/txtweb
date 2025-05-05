@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_TriangulatePolygon</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_SetEffectiveArea.html" title="ST_SetEffectiveArea"/>
+    <link rel="next" href="ST_VoronoiLines.html" title="ST_VoronoiLines"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_TriangulatePolygon</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_SetEffectiveArea.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.14. Geometry Processing</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_VoronoiLines.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_TriangulatePolygon">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_TriangulatePolygon — Computes the constrained Delaunay triangulation of polygons</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_TriangulatePolygon</strong>(</code>geometry <var class="pdparam">geom</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm17956">
+        <h2>Description</h2>
+        <p>Computes the constrained Delaunay triangulation of polygons.
+        Holes and Multipolygons are supported.
+        </p>
+        <p>
+        The "constrained Delaunay triangulation" of a polygon is a set of triangles formed from the vertices of the polygon,
+        and covering it exactly, with the maximum total interior angle over all possible triangulations.
+        It provides the "best quality" triangulation of the polygon.</p>
+        <p class="availability">Availability: 3.3.0.</p>
+        <p class="geos_requirement">Requires GEOS &gt;= 3.11.0.</p>
+      </div>
+      <div class="refsection" id="idm17962">
+        <h2>Example</h2>
+        <p>Triangulation of a square.</p>
+        <pre class="programlisting">
+SELECT ST_AsText(
+    ST_TriangulatePolygon('POLYGON((0 0, 0 1, 1 1, 1 0, 0 0))'));
+
+                                 st_astext
+---------------------------------------------------------------------------
+ GEOMETRYCOLLECTION(POLYGON((0 0,0 1,1 1,0 0)),POLYGON((1 1,1 0,0 0,1 1)))
+                </pre>
+      </div>
+      <div class="refsection" id="idm17966">
+        <h2>Example</h2>
+        <p>Triangulation of the letter P.</p>
+        <pre class="programlisting">SELECT ST_AsText(ST_TriangulatePolygon(
+    'POLYGON ((26 17, 31 19, 34 21, 37 24, 38 29, 39 43, 39 161, 38 172, 36 176, 34 179, 30 181, 25 183, 10 185, 10 190, 100 190, 121 189, 139 187, 154 182, 167 177, 177 169, 184 161, 189 152, 190 141, 188 128, 186 123, 184 117, 180 113, 176 108, 170 104, 164 101, 151 96, 136 92, 119 89, 100 89, 86 89, 73 89, 73 39, 74 32, 75 27, 77 23, 79 20, 83 18, 89 17, 106 15, 106 10, 10 10, 10 15, 26 17), (152 147, 151 152, 149 157, 146 162, 142 166, 137 169, 132 172, 126 175, 118 177, 109 179, 99 180, 89 180, 80 179, 76 178, 74 176, 73 171, 73 100, 85 99, 91 99, 102 99, 112 100, 121 102, 128 104, 134 107, 139 110, 143 114, 147 118, 149 123, 151 128, 153 141, 152 147))'
+    ));
+</pre>
+        <div class="informalfigure">
+          <div class="mediaobject">
+            <img src="../images/st_triangulatepolygon01.png"/>
+            <div class="caption">
+              <p>Polygon Triangulation</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="refsection" id="idm17976">
+        <h2>Same example as ST_Tesselate</h2>
+        <pre class="programlisting">SELECT ST_TriangulatePolygon(
+                'POLYGON (( 10 190, 10 70, 80 70, 80 130, 50 160, 120 160, 120 190, 10 190 ))'::geometry
+                );</pre>
+        <p>ST_AsText output</p>
+        <pre class="screen">GEOMETRYCOLLECTION(POLYGON((50 160,120 190,120 160,50 160))
+    ,POLYGON((10 70,80 130,80 70,10 70))
+    ,POLYGON((50 160,10 70,10 190,50 160))
+    ,POLYGON((120 190,50 160,10 190,120 190))
+    ,POLYGON((80 130,10 70,50 160,80 130)))</pre>
+        <div class="informaltable">
+          <table style="border-collapse: collapse; border-top: 1px solid ; border-bottom: 1px solid ; border-left: 1px solid ; border-right: 1px solid ; ">
+            <colgroup>
+              <col/>
+              <col/>
+            </colgroup>
+            <tbody>
+              <tr>
+                <td style="border-right: 1px solid ; "><p>
+                      </p><div class="informalfigure"><div class="mediaobject"><img src="../images/st_tesselate03.png"/><div class="caption"><p>Original polygon</p></div></div></div>
+                      </td>
+                <td>
+                      <div class="informalfigure"><div class="mediaobject"><img src="../images/st_triangulatepolygon02.png"/><div class="caption"><p>Triangulated Polygon</p></div></div></div>
+                      </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="refsection" id="idm18001">
+        <h2>See Also</h2>
+        <p><a class="xref" href="ST_ConstrainedDelaunayTriangles.html" title="ST_ConstrainedDelaunayTriangles">ST_ConstrainedDelaunayTriangles</a>,
+				<a class="xref" href="ST_DelaunayTriangles.html" title="ST_DelaunayTriangles">ST_DelaunayTriangles</a>,
+				<a class="xref" href="ST_Tesselate.html" title="ST_Tesselate">ST_Tesselate</a>
+            </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_SetEffectiveArea.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Geometry_Processing">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_VoronoiLines.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_SetEffectiveArea </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_VoronoiLines</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

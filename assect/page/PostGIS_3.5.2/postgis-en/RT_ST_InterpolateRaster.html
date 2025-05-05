@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_InterpolateRaster</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="RT_ST_Contour.html" title="ST_Contour"/>
+    <link rel="next" href="RT_UpdateRasterSRID.html" title="UpdateRasterSRID"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_InterpolateRaster</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="RT_ST_Contour.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">11.2. Raster Management</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="RT_UpdateRasterSRID.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="RT_ST_InterpolateRaster">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_InterpolateRaster — Interpolates a gridded surface based on an input set
+        of 3-d points, using the X- and Y-values to position the points on
+        the grid and the Z-value of the points as the surface elevation.
+        </p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">raster <strong class="fsfunc">ST_InterpolateRaster</strong>(</code>geometry <var class="pdparam">input_points</var>, text <var class="pdparam">algorithm_options</var>, raster <var class="pdparam">template</var>, integer <var class="pdparam">template_band_num=1</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm27698">
+        <h2>Description</h2>
+        <p>
+            Interpolates a gridded surface based on an input set
+            of 3-d points, using the X- and Y-values to position the points on
+            the grid and the Z-value of the points as the surface elevation.
+
+            There are five interpolation algorithms available: inverse distance,
+            inverse distance nearest-neighbor, moving average, nearest neighbor,
+            and linear interpolation.
+            See the <a class="link" href="https://gdal.org/programs/gdal_grid.html#interpolation-algorithms" target="_top">gdal_grid documentation</a>
+            for more details on the algorithms and their parameters. For more
+            information on how interpolations are calculated, see the
+            <a class="link" href="https://gdal.org/tutorials/gdal_grid_tut.html" target="_top">GDAL grid
+            tutorial</a>.
+        </p>
+        <p>
+            Input parameters are:
+        </p>
+        <div class="variablelist">
+          <dl class="variablelist">
+            <dt>
+              <span class="term">
+                <code class="varname">input_points</code>
+              </span>
+            </dt>
+            <dd>
+              <p>The points to drive the interpolation. Any
+                    geometry with Z-values is acceptable, all points in the
+                    input will be used.</p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">algorithm_options</code>
+              </span>
+            </dt>
+            <dd>
+              <p>A string defining the algorithm and
+                    algorithm options, in the format used by <a class="link" href="https://gdal.org/programs/gdal_grid.html#interpolation-algorithms" target="_top">gdal_grid</a>.
+                    For example, for an inverse-distance interpolation with a
+                    smoothing of 2, you would use "invdist:smoothing=2.0"
+                </p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">template</code>
+              </span>
+            </dt>
+            <dd>
+              <p>A raster template to drive the geometry of the
+                    output raster. The width, height, pixel size, spatial extent
+                    and pixel type will be read from this template.
+                </p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">template_band_num</code>
+              </span>
+            </dt>
+            <dd>
+              <p>By default the first band in the template raster
+                    is used to drive the output raster, but that can be adjusted
+                    with this parameter.
+                </p>
+            </dd>
+          </dl>
+        </div>
+        <p class="availability">Availability: 3.2.0</p>
+      </div>
+      <div class="refsection" id="idm27727">
+        <h2>Example</h2>
+        <pre class="programlisting">SELECT ST_InterpolateRaster(
+    'MULTIPOINT(10.5 9.5 1000, 11.5 8.5 1000, 10.5 8.5 500, 11.5 9.5 500)'::geometry,
+    'invdist:smoothing:2.0',
+    ST_AddBand(ST_MakeEmptyRaster(200, 400, 10, 10, 0.01, -0.005, 0, 0), '16BSI')
+)</pre>
+      </div>
+      <div class="refsection" id="idm27730">
+        <h2>See Also</h2>
+        <p>
+            <a class="xref" href="RT_ST_Contour.html" title="ST_Contour">ST_Contour</a>
+            </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="RT_ST_Contour.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="RT_reference.html#Raster_Management_Functions">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="RT_UpdateRasterSRID.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_Contour </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> UpdateRasterSRID</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

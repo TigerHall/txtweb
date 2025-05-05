@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_Grayscale</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="RT_ST_ColorMap.html" title="ST_ColorMap"/>
+    <link rel="next" href="RT_ST_Intersection.html" title="ST_Intersection"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_Grayscale</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="RT_ST_ColorMap.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">11.12. Raster Processing: Map Algebra</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="RT_ST_Intersection.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="RT_ST_Grayscale">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_Grayscale — Creates a new one-8BUI band raster from the source raster and specified bands representing Red, Green and Blue</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">(1) raster <strong class="fsfunc">ST_Grayscale</strong>(</code>raster  <var class="pdparam">rast</var>, integer  <var class="pdparam">redband=1</var>, integer  <var class="pdparam">greenband=2</var>, integer  <var class="pdparam">blueband=3</var>, text  <var class="pdparam">extenttype=INTERSECTION</var><code>)</code>;</p>
+        </div>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">(2) raster <strong class="fsfunc">ST_Grayscale</strong>(</code>rastbandarg[]  <var class="pdparam">rastbandargset</var>, text  <var class="pdparam">extenttype=INTERSECTION</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm33438">
+        <h2>Description</h2>
+        <p>
+                        Create a raster with one 8BUI band given three input bands (from one or more rasters). Any input band whose pixel type is not 8BUI will be reclassified using <a class="xref" href="RT_ST_Reclass.html" title="ST_Reclass">ST_Reclass</a>.
+                    </p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>
+                            This function is not like <a class="xref" href="RT_ST_ColorMap.html" title="ST_ColorMap">ST_ColorMap</a> with the <code class="varname">grayscale</code> keyword as ST_ColorMap operates on only one band while this function expects three bands for RGB.  This function applies the following equation for converting RGB to Grayscale: 0.2989 * RED + 0.5870 * GREEN + 0.1140 * BLUE
+                        </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p class="availability">Availability: 2.5.0 </p>
+      </div>
+      <div class="refsection" id="idm33447">
+        <h2>Examples: Variant 1</h2>
+        <pre class="programlisting">
+SET postgis.gdal_enabled_drivers = 'ENABLE_ALL';
+SET postgis.enable_outdb_rasters = True;
+
+WITH apple AS (
+    SELECT ST_AddBand(
+        ST_MakeEmptyRaster(350, 246, 0, 0, 1, -1, 0, 0, 0),
+        '/tmp/apple.png'::text,
+        NULL::int[]
+    ) AS rast
+)
+SELECT
+    ST_AsPNG(rast) AS original_png,
+    ST_AsPNG(ST_Grayscale(rast)) AS grayscale_png
+FROM apple;
+                    </pre>
+        <div class="informaltable">
+          <table style="border-collapse: collapse; border-top: 1px solid ; border-bottom: 1px solid ; border-left: 1px solid ; border-right: 1px solid ; ">
+            <colgroup>
+              <col/>
+              <col/>
+            </colgroup>
+            <tbody>
+              <tr>
+                <td style="border-right: 1px solid ; ">
+                                        <p>
+                                            </p><div class="informalfigure"><div class="mediaobject"><img src="../images/apple.png"/><div class="caption"><p>original_png</p></div></div></div><p>
+                                        </p>
+                                    </td>
+                <td>
+                                        <p>
+                                            </p><div class="informalfigure"><div class="mediaobject"><img src="../images/apple_st_grayscale.png"/><div class="caption"><p>grayscale_png</p></div></div></div><p>
+                                        </p>
+                                    </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="refsection" id="idm33470">
+        <h2>Examples: Variant 2</h2>
+        <pre class="programlisting">
+SET postgis.gdal_enabled_drivers = 'ENABLE_ALL';
+SET postgis.enable_outdb_rasters = True;
+
+WITH apple AS (
+    SELECT ST_AddBand(
+        ST_MakeEmptyRaster(350, 246, 0, 0, 1, -1, 0, 0, 0),
+        '/tmp/apple.png'::text,
+        NULL::int[]
+    ) AS rast
+)
+SELECT
+    ST_AsPNG(rast) AS original_png,
+    ST_AsPNG(ST_Grayscale(
+        ARRAY[
+            ROW(rast, 1)::rastbandarg, -- red
+            ROW(rast, 2)::rastbandarg, -- green
+            ROW(rast, 3)::rastbandarg, -- blue
+        ]::rastbandarg[]
+    )) AS grayscale_png
+FROM apple;
+                    </pre>
+      </div>
+      <div class="refsection" id="idm33473">
+        <h2>See Also</h2>
+        <p>
+                        <a class="xref" href="RT_ST_AsPNG.html" title="ST_AsPNG">ST_AsPNG</a>,
+                        <a class="xref" href="RT_ST_Reclass.html" title="ST_Reclass">ST_Reclass</a>,
+                        <a class="xref" href="RT_ST_ColorMap.html" title="ST_ColorMap">ST_ColorMap</a>
+                    </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="RT_ST_ColorMap.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="RT_reference.html#Raster_Processing_MapAlgebra">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="RT_ST_Intersection.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_ColorMap </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_Intersection</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

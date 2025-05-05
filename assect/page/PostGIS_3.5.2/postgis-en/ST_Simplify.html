@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_Simplify</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_SharedPaths.html" title="ST_SharedPaths"/>
+    <link rel="next" href="ST_SimplifyPreserveTopology.html" title="ST_SimplifyPreserveTopology"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_Simplify</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_SharedPaths.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.14. Geometry Processing</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_SimplifyPreserveTopology.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_Simplify">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_Simplify — Returns a simplified representation of a geometry, using the Douglas-Peucker algorithm.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_Simplify</strong>(</code>geometry <var class="pdparam">geom</var>, float <var class="pdparam">tolerance</var><code>)</code>;</p>
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_Simplify</strong>(</code>geometry <var class="pdparam">geom</var>, float <var class="pdparam">tolerance</var>, boolean <var class="pdparam">preserveCollapsed</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm17693">
+        <h2>Description</h2>
+        <p>Computes a simplified representation of a geometry using the
+            <a class="link" href="https://en.wikipedia.org/wiki/Ramer%E2%80%93Douglas%E2%80%93Peucker_algorithm" target="_top">Douglas-Peucker algorithm</a>. 
+            The simplification <code class="varname">tolerance</code> is a distance value, in the units of the input SRS.
+            Simplification removes vertices which are within the tolerance distance of the simplified linework.
+            The result may not be valid even if the input is.
+            </p>
+        <p>
+            The function can be called with any kind of geometry (including GeometryCollections), 
+            but only line and polygon elements are simplified.
+            Endpoints of linear geometry are preserved.
+            </p>
+        <p>The <code class="varname">preserveCollapsed</code> flag retains small geometries that would otherwise
+          be removed at the given tolerance. For example, if a 1m long line is simplified with a 10m
+          tolerance, when <code class="varname">preserveCollapsed</code> is true the line will not disappear.
+          This flag is useful for rendering purposes, to prevent
+          very small features disappearing from a map.</p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>The returned geometry may lose its simplicity (see <a class="xref" href="ST_IsSimple.html" title="ST_IsSimple">ST_IsSimple</a>), 
+         topology may not be preserved, and polygonal results may be invalid (see <a class="xref" href="ST_IsValid.html" title="ST_IsValid">ST_IsValid</a>).  
+         Use <a class="xref" href="ST_SimplifyPreserveTopology.html" title="ST_SimplifyPreserveTopology">ST_SimplifyPreserveTopology</a> to preserve topology and ensure validity.</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>This function does not preserve boundaries shared between polygons.  Use <a class="xref" href="ST_CoverageSimplify.html" title="ST_CoverageSimplify">ST_CoverageSimplify</a> if this is required.</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p class="availability">Availability: 1.2.2</p>
+      </div>
+      <div class="refsection" id="idm17711">
+        <h2>Examples</h2>
+        <p>A circle simplified too much becomes a triangle, medium an octagon, </p>
+        <pre class="programlisting">SELECT ST_Npoints(geom) AS np_before,
+       ST_NPoints(ST_Simplify(geom, 0.1)) AS np01_notbadcircle,
+       ST_NPoints(ST_Simplify(geom, 0.5)) AS np05_notquitecircle,
+       ST_NPoints(ST_Simplify(geom, 1)) AS np1_octagon,
+       ST_NPoints(ST_Simplify(geom, 10)) AS np10_triangle,
+       (ST_Simplify(geom, 100) is null) AS  np100_geometrygoesaway
+  FROM (SELECT ST_Buffer('POINT(1 3)', 10,12) As geom) AS t;
+
+ np_before | np01_notbadcircle | np05_notquitecircle | np1_octagon | np10_triangle | np100_geometrygoesaway
+-----------+-------------------+---------------------+-------------+---------------+------------------------
+        49 |                33 |                  17 |           9 |             4 | t
+</pre>
+        <p>Simplifying a set of lines.  Lines may intersect after simplification.</p>
+        <div class="informalfigure">
+          <div class="mediaobject">
+            <img src="../images/st_simplify01.png"/>
+          </div>
+        </div>
+        <pre class="programlisting">SELECT ST_Simplify(
+  'MULTILINESTRING ((20 180, 20 150, 50 150, 50 100, 110 150, 150 140, 170 120), (20 10, 80 30, 90 120), (90 120, 130 130), (130 130, 130 70, 160 40, 180 60, 180 90, 140 80), (50 40, 70 40, 80 70, 70 60, 60 60, 50 50, 50 40))',
+    40);
+</pre>
+        <p>Simplifying a MultiPolygon.  Polygonal results may be invalid.</p>
+        <div class="informalfigure">
+          <div class="mediaobject">
+            <img src="../images/st_simplify02.png"/>
+          </div>
+        </div>
+        <pre class="programlisting">SELECT ST_Simplify(
+  'MULTIPOLYGON (((90 110, 80 180, 50 160, 10 170, 10 140, 20 110, 90 110)), ((40 80, 100 100, 120 160, 170 180, 190 70, 140 10, 110 40, 60 40, 40 80), (180 70, 170 110, 142.5 128.5, 128.5 77.5, 90 60, 180 70)))',
+    40);
+</pre>
+      </div>
+      <div class="refsection" id="idm17727">
+        <h2>See Also</h2>
+        <p>
+    <a class="xref" href="ST_IsSimple.html" title="ST_IsSimple">ST_IsSimple</a>,
+    <a class="xref" href="ST_SimplifyPreserveTopology.html" title="ST_SimplifyPreserveTopology">ST_SimplifyPreserveTopology</a>,
+    <a class="xref" href="ST_SimplifyVW.html" title="ST_SimplifyVW">ST_SimplifyVW</a>,
+    <a class="xref" href="ST_CoverageSimplify.html" title="ST_CoverageSimplify">ST_CoverageSimplify</a>,
+    Topology <a class="xref" href="TP_ST_Simplify.html" title="ST_Simplify">ST_Simplify</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_SharedPaths.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Geometry_Processing">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_SimplifyPreserveTopology.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_SharedPaths </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_SimplifyPreserveTopology</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

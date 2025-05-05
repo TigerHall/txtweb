@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_Reskew</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="RT_ST_Rescale.html" title="ST_Rescale"/>
+    <link rel="next" href="RT_ST_SnapToGrid.html" title="ST_SnapToGrid"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_Reskew</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="RT_ST_Rescale.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">11.7. Raster Editors</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="RT_ST_SnapToGrid.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="RT_ST_Reskew">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_Reskew — Resample a raster by adjusting only its skew (or rotation parameters). New pixel values are computed using the NearestNeighbor (english or american spelling), Bilinear, Cubic, CubicSpline or Lanczos resampling algorithm. Default is NearestNeighbor.
+                    </p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">raster <strong class="fsfunc">ST_Reskew</strong>(</code>raster  <var class="pdparam">rast</var>, double precision  <var class="pdparam">skewxy</var>, text  <var class="pdparam">algorithm=NearestNeighbor</var>, double precision  <var class="pdparam">maxerr=0.125</var><code>)</code>;</p>
+          <p><code class="funcdef">raster <strong class="fsfunc">ST_Reskew</strong>(</code>raster  <var class="pdparam">rast</var>, double precision  <var class="pdparam">skewx</var>, double precision  <var class="pdparam">skewy</var>, text  <var class="pdparam">algorithm=NearestNeighbor</var>, double precision  <var class="pdparam">maxerr=0.125</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm31306">
+        <h2>Description</h2>
+        <p>Resample a raster by adjusting only its skew (or rotation parameters). New pixel values are computed using the NearestNeighbor (english or american spelling), Bilinear, Cubic, CubicSpline or Lanczos resampling algorithm. The default is NearestNeighbor which is the fastest but results in the worst interpolation.</p>
+        <p><code class="varname">skewx</code> and <code class="varname">skewy</code> define the new skew.</p>
+        <p>The extent of the new raster will encompass the extent of the provided raster.</p>
+        <p>A maxerror percent of 0.125 if no <code class="varname">maxerr</code> is specified.</p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>Refer to: <a class="link" href="http://www.gdal.org/gdalwarp.html" target="_top">GDAL Warp resampling methods</a> for more details. </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>ST_Reskew is different from <a class="xref" href="RT_ST_SetSkew.html" title="ST_SetSkew">ST_SetSkew</a> in that ST_SetSkew do not resample the raster to match the raster extent. ST_SetSkew only changes the metadata (or georeference) of the raster to correct an originally mis-specified skew. ST_Reskew results in a raster having different width and height computed to fit the geographic extent of the input raster. ST_SetSkew do not modify the width, nor the height of the raster.</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p class="availability">Availability: 2.0.0  Requires GDAL 1.6.1+</p>
+        <p class="changed">Changed: 2.1.0 Works on rasters with no SRID</p>
+      </div>
+      <div class="refsection" id="idm31323">
+        <h2>Examples</h2>
+        <p>A simple example reskewing a raster from a skew of 0.0 to a skew of 0.0015.</p>
+        <pre class="programlisting">-- the original raster non-rotated
+SELECT ST_Rotation(ST_AddBand(ST_MakeEmptyRaster(100, 100, 0, 0, 0.001, -0.001, 0, 0, 4269), '8BUI'::text, 1, 0));
+
+-- result
+0
+
+-- the reskewed raster raster rotation
+SELECT ST_Rotation(ST_Reskew(ST_AddBand(ST_MakeEmptyRaster(100, 100, 0, 0, 0.001, -0.001, 0, 0, 4269), '8BUI'::text, 1, 0), 0.0015));
+
+-- result
+-0.982793723247329</pre>
+      </div>
+      <div class="refsection" id="idm31327">
+        <h2>See Also</h2>
+        <p><a class="xref" href="RT_ST_Resample.html" title="ST_Resample">ST_Resample</a>, <a class="xref" href="RT_ST_Rescale.html" title="ST_Rescale">ST_Rescale</a>, <a class="xref" href="RT_ST_SetSkew.html" title="ST_SetSkew">ST_SetSkew</a>, <a class="xref" href="RT_ST_SetRotation.html" title="ST_SetRotation">ST_SetRotation</a>, <a class="xref" href="RT_ST_SkewX.html" title="ST_SkewX">ST_SkewX</a>, <a class="xref" href="RT_ST_SkewY.html" title="ST_SkewY">ST_SkewY</a>, <a class="xref" href="RT_ST_Transform.html" title="ST_Transform">ST_Transform</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="RT_ST_Rescale.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="RT_reference.html#Raster_Editors">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="RT_ST_SnapToGrid.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_Rescale </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_SnapToGrid</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

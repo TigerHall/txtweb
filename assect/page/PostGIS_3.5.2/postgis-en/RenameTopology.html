@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>RenameTopology</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="DropTopology.html" title="DropTopology"/>
+    <link rel="next" href="DropTopoGeometryColumn.html" title="DropTopoGeometryColumn"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">RenameTopology</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="DropTopology.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">9.3. Topology and TopoGeometry Management</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="DropTopoGeometryColumn.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="RenameTopology">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>RenameTopology — Renames a topology</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">varchar <strong class="fsfunc">RenameTopology</strong>(</code>varchar  <var class="pdparam">old_name</var>, varchar  <var class="pdparam">new_name</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm23825">
+        <h2>Description</h2>
+        <p>
+Renames a topology schema, updating its metadata record in the <code class="varname">topology.topology</code> table.
+		</p>
+        <p class="availability">Availability: 3.4.0</p>
+      </div>
+      <div class="refsection" id="idm23830">
+        <h2>Examples</h2>
+        <p>
+Rename a topology from <code class="varname">topo_stage</code> to <code class="varname">topo_prod</code>.
+				</p>
+        <pre class="programlisting">SELECT topology.RenameTopology('topo_stage', 'topo_prod');</pre>
+      </div>
+      <div class="refsection" id="idm23836">
+        <h2>See Also</h2>
+        <p>
+                    <a class="xref" href="CopyTopology.html" title="CopyTopology">CopyTopology</a>,
+                    <a class="xref" href="RenameTopoGeometryColumn.html" title="RenameTopoGeometryColumn">RenameTopoGeometryColumn</a>
+                </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="DropTopology.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="Topology.html#Topology_ManagementFunctions">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="DropTopoGeometryColumn.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">DropTopology </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> DropTopoGeometryColumn</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

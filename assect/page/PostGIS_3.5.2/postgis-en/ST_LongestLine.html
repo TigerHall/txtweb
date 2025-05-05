@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_LongestLine</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_Length_Spheroid.html" title="ST_LengthSpheroid"/>
+    <link rel="next" href="ST_3DLongestLine.html" title="ST_3DLongestLine"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_LongestLine</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_Length_Spheroid.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.12. Measurement Functions</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_3DLongestLine.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_LongestLine">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_LongestLine — Returns the 2D longest line between two geometries.
+		</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_LongestLine</strong>(</code>geometry 
+			<var class="pdparam">g1</var>, geometry 
+			<var class="pdparam">g2</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm15022">
+        <h2>Description</h2>
+        <p>Returns the 2-dimensional longest line between the points of two geometries.
+        The line returned starts on <code class="varname">g1</code> and ends on <code class="varname">g2</code>.
+		</p>
+        <p>The longest line always occurs between two vertices.
+        The function returns the first longest line if more than one is found.
+		The length of the line is equal to the distance returned by <a class="xref" href="ST_MaxDistance.html" title="ST_MaxDistance">ST_MaxDistance</a>.
+		</p>
+        <p>
+        If g1 and g2 are the same geometry, returns the line between the two vertices farthest apart in the geometry.
+        The endpoints of the line lie on the circle computed by <a class="xref" href="ST_MinimumBoundingCircle.html" title="ST_MinimumBoundingCircle">ST_MinimumBoundingCircle</a>.
+        </p>
+        <p class="availability">Availability: 1.5.0</p>
+      </div>
+      <div class="refsection" id="idm15032">
+        <h2>Examples</h2>
+        <div class="informalfigure">
+          <div class="mediaobject">
+            <img src="../images/st_longestline01.png"/>
+            <div class="caption">
+              <p>Longest line between a point and a line</p>
+            </div>
+          </div>
+        </div>
+        <p>
+</p>
+        <pre class="programlisting">
+SELECT ST_AsText( ST_LongestLine(
+        'POINT (160 40)',
+        'LINESTRING (10 30, 50 50, 30 110, 70 90, 180 140, 130 190)' )
+	) AS lline;
+-----------------
+LINESTRING(160 40,130 190)
+</pre>
+        <p>
+	</p>
+        <p>
+        </p>
+        <div class="informalfigure">
+          <div class="mediaobject">
+            <img src="../images/st_longestline02.png"/>
+            <div class="caption">
+              <p>Longest line between two polygons</p>
+            </div>
+          </div>
+        </div>
+        <p>
+</p>
+        <pre class="programlisting">
+SELECT ST_AsText( ST_LongestLine(
+        'POLYGON ((190 150, 20 10, 160 70, 190 150))',
+        ST_Buffer('POINT(80 160)', 30)
+            ) ) AS llinewkt;
+-----------------
+LINESTRING(20 10,105.3073372946034 186.95518130045156)
+</pre>
+        <p>
+	</p>
+        <div class="informalfigure">
+          <div class="mediaobject">
+            <img src="../images/st_longestline03.png"/>
+            <div class="caption">
+              <p>Longest line across a single geometry.
+            The length of the line is equal to the Maximum Distance.
+            The endpoints of the line lie on the Minimum Bounding Circle.</p>
+            </div>
+          </div>
+        </div>
+        <p>
+</p>
+        <pre class="programlisting">
+SELECT ST_AsText( ST_LongestLine( geom, geom)) AS llinewkt,
+                  ST_MaxDistance( geom, geom) AS max_dist,
+                  ST_Length( ST_LongestLine(geom, geom)) AS lenll
+FROM (SELECT 'POLYGON ((40 180, 110 160, 180 180, 180 120, 140 90, 160 40, 80 10, 70 40, 20 50, 40 180),
+              (60 140, 99 77.5, 90 140, 60 140))'::geometry AS geom) AS t;
+
+         llinewkt          |      max_dist      |       lenll
+---------------------------+--------------------+--------------------
+ LINESTRING(20 50,180 180) | 206.15528128088303 | 206.15528128088303
+</pre>
+        <p>
+	</p>
+      </div>
+      <div class="refsection" id="idm15058">
+        <h2>See Also</h2>
+        <p><a class="xref" href="ST_MaxDistance.html" title="ST_MaxDistance">ST_MaxDistance</a>, <a class="xref" href="ST_ShortestLine.html" title="ST_ShortestLine">ST_ShortestLine</a>,
+        <a class="xref" href="ST_3DLongestLine.html" title="ST_3DLongestLine">ST_3DLongestLine</a>, <a class="xref" href="ST_MinimumBoundingCircle.html" title="ST_MinimumBoundingCircle">ST_MinimumBoundingCircle</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_Length_Spheroid.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Measurement_Functions">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_3DLongestLine.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_LengthSpheroid </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_3DLongestLine</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

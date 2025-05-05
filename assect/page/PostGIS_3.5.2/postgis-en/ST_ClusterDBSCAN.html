@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_ClusterDBSCAN</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_TransScale.html" title="ST_TransScale"/>
+    <link rel="next" href="ST_ClusterIntersecting.html" title="ST_ClusterIntersecting"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_ClusterDBSCAN</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_TransScale.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.17. Clustering Functions</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_ClusterIntersecting.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_ClusterDBSCAN">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_ClusterDBSCAN — Window function that returns a cluster id for each input geometry using the DBSCAN algorithm.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">integer <strong class="fsfunc">ST_ClusterDBSCAN</strong>(</code>geometry winset 
+			<var class="pdparam">geom</var>, float8 
+			<var class="pdparam">eps</var>, integer 
+			<var class="pdparam">minpoints</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm18843">
+        <h2>Description</h2>
+        <p>
+		  A window function that returns a cluster number for each input geometry, using the 2D
+          <a class="link" href="https://en.wikipedia.org/wiki/DBSCAN" target="_top">Density-based spatial clustering of applications with noise (DBSCAN)</a>
+		  algorithm.  Unlike <a class="xref" href="ST_ClusterKMeans.html" title="ST_ClusterKMeans">ST_ClusterKMeans</a>, it does not require the number of clusters to be specified, but instead
+		  uses the desired <a class="link" href="ST_Distance.html" title="ST_Distance">distance</a> (<code class="varname">eps</code>) and density (<code class="varname">minpoints</code>) parameters to determine each cluster.
+	  </p>
+        <p>
+		  An input geometry is added to a cluster if it is either:
+		  </p>
+        <div class="itemizedlist">
+          <ul class="itemizedlist" style="list-style-type: disc; ">
+            <li class="listitem">
+              <p>
+                      A "core" geometry, that is within <code class="varname">eps</code> <a class="link" href="ST_Distance.html" title="ST_Distance">distance</a> of at least <code class="varname">minpoints</code> input geometries (including itself); or
+                  </p>
+            </li>
+            <li class="listitem">
+              <p>
+                      A "border" geometry, that is within <code class="varname">eps</code> <a class="link" href="ST_Distance.html" title="ST_Distance">distance</a> of a core geometry.
+                  </p>
+            </li>
+          </ul>
+        </div>
+        <p>
+		</p>
+        <p>
+		  Note that border geometries may be within <code class="varname">eps</code> distance of core geometries in more than one cluster.
+      Either assignment would be correct, so the border geometry will be arbitrarily asssigned to one of the available clusters.
+		  In this situation it is possible for a correct cluster to be generated with fewer than <code class="varname">minpoints</code> geometries.
+		  To ensure deterministic assignment of border geometries
+      (so that repeated calls to ST_ClusterDBSCAN will produce identical results)
+      use an <code class="code">ORDER BY</code> clause in the window definition.
+      Ambiguous cluster assignments may differ from other DBSCAN implementations.
+	  </p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>
+		  Geometries that do not meet the criteria to join any cluster are assigned a cluster number of NULL.
+	  </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p class="availability">Availability: 2.3.0</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method supports Circular Strings and Curves.
+        </p>
+      </div>
+      <div class="refsection" id="idm18873">
+        <h2>Examples</h2>
+        <p>
+          Clustering polygon within 50 meters of each other, and requiring at least 2 polygons per cluster.
+      </p>
+        <div class="informaltable">
+          <table style="border-collapse: collapse; border-top: 1px solid ; border-bottom: 1px solid ; border-left: 1px solid ; border-right: 1px solid ; ">
+            <colgroup>
+              <col/>
+              <col/>
+            </colgroup>
+            <tbody>
+              <tr>
+                <td style="border-right: 1px solid ; ">
+                  <div class="informalfigure">
+                    <div class="mediaobject">
+                      <img src="../images/st_clusterdbscan01.png"/>
+                      <div class="caption">
+                        <p>Clusters within 50 meters with at least 2 items per cluster. Singletons have NULL for cid</p>
+                      </div>
+                    </div>
+                  </div>
+                  <p>
+  </p>
+                  <pre class="programlisting">
+SELECT name, ST_ClusterDBSCAN(geom, eps =&gt; 50, minpoints =&gt; 2) over () AS cid
+FROM boston_polys
+WHERE name &gt; '' AND building &gt; ''
+	AND ST_DWithin(geom,
+        ST_Transform(
+            ST_GeomFromText('POINT(-71.04054 42.35141)', 4326), 26986),
+           500);
+</pre>
+                  <p>
+						  </p>
+                </td>
+                <td><pre class="screen">
+                name                 | bucket
+-------------------------------------+--------
+ Manulife Tower                      |      0
+ Park Lane Seaport I                 |      0
+ Park Lane Seaport II                |      0
+ Renaissance Boston Waterfront Hotel |      0
+ Seaport Boston Hotel                |      0
+ Seaport Hotel &amp; World Trade Center  |      0
+ Waterside Place                     |      0
+ World Trade Center East             |      0
+ 100 Northern Avenue                 |      1
+ 100 Pier 4                          |      1
+ The Institute of Contemporary Art   |      1
+ 101 Seaport                         |      2
+ District Hall                       |      2
+ One Marina Park Drive               |      2
+ Twenty Two Liberty                  |      2
+ Vertex                              |      2
+ Vertex                              |      2
+ Watermark Seaport                   |      2
+ Blue Hills Bank Pavilion            |   NULL
+ World Trade Center West             |   NULL
+(20 rows)
+</pre>
+				</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>
+            A example showing combining parcels with the same cluster number into geometry collections.
+        </p>
+        <pre class="programlisting">
+SELECT cid, ST_Collect(geom) AS cluster_geom, array_agg(parcel_id) AS ids_in_cluster FROM (
+    SELECT parcel_id, ST_ClusterDBSCAN(geom, eps =&gt; 0.5, minpoints =&gt; 5) over () AS cid, geom
+    FROM parcels) sq
+GROUP BY cid;
+    </pre>
+      </div>
+      <div class="refsection" id="idm18894">
+        <h2>See Also</h2>
+        <p><a class="xref" href="ST_DWithin.html" title="ST_DWithin">ST_DWithin</a>,
+              <a class="xref" href="ST_ClusterKMeans.html" title="ST_ClusterKMeans">ST_ClusterKMeans</a>,
+              <a class="xref" href="ST_ClusterIntersecting.html" title="ST_ClusterIntersecting">ST_ClusterIntersecting</a>,
+              <a class="xref" href="ST_ClusterIntersectingWin.html" title="ST_ClusterIntersectingWin">ST_ClusterIntersectingWin</a>,
+              <a class="xref" href="ST_ClusterWithin.html" title="ST_ClusterWithin">ST_ClusterWithin</a>,
+              <a class="xref" href="ST_ClusterWithinWin.html" title="ST_ClusterWithinWin">ST_ClusterWithinWin</a>
+          </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_TransScale.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Clustering_Functions">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_ClusterIntersecting.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_TransScale </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_ClusterIntersecting</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

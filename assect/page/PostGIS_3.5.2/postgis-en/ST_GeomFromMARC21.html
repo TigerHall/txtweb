@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_GeomFromMARC21</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_GeomFromEWKT.html" title="ST_GeomFromEWKT"/>
+    <link rel="next" href="ST_GeometryFromText.html" title="ST_GeometryFromText"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_GeomFromMARC21</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_GeomFromEWKT.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.8.1. Well-Known Text (WKT)</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_GeometryFromText.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_GeomFromMARC21">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_GeomFromMARC21 — Takes MARC21/XML geographic data as input and returns a PostGIS geometry object. </p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">
+                        geometry
+                        <strong class="fsfunc">ST_GeomFromMARC21</strong>
+                    (</code>
+                        text 
+                        <var class="pdparam">marcxml</var>
+                    <code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm8996">
+        <h2>Description</h2>
+        <p>
+                This function creates a PostGIS geometry from a MARC21/XML record, which can contain a <code class="varname">POINT</code> or a <code class="varname">POLYGON</code>.
+                In case of multiple geographic data entries in the same MARC21/XML record, a <code class="varname">MULTIPOINT</code> or <code class="varname">MULTIPOLYGON</code> will be returned.
+                If the record contains mixed geometry types, a <code class="varname">GEOMETRYCOLLECTION</code> will be returned.
+                It returns NULL if the MARC21/XML record does not contain any geographic data (datafield:034).
+            </p>
+        <p>
+                LOC MARC21/XML versions supported:
+                </p>
+        <div class="itemizedlist">
+          <ul class="itemizedlist" style="list-style-type: disc; ">
+            <li class="listitem">
+              <p>
+                <a class="link" href="https://www.loc.gov/standards/marcxml/" target="_top">MARC21/XML 1.1</a>
+              </p>
+            </li>
+          </ul>
+        </div>
+        <p>
+            </p>
+        <p class="availability">Availability: 3.3.0, requires libxml2 2.6+</p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>
+                    The MARC21/XML Coded Cartographic Mathematical Data currently does not provide any means to describe the Spatial Reference System of the encoded coordinates, so
+                    this function will always return a geometry with <code class="varname">SRID 0</code>.
+                </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>
+                    Returned <code class="varname">POLYGON</code> geometries will always be clockwise oriented.
+            </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="refsection" id="idm9016">
+        <h2>Examples</h2>
+        <p>Converting MARC21/XML geographic data containing a single <code class="varname">POINT</code> encoded as  <code class="varname">hddd.dddddd</code>  </p>
+        <pre class="programlisting">
+
+                SELECT
+                ST_AsText(
+                    ST_GeomFromMARC21('
+                        &lt;record xmlns="http://www.loc.gov/MARC21/slim"&gt;
+                            &lt;leader&gt;00000nz a2200000nc 4500&lt;/leader&gt;
+                            &lt;controlfield tag="001"&gt;040277569&lt;/controlfield&gt;
+                            &lt;datafield tag="034" ind1=" " ind2=" "&gt;
+                                &lt;subfield code="d"&gt;W004.500000&lt;/subfield&gt;
+                                &lt;subfield code="e"&gt;W004.500000&lt;/subfield&gt;
+                                &lt;subfield code="f"&gt;N054.250000&lt;/subfield&gt;
+                                &lt;subfield code="g"&gt;N054.250000&lt;/subfield&gt;
+                            &lt;/datafield&gt;
+                        &lt;/record&gt;'));
+
+                st_astext
+                -------------------
+                POINT(-4.5 54.25)
+                (1 row)
+
+            </pre>
+        <p>Converting MARC21/XML geographic data containing a single <code class="varname">POLYGON</code> encoded as <code class="varname">hdddmmss</code></p>
+        <pre class="programlisting">
+
+
+                SELECT
+                ST_AsText(
+                    ST_GeomFromMARC21('
+                        &lt;record xmlns="http://www.loc.gov/MARC21/slim"&gt;
+                            &lt;leader&gt;01062cem a2200241 a 4500&lt;/leader&gt;
+                            &lt;controlfield tag="001"&gt;   84696781 &lt;/controlfield&gt;
+                            &lt;datafield tag="034" ind1="1" ind2=" "&gt;
+                                &lt;subfield code="a"&gt;a&lt;/subfield&gt;
+                                &lt;subfield code="b"&gt;50000&lt;/subfield&gt;
+                                &lt;subfield code="d"&gt;E0130600&lt;/subfield&gt;
+                                &lt;subfield code="e"&gt;E0133100&lt;/subfield&gt;
+                                &lt;subfield code="f"&gt;N0523900&lt;/subfield&gt;
+                                &lt;subfield code="g"&gt;N0522300&lt;/subfield&gt;
+                            &lt;/datafield&gt;
+                        &lt;/record&gt;'));
+
+                st_astext
+                -----------------------------------------------------------------------------------------------------------------------
+                POLYGON((13.1 52.65,13.516666666666667 52.65,13.516666666666667 52.38333333333333,13.1 52.38333333333333,13.1 52.65))
+                (1 row)
+
+            </pre>
+        <p>Converting MARC21/XML geographic data containing a <code class="varname">POLYGON</code> and a <code class="varname">POINT</code>:</p>
+        <pre class="programlisting">
+
+
+                SELECT
+                ST_AsText(
+                    ST_GeomFromMARC21('
+                &lt;record xmlns="http://www.loc.gov/MARC21/slim"&gt;
+                    &lt;datafield tag="034" ind1="1" ind2=" "&gt;
+                        &lt;subfield code="a"&gt;a&lt;/subfield&gt;
+                        &lt;subfield code="b"&gt;50000&lt;/subfield&gt;
+                        &lt;subfield code="d"&gt;E0130600&lt;/subfield&gt;
+                        &lt;subfield code="e"&gt;E0133100&lt;/subfield&gt;
+                        &lt;subfield code="f"&gt;N0523900&lt;/subfield&gt;
+                        &lt;subfield code="g"&gt;N0522300&lt;/subfield&gt;
+                    &lt;/datafield&gt;
+                    &lt;datafield tag="034" ind1=" " ind2=" "&gt;
+                        &lt;subfield code="d"&gt;W004.500000&lt;/subfield&gt;
+                        &lt;subfield code="e"&gt;W004.500000&lt;/subfield&gt;
+                        &lt;subfield code="f"&gt;N054.250000&lt;/subfield&gt;
+                        &lt;subfield code="g"&gt;N054.250000&lt;/subfield&gt;
+                    &lt;/datafield&gt;
+                &lt;/record&gt;'));
+                                                                                        st_astext
+                -------------------------------------------------------------------------------------------------------------------------------------------------------------
+                GEOMETRYCOLLECTION(POLYGON((13.1 52.65,13.516666666666667 52.65,13.516666666666667 52.38333333333333,13.1 52.38333333333333,13.1 52.65)),POINT(-4.5 54.25))
+                (1 row)
+            </pre>
+      </div>
+      <div class="refsection" id="idm9030">
+        <h2>See Also</h2>
+        <p>
+                <a class="xref" href="ST_AsMARC21.html" title="ST_AsMARC21">ST_AsMARC21</a>
+            </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_GeomFromEWKT.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#idm8784">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_GeometryFromText.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_GeomFromEWKT </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_GeometryFromText</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

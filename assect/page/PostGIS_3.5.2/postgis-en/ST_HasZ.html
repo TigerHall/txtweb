@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_HasZ</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_Zmflag.html" title="ST_Zmflag"/>
+    <link rel="next" href="ST_HasM.html" title="ST_HasM"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_HasZ</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_Zmflag.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.4. Geometry Accessors</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_HasM.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_HasZ">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_HasZ — Checks if a geometry has a Z dimension.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">boolean <strong class="fsfunc">ST_HasZ</strong>(</code>geometry <var class="pdparam">geom</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm6420">
+        <h2>Description</h2>
+        <p>Checks if the input geometry has a Z dimension and returns a boolean value. If the geometry has a Z dimension, it returns true; otherwise, it returns false.</p>
+        <p>Geometry objects with a Z dimension typically represent three-dimensional (3D) geometries, while those without it are two-dimensional (2D) geometries.</p>
+        <p>This function is useful for determining if a geometry has elevation or height information.</p>
+        <p class="availability">Availability: 3.5.0</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports 3d and will not drop the z-index.
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports M coordinates.
+        </p>
+      </div>
+      <div class="refsection" id="idm6434">
+        <h2>Examples</h2>
+        <pre class="programlisting">SELECT ST_HasZ(ST_GeomFromText('POINT(1 2 3)'));
+ --result
+ true
+</pre>
+        <pre class="programlisting">SELECT ST_HasZ(ST_GeomFromText('LINESTRING(0 0, 1 1)'));
+ --result
+ false
+</pre>
+      </div>
+      <div class="refsection" id="idm6438">
+        <h2>See Also</h2>
+        <p>
+          <a class="xref" href="ST_Zmflag.html" title="ST_Zmflag">ST_Zmflag</a>
+        </p>
+        <p>
+          <a class="xref" href="ST_HasM.html" title="ST_HasM">ST_HasM</a>
+        </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_Zmflag.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Geometry_Accessors">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_HasM.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_Zmflag </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_HasM</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

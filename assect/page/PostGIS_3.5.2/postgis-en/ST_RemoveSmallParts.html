@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_RemoveSmallParts</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_RemoveIrrelevantPointsForView.html" title="ST_RemoveIrrelevantPointsForView"/>
+    <link rel="next" href="ST_Reverse.html" title="ST_Reverse"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_RemoveSmallParts</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_RemoveIrrelevantPointsForView.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.5. Geometry Editors</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_Reverse.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_RemoveSmallParts">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_RemoveSmallParts — Removes small parts (polygon rings or linestrings) of a geometry.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_RemoveSmallParts</strong>(</code>geometry  <var class="pdparam">geom</var>, double precision  <var class="pdparam">minSizeX</var>, double precision  <var class="pdparam">minSizeY</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm7615">
+        <h2>Description</h2>
+        <p>Returns a <a class="xref" href="geometry.html" title="geometry">geometry</a> without small parts (exterior or interior polygon rings, or linestrings).</p>
+        <p>This function can be used as preprocessing step for creating simplified maps, e. g. to remove small islands or holes.</p>
+        <p>It evaluates only geometries of type (MULTI)POLYGON and (MULTI)LINESTRING. Other geometries remain unchanged.</p>
+        <p>If <em class="parameter"><code>minSizeX</code></em> is greater than 0, parts are sorted out if their width is smaller than <em class="parameter"><code>minSizeX</code></em>.</p>
+        <p>If <em class="parameter"><code>minSizeY</code></em> is greater than 0, parts are sorted out if their height is smaller than <em class="parameter"><code>minSizeY</code></em>.</p>
+        <p>Both <em class="parameter"><code>minSizeX</code></em> and <em class="parameter"><code>minSizeY</code></em> are measured in coordinate system units of the geometry.</p>
+        <p>For polygon types, evaluation is done separately for each ring which can lead to one of the following results:
+            </p>
+        <div class="itemizedlist">
+          <ul class="itemizedlist" style="list-style-type: disc; ">
+            <li class="listitem">
+              <p>the original geometry,</p>
+            </li>
+            <li class="listitem">
+              <p>a POLYGON with all rings with less vertices,</p>
+            </li>
+            <li class="listitem">
+              <p>a POLYGON with a reduced number of interior rings (having possibly less vertices),</p>
+            </li>
+            <li class="listitem">
+              <p>a POLYGON EMPTY, or</p>
+            </li>
+            <li class="listitem">
+              <p>a MULTIPOLYGON with a reduced number of polygons (having possibly less interior rings or vertices), or</p>
+            </li>
+            <li class="listitem">
+              <p>a MULTIPOLYGON EMPTY.</p>
+            </li>
+          </ul>
+        </div>
+        <p>
+		</p>
+        <p>For linestring types, evaluation is done for each linestring which can lead to one of the following results:
+            </p>
+        <div class="itemizedlist">
+          <ul class="itemizedlist" style="list-style-type: disc; ">
+            <li class="listitem">
+              <p>the original geometry,</p>
+            </li>
+            <li class="listitem">
+              <p>a LINESTRING with a reduced number of vertices,</p>
+            </li>
+            <li class="listitem">
+              <p>a LINESTRING EMPTY,</p>
+            </li>
+            <li class="listitem">
+              <p>a MULTILINESTRING with a reduced number of linestrings (having possibly less vertices), or</p>
+            </li>
+            <li class="listitem">
+              <p>a MULTILINESTRING EMPTY.</p>
+            </li>
+          </ul>
+        </div>
+        <p>
+		</p>
+        <p>
+            </p>
+        <div class="informalfigure">
+          <div class="mediaobject">
+            <img src="../images/st_removesmallparts.png"/>
+            <div class="caption">
+              <p>Example: ST_RemoveSmallParts() applied to a multi-polygon. Blue parts remain.</p>
+            </div>
+          </div>
+        </div>
+        <p>
+        </p>
+        <p class="availability">Availability: 3.5.0</p>
+      </div>
+      <div class="refsection" id="idm7664">
+        <h2>Examples</h2>
+        <pre class="programlisting">
+			SELECT ST_AsText(
+			ST_RemoveSmallParts(
+			ST_GeomFromText('MULTIPOLYGON(
+				((60 160, 120 160, 120 220, 60 220, 60 160), (70 170, 70 210, 110 210, 110 170, 70 170)),
+				((85 75, 155 75, 155 145, 85 145, 85 75)),
+				((50 110, 70 110, 70 130, 50 130, 50 110)))'),
+				50, 50));
+		
+		st_astext
+		---------
+			MULTIPOLYGON(((60 160,120 160,120 220,60 220,60 160)),((85 75,155 75,155 145,85 145,85 75)))
+		</pre>
+        <pre class="programlisting">
+			SELECT ST_AsText(
+			ST_RemoveSmallParts(
+			ST_GeomFromText('LINESTRING(10 10, 20 20)'),
+				50, 50));
+		
+		st_astext
+		---------
+			LINESTRING EMPTY
+		</pre>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_RemoveIrrelevantPointsForView.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Geometry_Editors">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_Reverse.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_RemoveIrrelevantPointsForView </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_Reverse</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

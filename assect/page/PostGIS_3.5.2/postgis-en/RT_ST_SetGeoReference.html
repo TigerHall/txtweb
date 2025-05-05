@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_SetGeoReference</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="RT_ST_PixelOfValue.html" title="ST_PixelOfValue"/>
+    <link rel="next" href="RT_ST_SetRotation.html" title="ST_SetRotation"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_SetGeoReference</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="RT_ST_PixelOfValue.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">11.7. Raster Editors</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="RT_ST_SetRotation.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="RT_ST_SetGeoReference">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_SetGeoReference — Set Georeference 6 georeference parameters  in a single call. Numbers should be separated by white space.  Accepts inputs in GDAL or ESRI format.  Default is GDAL.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">raster <strong class="fsfunc">ST_SetGeoReference</strong>(</code>raster  <var class="pdparam">rast</var>, text  <var class="pdparam">georefcoords</var>, text  <var class="pdparam">format=GDAL</var><code>)</code>;</p>
+          <p><code class="funcdef">raster <strong class="fsfunc">ST_SetGeoReference</strong>(</code>raster  <var class="pdparam">rast</var>, double precision  <var class="pdparam">upperleftx</var>, double precision  <var class="pdparam">upperlefty</var>, double precision  <var class="pdparam">scalex</var>, double precision  <var class="pdparam">scaley</var>, double precision  <var class="pdparam">skewx</var>, double precision  <var class="pdparam">skewy</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm30845">
+        <h2>Description</h2>
+        <p>Set Georeference 6 georeference parameters in a single call.  Accepts inputs in 'GDAL' or 'ESRI' format.  Default is GDAL. If 6 coordinates are not provided will return null.</p>
+        <p>Difference between format representations is as follows:</p>
+        <p><code class="varname">GDAL</code>:
+</p>
+        <pre class="programlisting">scalex skewy skewx scaley upperleftx upperlefty</pre>
+        <p><code class="varname">ESRI</code>:
+</p>
+        <pre class="programlisting">scalex skewy skewx scaley upperleftx + scalex*0.5 upperlefty + scaley*0.5</pre>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>
+                        If the raster has out-db bands, changing the georeference may result in incorrect access of the band's externally stored data.
+                    </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p class="enhanced">Enhanced: 2.1.0 Addition of ST_SetGeoReference(raster, double precision, ...) variant</p>
+      </div>
+      <div class="refsection" id="idm30858">
+        <h2>Examples</h2>
+        <pre class="programlisting">
+WITH foo AS (
+    SELECT ST_MakeEmptyRaster(5, 5, 0, 0, 1, -1, 0, 0, 0) AS rast
+)
+SELECT
+    0 AS rid, (ST_Metadata(rast)).*
+FROM foo
+UNION ALL
+SELECT
+    1, (ST_Metadata(ST_SetGeoReference(rast, '10 0 0 -10 0.1 0.1', 'GDAL'))).*
+FROM foo
+UNION ALL
+SELECT
+    2, (ST_Metadata(ST_SetGeoReference(rast, '10 0 0 -10 5.1 -4.9', 'ESRI'))).*
+FROM foo
+UNION ALL
+SELECT
+    3, (ST_Metadata(ST_SetGeoReference(rast, 1, 1, 10, -10, 0.001, 0.001))).*
+FROM foo
+
+ rid |     upperleftx     |     upperlefty     | width | height | scalex | scaley | skewx | skewy | srid | numbands
+-----+--------------------+--------------------+-------+--------+--------+--------+-------+-------+------+----------
+   0 |                  0 |                  0 |     5 |      5 |      1 |     -1 |     0 |     0 |    0 |        0
+   1 |                0.1 |                0.1 |     5 |      5 |     10 |    -10 |     0 |     0 |    0 |        0
+   2 | 0.0999999999999996 | 0.0999999999999996 |     5 |      5 |     10 |    -10 |     0 |     0 |    0 |        0
+   3 |                  1 |                  1 |     5 |      5 |     10 |    -10 | 0.001 | 0.001 |    0 |        0
+                </pre>
+      </div>
+      <div class="refsection" id="idm30861">
+        <h2>See Also</h2>
+        <p><a class="xref" href="RT_ST_GeoReference.html" title="ST_GeoReference">ST_GeoReference</a>, <a class="xref" href="RT_ST_ScaleX.html" title="ST_ScaleX">ST_ScaleX</a>, <a class="xref" href="RT_ST_ScaleY.html" title="ST_ScaleY">ST_ScaleY</a>, <a class="xref" href="RT_ST_UpperLeftX.html" title="ST_UpperLeftX">ST_UpperLeftX</a>, <a class="xref" href="RT_ST_UpperLeftY.html" title="ST_UpperLeftY">ST_UpperLeftY</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="RT_ST_PixelOfValue.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="RT_reference.html#Raster_Editors">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="RT_ST_SetRotation.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_PixelOfValue </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_SetRotation</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

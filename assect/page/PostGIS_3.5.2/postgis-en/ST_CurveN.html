@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_CurveN</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_NumCurves.html" title="ST_NumCurves"/>
+    <link rel="next" href="ST_IsClosed.html" title="ST_IsClosed"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_CurveN</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_NumCurves.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.4. Geometry Accessors</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_IsClosed.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_CurveN">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_CurveN — Returns the Nth component curve geometry of a CompoundCurve.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_CurveN</strong>(</code>geometry  <var class="pdparam">a_compoundcurve</var>, integer  <var class="pdparam">index</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm5366">
+        <h2>Description</h2>
+        <p>Returns the Nth component curve geometry of a CompoundCurve. The index starts at 1. Returns NULL if the geometry is not a CompoundCurve or the index is out of range.</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method implements the SQL/MM specification.
+         SQL-MM 3: 8.2.6, 8.3.5</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports 3d and will not drop the z-index.
+        </p>
+      </div>
+      <div class="refsection" id="idm5377">
+        <h2>Examples</h2>
+        <pre class="programlisting">
+SELECT ST_AsText(ST_CurveN('COMPOUNDCURVE(
+    (2 2, 2.5 2.5),
+    CIRCULARSTRING(2.5 2.5, 4.5 2.5, 3.5 3.5),
+    (3.5 3.5, 2.5 4.5, 3 5, 2 2)
+  )', 1));
+        </pre>
+      </div>
+      <div class="refsection" id="idm5380">
+        <h2>See Also</h2>
+        <p>
+            <a class="xref" href="ST_NumCurves.html" title="ST_NumCurves">ST_NumCurves</a>,
+            <a class="xref" href="ST_Dump.html" title="ST_Dump">ST_Dump</a>,
+            <a class="xref" href="ST_ExteriorRing.html" title="ST_ExteriorRing">ST_ExteriorRing</a>,
+            <a class="xref" href="ST_NumInteriorRings.html" title="ST_NumInteriorRings">ST_NumInteriorRings</a>,
+            <a class="xref" href="ST_NumGeometries.html" title="ST_NumGeometries">ST_NumGeometries</a>
+        </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_NumCurves.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Geometry_Accessors">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_IsClosed.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_NumCurves </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_IsClosed</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

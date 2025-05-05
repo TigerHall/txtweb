@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>GetNodeByPoint</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="GetFaceContainingPoint.html" title="GetFaceContainingPoint"/>
+    <link rel="next" href="GetTopologyID.html" title="GetTopologyID"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">GetNodeByPoint</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="GetFaceContainingPoint.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">9.7. Topology Accessors</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="GetTopologyID.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="GetNodeByPoint">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>GetNodeByPoint — Finds the node-id of a node at a point location.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">integer <strong class="fsfunc">GetNodeByPoint</strong>(</code>varchar  <var class="pdparam">atopology</var>, geometry  <var class="pdparam">apoint</var>, float8  <var class="pdparam">tol1</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm25210">
+        <h2>Description</h2>
+        <p>Retrieves the id of a node at a point location.</p>
+        <p>The function returns an integer (id-node) given a topology, a POINT and a tolerance. If tolerance = 0 means exact intersection, otherwise retrieves the node from an interval.</p>
+        <p>If <code class="varname">apoint</code> doesn't intersect a node, returns 0 (zero).</p>
+        <p>If use tolerance &gt; 0 and there is more than one node near the point then an exception is thrown.</p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>If tolerance = 0, the function uses ST_Intersects otherwise uses ST_DWithin.</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p>Performed by the GEOS module.</p>
+        <p class="availability">Availability: 2.0.0</p>
+      </div>
+      <div class="refsection" id="idm25221">
+        <h2>Examples</h2>
+        <p>These examples use edges we created in <a class="xref" href="AddEdge.html" title="AddEdge">AddEdge</a></p>
+        <pre class="programlisting">SELECT topology.GetNodeByPoint('ma_topo',geom, 1) As nearnode
+ FROM ST_GeomFromEWKT('SRID=26986;POINT(227591.9 893900.4)') As geom;
+  nearnode
+----------
+        2
+ </pre>
+        <pre class="programlisting">SELECT topology.GetNodeByPoint('ma_topo',geom, 1000) As too_much_tolerance
+ FROM ST_GeomFromEWKT('SRID=26986;POINT(227591.9 893900.4)') As geom;
+
+ ----get error--
+ ERROR:  Two or more nodes found
+ </pre>
+      </div>
+      <div class="refsection" id="idm25227">
+        <h2>See Also</h2>
+        <p>
+<a class="xref" href="AddEdge.html" title="AddEdge">AddEdge</a>,
+<a class="xref" href="GetEdgeByPoint.html" title="GetEdgeByPoint">GetEdgeByPoint</a>,
+<a class="xref" href="GetFaceByPoint.html" title="GetFaceByPoint">GetFaceByPoint</a>
+</p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="GetFaceContainingPoint.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="Topology.html#Topology_Accessors">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="GetTopologyID.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">GetFaceContainingPoint </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> GetTopologyID</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

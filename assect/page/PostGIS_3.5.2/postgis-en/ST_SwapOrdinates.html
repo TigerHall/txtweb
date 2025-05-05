@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_SwapOrdinates</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_Snap.html" title="ST_Snap"/>
+    <link rel="next" href="ST_IsValid.html" title="ST_IsValid"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_SwapOrdinates</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_Snap.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.5. Geometry Editors</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_IsValid.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_SwapOrdinates">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_SwapOrdinates — Returns a version of the given geometry with
+				given ordinate values swapped.
+    </p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_SwapOrdinates</strong>(</code>geometry <var class="pdparam">geom</var>, cstring <var class="pdparam">ords</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm8067">
+        <h2>Description</h2>
+        <p>
+Returns a version of the given geometry with given ordinates swapped.
+    </p>
+        <p>
+The <code class="varname">ords</code> parameter is a 2-characters string naming
+the ordinates to swap. Valid names are: x,y,z and m.
+    </p>
+        <p class="availability">Availability: 2.2.0</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method supports Circular Strings and Curves.
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports 3d and will not drop the z-index.
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports M coordinates.
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports Polyhedral surfaces.
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports Triangles and Triangulated Irregular Network Surfaces (TIN).
+        </p>
+      </div>
+      <div class="refsection" id="idm8093">
+        <h2>Example</h2>
+        <pre class="programlisting">
+-- Scale M value by 2
+SELECT ST_AsText(
+  ST_SwapOrdinates(
+    ST_Scale(
+      ST_SwapOrdinates(g,'xm'),
+      2, 1
+    ),
+  'xm')
+) FROM ( SELECT 'POINT ZM (0 0 0 2)'::geometry g ) foo;
+     st_astext
+--------------------
+ POINT ZM (0 0 0 4)
+		 </pre>
+      </div>
+      <div class="refsection" id="idm8096">
+        <h2>See Also</h2>
+        <p> <a class="xref" href="ST_FlipCoordinates.html" title="ST_FlipCoordinates">ST_FlipCoordinates</a> </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_Snap.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Geometry_Editors">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_IsValid.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_Snap </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_IsValid</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

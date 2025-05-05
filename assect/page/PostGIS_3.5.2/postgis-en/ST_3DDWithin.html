@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_3DDWithin</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_Within.html" title="ST_Within"/>
+    <link rel="next" href="ST_3DDFullyWithin.html" title="ST_3DDFullyWithin"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_3DDWithin</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_Within.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.11.2. Distance Relationships</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_3DDFullyWithin.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_3DDWithin">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_3DDWithin — Tests if two 3D geometries are within a given 3D distance</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">boolean <strong class="fsfunc">ST_3DDWithin</strong>(</code>geometry 
+      <var class="pdparam">g1</var>, geometry 
+      <var class="pdparam">g2</var>, double precision 
+      <var class="pdparam">distance_of_srid</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm14045">
+        <h2>Description</h2>
+        <p>Returns true if the 3D distance between two geometry values is no larger than
+        distance <code class="varname">distance_of_srid</code>.
+        The distance is specified in units defined by the spatial reference system of the geometries.
+        For this function to make sense
+        the source geometries must be in the same coordinate system (have the same SRID).
+        </p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>
+            This function automatically includes a bounding box comparison
+            that makes use of any spatial indexes that are available on the geometries.
+        </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports 3d and will not drop the z-index.
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports Polyhedral surfaces.
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method implements the SQL/MM specification.
+         SQL-MM ?</p>
+        <p class="availability">Availability: 2.0.0</p>
+      </div>
+      <div class="refsection" id="idm14064">
+        <h2>Examples</h2>
+        <pre class="programlisting">
+-- Geometry example - units in meters (SRID: 2163 US National Atlas Equal area) (3D point and line compared 2D point and line)
+-- Note: currently no vertical datum support so Z is not transformed and assumed to be same units as final.
+SELECT ST_3DDWithin(
+      ST_Transform(ST_GeomFromEWKT('SRID=4326;POINT(-72.1235 42.3521 4)'),2163),
+      ST_Transform(ST_GeomFromEWKT('SRID=4326;LINESTRING(-72.1260 42.45 15, -72.123 42.1546 20)'),2163),
+      126.8
+    ) As within_dist_3d,
+ST_DWithin(
+      ST_Transform(ST_GeomFromEWKT('SRID=4326;POINT(-72.1235 42.3521 4)'),2163),
+      ST_Transform(ST_GeomFromEWKT('SRID=4326;LINESTRING(-72.1260 42.45 15, -72.123 42.1546 20)'),2163),
+      126.8
+    ) As within_dist_2d;
+
+ within_dist_3d | within_dist_2d
+----------------+----------------
+ f              | t
+</pre>
+      </div>
+      <div class="refsection" id="idm14067">
+        <h2>See Also</h2>
+        <p>
+        <a class="xref" href="ST_3DDFullyWithin.html" title="ST_3DDFullyWithin">ST_3DDFullyWithin</a>,
+        <a class="xref" href="ST_DWithin.html" title="ST_DWithin">ST_DWithin</a>, <a class="xref" href="ST_DFullyWithin.html" title="ST_DFullyWithin">ST_DFullyWithin</a>,
+        <a class="xref" href="ST_3DDistance.html" title="ST_3DDistance">ST_3DDistance</a>, <a class="xref" href="ST_Distance.html" title="ST_Distance">ST_Distance</a>,
+        <a class="xref" href="ST_3DMaxDistance.html" title="ST_3DMaxDistance">ST_3DMaxDistance</a>, <a class="xref" href="ST_Transform.html" title="ST_Transform">ST_Transform</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_Within.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#idm14025">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_3DDFullyWithin.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_Within </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_3DDFullyWithin</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_Reverse</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_RemoveSmallParts.html" title="ST_RemoveSmallParts"/>
+    <link rel="next" href="ST_Segmentize.html" title="ST_Segmentize"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_Reverse</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_RemoveSmallParts.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.5. Geometry Editors</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_Segmentize.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_Reverse">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_Reverse — Return the geometry with vertex order reversed.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_Reverse</strong>(</code>geometry  <var class="pdparam">g1</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm7680">
+        <h2>Description</h2>
+        <p>Can be used on any geometry and reverses the order of the vertices.</p>
+        <p class="enhanced">Enhanced: 2.4.0 support for curves was introduced.</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports 3d and will not drop the z-index.
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports Polyhedral surfaces.
+        </p>
+      </div>
+      <div class="refsection" id="idm7692">
+        <h2>Examples</h2>
+        <pre class="programlisting">
+SELECT ST_AsText(geom) as line, ST_AsText(ST_Reverse(geom)) As reverseline
+FROM
+(SELECT ST_MakeLine(ST_Point(1,2),
+		ST_Point(1,10)) As geom) as foo;
+--result
+		line         |     reverseline
+---------------------+----------------------
+LINESTRING(1 2,1 10) | LINESTRING(1 10,1 2)
+</pre>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_RemoveSmallParts.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Geometry_Editors">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_Segmentize.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_RemoveSmallParts </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_Segmentize</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

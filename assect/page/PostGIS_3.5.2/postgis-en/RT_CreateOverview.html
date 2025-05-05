@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_CreateOverview</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="RT_UpdateRasterSRID.html" title="UpdateRasterSRID"/>
+    <link rel="next" href="RT_ST_AddBand.html" title="ST_AddBand"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_CreateOverview</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="RT_UpdateRasterSRID.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">11.2. Raster Management</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="RT_ST_AddBand.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="RT_CreateOverview">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_CreateOverview — 
+Create an reduced resolution version of a given raster coverage.
+                </p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">regclass <strong class="fsfunc">ST_CreateOverview</strong>(</code>regclass  <var class="pdparam">tab</var>, name  <var class="pdparam">col</var>, int  <var class="pdparam">factor</var>, text  <var class="pdparam">algo='NearestNeighbor'</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm27798">
+        <h2>Description</h2>
+        <p>
+Create an overview table with resampled tiles from the source table.
+Output tiles will have the same size of input tiles and cover the same
+spatial extent with a lower resolution (pixel size will be
+1/<code class="varname">factor</code> of the original in both directions).
+                </p>
+        <p>
+The overview table will be made available in the
+<code class="varname">raster_overviews</code> catalog and will have raster
+constraints enforced.
+                </p>
+        <p>Algorithm options are: 'NearestNeighbor', 'Bilinear', 'Cubic', 'CubicSpline', and 'Lanczos'.  Refer to: <a class="link" href="http://www.gdal.org/gdalwarp.html" target="_top">GDAL Warp resampling methods</a> for more details.</p>
+        <p class="availability">Availability: 2.2.0</p>
+      </div>
+      <div class="refsection" id="idm27807">
+        <h2>Example</h2>
+        <p>Output to generally better quality but slower to product format</p>
+        <pre class="programlisting">SELECT ST_CreateOverview('mydata.mytable'::regclass, 'rast', 2, 'Lanczos');</pre>
+        <p>Output to faster to process default nearest neighbor</p>
+        <pre class="programlisting">SELECT ST_CreateOverview('mydata.mytable'::regclass, 'rast', 2);</pre>
+      </div>
+      <div class="refsection" id="idm27813">
+        <h2>See Also</h2>
+        <p>
+        <a class="xref" href="RT_Retile.html" title="ST_Retile">ST_Retile</a>,
+        <a class="xref" href="RT_AddOverviewConstraints.html" title="AddOverviewConstraints">AddOverviewConstraints</a>,
+        <a class="xref" href="RT_AddRasterConstraints.html" title="AddRasterConstraints">AddRasterConstraints</a>,
+        <a class="xref" href="using_raster_dataman.html#RT_Raster_Overviews" title="10.2.2. Raster Overviews">Section 10.2.2, “Raster Overviews”</a>
+            </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="RT_UpdateRasterSRID.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="RT_reference.html#Raster_Management_Functions">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="RT_ST_AddBand.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">UpdateRasterSRID </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_AddBand</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

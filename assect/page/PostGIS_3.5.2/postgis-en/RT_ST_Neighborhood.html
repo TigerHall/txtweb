@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_Neighborhood</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="RT_ST_SetM.html" title="ST_SetM"/>
+    <link rel="next" href="RT_ST_SetValue.html" title="ST_SetValue"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_Neighborhood</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="RT_ST_SetM.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">11.6. Raster Pixel Accessors and Setters</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="RT_ST_SetValue.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="RT_ST_Neighborhood">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_Neighborhood — 
+                    Returns a 2-D double precision array of the non-<code class="varname">NODATA</code> values around a given band's pixel specified by either a columnX and rowY or a geometric point expressed in the same spatial reference coordinate system as the raster.
+                </p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">double precision[][] <strong class="fsfunc">ST_Neighborhood</strong>(</code>raster  <var class="pdparam">rast</var>, integer  <var class="pdparam">bandnum</var>, integer  <var class="pdparam">columnX</var>, integer  <var class="pdparam">rowY</var>, integer  <var class="pdparam">distanceX</var>, integer  <var class="pdparam">distanceY</var>, boolean  <var class="pdparam">exclude_nodata_value=true</var><code>)</code>;</p>
+          <p><code class="funcdef">double precision[][] <strong class="fsfunc">ST_Neighborhood</strong>(</code>raster  <var class="pdparam">rast</var>, integer  <var class="pdparam">columnX</var>, integer  <var class="pdparam">rowY</var>, integer  <var class="pdparam">distanceX</var>, integer  <var class="pdparam">distanceY</var>, boolean  <var class="pdparam">exclude_nodata_value=true</var><code>)</code>;</p>
+          <p><code class="funcdef">double precision[][] <strong class="fsfunc">ST_Neighborhood</strong>(</code>raster  <var class="pdparam">rast</var>, integer  <var class="pdparam">bandnum</var>, geometry  <var class="pdparam">pt</var>, integer  <var class="pdparam">distanceX</var>, integer  <var class="pdparam">distanceY</var>, boolean  <var class="pdparam">exclude_nodata_value=true</var><code>)</code>;</p>
+          <p><code class="funcdef">double precision[][] <strong class="fsfunc">ST_Neighborhood</strong>(</code>raster  <var class="pdparam">rast</var>, geometry  <var class="pdparam">pt</var>, integer  <var class="pdparam">distanceX</var>, integer  <var class="pdparam">distanceY</var>, boolean  <var class="pdparam">exclude_nodata_value=true</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm30397">
+        <h2>Description</h2>
+        <p>
+                    Returns a 2-D double precision array of the non-<code class="varname">NODATA</code> values around a given band's pixel specified by either a columnX and rowY or a geometric point expressed in the same spatial reference coordinate system as the raster.  The <code class="varname">distanceX</code> and <code class="varname">distanceY</code> parameters define the number of pixels around the specified pixel in the X and Y axes, e.g. I want all values within 3 pixel distance along the X axis and 2 pixel distance along the Y axis around my pixel of interest.  The center value of the 2-D array will be the value at the pixel specified by the columnX and rowY or the geometric point.
+                </p>
+        <p>
+                    Band numbers start at 1 and <code class="varname">bandnum</code> is assumed to be 1 if not specified. If <code class="varname">exclude_nodata_value</code> is set to false, then all pixels include <code class="varname">nodata</code> pixels are considered to intersect and return value. If <code class="varname">exclude_nodata_value</code> is not passed in then reads it from metadata of raster.
+                </p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>
+                        The number of elements along each axis of the returning 2-D array is 2 * (<code class="varname">distanceX</code>|<code class="varname">distanceY</code>) + 1.  So for a <code class="varname">distanceX</code> and <code class="varname">distanceY</code> of 1, the returning array will be 3x3.
+                    </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>
+                        The 2-D array output can be passed to any of the raster processing builtin functions, e.g. ST_Min4ma, ST_Sum4ma, ST_Mean4ma.
+                    </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p class="availability">Availability: 2.1.0</p>
+      </div>
+      <div class="refsection" id="idm30417">
+        <h2>Examples</h2>
+        <pre class="programlisting">
+-- pixel 2x2 has value
+SELECT
+    ST_Neighborhood(rast, 2, 2, 1, 1)
+FROM (
+    SELECT
+        ST_SetValues(
+            ST_AddBand(
+                ST_MakeEmptyRaster(5, 5, -2, 2, 1, -1, 0, 0, 0),
+                '8BUI'::text, 1, 0
+            ),
+            1, 1, 1, ARRAY[
+                [0, 1, 1, 1, 1],
+                [1, 1, 1, 0, 1],
+                [1, 0, 1, 1, 1],
+                [1, 1, 1, 1, 0],
+                [1, 1, 0, 1, 1]
+            ]::double precision[],
+            1
+        ) AS rast
+) AS foo
+
+         st_neighborhood
+---------------------------------
+{{NULL,1,1},{1,1,1},{1,NULL,1}}
+                </pre>
+        <pre class="programlisting">
+-- pixel 2x3 is NODATA
+SELECT
+    ST_Neighborhood(rast, 2, 3, 1, 1)
+FROM (
+    SELECT
+        ST_SetValues(
+            ST_AddBand(
+                ST_MakeEmptyRaster(5, 5, -2, 2, 1, -1, 0, 0, 0),
+                '8BUI'::text, 1, 0
+            ),
+            1, 1, 1, ARRAY[
+                [0, 1, 1, 1, 1],
+                [1, 1, 1, 0, 1],
+                [1, 0, 1, 1, 1],
+                [1, 1, 1, 1, 0],
+                [1, 1, 0, 1, 1]
+            ]::double precision[],
+            1
+        ) AS rast
+) AS foo
+
+       st_neighborhood
+------------------------------
+ {{1,1,1},{1,NULL,1},{1,1,1}}
+                </pre>
+        <pre class="programlisting">
+-- pixel 3x3 has value
+-- exclude_nodata_value = FALSE
+SELECT
+    ST_Neighborhood(rast, 3, 3, 1, 1, false)
+FROM ST_SetValues(
+            ST_AddBand(
+                ST_MakeEmptyRaster(5, 5, -2, 2, 1, -1, 0, 0, 0),
+                '8BUI'::text, 1, 0
+            ),
+            1, 1, 1, ARRAY[
+                [0, 1, 1, 1, 1],
+                [1, 1, 1, 0, 1],
+                [1, 0, 1, 1, 1],
+                [1, 1, 1, 1, 0],
+                [1, 1, 0, 1, 1]
+            ]::double precision[],
+            1
+        ) AS rast
+
+      st_neighborhood
+---------------------------
+{{1,1,0},{0,1,1},{1,1,1}}
+                </pre>
+      </div>
+      <div class="refsection" id="idm30422">
+        <h2>See Also</h2>
+        <p>
+                    <a class="xref" href="RT_ST_NearestValue.html" title="ST_NearestValue">ST_NearestValue</a>,
+                    <a class="xref" href="RT_ST_Min4ma.html" title="ST_Min4ma">ST_Min4ma</a>,
+                    <a class="xref" href="RT_ST_Max4ma.html" title="ST_Max4ma">ST_Max4ma</a>,
+                    <a class="xref" href="RT_ST_Sum4ma.html" title="ST_Sum4ma">ST_Sum4ma</a>,
+                    <a class="xref" href="RT_ST_Mean4ma.html" title="ST_Mean4ma">ST_Mean4ma</a>,
+                    <a class="xref" href="RT_ST_Range4ma.html" title="ST_Range4ma">ST_Range4ma</a>,
+                    <a class="xref" href="RT_ST_Distinct4ma.html" title="ST_Distinct4ma">ST_Distinct4ma</a>,
+                    <a class="xref" href="RT_ST_StdDev4ma.html" title="ST_StdDev4ma">ST_StdDev4ma</a>
+                </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="RT_ST_SetM.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="RT_reference.html#Raster_Pixel_Accessors">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="RT_ST_SetValue.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_SetM </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_SetValue</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

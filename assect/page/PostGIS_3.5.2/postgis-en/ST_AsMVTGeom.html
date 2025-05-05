@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_AsMVTGeom</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_AsMARC21.html" title="ST_AsMARC21"/>
+    <link rel="next" href="ST_AsMVT.html" title="ST_AsMVT"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_AsMVTGeom</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_AsMARC21.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.9.3. Other Formats</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_AsMVT.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_AsMVTGeom">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_AsMVTGeom — Transforms a geometry into the coordinate space of a MVT tile.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_AsMVTGeom</strong>(</code>geometry  <var class="pdparam">geom</var>, box2d  <var class="pdparam">bounds</var>, integer  <var class="pdparam">extent=4096</var>, integer  <var class="pdparam">buffer=256</var>, boolean  <var class="pdparam">clip_geom=true</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm11068">
+        <h2>Description</h2>
+        <p>Transforms a geometry into the coordinate space of a MVT (<a class="link" href="https://www.mapbox.com/vector-tiles/" target="_top">Mapbox Vector Tile</a>) tile,
+        clipping it to the tile bounds if required.
+        The geometry must be in the coordinate system of the target map (using <a class="xref" href="ST_Transform.html" title="ST_Transform">ST_Transform</a> if needed).
+        Commonly this is <a class="link" href="https://en.wikipedia.org/wiki/Web_Mercator_projection" target="_top">Web Mercator</a> (SRID:3857).
+        </p>
+        <p>The function attempts to preserve geometry validity, and corrects it if needed.
+        This may cause the result geometry to collapse to a lower dimension.
+		</p>
+        <p>The rectangular bounds of the tile in the target map coordinate space must be provided,
+        so the geometry can be transformed, and clipped if required.
+        The bounds can be generated using <a class="xref" href="ST_TileEnvelope.html" title="ST_TileEnvelope">ST_TileEnvelope</a>.
+        </p>
+        <p>
+        This function is used to convert geometry into the tile coordinate space required by <a class="xref" href="ST_AsMVT.html" title="ST_AsMVT">ST_AsMVT</a>.
+        </p>
+        <p><code class="varname">geom</code> is the geometry to transform, in the coordinate system of the target map.</p>
+        <p><code class="varname">bounds</code> is the rectangular bounds of the tile in map coordinate space, with no buffer.</p>
+        <p><code class="varname">extent</code> is the tile extent size in tile coordinate space as defined by the <a class="link" href="https://www.mapbox.com/vector-tiles/specification/" target="_top">MVT specification</a>. Defaults to 4096.</p>
+        <p><code class="varname">buffer</code> is the buffer size in tile coordinate space for geometry clippig. Defaults to 256.</p>
+        <p><code class="varname">clip_geom</code> is a boolean to control if geometries are clipped or encoded as-is. Defaults to true.</p>
+        <p class="availability">Availability: 2.4.0</p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>From 3.0, Wagyu can be chosen at configure time to clip and validate MVT polygons. This library is faster and produces more correct results than the GEOS default, but it might drop small polygons.</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="refsection" id="idm11093">
+        <h2>Examples</h2>
+        <pre class="programlisting">
+SELECT ST_AsText(ST_AsMVTGeom(
+	ST_GeomFromText('POLYGON ((0 0, 10 0, 10 5, 0 -5, 0 0))'),
+	ST_MakeBox2D(ST_Point(0, 0), ST_Point(4096, 4096)),
+	4096, 0, false));
+                              st_astext
+--------------------------------------------------------------------
+ MULTIPOLYGON(((5 4096,10 4091,10 4096,5 4096)),((5 4096,0 4101,0 4096,5 4096)))
+		</pre>
+        <p>Canonical example for a Web Mercator tile using a computed tile bounds to query and clip geometry. This assumes the data.geom column has srid of 4326.
+    </p>
+        <pre class="programlisting">
+
+SELECT ST_AsMVTGeom(
+            ST_Transform( geom, 3857 ),
+            ST_TileEnvelope(12, 513, 412), extent =&gt; 4096, buffer =&gt; 64) AS geom
+  FROM data
+  WHERE geom &amp;&amp; ST_Transform(ST_TileEnvelope(12, 513, 412, margin =&gt; (64.0 / 4096)),4326)
+
+
+</pre>
+      </div>
+      <div class="refsection" id="idm11098">
+        <h2>See Also</h2>
+        <p>
+                <a class="xref" href="ST_AsMVT.html" title="ST_AsMVT">ST_AsMVT</a>,
+                <a class="xref" href="ST_TileEnvelope.html" title="ST_TileEnvelope">ST_TileEnvelope</a>,
+                <a class="xref" href="PostGIS_Wagyu_Version.html" title="PostGIS_Wagyu_Version">PostGIS_Wagyu_Version</a>
+            </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_AsMARC21.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#idm10493">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_AsMVT.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_AsMARC21 </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_AsMVT</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

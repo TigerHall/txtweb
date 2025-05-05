@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>CG_StraightSkeleton</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="CG_OptimalConvexPartition.html" title="CG_OptimalConvexPartition"/>
+    <link rel="next" href="ST_StraightSkeleton.html" title="ST_StraightSkeleton"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">CG_StraightSkeleton</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="CG_OptimalConvexPartition.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">8.3. SFCGAL Processing and Relationship Functions</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_StraightSkeleton.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="CG_StraightSkeleton">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>CG_StraightSkeleton — Compute a straight skeleton from a geometry</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">geometry <strong class="fsfunc">CG_StraightSkeleton</strong>(</code>geometry <var class="pdparam">geom</var>, boolean  <var class="pdparam">use_distance_as_m = false</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm23133">
+        <h2>Description</h2>
+        <p class="availability">Availability: 3.5.0</p>
+        <p class="sfcgal_requirement">Requires SFCGAL &gt;= 1.3.8 for option use_distance_as_m</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method needs SFCGAL backend.
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports 3d and will not drop the z-index.
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports Polyhedral surfaces.
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports Triangles and Triangulated Irregular Network Surfaces (TIN).
+        </p>
+      </div>
+      <div class="refsection" id="idm23153">
+        <h2>Examples</h2>
+        <pre class="programlisting">SELECT CG_StraightSkeleton(ST_GeomFromText('POLYGON (( 190 190, 10 190, 10 10, 190 10, 190 20, 160 30, 60 30, 60 130, 190 140, 190 190 ))'));</pre>
+        <pre class="programlisting">ST_AsText(CG_StraightSkeleton('POLYGON((0 0,1 0,1 1,0 1,0 0))', true);</pre>
+        <pre class="screen">MULTILINESTRING M ((0 0 0,0.5 0.5 0.5),(1 0 0,0.5 0.5 0.5),(1 1 0,0.5 0.5 0.5),(0 1 0,0.5 0.5 0.5))</pre>
+        <div class="informaltable">
+          <table style="border-collapse: collapse; border-top: 1px solid ; border-bottom: 1px solid ; border-left: 1px solid ; border-right: 1px solid ; ">
+            <colgroup>
+              <col/>
+              <col/>
+            </colgroup>
+            <tbody>
+              <tr>
+                <td style="border-right: 1px solid ; "><div class="informalfigure"><div class="mediaobject"><img src="../images/st_straightskeleton01.png"/><div class="caption"><p>Original polygon</p></div></div></div>
+                            </td>
+                <td><div class="informalfigure"><div class="mediaobject"><img src="../images/st_straightskeleton02.png"/><div class="caption"><p>Straight Skeleton of polygon</p></div></div></div>
+                            </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="refsection" id="idm23178">
+        <h2>See Also</h2>
+        <p>
+          <a class="xref" href="CG_ExtrudeStraightSkeleton.html" title="CG_ExtrudeStraightSkeleton">CG_ExtrudeStraightSkeleton</a>
+        </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="CG_OptimalConvexPartition.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference_sfcgal.html#sfcgal_processing">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_StraightSkeleton.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">CG_OptimalConvexPartition </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_StraightSkeleton</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_OrderingEquals</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_LineCrossingDirection.html" title="ST_LineCrossingDirection"/>
+    <link rel="next" href="ST_Overlaps.html" title="ST_Overlaps"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_OrderingEquals</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_LineCrossingDirection.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.11.1. Topological Relationships</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_Overlaps.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_OrderingEquals">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_OrderingEquals — Tests if two geometries represent the same geometry and have points in the same directional order</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">boolean <strong class="fsfunc">ST_OrderingEquals</strong>(</code>geometry  <var class="pdparam">A</var>, geometry  <var class="pdparam">B</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm13535">
+        <h2>Description</h2>
+        <p>ST_OrderingEquals compares two geometries and returns t (TRUE) if the
+      geometries are equal and the coordinates are in the same order;
+      otherwise it returns f (FALSE).</p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>This function is implemented as per the ArcSDE SQL
+    specification rather than SQL-MM.
+    http://edndoc.esri.com/arcsde/9.1/sql_api/sqlapi3.htm#ST_OrderingEquals</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method implements the SQL/MM specification.
+         SQL-MM 3: 5.1.43</p>
+      </div>
+      <div class="refsection" id="idm13544">
+        <h2>Examples</h2>
+        <pre class="programlisting">SELECT ST_OrderingEquals(ST_GeomFromText('LINESTRING(0 0, 10 10)'),
+    ST_GeomFromText('LINESTRING(0 0, 5 5, 10 10)'));
+ st_orderingequals
+-----------
+ f
+(1 row)
+
+SELECT ST_OrderingEquals(ST_GeomFromText('LINESTRING(0 0, 10 10)'),
+    ST_GeomFromText('LINESTRING(0 0, 0 0, 10 10)'));
+ st_orderingequals
+-----------
+ t
+(1 row)
+
+SELECT ST_OrderingEquals(ST_Reverse(ST_GeomFromText('LINESTRING(0 0, 10 10)')),
+    ST_GeomFromText('LINESTRING(0 0, 0 0, 10 10)'));
+ st_orderingequals
+-----------
+ f
+(1 row)
+</pre>
+      </div>
+      <div class="refsection" id="idm13547">
+        <h2>See Also</h2>
+        <p><a class="xref" href="geometry_overlaps.html" title="&amp;&amp;">&amp;&amp;</a>, <a class="xref" href="ST_Equals.html" title="ST_Equals">ST_Equals</a>, <a class="xref" href="ST_Reverse.html" title="ST_Reverse">ST_Reverse</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_LineCrossingDirection.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#idm12747">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_Overlaps.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_LineCrossingDirection </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_Overlaps</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>TopoGeom_addTopoGeom</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="TopoGeom_remElement.html" title="TopoGeom_remElement"/>
+    <link rel="next" href="toTopoGeom_editor_proxy.html" title="toTopoGeom"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">TopoGeom_addTopoGeom</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="TopoGeom_remElement.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">9.10. TopoGeometry Editors</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="toTopoGeom_editor_proxy.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="TopoGeom_addTopoGeom">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>TopoGeom_addTopoGeom — Adds element of a TopoGeometry to the definition of another TopoGeometry.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">topogeometry <strong class="fsfunc">TopoGeom_addTopoGeom</strong>(</code>topogeometry  <var class="pdparam">tgt</var>, topogeometry  <var class="pdparam">src</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm25938">
+        <h2>Description</h2>
+        <p>
+Adds the elements of a <a class="xref" href="topogeometry.html" title="TopoGeometry">TopoGeometry</a> to the definition of
+another TopoGeometry, possibly changing its cached type (type attribute)
+to a collection, if needed to hold all elements in the source object.
+                </p>
+        <p>
+The two TopoGeometry objects need be defined against the *same*
+topology and, if hierarchically defined, need be composed by elements
+of the same child layer.
+                </p>
+        <p class="availability">Availability: 3.2</p>
+      </div>
+      <div class="refsection" id="idm25944">
+        <h2>Examples</h2>
+        <pre class="programlisting">
+-- Set an "overall" TopoGeometry value to be composed by all
+-- elements of specific TopoGeometry values
+UPDATE mylayer SET tg_overall = TopoGeom_addTopogeom(
+    TopoGeom_addTopoGeom(
+        clearTopoGeom(tg_overall),
+        tg_specific1
+    ),
+    tg_specific2
+);
+				</pre>
+      </div>
+      <div class="refsection" id="idm25947">
+        <h2>See Also</h2>
+        <p>
+<a class="xref" href="TopoGeom_addElement.html" title="TopoGeom_addElement">TopoGeom_addElement</a>,
+<a class="xref" href="clearTopoGeom.html" title="clearTopoGeom">clearTopoGeom</a>,
+<a class="xref" href="CreateTopoGeom.html" title="CreateTopoGeom">CreateTopoGeom</a>
+        </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="TopoGeom_remElement.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="Topology.html#TopoGeometry_Editors">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="toTopoGeom_editor_proxy.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">TopoGeom_remElement </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> toTopoGeom</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

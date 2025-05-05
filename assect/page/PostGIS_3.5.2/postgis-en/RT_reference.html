@@ -1,0 +1,1705 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Chapter 11. Raster Reference</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="using_raster_dataman.html" title="Chapter 10. Raster Data Management, Queries, and Applications"/>
+    <link rel="next" href="geomval.html" title="geomval"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">Chapter 11. Raster Reference</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="using_raster_dataman.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; "> </th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="geomval.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <section class="chapter" id="RT_reference">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h1 class="title">Chapter 11. Raster Reference</h1>
+          </div>
+        </div>
+      </div>
+      <div class="toc">
+        <div class="toc-title">Table of Contents</div>
+        <ul class="toc">
+          <li>
+            <span class="section">
+              <a href="RT_reference.html#Raster_Types">11.1. Raster Support Data types</a>
+            </span>
+          </li>
+          <li>
+            <span class="section">
+              <a href="RT_reference.html#Raster_Management_Functions">11.2. Raster Management</a>
+            </span>
+          </li>
+          <li>
+            <span class="section">
+              <a href="RT_reference.html#Raster_Constructors">11.3. Raster Constructors</a>
+            </span>
+          </li>
+          <li>
+            <span class="section">
+              <a href="RT_reference.html#Raster_Accessors">11.4. Raster Accessors</a>
+            </span>
+          </li>
+          <li>
+            <span class="section">
+              <a href="RT_reference.html#RasterBand_Accessors">11.5. Raster Band Accessors</a>
+            </span>
+          </li>
+          <li>
+            <span class="section">
+              <a href="RT_reference.html#Raster_Pixel_Accessors">11.6. Raster Pixel Accessors and Setters</a>
+            </span>
+          </li>
+          <li>
+            <span class="section">
+              <a href="RT_reference.html#Raster_Editors">11.7. Raster Editors</a>
+            </span>
+          </li>
+          <li>
+            <span class="section">
+              <a href="RT_reference.html#RasterBand_Editors">11.8. Raster Band Editors</a>
+            </span>
+          </li>
+          <li>
+            <span class="section">
+              <a href="RT_reference.html#RasterBand_Stats">11.9. Raster Band Statistics and Analytics</a>
+            </span>
+          </li>
+          <li>
+            <span class="section">
+              <a href="RT_reference.html#Raster_Inputs">11.10. Raster Inputs</a>
+            </span>
+          </li>
+          <li>
+            <span class="section">
+              <a href="RT_reference.html#Raster_Outputs">11.11. Raster Outputs</a>
+            </span>
+          </li>
+          <li>
+            <span class="section">
+              <a href="RT_reference.html#Raster_Processing_MapAlgebra">11.12. Raster Processing: Map Algebra</a>
+            </span>
+          </li>
+          <li>
+            <span class="section">
+              <a href="RT_reference.html#Raster_Processing_MapAlgebra_Callbacks">11.13. Built-in Map Algebra Callback Functions</a>
+            </span>
+          </li>
+          <li>
+            <span class="section">
+              <a href="RT_reference.html#Raster_Processing_DEM">11.14. Raster Processing: DEM (Elevation)</a>
+            </span>
+          </li>
+          <li>
+            <span class="section">
+              <a href="RT_reference.html#Raster_Processing_Geometry">11.15. Raster Processing: Raster to Geometry</a>
+            </span>
+          </li>
+          <li>
+            <span class="section">
+              <a href="RT_reference.html#RT_Operators">11.16. Raster Operators</a>
+            </span>
+          </li>
+          <li>
+            <span class="section">
+              <a href="RT_reference.html#Raster_Relationships">11.17. Raster and Raster Band Spatial Relationships</a>
+            </span>
+          </li>
+          <li>
+            <span class="section">
+              <a href="RT_reference.html#Raster_Tips">11.18. Raster Tips</a>
+            </span>
+          </li>
+        </ul>
+      </div>
+      <p>The functions given below are the ones which a user of PostGIS Raster is
+  likely to need and which are currently available in PostGIS Raster. There are other functions which are required support
+  functions to the raster objects which are not of use to a general
+  user.</p>
+      <p><code class="varname">raster</code> is a new PostGIS type for storing and analyzing raster data. </p>
+      <p>For loading rasters from raster files please refer to <a class="xref" href="using_raster_dataman.html#RT_Loading_Rasters" title="10.1. Loading and Creating Rasters">Section 10.1, “Loading and Creating Rasters”</a></p>
+      <p>For the examples in this reference we will be using a raster table of dummy rasters - Formed with the following code </p>
+      <pre class="programlisting">CREATE TABLE dummy_rast(rid integer, rast raster);
+INSERT INTO dummy_rast(rid, rast)
+VALUES (1,
+('01' -- little endian (uint8 ndr)
+||
+'0000' -- version (uint16 0)
+||
+'0000' -- nBands (uint16 0)
+||
+'0000000000000040' -- scaleX (float64 2)
+||
+'0000000000000840' -- scaleY (float64 3)
+||
+'000000000000E03F' -- ipX (float64 0.5)
+||
+'000000000000E03F' -- ipY (float64 0.5)
+||
+'0000000000000000' -- skewX (float64 0)
+||
+'0000000000000000' -- skewY (float64 0)
+||
+'00000000' -- SRID (int32 0)
+||
+'0A00' -- width (uint16 10)
+||
+'1400' -- height (uint16 20)
+)::raster
+),
+-- Raster: 5 x 5 pixels, 3 bands, PT_8BUI pixel type, NODATA = 0
+(2,  ('01000003009A9999999999A93F9A9999999999A9BF000000E02B274A' ||
+'41000000007719564100000000000000000000000000000000FFFFFFFF050005000400FDFEFDFEFEFDFEFEFDF9FAFEF' ||
+'EFCF9FBFDFEFEFDFCFAFEFEFE04004E627AADD16076B4F9FE6370A9F5FE59637AB0E54F58617087040046566487A1506CA2E3FA5A6CAFFBFE4D566DA4CB3E454C5665')::raster);</pre>
+      <section class="section" id="Raster_Types">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title" style="clear: both">11.1. Raster Support Data types</h2>
+            </div>
+            <div>
+              <div class="abstract">
+                <div class="abstract-title">Abstract</div>
+                <p>This section lists the PostgreSQL data types specifically created to support raster functionality.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="toc">
+          <ul class="toc">
+            <li>
+              <span class="refentrytitle">
+                <a href="geomval.html">geomval</a>
+              </span>
+              <span class="refpurpose"> — A spatial datatype with two fields - geom (holding a geometry object)
+                    and val (holding a double precision pixel value from a raster band).</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="addbandarg.html">addbandarg</a>
+              </span>
+              <span class="refpurpose"> — A composite type used as input into the ST_AddBand function defining the attributes and initial value of the new band.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="rastbandarg.html">rastbandarg</a>
+              </span>
+              <span class="refpurpose"> — A composite type for use when needing to express a raster and a band index of that raster.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="raster.html">raster</a>
+              </span>
+              <span class="refpurpose"> — raster spatial data type.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="reclassarg.html">reclassarg</a>
+              </span>
+              <span class="refpurpose"> — A composite type used as input into the ST_Reclass function defining the behavior of reclassification.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="summarystats.html">summarystats</a>
+              </span>
+              <span class="refpurpose"> — A composite type returned by the ST_SummaryStats and ST_SummaryStatsAgg functions.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="unionarg.html">unionarg</a>
+              </span>
+              <span class="refpurpose"> — A composite type used as input into the ST_Union function defining the bands to be processed and behavior of the UNION operation.</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+      <section class="section" id="Raster_Management_Functions">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title" style="clear: both">11.2. Raster Management</h2>
+            </div>
+          </div>
+        </div>
+        <div class="toc">
+          <ul class="toc">
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_AddRasterConstraints.html">AddRasterConstraints</a>
+              </span>
+              <span class="refpurpose"> — Adds raster constraints to a loaded raster table for a specific column that constrains spatial ref, scaling, blocksize, alignment, bands, band type and a flag to denote if raster column is regularly blocked. The table must be loaded with data for the constraints to be inferred. Returns true if the constraint setting was accomplished and issues a notice otherwise.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_DropRasterConstraints.html">DropRasterConstraints</a>
+              </span>
+              <span class="refpurpose"> — Drops PostGIS raster constraints that refer to a raster table column. Useful if you need to reload data or update your raster column data.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_AddOverviewConstraints.html">AddOverviewConstraints</a>
+              </span>
+              <span class="refpurpose"> — Tag a raster column as being an overview of another.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_DropOverviewConstraints.html">DropOverviewConstraints</a>
+              </span>
+              <span class="refpurpose"> — Untag a raster column from being an overview of another.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_PostGIS_GDAL_Version.html">PostGIS_GDAL_Version</a>
+              </span>
+              <span class="refpurpose"> — Reports the version of the GDAL library in use by PostGIS.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_PostGIS_Raster_Lib_Build_Date.html">PostGIS_Raster_Lib_Build_Date</a>
+              </span>
+              <span class="refpurpose"> — Reports full raster library build date.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_PostGIS_Raster_Lib_Version.html">PostGIS_Raster_Lib_Version</a>
+              </span>
+              <span class="refpurpose"> — Reports full raster version and build configuration
+        infos.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_GDALDrivers.html">ST_GDALDrivers</a>
+              </span>
+              <span class="refpurpose"> — Returns a list of raster formats supported by PostGIS through GDAL.  Only those formats with can_write=True can be used by ST_AsGDALRaster</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_Contour.html">ST_Contour</a>
+              </span>
+              <span class="refpurpose"> — Generates a set of vector contours from the provided raster
+            band, using the GDAL contouring algorithm.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_InterpolateRaster.html">ST_InterpolateRaster</a>
+              </span>
+              <span class="refpurpose"> — Interpolates a gridded surface based on an input set
+        of 3-d points, using the X- and Y-values to position the points on
+        the grid and the Z-value of the points as the surface elevation.
+        </span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_UpdateRasterSRID.html">UpdateRasterSRID</a>
+              </span>
+              <span class="refpurpose"> — 
+                    Change the SRID of all rasters in the user-specified column and table.
+                </span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_CreateOverview.html">ST_CreateOverview</a>
+              </span>
+              <span class="refpurpose"> — 
+Create an reduced resolution version of a given raster coverage.
+                </span>
+            </li>
+          </ul>
+        </div>
+      </section>
+      <section class="section" id="Raster_Constructors">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title" style="clear: both">11.3. Raster Constructors</h2>
+            </div>
+          </div>
+        </div>
+        <div class="toc">
+          <ul class="toc">
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_AddBand.html">ST_AddBand</a>
+              </span>
+              <span class="refpurpose"> — 
+                    Returns a raster with the new band(s) of given type added with given initial value in the given index location. If no index is specified, the band is added to the end.
+                </span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_AsRaster.html">ST_AsRaster</a>
+              </span>
+              <span class="refpurpose"> — Converts a PostGIS geometry to a PostGIS raster.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_Band.html">ST_Band</a>
+              </span>
+              <span class="refpurpose"> — Returns one or more bands of an existing raster as a new raster.  Useful for building new rasters from existing rasters.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_MakeEmptyCoverage.html">ST_MakeEmptyCoverage</a>
+              </span>
+              <span class="refpurpose"> — Cover georeferenced area with a grid of empty raster tiles.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_MakeEmptyRaster.html">ST_MakeEmptyRaster</a>
+              </span>
+              <span class="refpurpose"> — Returns an empty raster (having no bands) of given dimensions (width &amp; height), upperleft X and Y, pixel size and rotation (scalex, scaley, skewx &amp; skewy) and reference system (srid).
+                If a raster is passed in, returns a new raster with the same size, alignment and SRID.  If srid is left out, the spatial ref is set to unknown (0).</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_Tile.html">ST_Tile</a>
+              </span>
+              <span class="refpurpose"> — Returns a set of rasters resulting from the split of the input raster based upon the desired dimensions of the output rasters.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_Retile.html">ST_Retile</a>
+              </span>
+              <span class="refpurpose"> — 
+                    Return a set of configured tiles from an arbitrarily tiled raster coverage.
+                </span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_FromGDALRaster.html">ST_FromGDALRaster</a>
+              </span>
+              <span class="refpurpose"> — Returns a raster from a supported GDAL raster file.</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+      <section class="section" id="Raster_Accessors">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title" style="clear: both">11.4. Raster Accessors</h2>
+            </div>
+          </div>
+        </div>
+        <div class="toc">
+          <ul class="toc">
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_GeoReference.html">ST_GeoReference</a>
+              </span>
+              <span class="refpurpose"> — Returns the georeference meta data in GDAL or ESRI format as commonly seen in a world file. Default is GDAL.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_Height.html">ST_Height</a>
+              </span>
+              <span class="refpurpose"> — Returns the height of the raster in pixels.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_IsEmpty.html">ST_IsEmpty</a>
+              </span>
+              <span class="refpurpose"> — Returns true if the raster is empty (width = 0 and height = 0). Otherwise, returns false.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_MemSize.html">ST_MemSize</a>
+              </span>
+              <span class="refpurpose"> — Returns the amount of space (in bytes) the raster takes.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_MetaData.html">ST_MetaData</a>
+              </span>
+              <span class="refpurpose"> — Returns basic meta data about a raster object such as pixel size, rotation (skew), upper, lower left, etc.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_NumBands.html">ST_NumBands</a>
+              </span>
+              <span class="refpurpose"> — Returns the number of bands in the raster object.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_PixelHeight.html">ST_PixelHeight</a>
+              </span>
+              <span class="refpurpose"> — Returns the pixel height in geometric units of the spatial reference system.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_PixelWidth.html">ST_PixelWidth</a>
+              </span>
+              <span class="refpurpose"> — Returns the pixel width in geometric units of the spatial reference system.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_ScaleX.html">ST_ScaleX</a>
+              </span>
+              <span class="refpurpose"> — Returns the X component of the pixel width in units of coordinate reference system.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_ScaleY.html">ST_ScaleY</a>
+              </span>
+              <span class="refpurpose"> — Returns the Y component of the pixel height in units of coordinate reference system.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_RasterToWorldCoord.html">ST_RasterToWorldCoord</a>
+              </span>
+              <span class="refpurpose"> — Returns the raster's upper left corner as geometric X and Y (longitude and latitude) given a column and row. Column and row starts at 1.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_RasterToWorldCoordX.html">ST_RasterToWorldCoordX</a>
+              </span>
+              <span class="refpurpose"> — Returns the geometric X coordinate upper left of a raster, column and row. Numbering of columns
+                    and rows starts at 1.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_RasterToWorldCoordY.html">ST_RasterToWorldCoordY</a>
+              </span>
+              <span class="refpurpose"> — Returns the geometric Y coordinate upper left corner of a raster, column and row. Numbering of columns
+                    and rows starts at 1. </span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_Rotation.html">ST_Rotation</a>
+              </span>
+              <span class="refpurpose"> — Returns the rotation of the raster in radian.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_SkewX.html">ST_SkewX</a>
+              </span>
+              <span class="refpurpose"> — Returns the georeference X skew (or rotation parameter).</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_SkewY.html">ST_SkewY</a>
+              </span>
+              <span class="refpurpose"> — Returns the georeference Y skew (or rotation parameter).</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_SRID.html">ST_SRID</a>
+              </span>
+              <span class="refpurpose"> — Returns the spatial reference identifier of the raster as defined in spatial_ref_sys table.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_Summary.html">ST_Summary</a>
+              </span>
+              <span class="refpurpose"> — Returns a text summary of the contents of the raster.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_UpperLeftX.html">ST_UpperLeftX</a>
+              </span>
+              <span class="refpurpose"> — Returns the upper left X coordinate of raster in projected spatial ref.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_UpperLeftY.html">ST_UpperLeftY</a>
+              </span>
+              <span class="refpurpose"> — Returns the upper left Y coordinate of raster in projected spatial ref.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_Width.html">ST_Width</a>
+              </span>
+              <span class="refpurpose"> — Returns the width of the raster in pixels.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_WorldToRasterCoord.html">ST_WorldToRasterCoord</a>
+              </span>
+              <span class="refpurpose"> —     Returns the upper left corner as column and row given geometric X and Y (longitude and latitude) or a point geometry expressed in the spatial reference coordinate system of the raster.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_WorldToRasterCoordX.html">ST_WorldToRasterCoordX</a>
+              </span>
+              <span class="refpurpose"> — Returns the column in the raster of the point geometry (pt) or a X and Y world coordinate (xw, yw) represented
+                in world spatial reference system of raster.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_WorldToRasterCoordY.html">ST_WorldToRasterCoordY</a>
+              </span>
+              <span class="refpurpose"> — Returns the row in the raster of the point geometry (pt) or a X and Y world coordinate (xw, yw) represented
+                in world spatial reference system of raster.</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+      <section class="section" id="RasterBand_Accessors">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title" style="clear: both">11.5. Raster Band Accessors</h2>
+            </div>
+          </div>
+        </div>
+        <div class="toc">
+          <ul class="toc">
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_BandMetaData.html">ST_BandMetaData</a>
+              </span>
+              <span class="refpurpose"> — Returns basic meta data for a specific raster band. band num 1 is assumed if none-specified.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_BandNoDataValue.html">ST_BandNoDataValue</a>
+              </span>
+              <span class="refpurpose"> — Returns the value in a given band that represents no data. If no band num 1 is assumed.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_BandIsNoData.html">ST_BandIsNoData</a>
+              </span>
+              <span class="refpurpose"> — Returns true if the band is filled with only nodata values.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_BandPath.html">ST_BandPath</a>
+              </span>
+              <span class="refpurpose"> — Returns system file path to a band stored in file system. If no bandnum specified, 1 is assumed.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_BandFileSize.html">ST_BandFileSize</a>
+              </span>
+              <span class="refpurpose"> — Returns the file size of a band stored in file system. If no bandnum specified, 1 is assumed.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_BandFileTimestamp.html">ST_BandFileTimestamp</a>
+              </span>
+              <span class="refpurpose"> — Returns the file timestamp of a band stored in file system. If no bandnum specified, 1 is assumed.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_BandPixelType.html">ST_BandPixelType</a>
+              </span>
+              <span class="refpurpose"> — Returns the type of pixel for given band. If no bandnum specified, 1 is assumed.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="ST_MinPossibleValue.html">ST_MinPossibleValue</a>
+              </span>
+              <span class="refpurpose"> — Returns the minimum value this pixeltype can store.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_HasNoBand.html">ST_HasNoBand</a>
+              </span>
+              <span class="refpurpose"> — Returns true if there is no band with given band number.  If no band number is specified, then band number 1 is assumed.</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+      <section class="section" id="Raster_Pixel_Accessors">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title" style="clear: both">11.6. Raster Pixel Accessors and Setters</h2>
+            </div>
+          </div>
+        </div>
+        <div class="toc">
+          <ul class="toc">
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_PixelAsPolygon.html">ST_PixelAsPolygon</a>
+              </span>
+              <span class="refpurpose"> — Returns the polygon geometry that bounds the pixel for a particular row and column.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_PixelAsPolygons.html">ST_PixelAsPolygons</a>
+              </span>
+              <span class="refpurpose"> — Returns the polygon geometry that bounds every pixel of a raster band along with the value, the X and the Y raster coordinates of each pixel.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_PixelAsPoint.html">ST_PixelAsPoint</a>
+              </span>
+              <span class="refpurpose"> — 
+                    Returns a point geometry of the pixel's upper-left corner.
+                </span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_PixelAsPoints.html">ST_PixelAsPoints</a>
+              </span>
+              <span class="refpurpose"> — 
+                    Returns a point geometry for each pixel of a raster band along with the value, the X and the Y raster coordinates of each pixel.  The coordinates of the point geometry are of the pixel's upper-left corner.
+                </span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_PixelAsCentroid.html">ST_PixelAsCentroid</a>
+              </span>
+              <span class="refpurpose"> — 
+                    Returns the centroid (point geometry) of the area represented by a pixel.
+                </span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_PixelAsCentroids.html">ST_PixelAsCentroids</a>
+              </span>
+              <span class="refpurpose"> — 
+                    Returns the centroid (point geometry) for each pixel of a raster band along with the value, the X and the Y raster coordinates of each pixel.  The point geometry is the centroid of the area represented by a pixel.
+                </span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_Value.html">ST_Value</a>
+              </span>
+              <span class="refpurpose"> — Returns the value of a given band in a given columnx, rowy pixel or at a particular geometric point. Band numbers start at 1 and assumed to be 1 if not specified. If <code class="varname">exclude_nodata_value</code> is set to false, then all pixels include <code class="varname">nodata</code> pixels are considered to intersect and return value. If <code class="varname">exclude_nodata_value</code> is not passed in then reads it from metadata of raster.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_NearestValue.html">ST_NearestValue</a>
+              </span>
+              <span class="refpurpose"> — 
+                    Returns the nearest non-<code class="varname">NODATA</code> value of a given band's pixel specified by a columnx and rowy or a geometric point expressed in the same spatial reference coordinate system as the raster.
+                </span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_SetZ.html">ST_SetZ</a>
+              </span>
+              <span class="refpurpose"> — Returns a geometry with the same X/Y coordinates as the input geometry, and values from the raster copied into the Z dimension using the requested resample algorithm.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_SetM.html">ST_SetM</a>
+              </span>
+              <span class="refpurpose"> — Returns a geometry with the same X/Y coordinates as the input geometry, and values from the raster copied into the M dimension using the requested resample algorithm.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_Neighborhood.html">ST_Neighborhood</a>
+              </span>
+              <span class="refpurpose"> — 
+                    Returns a 2-D double precision array of the non-<code class="varname">NODATA</code> values around a given band's pixel specified by either a columnX and rowY or a geometric point expressed in the same spatial reference coordinate system as the raster.
+                </span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_SetValue.html">ST_SetValue</a>
+              </span>
+              <span class="refpurpose"> — Returns modified raster resulting from setting the value of a given band in a given columnx, rowy pixel or the pixels that intersect a particular geometry. Band numbers start at 1 and assumed to be 1 if not specified.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_SetValues.html">ST_SetValues</a>
+              </span>
+              <span class="refpurpose"> — Returns modified raster resulting from setting the values of a given band.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_DumpValues.html">ST_DumpValues</a>
+              </span>
+              <span class="refpurpose"> — 
+                    Get the values of the specified band as a 2-dimension array.
+                </span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_PixelOfValue.html">ST_PixelOfValue</a>
+              </span>
+              <span class="refpurpose"> — 
+                    Get the columnx, rowy coordinates of the pixel whose value equals the search value.
+                </span>
+            </li>
+          </ul>
+        </div>
+      </section>
+      <section class="section" id="Raster_Editors">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title" style="clear: both">11.7. Raster Editors</h2>
+            </div>
+          </div>
+        </div>
+        <div class="toc">
+          <ul class="toc">
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_SetGeoReference.html">ST_SetGeoReference</a>
+              </span>
+              <span class="refpurpose"> — Set Georeference 6 georeference parameters  in a single call. Numbers should be separated by white space.  Accepts inputs in GDAL or ESRI format.  Default is GDAL.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_SetRotation.html">ST_SetRotation</a>
+              </span>
+              <span class="refpurpose"> — Set the rotation of the raster in radian.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_SetScale.html">ST_SetScale</a>
+              </span>
+              <span class="refpurpose"> — Sets the X and Y size of pixels in units of coordinate reference system. Number units/pixel width/height.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_SetSkew.html">ST_SetSkew</a>
+              </span>
+              <span class="refpurpose"> — Sets the georeference X and Y skew (or rotation parameter).  If only one is passed in, sets X and Y to the same value.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_SetSRID.html">ST_SetSRID</a>
+              </span>
+              <span class="refpurpose"> — Sets the SRID of a raster to a particular integer srid defined in the spatial_ref_sys table.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_SetUpperLeft.html">ST_SetUpperLeft</a>
+              </span>
+              <span class="refpurpose"> — Sets the value of the upper left corner of the pixel of the raster to projected X and Y coordinates.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_Resample.html">ST_Resample</a>
+              </span>
+              <span class="refpurpose"> — 
+                    Resample a raster using a specified resampling algorithm, new dimensions, an arbitrary grid corner and a set of raster georeferencing attributes defined or borrowed from another raster.
+                </span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_Rescale.html">ST_Rescale</a>
+              </span>
+              <span class="refpurpose"> — Resample a raster by adjusting only its scale (or pixel size). New pixel values are computed using the NearestNeighbor (english or american spelling), Bilinear, Cubic, CubicSpline, Lanczos, Max or Min resampling algorithm. Default is NearestNeighbor.
+                    </span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_Reskew.html">ST_Reskew</a>
+              </span>
+              <span class="refpurpose"> — Resample a raster by adjusting only its skew (or rotation parameters). New pixel values are computed using the NearestNeighbor (english or american spelling), Bilinear, Cubic, CubicSpline or Lanczos resampling algorithm. Default is NearestNeighbor.
+                    </span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_SnapToGrid.html">ST_SnapToGrid</a>
+              </span>
+              <span class="refpurpose"> — Resample a raster by snapping it to a grid. New pixel values are computed using the NearestNeighbor (english or american spelling), Bilinear, Cubic, CubicSpline or Lanczos resampling algorithm. Default is NearestNeighbor.
+                    </span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_Resize.html">ST_Resize</a>
+              </span>
+              <span class="refpurpose"> — Resize a raster to a new width/height</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_Transform.html">ST_Transform</a>
+              </span>
+              <span class="refpurpose"> — Reprojects a raster in a known spatial reference system to another known spatial reference system using specified resampling algorithm. Options are NearestNeighbor, Bilinear, Cubic, CubicSpline, Lanczos defaulting to NearestNeighbor.</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+      <section class="section" id="RasterBand_Editors">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title" style="clear: both">11.8. Raster Band Editors</h2>
+            </div>
+          </div>
+        </div>
+        <div class="toc">
+          <ul class="toc">
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_SetBandNoDataValue.html">ST_SetBandNoDataValue</a>
+              </span>
+              <span class="refpurpose"> — Sets the value for the given band that represents no data. Band 1 is assumed if no band is specified.  To mark a band as having no nodata value, set the nodata value = NULL.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_SetBandIsNoData.html">ST_SetBandIsNoData</a>
+              </span>
+              <span class="refpurpose"> — Sets the isnodata flag of the band to TRUE.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_SetBandPath.html">ST_SetBandPath</a>
+              </span>
+              <span class="refpurpose"> — Update the external path and band number of an out-db band</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_SetBandIndex.html">ST_SetBandIndex</a>
+              </span>
+              <span class="refpurpose"> — Update the external band number of an out-db band</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+      <section class="section" id="RasterBand_Stats">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title" style="clear: both">11.9. Raster Band Statistics and Analytics</h2>
+            </div>
+          </div>
+        </div>
+        <div class="toc">
+          <ul class="toc">
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_Count.html">ST_Count</a>
+              </span>
+              <span class="refpurpose"> — Returns the number of pixels in a given band of a raster or raster coverage.  If no band is specified defaults to band 1.  If exclude_nodata_value is set to true, will only count pixels that are not equal to the nodata value.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_CountAgg.html">ST_CountAgg</a>
+              </span>
+              <span class="refpurpose"> — 
+                    Aggregate. Returns the number of pixels in a given band of a set of rasters. If no band is specified defaults to band 1. If exclude_nodata_value is set to true, will only count pixels that are not equal to the NODATA value.
+                </span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_Histogram.html">ST_Histogram</a>
+              </span>
+              <span class="refpurpose"> — Returns a set of record summarizing a raster or raster coverage data distribution separate bin ranges. Number of bins are autocomputed if not specified.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_Quantile.html">ST_Quantile</a>
+              </span>
+              <span class="refpurpose"> — Compute quantiles for a raster or raster table coverage in the context of the sample or population. Thus, a value could be examined to be at the raster's 25%, 50%, 75% percentile.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_SummaryStats.html">ST_SummaryStats</a>
+              </span>
+              <span class="refpurpose"> — Returns summarystats consisting of count, sum, mean, stddev, min, max for a given raster band of a raster or raster coverage. Band 1 is assumed is no band is specified.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_SummaryStatsAgg.html">ST_SummaryStatsAgg</a>
+              </span>
+              <span class="refpurpose"> — Aggregate. Returns summarystats consisting of count, sum, mean, stddev, min, max for a given raster band of a set of raster. Band 1 is assumed is no band is specified.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_ValueCount.html">ST_ValueCount</a>
+              </span>
+              <span class="refpurpose"> — Returns a set of records containing a pixel band value  and count of the number of pixels in a given band of a raster (or a raster coverage) that have a given set of values.  If no band is specified defaults to band 1.  By default nodata value pixels are not counted.
+                    and all other values in the pixel are output and pixel band values are rounded to the nearest integer.</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+      <section class="section" id="Raster_Inputs">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title" style="clear: both">11.10. Raster Inputs</h2>
+            </div>
+          </div>
+        </div>
+        <div class="toc">
+          <ul class="toc">
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_RastFromWKB.html">ST_RastFromWKB</a>
+              </span>
+              <span class="refpurpose"> — Return a raster value from a Well-Known Binary (WKB) raster.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_RastFromHexWKB.html">ST_RastFromHexWKB</a>
+              </span>
+              <span class="refpurpose"> — Return a raster value from a Hex representation of Well-Known Binary (WKB) raster.</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+      <section class="section" id="Raster_Outputs">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title" style="clear: both">11.11. Raster Outputs</h2>
+            </div>
+          </div>
+        </div>
+        <div class="toc">
+          <ul class="toc">
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_AsBinary.html">ST_AsBinary/ST_AsWKB</a>
+              </span>
+              <span class="refpurpose"> — Return the Well-Known Binary (WKB) representation of the raster.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_AsHexWKB.html">ST_AsHexWKB</a>
+              </span>
+              <span class="refpurpose"> — Return the Well-Known Binary (WKB) in Hex representation of the raster.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_AsGDALRaster.html">ST_AsGDALRaster</a>
+              </span>
+              <span class="refpurpose"> — Return the raster tile in the designated GDAL Raster format.  Raster formats are one of those supported by your compiled library. Use ST_GDALDrivers() to get a list of formats supported by your library.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_AsJPEG.html">ST_AsJPEG</a>
+              </span>
+              <span class="refpurpose"> — Return the raster tile selected bands as a single Joint Photographic Exports Group (JPEG) image (byte array).  If no band is specified and 1 or more than 3 bands, then only the first band is used.  If only 3 bands then all 3 bands are used and mapped to RGB.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_AsPNG.html">ST_AsPNG</a>
+              </span>
+              <span class="refpurpose"> — Return the raster tile selected bands as a single portable network graphics (PNG) image (byte array).  If 1, 3, or 4 bands in raster and no bands are specified, then all bands are used.  If more 2 or more than 4 bands and no bands specified, then only band 1 is used.  Bands are mapped to RGB or RGBA space.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_AsTIFF.html">ST_AsTIFF</a>
+              </span>
+              <span class="refpurpose"> — Return the raster selected bands as a single TIFF image (byte array).  If no band is specified or any of specified bands does not exist in the raster, then will try to use all bands.</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+      <section class="section" id="Raster_Processing_MapAlgebra">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title" style="clear: both">11.12. Raster Processing: Map Algebra</h2>
+            </div>
+          </div>
+        </div>
+        <div class="toc">
+          <ul class="toc">
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_Clip.html">ST_Clip</a>
+              </span>
+              <span class="refpurpose"> — Returns the raster clipped by the input geometry.  If band number is not specified, all bands are processed. If <code class="varname">crop</code> is not specified or TRUE, the output raster is cropped. If <code class="varname">touched</code> is set to TRUE, then touched pixels are included, otherwise only if the center of the pixel is in the geometry it is included.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_ColorMap.html">ST_ColorMap</a>
+              </span>
+              <span class="refpurpose"> — Creates a new raster of up to four 8BUI bands (grayscale, RGB, RGBA) from the source raster and a specified band. Band 1 is assumed if not specified.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_Grayscale.html">ST_Grayscale</a>
+              </span>
+              <span class="refpurpose"> — Creates a new one-8BUI band raster from the source raster and specified bands representing Red, Green and Blue</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_Intersection.html">ST_Intersection</a>
+              </span>
+              <span class="refpurpose"> — Returns a raster or a set of geometry-pixelvalue pairs representing the shared portion of two rasters or the geometrical intersection of a vectorization of the raster and a geometry.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_MapAlgebra.html">ST_MapAlgebra (callback function version)</a>
+              </span>
+              <span class="refpurpose"> — 
+                        Callback function version - Returns a one-band raster given one or more input rasters, band indexes and one user-specified callback function.
+                    </span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_MapAlgebra_expr.html">ST_MapAlgebra (expression version)</a>
+              </span>
+              <span class="refpurpose"> — 
+                        Expression version - Returns a one-band raster given one or two input rasters, band indexes and one or more user-specified SQL expressions.
+                    </span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_MapAlgebraExpr.html">ST_MapAlgebraExpr</a>
+              </span>
+              <span class="refpurpose"> — 1 raster band version: Creates a new one band raster formed by applying a valid PostgreSQL algebraic operation on the input raster band and of pixeltype provided.  Band 1 is assumed if no band is specified.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_MapAlgebraExpr2.html">ST_MapAlgebraExpr</a>
+              </span>
+              <span class="refpurpose"> — 
+                        2 raster band version: Creates a new one band raster formed by applying a valid PostgreSQL algebraic operation on the two input raster bands and of pixeltype provided.  band 1 of each raster is assumed if no band numbers are specified. The resulting raster will be aligned (scale, skew and pixel corners) on the grid defined by the first raster and have its extent defined by the "extenttype" parameter. Values for "extenttype" can be: INTERSECTION, UNION, FIRST, SECOND.
+                    </span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_MapAlgebraFct.html">ST_MapAlgebraFct</a>
+              </span>
+              <span class="refpurpose"> — 1 band version - Creates a new one band raster formed by applying a valid PostgreSQL function on the input raster band and of pixeltype prodived. Band 1 is assumed if no band is specified.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_MapAlgebraFct2.html">ST_MapAlgebraFct</a>
+              </span>
+              <span class="refpurpose"> — 2 band version - Creates a new one band raster formed by applying a valid PostgreSQL function on the 2 input raster bands and of pixeltype prodived. Band 1 is assumed if no band is specified. Extent type defaults to INTERSECTION if not specified.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_MapAlgebraFctNgb.html">ST_MapAlgebraFctNgb</a>
+              </span>
+              <span class="refpurpose"> — 1-band version: Map Algebra Nearest Neighbor using user-defined PostgreSQL function. Return a raster which values are the result of a PLPGSQL user function involving a neighborhood of values from the input raster band.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_Reclass.html">ST_Reclass</a>
+              </span>
+              <span class="refpurpose"> — Creates a new raster composed of band types reclassified from original.  The nband is the band to be changed.  If nband is not specified assumed to be 1.  All other bands are returned unchanged. Use case: convert a 16BUI band to a 8BUI and so forth for simpler rendering as viewable formats.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_Union.html">ST_Union</a>
+              </span>
+              <span class="refpurpose"> — Returns the union of a set of raster tiles into a single raster composed of 1 or more bands.</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+      <section class="section" id="Raster_Processing_MapAlgebra_Callbacks">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title" style="clear: both">11.13. Built-in Map Algebra Callback Functions</h2>
+            </div>
+          </div>
+        </div>
+        <div class="toc">
+          <ul class="toc">
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_Distinct4ma.html">ST_Distinct4ma</a>
+              </span>
+              <span class="refpurpose"> — Raster processing function that calculates the number of unique pixel values in a neighborhood.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_InvDistWeight4ma.html">ST_InvDistWeight4ma</a>
+              </span>
+              <span class="refpurpose"> — Raster processing function that interpolates a pixel's value from the pixel's neighborhood.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_Max4ma.html">ST_Max4ma</a>
+              </span>
+              <span class="refpurpose"> — Raster processing function that calculates the maximum pixel value in a neighborhood.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_Mean4ma.html">ST_Mean4ma</a>
+              </span>
+              <span class="refpurpose"> — Raster processing function that calculates the mean pixel value in a neighborhood.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_Min4ma.html">ST_Min4ma</a>
+              </span>
+              <span class="refpurpose"> — 
+                    Raster processing function that calculates the minimum pixel value in a neighborhood.
+                </span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_MinDist4ma.html">ST_MinDist4ma</a>
+              </span>
+              <span class="refpurpose"> — Raster processing function that returns the minimum distance (in number of pixels) between the pixel of interest and a neighboring pixel with value.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_Range4ma.html">ST_Range4ma</a>
+              </span>
+              <span class="refpurpose"> — Raster processing function that calculates the range of pixel values in a neighborhood.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_StdDev4ma.html">ST_StdDev4ma</a>
+              </span>
+              <span class="refpurpose"> — Raster processing function that calculates the standard deviation of pixel values in a neighborhood.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_Sum4ma.html">ST_Sum4ma</a>
+              </span>
+              <span class="refpurpose"> — Raster processing function that calculates the sum of all pixel values in a neighborhood.</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+      <section class="section" id="Raster_Processing_DEM">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title" style="clear: both">11.14. Raster Processing: DEM (Elevation)</h2>
+            </div>
+          </div>
+        </div>
+        <div class="toc">
+          <ul class="toc">
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_Aspect.html">ST_Aspect</a>
+              </span>
+              <span class="refpurpose"> — Returns the aspect (in degrees by default) of an elevation raster band.  Useful for analyzing terrain.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_HillShade.html">ST_HillShade</a>
+              </span>
+              <span class="refpurpose"> — Returns the hypothetical illumination of an elevation raster band using provided azimuth, altitude, brightness and scale inputs.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_Roughness.html">ST_Roughness</a>
+              </span>
+              <span class="refpurpose"> — Returns a raster with the calculated "roughness" of a DEM.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_Slope.html">ST_Slope</a>
+              </span>
+              <span class="refpurpose"> — Returns the slope (in degrees by default) of an elevation raster band.  Useful for analyzing terrain.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_TPI.html">ST_TPI</a>
+              </span>
+              <span class="refpurpose"> — Returns a raster with the calculated Topographic Position Index.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_TRI.html">ST_TRI</a>
+              </span>
+              <span class="refpurpose"> — Returns a raster with the calculated Terrain Ruggedness Index.</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+      <section class="section" id="Raster_Processing_Geometry">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title" style="clear: both">11.15. Raster Processing: Raster to Geometry</h2>
+            </div>
+          </div>
+        </div>
+        <div class="toc">
+          <ul class="toc">
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_Box3D.html">Box3D</a>
+              </span>
+              <span class="refpurpose"> — Returns the box 3d representation of the enclosing box of the raster.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_ConvexHull.html">ST_ConvexHull</a>
+              </span>
+              <span class="refpurpose"> — Return the convex hull geometry of the raster including pixel values equal to BandNoDataValue.
+                    For regular shaped and non-skewed
+                    rasters, this gives the same result as ST_Envelope so only useful for irregularly shaped or skewed rasters.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_DumpAsPolygons.html">ST_DumpAsPolygons</a>
+              </span>
+              <span class="refpurpose"> — Returns a set of geomval (geom,val) rows, from a given raster band.  If no band number is specified, band num defaults to 1.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_Envelope.html">ST_Envelope</a>
+              </span>
+              <span class="refpurpose"> — Returns the polygon representation of the extent of the raster.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_MinConvexHull.html">ST_MinConvexHull</a>
+              </span>
+              <span class="refpurpose"> — 
+                        Return the convex hull geometry of the raster excluding NODATA pixels.
+                    </span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_Polygon.html">ST_Polygon</a>
+              </span>
+              <span class="refpurpose"> — Returns a multipolygon geometry formed by the union of pixels that have a pixel value that is not no data value.  If no band number is specified, band num defaults to 1.</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+      <section class="section" id="RT_Operators">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title" style="clear: both">11.16. Raster Operators</h2>
+            </div>
+          </div>
+        </div>
+        <div class="toc">
+          <ul class="toc">
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_Raster_Intersect.html">&amp;&amp;</a>
+              </span>
+              <span class="refpurpose"> — Returns <code class="varname">TRUE</code> if A's bounding box intersects B's bounding box.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_Raster_OverLeft.html">&amp;&lt;</a>
+              </span>
+              <span class="refpurpose"> — Returns <code class="varname">TRUE</code> if A's bounding box is to the left of B's.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_Raster_OverRight.html">&amp;&gt;</a>
+              </span>
+              <span class="refpurpose"> — Returns <code class="varname">TRUE</code> if A's bounding box is to the right of B's.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_Raster_EQ.html">=</a>
+              </span>
+              <span class="refpurpose"> — Returns <code class="varname">TRUE</code> if A's bounding box is the same as B's. Uses double precision bounding box.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_Raster_Contained.html">@</a>
+              </span>
+              <span class="refpurpose"> — Returns <code class="varname">TRUE</code> if A's bounding box is contained by B's. Uses double precision bounding box.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_Raster_Same.html">~=</a>
+              </span>
+              <span class="refpurpose"> — Returns <code class="varname">TRUE</code> if A's bounding box is the same as B's.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_Raster_Contains.html">~</a>
+              </span>
+              <span class="refpurpose"> — Returns <code class="varname">TRUE</code> if A's bounding box is contains B's. Uses double precision bounding box.</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+      <section class="section" id="Raster_Relationships">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title" style="clear: both">11.17. Raster and Raster Band Spatial Relationships</h2>
+            </div>
+          </div>
+        </div>
+        <div class="toc">
+          <ul class="toc">
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_Contains.html">ST_Contains</a>
+              </span>
+              <span class="refpurpose"> — 
+                Return true if no points of raster rastB lie in the exterior of raster rastA and at least one point of the interior of rastB lies in the interior of rastA.
+            </span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_ContainsProperly.html">ST_ContainsProperly</a>
+              </span>
+              <span class="refpurpose"> — 
+                Return true if rastB intersects the interior of rastA but not the boundary or exterior of rastA.
+            </span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_Covers.html">ST_Covers</a>
+              </span>
+              <span class="refpurpose"> — 
+                Return true if no points of raster rastB lie outside raster rastA.
+            </span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_CoveredBy.html">ST_CoveredBy</a>
+              </span>
+              <span class="refpurpose"> — 
+                Return true if no points of raster rastA lie outside raster rastB.
+            </span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_Disjoint.html">ST_Disjoint</a>
+              </span>
+              <span class="refpurpose"> — 
+                Return true if raster rastA does not spatially intersect rastB.
+            </span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_Intersects.html">ST_Intersects</a>
+              </span>
+              <span class="refpurpose"> — Return true if raster rastA spatially intersects raster rastB.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_Overlaps.html">ST_Overlaps</a>
+              </span>
+              <span class="refpurpose"> — 
+                Return true if raster rastA and rastB intersect but one does not completely contain the other.
+            </span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_Touches.html">ST_Touches</a>
+              </span>
+              <span class="refpurpose"> — 
+                Return true if raster rastA and rastB have at least one point in common but their interiors do not intersect.
+            </span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_SameAlignment.html">ST_SameAlignment</a>
+              </span>
+              <span class="refpurpose"> — Returns true if rasters have same skew, scale, spatial ref, and offset (pixels can be put on same grid without cutting into pixels) and false if they don't with notice detailing issue.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_NotSameAlignmentReason.html">ST_NotSameAlignmentReason</a>
+              </span>
+              <span class="refpurpose"> — Returns text stating if rasters are aligned and if not aligned, a reason why.</span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_Within.html">ST_Within</a>
+              </span>
+              <span class="refpurpose"> — 
+                Return true if no points of raster rastA lie in the exterior of raster rastB and at least one point of the interior of rastA lies in the interior of rastB.
+            </span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_DWithin.html">ST_DWithin</a>
+              </span>
+              <span class="refpurpose"> — 
+                Return true if rasters rastA and rastB are within the specified distance of each other.
+            </span>
+            </li>
+            <li>
+              <span class="refentrytitle">
+                <a href="RT_ST_DFullyWithin.html">ST_DFullyWithin</a>
+              </span>
+              <span class="refpurpose"> — 
+                Return true if rasters rastA and rastB are fully within the specified distance of each other.
+            </span>
+            </li>
+          </ul>
+        </div>
+      </section>
+      <section class="section" id="Raster_Tips">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title" style="clear: both">11.18. Raster Tips</h2>
+            </div>
+            <div>
+              <div class="abstract">
+                <div class="abstract-title">Abstract</div>
+                <p>This section documents various gotchas and tips related to PostGIS Raster.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="toc">
+          <ul class="toc">
+            <li>
+              <span class="section">
+                <a href="RT_reference.html#outdb">11.18.1. Out-DB Rasters</a>
+              </span>
+            </li>
+          </ul>
+        </div>
+        <section class="section" id="outdb">
+          <div class="titlepage">
+            <div>
+              <div>
+                <h3 class="title">11.18.1. Out-DB Rasters</h3>
+              </div>
+            </div>
+          </div>
+          <div class="toc">
+            <ul class="toc">
+              <li>
+                <span class="section">
+                  <a href="RT_reference.html#gdal_readdir">11.18.1.1. Directory containing many files</a>
+                </span>
+              </li>
+              <li>
+                <span class="section">
+                  <a href="RT_reference.html#max_open_files">11.18.1.2. Maximum Number of Open Files</a>
+                </span>
+              </li>
+            </ul>
+          </div>
+          <section class="section" id="gdal_readdir">
+            <div class="titlepage">
+              <div>
+                <div>
+                  <h4 class="title">11.18.1.1. Directory containing many files</h4>
+                </div>
+              </div>
+            </div>
+            <p>
+                    When GDAL opens a file, GDAL eagerly scans the directory of that file to build a catalog of other files. If this directory contains many files (e.g. thousands, millions), opening that file becomes extremely slow (especially if that file happens to be on a network drive such as NFS).
+                </p>
+            <p>
+                    To control this behavior, GDAL provides the following environment variable: <a class="link" href="https://trac.osgeo.org/gdal/wiki/ConfigOptions#GDAL_DISABLE_READDIR_ON_OPEN" target="_top">GDAL_DISABLE_READDIR_ON_OPEN</a>.  Set <code class="varname">GDAL_DISABLE_READDIR_ON_OPEN</code> to <code class="varname">TRUE</code> to disable directory scanning.
+                </p>
+            <p>
+                    In Ubuntu (and assuming you are using PostgreSQL's packages for Ubuntu), <code class="varname">GDAL_DISABLE_READDIR_ON_OPEN</code> can be set in <span class="emphasis"><em>/etc/postgresql/POSTGRESQL_VERSION/CLUSTER_NAME/environment</em></span> (where POSTGRESQL_VERSION is the version of PostgreSQL, e.g. 9.6 and CLUSTER_NAME is the name of the cluster, e.g. maindb). You can also set PostGIS environment variables here as well.
+
+                    </p>
+            <pre class="programlisting">
+# environment variables for postmaster process
+# This file has the same syntax as postgresql.conf:
+#  VARIABLE = simple_value
+#  VARIABLE2 = 'any value!'
+# I. e. you need to enclose any value which does not only consist of letters,
+# numbers, and '-', '_', '.' in single quotes. Shell commands are not
+# evaluated.
+POSTGIS_GDAL_ENABLED_DRIVERS = 'ENABLE_ALL'
+
+POSTGIS_ENABLE_OUTDB_RASTERS = 1
+
+<span class="strong"><strong>GDAL_DISABLE_READDIR_ON_OPEN = 'TRUE'</strong></span>
+                    </pre>
+            <p>
+                </p>
+          </section>
+          <section class="section" id="max_open_files">
+            <div class="titlepage">
+              <div>
+                <div>
+                  <h4 class="title">11.18.1.2. Maximum Number of Open Files</h4>
+                </div>
+              </div>
+            </div>
+            <p>
+                    The maximum number of open files permitted by Linux and PostgreSQL are typically conservative (typically 1024 open files per process) given the assumption that the system is consumed by human users. For Out-DB Rasters, a single valid query can easily exceed this limit (e.g. a dataset of 10 year's worth of rasters with one raster for each day containing minimum and maximum temperatures and we want to know the absolute min and max value for a pixel in that dataset).
+                </p>
+            <p>
+                    The easiest change to make is the following PostgreSQL setting: <a class="link" href="https://www.postgresql.org/docs/current/static/runtime-config-resource.html#GUC-MAX-FILES-PER-PROCESS" target="_top">max_files_per_process</a>. The default is set to 1000, which is far too low for Out-DB Rasters. A safe starting value could be 65536 but this really depends on your datasets and the queries run against those datasets. This setting can only be made on server start and probably only in the PostgreSQL configuration file (e.g. <span class="emphasis"><em>/etc/postgresql/POSTGRESQL_VERSION/CLUSTER_NAME/postgresql.conf</em></span> in Ubuntu environments).
+
+                    </p>
+            <pre class="programlisting">
+...
+# - Kernel Resource Usage -
+
+<span class="strong"><strong>max_files_per_process = 65536</strong></span>           # min 25
+                                        # (change requires restart)
+...
+                    </pre>
+            <p>
+                </p>
+            <p>
+                    The major change to make is the Linux kernel's open files limits. There are two parts to this:
+                    </p>
+            <div class="itemizedlist">
+              <ul class="itemizedlist" style="list-style-type: disc; ">
+                <li class="listitem">
+                  <p>Maximum number of open files for the entire system</p>
+                </li>
+                <li class="listitem">
+                  <p>Maximum number of open files per process</p>
+                </li>
+              </ul>
+            </div>
+            <p>
+                </p>
+            <section class="section" id="max_open_files_per_system">
+              <div class="titlepage">
+                <div>
+                  <div>
+                    <h5 class="title">11.18.1.2.1. Maximum number of open files for the entire system</h5>
+                  </div>
+                </div>
+              </div>
+              <p>
+                        You can inspect the current maximum number of open files for the entire system with the following example:
+                    </p>
+              <pre class="programlisting">
+$ sysctl -a | grep fs.file-max
+fs.file-max = 131072
+                    </pre>
+              <p>
+                        If the value returned is not large enough, add a file to <span class="emphasis"><em>/etc/sysctl.d/</em></span> as per the following example:
+                    </p>
+              <pre class="programlisting">
+$ echo "fs.file-max = 6145324" &gt;&gt; /etc/sysctl.d/fs.conf
+
+$ cat /etc/sysctl.d/fs.conf
+fs.file-max = 6145324
+
+$ sysctl -p --system
+* Applying /etc/sysctl.d/fs.conf ...
+fs.file-max = 2097152
+* Applying /etc/sysctl.conf ...
+
+$ sysctl -a | grep fs.file-max
+fs.file-max = 6145324
+                    </pre>
+            </section>
+            <section class="section" id="max_open_files_per_process">
+              <div class="titlepage">
+                <div>
+                  <div>
+                    <h5 class="title">11.18.1.2.2. Maximum number of open files per process</h5>
+                  </div>
+                </div>
+              </div>
+              <p>
+                        We need to increase the maximum number of open files per process for the PostgreSQL server processes.
+                    </p>
+              <p>
+                        To see what the current PostgreSQL service processes are using for maximum number of open files, do as per the following example (make sure to have PostgreSQL running):
+                    </p>
+              <pre class="programlisting">
+$ ps aux | grep postgres
+postgres 31713  0.0  0.4 179012 17564 pts/0    S    Dec26   0:03 /home/dustymugs/devel/postgresql/sandbox/10/usr/local/bin/postgres -D /home/dustymugs/devel/postgresql/sandbox/10/pgdata
+postgres 31716  0.0  0.8 179776 33632 ?        Ss   Dec26   0:01 postgres: checkpointer process
+postgres 31717  0.0  0.2 179144  9416 ?        Ss   Dec26   0:05 postgres: writer process
+postgres 31718  0.0  0.2 179012  8708 ?        Ss   Dec26   0:06 postgres: wal writer process
+postgres 31719  0.0  0.1 179568  7252 ?        Ss   Dec26   0:03 postgres: autovacuum launcher process
+postgres 31720  0.0  0.1  34228  4124 ?        Ss   Dec26   0:09 postgres: stats collector process
+postgres 31721  0.0  0.1 179308  6052 ?        Ss   Dec26   0:00 postgres: bgworker: logical replication launcher
+
+$ cat /proc/31718/limits
+Limit                     Soft Limit           Hard Limit           Units
+Max cpu time              unlimited            unlimited            seconds
+Max file size             unlimited            unlimited            bytes
+Max data size             unlimited            unlimited            bytes
+Max stack size            8388608              unlimited            bytes
+Max core file size        0                    unlimited            bytes
+Max resident set          unlimited            unlimited            bytes
+Max processes             15738                15738                processes
+<span class="strong"><strong>Max open files            1024                 4096                 files</strong></span>
+Max locked memory         65536                65536                bytes
+Max address space         unlimited            unlimited            bytes
+Max file locks            unlimited            unlimited            locks
+Max pending signals       15738                15738                signals
+Max msgqueue size         819200               819200               bytes
+Max nice priority         0                    0
+Max realtime priority     0                    0
+Max realtime timeout      unlimited            unlimited            us
+                    </pre>
+              <p>
+                        In the example above, we inspected the open files limit for Process 31718. It doesn't matter which PostgreSQL process, any of them will do. The response we are interested in is <span class="emphasis"><em>Max open files</em></span>.
+                    </p>
+              <p>
+                        We want to increase <span class="emphasis"><em>Soft Limit</em></span> and <span class="emphasis"><em>Hard Limit</em></span> of <span class="emphasis"><em>Max open files</em></span> to be greater than the value we specified for the PostgreSQL setting <code class="varname">max_files_per_process</code>.  In our example, we set <code class="varname">max_files_per_process</code> to 65536.
+                    </p>
+              <p>
+                        In Ubuntu (and assuming you are using PostgreSQL's packages for Ubuntu), the easiest way to change the <span class="emphasis"><em>Soft Limit</em></span> and <span class="emphasis"><em>Hard Limit</em></span> is to edit <span class="strong"><strong>/etc/init.d/postgresql</strong></span> (SysV) or <span class="strong"><strong>/lib/systemd/system/postgresql*.service</strong></span> (systemd).
+                    </p>
+              <p>
+                        Let's first address the SysV Ubuntu case where we add <span class="strong"><strong>ulimit -H -n 262144</strong></span> and <span class="strong"><strong>ulimit -n 131072</strong></span> to <span class="strong"><strong>/etc/init.d/postgresql</strong></span>.
+                    </p>
+              <pre class="programlisting">
+...
+case "$1" in
+    start|stop|restart|reload)
+        if [ "$1" = "start" ]; then
+            create_socket_directory
+        fi
+    if [ -z "`pg_lsclusters -h`" ]; then
+        log_warning_msg 'No PostgreSQL clusters exist; see "man pg_createcluster"'
+        exit 0
+    fi
+<span class="strong"><strong>
+    ulimit -H -n 262144
+    ulimit -n 131072
+</strong></span>
+    for v in $versions; do
+        $1 $v || EXIT=$?
+    done
+    exit ${EXIT:-0}
+        ;;
+    status)
+...
+</pre>
+              <p>
+                        Now to address the systemd Ubuntu case. We will add <span class="strong"><strong>LimitNOFILE=131072</strong></span> to every <span class="strong"><strong>/lib/systemd/system/postgresql*.service</strong></span> file in the <span class="strong"><strong>[Service]</strong></span> section.
+                    </p>
+              <pre class="programlisting">
+...
+[Service]
+<span class="strong"><strong>
+LimitNOFILE=131072
+</strong></span>
+...
+
+[Install]
+WantedBy=multi-user.target
+...
+</pre>
+              <p>
+                        After making the necessary systemd changes, make sure to reload the daemon
+                    </p>
+              <pre class="programlisting">
+systemctl daemon-reload
+</pre>
+            </section>
+          </section>
+        </section>
+      </section>
+    </section>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="using_raster_dataman.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; "> </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="geomval.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">Chapter 10. Raster Data Management, Queries, and Applications </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> geomval</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

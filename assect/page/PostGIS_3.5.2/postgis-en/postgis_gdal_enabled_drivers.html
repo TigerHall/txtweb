@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>postgis.gdal_enabled_drivers</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="postgis_gdal_datapath.html" title="postgis.gdal_datapath"/>
+    <link rel="next" href="postgis_enable_outdb_rasters.html" title="postgis.enable_outdb_rasters"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">postgis.gdal_enabled_drivers</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="postgis_gdal_datapath.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.22. Grand Unified Custom Variables (GUCs)</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="postgis_enable_outdb_rasters.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="postgis_gdal_enabled_drivers">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>postgis.gdal_enabled_drivers — 
+                    A configuration option to set the enabled GDAL drivers in the PostGIS environment. Affects the GDAL configuration variable GDAL_SKIP.
+                </p>
+      </div>
+      <div class="refsection" id="idm20823">
+        <h2>Description</h2>
+        <p>
+                    A configuration option to set the enabled GDAL drivers in the PostGIS environment. Affects the GDAL configuration variable GDAL_SKIP. This option can be set in PostgreSQL's configuration file: postgresql.conf. It can also be set by connection or transaction.
+                </p>
+        <p>
+                    The initial value of <code class="varname">postgis.gdal_enabled_drivers</code> may also be set by passing the environment variable <code class="varname">POSTGIS_GDAL_ENABLED_DRIVERS</code> with the list of enabled drivers to the process starting PostgreSQL.
+                </p>
+        <p>
+                    Enabled GDAL specified drivers can be specified by the driver's short-name or code. Driver short-names or codes can be found at <a class="link" href="http://www.gdal.org/formats_list.html" target="_top">GDAL Raster Formats</a>. Multiple drivers can be specified by putting a space between each driver.
+                </p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>
+                        There are three special codes available for <code class="varname">postgis.gdal_enabled_drivers</code>. The codes are case-sensitive.
+
+                        </p>
+                <div class="itemizedlist">
+                  <ul style="list-style-type: disc; " class="itemizedlist">
+                    <li class="listitem">
+                      <p><code class="varname">DISABLE_ALL</code> disables all GDAL drivers. If present, <code class="varname">DISABLE_ALL</code> overrides all other values in <code class="varname">postgis.gdal_enabled_drivers</code>.</p>
+                    </li>
+                    <li class="listitem">
+                      <p><code class="varname">ENABLE_ALL</code> enables all GDAL drivers.</p>
+                    </li>
+                    <li class="listitem">
+                      <p><code class="varname">VSICURL</code> enables GDAL's <code class="varname">/vsicurl/</code> virtual file system.</p>
+                    </li>
+                  </ul>
+                </div>
+                <p>
+                    </p>
+                <p>
+                        When <code class="varname">postgis.gdal_enabled_drivers</code> is set to DISABLE_ALL, attempts to use out-db rasters, ST_FromGDALRaster(), ST_AsGDALRaster(), ST_AsTIFF(), ST_AsJPEG() and ST_AsPNG() will result in error messages.
+                    </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>
+                        In the standard PostGIS installation, <code class="varname">postgis.gdal_enabled_drivers</code> is set to DISABLE_ALL.
+                    </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>
+                        Additional information about GDAL_SKIP is available at GDAL's <a class="link" href="http://trac.osgeo.org/gdal/wiki/ConfigOptions" target="_top">Configuration Options</a>.
+                    </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p class="availability">Availability: 2.2.0</p>
+      </div>
+      <div class="refsection" id="idm20856">
+        <h2>Examples</h2>
+        <p>To set and reset <code class="varname">postgis.gdal_enabled_drivers</code> for current session</p>
+        <pre class="programlisting">
+SET postgis.gdal_enabled_drivers = 'ENABLE_ALL';
+SET postgis.gdal_enabled_drivers = default;
+                </pre>
+        <p>Set for all new connections to a specific database to specific drivers</p>
+        <pre class="programlisting">ALTER DATABASE mygisdb SET postgis.gdal_enabled_drivers TO 'GTiff PNG JPEG';</pre>
+        <p>Setting for whole database cluster to enable all drivers. Requires super user access.
+                    Also note that database, session, and user settings override this.</p>
+        <pre class="programlisting">
+ --writes to postgres.auto.conf
+ALTER SYSTEM SET postgis.gdal_enabled_drivers TO 'ENABLE_ALL';
+ --Reloads postgres conf
+SELECT pg_reload_conf();
+                </pre>
+      </div>
+      <div class="refsection" id="idm20865">
+        <h2>See Also</h2>
+        <p>
+                    <a class="xref" href="RT_ST_FromGDALRaster.html" title="ST_FromGDALRaster">ST_FromGDALRaster</a>,
+                    <a class="xref" href="RT_ST_AsGDALRaster.html" title="ST_AsGDALRaster">ST_AsGDALRaster</a>,
+                    <a class="xref" href="RT_ST_AsTIFF.html" title="ST_AsTIFF">ST_AsTIFF</a>,
+                    <a class="xref" href="RT_ST_AsPNG.html" title="ST_AsPNG">ST_AsPNG</a>,
+                    <a class="xref" href="RT_ST_AsJPEG.html" title="ST_AsJPEG">ST_AsJPEG</a>,
+                    <a class="xref" href="postgis_enable_outdb_rasters.html" title="postgis.enable_outdb_rasters">postgis.enable_outdb_rasters</a>
+                </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="postgis_gdal_datapath.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#PostGIS_GUC">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="postgis_enable_outdb_rasters.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">postgis.gdal_datapath </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> postgis.enable_outdb_rasters</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

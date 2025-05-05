@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Normalize_Address</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="Missing_Indexes_Generate_Script.html" title="Missing_Indexes_Generate_Script"/>
+    <link rel="next" href="Pagc_Normalize_Address.html" title="Pagc_Normalize_Address"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">Normalize_Address</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="Missing_Indexes_Generate_Script.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">12.2. Tiger Geocoder</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="Pagc_Normalize_Address.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="Normalize_Address">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>Normalize_Address — Given a textual street address, returns a composite <code class="varname">norm_addy</code> type that has road suffix, prefix and type standardized, street, streetname etc. broken into separate fields.  This function
+        will work with just the lookup data packaged with the tiger_geocoder (no need for tiger census data).</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">norm_addy <strong class="fsfunc">normalize_address</strong>(</code>varchar  <var class="pdparam">in_address</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm38547">
+        <h2>Description</h2>
+        <p>Given a textual street address, returns a composite <code class="varname">norm_addy</code> type that has road suffix, prefix and type standardized, street, streetname etc. broken into separate fields.  This is the first step in the geocoding process to
+            get all addresses into normalized postal form. No other data is required aside from what is packaged with the geocoder.</p>
+        <p>This function just uses the various direction/state/suffix lookup tables preloaded with the tiger_geocoder and located in the <code class="varname">tiger</code> schema, so it doesn't need you to download tiger census data or any other additional data to make use of it.
+         You may find the need to add more abbreviations or alternative namings to the various lookup tables in the  <code class="varname">tiger</code> schema.</p>
+        <p>It uses various control lookup tables located in <code class="varname">tiger</code> schema to normalize the input address.</p>
+        <p>Fields in the <code class="varname">norm_addy</code> type object returned by this function in this order where  () indicates a field required by the geocoder, [] indicates an optional field:</p>
+        <p>(address) [predirAbbrev] (streetName) [streetTypeAbbrev] [postdirAbbrev] [internal] [location] [stateAbbrev] [zip] [parsed] [zip4] [address_alphanumeric]</p>
+        <p class="enhanced">Enhanced: 2.4.0 norm_addy object includes additional fields zip4 and address_alphanumeric.</p>
+        <div class="orderedlist">
+          <ol class="orderedlist" type="1">
+            <li class="listitem">
+              <p><code class="varname">address</code> is an integer:  The street number</p>
+            </li>
+            <li class="listitem">
+              <p><code class="varname">predirAbbrev</code> is varchar: Directional prefix of road such as N, S, E, W etc.  These are controlled using the <code class="varname">direction_lookup</code> table.</p>
+            </li>
+            <li class="listitem">
+              <p><code class="varname">streetName</code> varchar</p>
+            </li>
+            <li class="listitem">
+              <p><code class="varname">streetTypeAbbrev</code> varchar abbreviated version of street type: e.g. St, Ave, Cir.  These are controlled using the <code class="varname">street_type_lookup</code> table.</p>
+            </li>
+            <li class="listitem">
+              <p><code class="varname">postdirAbbrev</code> varchar abbreviated directional suffice of road N, S, E, W etc. These are controlled using the <code class="varname">direction_lookup</code> table.</p>
+            </li>
+            <li class="listitem">
+              <p><code class="varname">internal</code> varchar internal address such as an apartment or suite number.</p>
+            </li>
+            <li class="listitem">
+              <p><code class="varname">location</code> varchar usually a city or governing province.</p>
+            </li>
+            <li class="listitem">
+              <p><code class="varname">stateAbbrev</code> varchar two character US State.  e.g MA, NY, MI.  These are controlled by the <code class="varname">state_lookup</code> table.</p>
+            </li>
+            <li class="listitem">
+              <p><code class="varname">zip</code> varchar 5-digit zipcode. e.g. 02109.</p>
+            </li>
+            <li class="listitem">
+              <p><code class="varname">parsed</code> boolean - denotes if address was formed from normalize process. The normalize_address function sets this to true before returning the address.</p>
+            </li>
+            <li class="listitem">
+              <p><code class="varname">zip4</code> last 4 digits of a 9 digit zip code. Availability: PostGIS 2.4.0.</p>
+            </li>
+            <li class="listitem">
+              <p><code class="varname">address_alphanumeric</code> Full street number even if it has alpha characters like 17R. Parsing of this is better using <a class="xref" href="Pagc_Normalize_Address.html" title="Pagc_Normalize_Address">Pagc_Normalize_Address</a> function.  Availability: PostGIS 2.4.0.</p>
+            </li>
+          </ol>
+        </div>
+      </div>
+      <div class="refsection" id="idm38602">
+        <h2>Examples</h2>
+        <p>Output select fields.  Use <a class="xref" href="Pprint_Addy.html" title="Pprint_Addy">Pprint_Addy</a> if you want a pretty textual output.</p>
+        <pre class="programlisting">SELECT address As orig, (g.na).streetname, (g.na).streettypeabbrev
+ FROM (SELECT address, normalize_address(address) As na
+        FROM addresses_to_geocode) As g;
+
+                        orig                         |  streetname   | streettypeabbrev
+-----------------------------------------------------+---------------+------------------
+ 28 Capen Street, Medford, MA                        | Capen         | St
+ 124 Mount Auburn St, Cambridge, Massachusetts 02138 | Mount Auburn  | St
+ 950 Main Street, Worcester, MA 01610                | Main          | St
+ 529 Main Street, Boston MA, 02129                   | Main          | St
+ 77 Massachusetts Avenue, Cambridge, MA 02139        | Massachusetts | Ave
+ 25 Wizard of Oz, Walaford, KS 99912323              | Wizard of Oz  |
+        </pre>
+      </div>
+      <div class="refsection" id="idm38607">
+        <h2>See Also</h2>
+        <p><a class="xref" href="Geocode.html" title="Geocode">Geocode</a>, <a class="xref" href="Pprint_Addy.html" title="Pprint_Addy">Pprint_Addy</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="Missing_Indexes_Generate_Script.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="Extras.html#Tiger_Geocoder">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="Pagc_Normalize_Address.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">Missing_Indexes_Generate_Script </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> Pagc_Normalize_Address</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

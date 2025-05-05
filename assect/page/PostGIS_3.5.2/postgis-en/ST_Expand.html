@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_Expand</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_EstimatedExtent.html" title="ST_EstimatedExtent"/>
+    <link rel="next" href="ST_Extent.html" title="ST_Extent"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_Expand</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_EstimatedExtent.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.18. Bounding Box Functions</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_Extent.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_Expand">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_Expand — Returns a bounding box expanded from another bounding box or a geometry.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_Expand</strong>(</code>geometry  <var class="pdparam">geom</var>, float <var class="pdparam">units_to_expand</var><code>)</code>;</p>
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_Expand</strong>(</code>geometry  <var class="pdparam">geom</var>, float <var class="pdparam">dx</var>, float <var class="pdparam">dy</var>, float <var class="pdparam">dz=0</var>, float <var class="pdparam">dm=0</var><code>)</code>;</p>
+          <p><code class="funcdef">box2d <strong class="fsfunc">ST_Expand</strong>(</code>box2d  <var class="pdparam">box</var>, float <var class="pdparam">units_to_expand</var><code>)</code>;</p>
+          <p><code class="funcdef">box2d <strong class="fsfunc">ST_Expand</strong>(</code>box2d  <var class="pdparam">box</var>, float <var class="pdparam">dx</var>, float <var class="pdparam">dy</var><code>)</code>;</p>
+          <p><code class="funcdef">box3d <strong class="fsfunc">ST_Expand</strong>(</code>box3d  <var class="pdparam">box</var>, float <var class="pdparam">units_to_expand</var><code>)</code>;</p>
+          <p><code class="funcdef">box3d <strong class="fsfunc">ST_Expand</strong>(</code>box3d  <var class="pdparam">box</var>, float  <var class="pdparam">dx</var>, float  <var class="pdparam">dy</var>, float  <var class="pdparam">dz=0</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm19329">
+        <h2>Description</h2>
+        <p>Returns a bounding box expanded from the bounding box of the input,
+			either by specifying a single distance with which the box should be expanded on both
+			axes, or by specifying an expansion distance for each axis.
+
+			Uses double-precision. Can be used for distance queries, or to add a bounding box
+			filter to a query to take advantage of a spatial index.</p>
+        <p>In addition to the version of ST_Expand accepting and returning a geometry, variants
+			are provided that accept and return
+            <a class="xref" href="box2d_type.html" title="box2d">box2d</a> and <a class="xref" href="box3d_type.html" title="box3d">box3d</a> data types.
+		</p>
+        <p>Distances are in the units of the spatial reference system of the input.</p>
+        <p>ST_Expand is similar to <a class="xref" href="ST_Buffer.html" title="ST_Buffer">ST_Buffer</a>,
+			except while buffering expands a geometry in all directions,
+			ST_Expand expands the bounding box along each axis.</p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>Pre version 1.3, ST_Expand was used in conjunction with <a class="xref" href="ST_Distance.html" title="ST_Distance">ST_Distance</a> to do indexable distance queries.  For example,
+			<code class="code">geom &amp;&amp; ST_Expand('POINT(10 20)', 10) AND ST_Distance(geom, 'POINT(10 20)') &lt; 10</code>.
+			This has been replaced by the simpler and more efficient <a class="xref" href="ST_DWithin.html" title="ST_DWithin">ST_DWithin</a> function.</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p class="availability">Availability: 1.5.0 behavior changed to output double precision instead of float4 coordinates.</p>
+        <p class="enhanced">Enhanced: 2.0.0 support for Polyhedral surfaces, Triangles and TIN was introduced.</p>
+        <p class="enhanced">Enhanced: 2.3.0 support was added to expand a box by different amounts in different dimensions.</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports Polyhedral surfaces.
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports Triangles and Triangulated Irregular Network Surfaces (TIN).
+        </p>
+      </div>
+      <div class="refsection" id="idm19354">
+        <h2>Examples</h2>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>Examples below use US National Atlas Equal Area (SRID=2163) which is a meter projection</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <pre class="programlisting">
+		
+--10 meter expanded box around bbox of a linestring
+SELECT CAST(ST_Expand(ST_GeomFromText('LINESTRING(2312980 110676,2312923 110701,2312892 110714)', 2163),10) As box2d);
+					 st_expand
+------------------------------------
+ BOX(2312882 110666,2312990 110724)
+
+--10 meter expanded 3D box of a 3D box
+SELECT ST_Expand(CAST('BOX3D(778783 2951741 1,794875 2970042.61545891 10)' As box3d),10)
+							  st_expand
+-----------------------------------------------------
+ BOX3D(778773 2951731 -9,794885 2970052.61545891 20)
+
+ --10 meter geometry astext rep of a expand box around a point geometry
+ SELECT ST_AsEWKT(ST_Expand(ST_GeomFromEWKT('SRID=2163;POINT(2312980 110676)'),10));
+											st_asewkt
+-------------------------------------------------------------------------------------------------
+ SRID=2163;POLYGON((2312970 110666,2312970 110686,2312990 110686,2312990 110666,2312970 110666))
+
+		</pre>
+      </div>
+      <div class="refsection" id="idm19359">
+        <h2>See Also</h2>
+        <p><a class="xref" href="ST_Buffer.html" title="ST_Buffer">ST_Buffer</a>, <a class="xref" href="ST_DWithin.html" title="ST_DWithin">ST_DWithin</a>, <a class="xref" href="ST_SRID.html" title="ST_SRID">ST_SRID</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_EstimatedExtent.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#BBox_Functions">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_Extent.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_EstimatedExtent </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_Extent</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>FindLayer</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="FindTopology.html" title="FindTopology"/>
+    <link rel="next" href="CreateTopology.html" title="CreateTopology"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">FindLayer</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="FindTopology.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">9.3. Topology and TopoGeometry Management</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="CreateTopology.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="FindLayer">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>FindLayer — Returns a topology.layer record by different means.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">topology.layer <strong class="fsfunc">FindLayer</strong>(</code>TopoGeometry <var class="pdparam">tg</var><code>)</code>;</p>
+          <p><code class="funcdef">topology.layer <strong class="fsfunc">FindLayer</strong>(</code>regclass <var class="pdparam">layer_table</var>, name <var class="pdparam">feature_column</var><code>)</code>;</p>
+          <p><code class="funcdef">topology.layer <strong class="fsfunc">FindLayer</strong>(</code>name <var class="pdparam">schema_name</var>, name <var class="pdparam">table_name</var>, name <var class="pdparam">feature_column</var><code>)</code>;</p>
+          <p><code class="funcdef">topology.layer <strong class="fsfunc">FindLayer</strong>(</code>integer <var class="pdparam">topology_id</var>, integer <var class="pdparam">layer_id</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm24190">
+        <h2>Description</h2>
+        <p>Takes a layer identifier or the identifier of
+a topology-related object and returns a topology.layer record.</p>
+        <p class="availability">Availability: 3.2.0</p>
+      </div>
+      <div class="refsection" id="idm24194">
+        <h2>Examples</h2>
+        <pre class="programlisting">
+SELECT layer_id(findLayer('features.land_parcels', 'feature'));
+ layer_id
+----------
+        1
+(1 row)
+</pre>
+      </div>
+      <div class="refsection" id="idm24197">
+        <h2>See Also</h2>
+        <p>
+          <a class="xref" href="FindTopology.html" title="FindTopology">FindTopology</a>
+        </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="FindTopology.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="Topology.html#Topology_ManagementFunctions">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="CreateTopology.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">FindTopology </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> CreateTopology</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_MapAlgebraFctNgb</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="RT_ST_MapAlgebraFct2.html" title="ST_MapAlgebraFct"/>
+    <link rel="next" href="RT_ST_Reclass.html" title="ST_Reclass"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_MapAlgebraFctNgb</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="RT_ST_MapAlgebraFct2.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">11.12. Raster Processing: Map Algebra</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="RT_ST_Reclass.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="RT_ST_MapAlgebraFctNgb">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_MapAlgebraFctNgb — 1-band version: Map Algebra Nearest Neighbor using user-defined PostgreSQL function. Return a raster which values are the result of a PLPGSQL user function involving a neighborhood of values from the input raster band.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">raster <strong class="fsfunc">ST_MapAlgebraFctNgb</strong>(</code>raster  <var class="pdparam">rast</var>, integer  <var class="pdparam">band</var>, text  <var class="pdparam">pixeltype</var>, integer  <var class="pdparam">ngbwidth</var>, integer  <var class="pdparam">ngbheight</var>, regprocedure  <var class="pdparam">onerastngbuserfunc</var>, text  <var class="pdparam">nodatamode</var>, text[]  <var class="pdparam">VARIADIC args</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm34858">
+        <h2>Description</h2>
+        <div class="warning">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Warning]" src="../images/warning.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>
+                            <a class="xref" href="RT_ST_MapAlgebraFctNgb.html" title="ST_MapAlgebraFctNgb">ST_MapAlgebraFctNgb</a> is deprecated as of 2.1.0. Use <a class="xref" href="RT_ST_MapAlgebra.html" title="ST_MapAlgebra (callback function version)">ST_MapAlgebra (callback function version)</a> instead.
+                        </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p>(one raster version) Return a raster which values are the result of a PLPGSQL user function involving a neighborhood of values from the input raster band. The user function takes the neighborhood of pixel values as an array of numbers, for each pixel, returns the result from the user function, replacing pixel value of currently inspected pixel with the function result. </p>
+        <div class="variablelist">
+          <dl class="variablelist">
+            <dt>
+              <span class="term">
+                <code class="varname">rast</code>
+              </span>
+            </dt>
+            <dd>
+              <p>Raster on which the user function is evaluated.</p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">band</code>
+              </span>
+            </dt>
+            <dd>
+              <p>Band number of the raster to be evaluated. Default to 1.</p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">pixeltype</code>
+              </span>
+            </dt>
+            <dd>
+              <p>The resulting pixel type of the output raster.  Must be one listed in <a class="xref" href="RT_ST_BandPixelType.html" title="ST_BandPixelType">ST_BandPixelType</a> or left out or set to NULL.  If not passed in or set to NULL, will default to the pixeltype of the <code class="varname">rast</code>. Results are truncated if they are larger than what is allowed for the pixeltype.</p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">ngbwidth</code>
+              </span>
+            </dt>
+            <dd>
+              <p>The width of the neighborhood, in cells.</p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">ngbheight</code>
+              </span>
+            </dt>
+            <dd>
+              <p>The height of the neighborhood, in cells.</p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">onerastngbuserfunc</code>
+              </span>
+            </dt>
+            <dd>
+              <p>PLPGSQL/psql user function to apply to neighborhood pixels of a single band of a raster. The first element is a 2-dimensional array of numbers representing the rectangular pixel neighborhood</p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">nodatamode</code>
+              </span>
+            </dt>
+            <dd>
+              <p>Defines what value to pass to the function for a neighborhood pixel that is nodata or NULL</p>
+              <p>'ignore': any NODATA values encountered in the neighborhood are ignored by the computation -- this flag must be sent to the user callback function, and the user function decides how to ignore it.</p>
+              <p>'NULL': any NODATA values encountered in the neighborhood will cause the resulting pixel to be NULL -- the user callback function is skipped in this case.</p>
+              <p>'value': any NODATA values encountered in the neighborhood are replaced by the reference pixel (the one in the center of the neighborhood). Note that if this value is NODATA, the behavior is the same as 'NULL' (for the affected neighborhood)</p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">args</code>
+              </span>
+            </dt>
+            <dd>
+              <p>Arguments to pass into the user function.</p>
+            </dd>
+          </dl>
+        </div>
+        <p class="availability">Availability: 2.0.0 </p>
+      </div>
+      <div class="refsection" id="idm34912">
+        <h2>Examples</h2>
+        <p>Examples utilize the katrina raster loaded as a single tile described in <a class="link" href="http://trac.osgeo.org/gdal/wiki/frmts_wtkraster.html" target="_top">http://trac.osgeo.org/gdal/wiki/frmts_wtkraster.html</a> and then prepared in the <a class="xref" href="RT_ST_Rescale.html" title="ST_Rescale">ST_Rescale</a> examples </p>
+        <pre class="programlisting">
+--
+-- A simple 'callback' user function that averages up all the values in a neighborhood.
+--
+CREATE OR REPLACE FUNCTION rast_avg(matrix float[][], nodatamode text, variadic args text[])
+    RETURNS float AS
+    $$
+    DECLARE
+        _matrix float[][];
+        x1 integer;
+        x2 integer;
+        y1 integer;
+        y2 integer;
+        sum float;
+    BEGIN
+        _matrix := matrix;
+        sum := 0;
+        FOR x in array_lower(matrix, 1)..array_upper(matrix, 1) LOOP
+            FOR y in array_lower(matrix, 2)..array_upper(matrix, 2) LOOP
+                sum := sum + _matrix[x][y];
+            END LOOP;
+        END LOOP;
+        RETURN (sum*1.0/(array_upper(matrix,1)*array_upper(matrix,2) ))::integer ;
+    END;
+    $$
+LANGUAGE 'plpgsql' IMMUTABLE COST 1000;
+
+-- now we apply to our raster averaging pixels within 2 pixels of each other in X and Y direction --
+SELECT ST_MapAlgebraFctNgb(rast, 1,  '8BUI', 4,4,
+        'rast_avg(float[][], text, text[])'::regprocedure, 'NULL', NULL) As nn_with_border
+    FROM katrinas_rescaled
+    limit 1;
+                    </pre>
+        <div class="informaltable">
+          <table style="border-collapse: collapse; border-top: 1px solid ; border-bottom: 1px solid ; border-left: 1px solid ; border-right: 1px solid ; ">
+            <colgroup>
+              <col/>
+              <col/>
+            </colgroup>
+            <tbody>
+              <tr>
+                <td style="border-right: 1px solid ; ">
+                                        <p>
+                                            </p><div class="informalfigure"><div class="mediaobject"><img src="../images/st_mapalgebrafctngb01.png"/><div class="caption"><p>First band of our raster</p></div></div></div><p>
+                                        </p>
+                                    </td>
+                <td>
+                                        <p>
+                                            </p><div class="informalfigure"><div class="mediaobject"><img src="../images/st_mapalgebrafctngb02.png"/><div class="caption"><p>new raster after averaging pixels within 4x4 pixels of each other</p></div></div></div><p>
+                                        </p>
+                                    </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="refsection" id="idm34938">
+        <h2>See Also</h2>
+        <p>
+                        <a class="xref" href="RT_ST_MapAlgebraFct.html" title="ST_MapAlgebraFct">ST_MapAlgebraFct</a>,
+                        <a class="xref" href="RT_ST_MapAlgebraExpr.html" title="ST_MapAlgebraExpr">ST_MapAlgebraExpr</a>,
+                        <a class="xref" href="RT_ST_Rescale.html" title="ST_Rescale">ST_Rescale</a>
+                    </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="RT_ST_MapAlgebraFct2.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="RT_reference.html#Raster_Processing_MapAlgebra">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="RT_ST_Reclass.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_MapAlgebraFct </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_Reclass</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

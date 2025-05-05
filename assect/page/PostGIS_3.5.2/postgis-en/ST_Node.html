@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_Node</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_MemUnion.html" title="ST_MemUnion"/>
+    <link rel="next" href="ST_Split.html" title="ST_Split"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_Node</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_MemUnion.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.13. Overlay Functions</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_Split.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_Node">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_Node — 
+Nodes a collection of lines.
+        </p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_Node</strong>(</code>geometry  <var class="pdparam">geom</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm15717">
+        <h2>Description</h2>
+        <p>
+Returns a (Multi)LineString representing the fully noded version of a collection of linestrings.
+The noding preserves all of the input nodes,
+and introduces the least possible number of new nodes.
+The resulting linework is dissolved (duplicate lines are removed).
+        </p>
+        <p>This is a good way to create fully-noded linework suitable for use as input to <a class="xref" href="ST_Polygonize.html" title="ST_Polygonize">ST_Polygonize</a>.</p>
+        <p><a class="xref" href="ST_UnaryUnion.html" title="ST_UnaryUnion">ST_UnaryUnion</a> can also be used to node and dissolve linework.
+        It provides an option to specify a gridSize, which can provide simpler and more robust output.
+        See also <a class="xref" href="ST_Union.html" title="ST_Union">ST_Union</a> for an aggregate variant.
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports 3d and will not drop the z-index.
+        </p>
+        <p>Performed by the GEOS module.</p>
+        <p class="availability">Availability: 2.0.0</p>
+        <p class="changed">
+Changed: 2.4.0 this function uses GEOSNode internally instead of GEOSUnaryUnion.
+This may cause the resulting linestrings to have a different order and direction compared to PostGIS &lt; 2.4.
+        </p>
+      </div>
+      <div class="refsection" id="idm15732">
+        <h2>Examples</h2>
+        <p>Noding a 3D LineString which self-intersects</p>
+        <pre class="programlisting">
+SELECT ST_AsText(
+        ST_Node('LINESTRINGZ(0 0 0, 10 10 10, 0 10 5, 10 0 3)'::geometry)
+    ) As  output;
+output
+-----------
+MULTILINESTRING Z ((0 0 0,5 5 4.5),(5 5 4.5,10 10 10,0 10 5,5 5 4.5),(5 5 4.5,10 0 3))
+        </pre>
+        <p>Noding two LineStrings which share common linework.
+        Note that the result linework is dissolved.</p>
+        <pre class="programlisting">
+SELECT ST_AsText(
+        ST_Node('MULTILINESTRING ((2 5, 2 1, 7 1), (6 1, 4 1, 2 3, 2 5))'::geometry)
+    ) As  output;
+output
+-----------
+MULTILINESTRING((2 5,2 3),(2 3,2 1,4 1),(4 1,2 3),(4 1,6 1),(6 1,7 1))
+        </pre>
+      </div>
+      <div class="refsection" id="idm15738">
+        <h2>See Also</h2>
+        <p>
+            <a class="xref" href="ST_UnaryUnion.html" title="ST_UnaryUnion">ST_UnaryUnion</a>, <a class="xref" href="ST_Union.html" title="ST_Union">ST_Union</a>
+        </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_MemUnion.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Overlay_Functions">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_Split.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_MemUnion </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_Split</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

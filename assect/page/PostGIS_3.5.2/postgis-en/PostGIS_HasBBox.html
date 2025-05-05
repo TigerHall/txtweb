@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>PostGIS_HasBBox</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="PostGIS_DropBBox.html" title="PostGIS_DropBBox"/>
+    <link rel="next" href="reference_sfcgal.html" title="Chapter 8. SFCGAL Functions Reference"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">PostGIS_HasBBox</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="PostGIS_DropBBox.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.23. Troubleshooting Functions</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="reference_sfcgal.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="PostGIS_HasBBox">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>PostGIS_HasBBox — Returns TRUE if the bbox of this geometry is cached, FALSE otherwise.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">boolean <strong class="fsfunc">PostGIS_HasBBox</strong>(</code>geometry  <var class="pdparam">geomA</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm21006">
+        <h2>Description</h2>
+        <p>Returns TRUE if the bbox of this geometry is cached, FALSE
+				otherwise. Use <a class="xref" href="PostGIS_AddBBox.html" title="PostGIS_AddBBox">PostGIS_AddBBox</a> and <a class="xref" href="PostGIS_DropBBox.html" title="PostGIS_DropBBox">PostGIS_DropBBox</a> to control caching.</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method supports Circular Strings and Curves.
+        </p>
+      </div>
+      <div class="refsection" id="idm21015">
+        <h2>Examples</h2>
+        <pre class="programlisting">SELECT geom
+FROM sometable WHERE PostGIS_HasBBox(geom) = false;</pre>
+      </div>
+      <div class="refsection" id="idm21018">
+        <h2>See Also</h2>
+        <p><a class="xref" href="PostGIS_AddBBox.html" title="PostGIS_AddBBox">PostGIS_AddBBox</a>, <a class="xref" href="PostGIS_DropBBox.html" title="PostGIS_DropBBox">PostGIS_DropBBox</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="PostGIS_DropBBox.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Troubleshooting_Functions">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="reference_sfcgal.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">PostGIS_DropBBox </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> Chapter 8. SFCGAL Functions Reference</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

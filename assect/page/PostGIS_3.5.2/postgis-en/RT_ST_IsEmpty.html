@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_IsEmpty</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="RT_ST_Height.html" title="ST_Height"/>
+    <link rel="next" href="RT_ST_MemSize.html" title="ST_MemSize"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_IsEmpty</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="RT_ST_Height.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">11.4. Raster Accessors</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="RT_ST_MemSize.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="RT_ST_IsEmpty">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_IsEmpty — Returns true if the raster is empty (width = 0 and height = 0). Otherwise, returns false.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">boolean <strong class="fsfunc">ST_IsEmpty</strong>(</code>raster  <var class="pdparam">rast</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm28850">
+        <h2>Description</h2>
+        <p>Returns true if the raster is empty (width = 0 and height = 0). Otherwise, returns false.</p>
+        <p class="availability">Availability: 2.0.0</p>
+      </div>
+      <div class="refsection" id="idm28854">
+        <h2>Examples</h2>
+        <pre class="programlisting">SELECT ST_IsEmpty(ST_MakeEmptyRaster(100, 100, 0, 0, 0, 0, 0, 0))
+st_isempty |
+-----------+
+f          |
+
+
+SELECT ST_IsEmpty(ST_MakeEmptyRaster(0, 0, 0, 0, 0, 0, 0, 0))
+st_isempty |
+-----------+
+t          |
+
+                </pre>
+      </div>
+      <div class="refsection" id="idm28857">
+        <h2>See Also</h2>
+        <p>
+          <a class="xref" href="RT_ST_HasNoBand.html" title="ST_HasNoBand">ST_HasNoBand</a>
+        </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="RT_ST_Height.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="RT_reference.html#Raster_Accessors">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="RT_ST_MemSize.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_Height </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_MemSize</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

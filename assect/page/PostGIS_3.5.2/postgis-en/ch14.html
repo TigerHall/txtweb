@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Chapter 14. Reporting Problems</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="PostGIS_Special_Functions_Index.html" title="Chapter 13. PostGIS Special Functions Index"/>
+    <link rel="next" href="release_notes.html" title="Appendix A. Appendix"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">Chapter 14. Reporting Problems</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="PostGIS_Special_Functions_Index.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; "> </th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="release_notes.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <section class="chapter" id="idm52797">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h1 class="title">Chapter 14. Reporting Problems</h1>
+          </div>
+        </div>
+      </div>
+      <div class="toc">
+        <div class="toc-title">Table of Contents</div>
+        <ul class="toc">
+          <li>
+            <span class="section">
+              <a href="ch14.html#idm52799">14.1. Reporting Software Bugs</a>
+            </span>
+          </li>
+          <li>
+            <span class="section">
+              <a href="ch14.html#idm52810">14.2. Reporting Documentation Issues</a>
+            </span>
+          </li>
+        </ul>
+      </div>
+      <section class="section" id="idm52799">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title" style="clear: both">14.1. Reporting Software Bugs</h2>
+            </div>
+          </div>
+        </div>
+        <p>Reporting bugs effectively is a fundamental way to help PostGIS
+    development. The most effective bug report is that enabling PostGIS
+    developers to reproduce it, so it would ideally contain a script
+    triggering it and every information regarding the environment in which it
+    was detected. Good enough info can be extracted running <code class="code">SELECT
+    postgis_full_version()</code> [for PostGIS] and <code class="code">SELECT
+    version()</code> [for postgresql].</p>
+        <p>If you aren't using the latest release, it's worth taking a look at
+    its <a class="link" href="https://git.osgeo.org/gitea/postgis/postgis/raw/branch/master/NEWS" target="_top">release
+    changelog</a> first, to find out if your bug has already been
+    fixed.</p>
+        <p>Using the <a class="link" href="http://trac.osgeo.org/postgis/" target="_top">PostGIS bug
+    tracker</a> will ensure your reports are not discarded, and will keep
+    you informed on its handling process. Before reporting a new bug please
+    query the database to see if it is a known one, and if it is please add
+    any new information you have about it.</p>
+        <p>You might want to read Simon Tatham's paper about <a class="link" href="http://www.chiark.greenend.org.uk/~sgtatham/bugs.html" target="_top">How to Report
+    Bugs Effectively</a> before filing a new report.</p>
+      </section>
+      <section class="section" id="idm52810">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title" style="clear: both">14.2. Reporting Documentation Issues</h2>
+            </div>
+          </div>
+        </div>
+        <p>The documentation should accurately reflect the features and
+    behavior of the software. If it doesn't, it could be because of a software
+    bug or because the documentation is in error or deficient.</p>
+        <p>Documentation issues can also be reported to the <a class="link" href="http://trac.osgeo.org/postgis" target="_top">PostGIS bug
+    tracker</a>.</p>
+        <p>If your revision is trivial, just describe it in a new bug tracker
+    issue, being specific about its location in the documentation.</p>
+        <p>If your changes are more extensive, a patch is definitely
+    preferred. This is a four step process on Unix (assuming you already have
+    <a class="link" href="https://git-scm.com/" target="_top">git</a>
+    installed):</p>
+        <div class="orderedlist">
+          <ol class="orderedlist" type="1">
+            <li class="listitem">
+              <p>Clone the PostGIS' git repository. On Unix,
+        type:</p>
+              <p>
+                <span class="command">
+                  <strong>git clone
+        https://git.osgeo.org/gitea/postgis/postgis.git</strong>
+                </span>
+              </p>
+              <p>This will be stored in the directory postgis</p>
+            </li>
+            <li class="listitem">
+              <p>Make your changes to the documentation with your favorite text
+        editor. On Unix, type (for example):</p>
+              <p>
+                <span class="command">
+                  <strong>vim doc/postgis.xml</strong>
+                </span>
+              </p>
+              <p>Note that the documentation is written in DocBook XML rather than HTML,
+        so if you are not familiar with it please follow the example of the
+        rest of the documentation.</p>
+            </li>
+            <li class="listitem">
+              <p>Make a patch file containing the differences from the master
+        copy of the documentation. On Unix, type:</p>
+              <p>
+                <span class="command">
+                  <strong>git diff doc/postgis.xml &gt;
+        doc.patch</strong>
+                </span>
+              </p>
+            </li>
+            <li class="listitem">
+              <p>Attach the patch to a new issue in bug tracker.</p>
+            </li>
+          </ol>
+        </div>
+      </section>
+    </section>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="PostGIS_Special_Functions_Index.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; "> </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="release_notes.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">Chapter 13. PostGIS Special Functions Index </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> Appendix A. Appendix</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_SetM</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="RT_ST_SetZ.html" title="ST_SetZ"/>
+    <link rel="next" href="RT_ST_Neighborhood.html" title="ST_Neighborhood"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_SetM</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="RT_ST_SetZ.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">11.6. Raster Pixel Accessors and Setters</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="RT_ST_Neighborhood.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="RT_ST_SetM">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_SetM — Returns a geometry with the same X/Y coordinates as the input geometry, and values from the raster copied into the M dimension using the requested resample algorithm.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_SetM</strong>(</code>raster  <var class="pdparam">rast</var>, geometry  <var class="pdparam">geom</var>, text  <var class="pdparam">resample=nearest</var>, integer  <var class="pdparam">band=1</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm30291">
+        <h2>Description</h2>
+        <p>Returns a geometry with the same X/Y coordinates as the input geometry, and values from the raster copied into the M dimensions using the requested resample algorithm.</p>
+        <p>The <code class="varname">resample</code> parameter can be set to "nearest" to copy the values from the cell each vertex falls within, or "bilinear" to use <a class="link" href="https://en.wikipedia.org/wiki/Bilinear_interpolation" target="_top">bilinear interpolation</a> to calculate a value that takes neighboring cells into account also.</p>
+        <p class="availability">Availability: 3.2.0</p>
+      </div>
+      <div class="refsection" id="idm30298">
+        <h2>Examples</h2>
+        <pre class="programlisting">--
+-- 2x2 test raster with values
+--
+-- 10 50
+-- 40 20
+--
+WITH test_raster AS (
+SELECT
+ST_SetValues(
+  ST_AddBand(
+    ST_MakeEmptyRaster(width =&gt; 2, height =&gt; 2,
+      upperleftx =&gt; 0, upperlefty =&gt; 2,
+      scalex =&gt; 1.0, scaley =&gt; -1.0,
+      skewx =&gt; 0, skewy =&gt; 0, srid =&gt; 4326),
+    index =&gt; 1, pixeltype =&gt; '16BSI',
+    initialvalue =&gt; 0,
+    nodataval =&gt; -999),
+  1,1,1,
+  newvalueset =&gt;ARRAY[ARRAY[10.0::float8, 50.0::float8], ARRAY[40.0::float8, 20.0::float8]]) AS rast
+)
+SELECT
+ST_AsText(
+  ST_SetM(
+    rast,
+    band =&gt; 1,
+    geom =&gt; 'SRID=4326;LINESTRING(1.0 1.9, 1.0 0.2)'::geometry,
+    resample =&gt; 'bilinear'
+))
+FROM test_raster
+
+            st_astext
+----------------------------------
+ LINESTRING M (1 1.9 38,1 0.2 27)</pre>
+      </div>
+      <div class="refsection" id="idm30301">
+        <h2>See Also</h2>
+        <p>
+                    <a class="xref" href="RT_ST_Value.html" title="ST_Value">ST_Value</a>,
+                    <a class="xref" href="RT_ST_SetZ.html" title="ST_SetZ">ST_SetZ</a>
+                </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="RT_ST_SetZ.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="RT_reference.html#Raster_Pixel_Accessors">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="RT_ST_Neighborhood.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_SetZ </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_Neighborhood</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

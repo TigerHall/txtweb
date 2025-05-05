@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>PostGIS_DropBBox</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="PostGIS_AddBBox.html" title="PostGIS_AddBBox"/>
+    <link rel="next" href="PostGIS_HasBBox.html" title="PostGIS_HasBBox"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">PostGIS_DropBBox</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="PostGIS_AddBBox.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.23. Troubleshooting Functions</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="PostGIS_HasBBox.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="PostGIS_DropBBox">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>PostGIS_DropBBox — Drop the bounding box cache from the geometry.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">geometry <strong class="fsfunc">PostGIS_DropBBox</strong>(</code>geometry  <var class="pdparam">geomA</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm20976">
+        <h2>Description</h2>
+        <p>Drop the bounding box cache from the geometry. This reduces
+			geometry size, but makes bounding-box based queries slower.  It is also used to drop a corrupt bounding box.  A tale-tell sign of a corrupt cached bounding box
+				is when your ST_Intersects and other relation queries leave out geometries that rightfully should return true.</p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>Bounding boxes are automatically added to geometries and improve speed of queries so in general this is not needed
+				unless the generated bounding box somehow becomes corrupted or you have an old install that is lacking bounding boxes.
+				Then you need to drop the old and re-add.  This kind of corruption has been observed in 8.3-8.3.6 series whereby cached bboxes were not always recalculated when a geometry changed and upgrading to a newer version without a dump reload will not
+				correct already corrupted boxes.  So one can manually correct using below and re-add the bbox or do a dump reload.</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method supports Circular Strings and Curves.
+        </p>
+      </div>
+      <div class="refsection" id="idm20985">
+        <h2>Examples</h2>
+        <pre class="programlisting">--This example drops bounding boxes where the cached box is not correct
+			--The force to ST_AsBinary before applying Box2D forces a recalculation of the box, and Box2D applied to the table geometry always
+			-- returns the cached bounding box.
+			UPDATE sometable
+ SET geom =  PostGIS_DropBBox(geom)
+ WHERE Not (Box2D(ST_AsBinary(geom)) = Box2D(geom));
+
+	UPDATE sometable
+ SET geom =  PostGIS_AddBBox(geom)
+ WHERE Not PostGIS_HasBBOX(geom);
+
+
+ </pre>
+      </div>
+      <div class="refsection" id="idm20988">
+        <h2>See Also</h2>
+        <p><a class="xref" href="PostGIS_AddBBox.html" title="PostGIS_AddBBox">PostGIS_AddBBox</a>, <a class="xref" href="PostGIS_HasBBox.html" title="PostGIS_HasBBox">PostGIS_HasBBox</a>, <a class="xref" href="Box2D.html" title="Box2D">Box2D</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="PostGIS_AddBBox.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Troubleshooting_Functions">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="PostGIS_HasBBox.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">PostGIS_AddBBox </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> PostGIS_HasBBox</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

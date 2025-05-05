@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Loader_Generate_Script</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="Loader_Generate_Census_Script.html" title="Loader_Generate_Census_Script"/>
+    <link rel="next" href="Loader_Generate_Nation_Script.html" title="Loader_Generate_Nation_Script"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">Loader_Generate_Script</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="Loader_Generate_Census_Script.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">12.2. Tiger Geocoder</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="Loader_Generate_Nation_Script.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="Loader_Generate_Script">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>Loader_Generate_Script — Generates a shell script for the specified platform for the specified states that will download Tiger data, stage and load into <code class="varname">tiger_data</code> schema. Each state script is returned as a separate record. Latest version supports Tiger 2010 structural changes and also loads census tract, block groups, and blocks tables.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">setof text <strong class="fsfunc">loader_generate_script</strong>(</code>text[] <var class="pdparam">param_states</var>, text <var class="pdparam">os</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm38411">
+        <h2>Description</h2>
+        <p>Generates a shell script for the specified platform for the specified states that will download Tiger data, stage and load into <code class="varname">tiger_data</code> schema.  Each state script is returned as a separate record.</p>
+        <p>It uses unzip on Linux (7-zip on Windows by default) and wget to do the downloading. It uses <a class="xref" href="using_postgis_dbmanagement.html#shp2pgsql_usage" title="4.7.2. Using the Shapefile Loader">Section 4.7.2, “Using the Shapefile Loader”</a> to load in the data. Note the smallest unit it does is a whole state, but you can overwrite this by downloading the files yourself.  It will only
+        process the files in the staging and temp folders.</p>
+        <p>It uses the following control tables to control the process and different OS shell syntax variations.</p>
+        <div class="orderedlist">
+          <ol class="orderedlist" type="1">
+            <li class="listitem">
+              <p><code class="varname">loader_variables</code> keeps track of various variables such as census site, year, data and staging schemas</p>
+            </li>
+            <li class="listitem">
+              <p><code class="varname">loader_platform</code> profiles of various platforms and where the various executables are located.  Comes with windows and linux. More can be added.</p>
+            </li>
+            <li class="listitem">
+              <p><code class="varname">loader_lookuptables</code> each record defines a kind of table (state, county), whether to process records in it and how to load them in.  Defines the steps to import data, stage data, add, removes columns, indexes, and constraints for each.  Each table is prefixed with the state and inherits from a table in the tiger schema. e.g. creates <code class="varname">tiger_data.ma_faces</code> which inherits from <code class="varname">tiger.faces</code></p>
+            </li>
+          </ol>
+        </div>
+        <p class="availability">Availability: 2.0.0 to support Tiger 2010 structured data and load census tract (tract), block groups (bg), and blocks (tabblocks) tables .</p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>If you are using pgAdmin 3, be warned that by default pgAdmin 3 truncates long text.  To fix, change
+         <span class="emphasis"><em>File -&gt; Options -&gt; Query Tool -&gt; Query Editor - &gt; Max. characters per column</em></span> to larger than 50000 characters.</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="refsection" id="idm38434">
+        <h2>Examples</h2>
+        <p>Using psql where gistest is your database and <code class="filename">/gisdata/data_load.sh</code> is the file to create with the shell commands to run.</p>
+        <pre class="programlisting">psql -U postgres -h localhost -d gistest -A -t \
+ -c "SELECT Loader_Generate_Script(ARRAY['MA'], 'gistest')" &gt; /gisdata/data_load.sh;
+</pre>
+        <p>Generate script to load up data for 2 states in Windows shell script format.</p>
+        <pre class="programlisting">SELECT loader_generate_script(ARRAY['MA','RI'], 'windows') AS result;
+-- result --
+set TMPDIR=\gisdata\temp\
+set UNZIPTOOL="C:\Program Files\7-Zip\7z.exe"
+set WGETTOOL="C:\wget\wget.exe"
+set PGBIN=C:\Program Files\PostgreSQL\9.4\bin\
+set PGPORT=5432
+set PGHOST=localhost
+set PGUSER=postgres
+set PGPASSWORD=yourpasswordhere
+set PGDATABASE=geocoder
+set PSQL="%PGBIN%psql"
+set SHP2PGSQL="%PGBIN%shp2pgsql"
+cd \gisdata
+
+cd \gisdata
+%WGETTOOL% ftp://ftp2.census.gov/geo/tiger/TIGER2015/PLACE/tl_*_25_* --no-parent --relative --recursive --level=2 --accept=zip --mirror --reject=html
+cd \gisdata/ftp2.census.gov/geo/tiger/TIGER2015/PLACE
+:
+:</pre>
+        <p>Generate sh script</p>
+        <pre class="programlisting">SELECT loader_generate_script(ARRAY['MA','RI'], 'sh') AS result;
+-- result --
+TMPDIR="/gisdata/temp/"
+UNZIPTOOL=unzip
+WGETTOOL="/usr/bin/wget"
+export PGBIN=/usr/lib/postgresql/9.4/bin
+-- variables used by psql: https://www.postgresql.org/docs/current/static/libpq-envars.html
+export PGPORT=5432
+export PGHOST=localhost
+export PGUSER=postgres
+export PGPASSWORD=yourpasswordhere
+export PGDATABASE=geocoder
+PSQL=${PGBIN}/psql
+SHP2PGSQL=${PGBIN}/shp2pgsql
+cd /gisdata
+
+cd /gisdata
+wget ftp://ftp2.census.gov/geo/tiger/TIGER2015/PLACE/tl_*_25_* --no-parent --relative --recursive --level=2 --accept=zip --mirror --reject=html
+cd /gisdata/ftp2.census.gov/geo/tiger/TIGER2015/PLACE
+rm -f ${TMPDIR}/*.*
+:
+:</pre>
+      </div>
+      <div class="refsection" id="idm38443">
+        <h2>See Also</h2>
+        <p><a class="xref" href="postgis_installation.html#install_tiger_geocoder_extension" title="2.4.1. Tiger Geocoder Enabling your PostGIS database">Section 2.4.1, “Tiger Geocoder Enabling your PostGIS database”</a>, <a class="xref" href="Loader_Generate_Nation_Script.html" title="Loader_Generate_Nation_Script">Loader_Generate_Nation_Script</a>, <a class="xref" href="Drop_State_Tables_Generate_Script.html" title="Drop_State_Tables_Generate_Script">Drop_State_Tables_Generate_Script</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="Loader_Generate_Census_Script.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="Extras.html#Tiger_Geocoder">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="Loader_Generate_Nation_Script.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">Loader_Generate_Census_Script </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> Loader_Generate_Nation_Script</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

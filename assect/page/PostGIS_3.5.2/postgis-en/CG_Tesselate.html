@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>CG_Tesselate</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_Tesselate.html" title="ST_Tesselate"/>
+    <link rel="next" href="CG_Triangulate.html" title="CG_Triangulate"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">CG_Tesselate</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_Tesselate.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">8.3. SFCGAL Processing and Relationship Functions</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="CG_Triangulate.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="CG_Tesselate">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>CG_Tesselate — Perform surface Tessellation of a polygon or polyhedralsurface and returns as a TIN or collection of TINS</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">geometry <strong class="fsfunc">CG_Tesselate</strong>(</code>geometry <var class="pdparam">geom</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm23295">
+        <h2>Description</h2>
+        <p>Takes as input a surface such a  MULTI(POLYGON) or POLYHEDRALSURFACE and returns a TIN representation via the process of tessellation using triangles.</p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p><a class="xref" href="ST_TriangulatePolygon.html" title="ST_TriangulatePolygon">ST_TriangulatePolygon</a> does similar to this function except that it returns a geometry collection of polygons instead of a TIN and also only works with 2D geometries.</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p class="availability">Availability: 3.5.0</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method needs SFCGAL backend.
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports 3d and will not drop the z-index.
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports Polyhedral surfaces.
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports Triangles and Triangulated Irregular Network Surfaces (TIN).
+        </p>
+      </div>
+      <div class="refsection" id="idm23318">
+        <h2>Examples</h2>
+        <div class="informaltable">
+          <table style="border-collapse: collapse; border-top: 1px solid ; border-bottom: 1px solid ; border-left: 1px solid ; border-right: 1px solid ; ">
+            <colgroup>
+              <col/>
+              <col/>
+            </colgroup>
+            <tbody>
+              <tr>
+                <td style="border-right: 1px solid ; border-bottom: 1px solid ; "><p>
+                                    </p><pre class="programlisting">SELECT ST_GeomFromText('POLYHEDRALSURFACE Z( ((0 0 0, 0 0 1, 0 1 1, 0 1 0, 0 0 0)),
+                                    ((0 0 0, 0 1 0, 1 1 0, 1 0 0, 0 0 0)), ((0 0 0, 1 0 0, 1 0 1, 0 0 1, 0 0 0)),
+                                    ((1 1 0, 1 1 1, 1 0 1, 1 0 0, 1 1 0)),
+                                    ((0 1 0, 0 1 1, 1 1 1, 1 1 0, 0 1 0)), ((0 0 1, 1 0 1, 1 1 1, 0 1 1, 0 0 1)) )');</pre><p>
+                                </p><div class="informalfigure"><div class="mediaobject"><img src="../images/st_tesselate01.png"/><div class="caption"><p>Original Cube</p></div></div></div>
+                        </td>
+                <td style="border-bottom: 1px solid ; "><p>
+                                </p><pre class="programlisting">SELECT CG_Tesselate(ST_GeomFromText('POLYHEDRALSURFACE Z( ((0 0 0, 0 0 1, 0 1 1, 0 1 0, 0 0 0)),
+                                ((0 0 0, 0 1 0, 1 1 0, 1 0 0, 0 0 0)), ((0 0 0, 1 0 0, 1 0 1, 0 0 1, 0 0 0)),
+                                ((1 1 0, 1 1 1, 1 0 1, 1 0 0, 1 1 0)),
+                                ((0 1 0, 0 1 1, 1 1 1, 1 1 0, 0 1 0)), ((0 0 1, 1 0 1, 1 1 1, 0 1 1, 0 0 1)) )'));</pre>
+                        <p>ST_AsText output:</p>
+                        <pre class="screen">TIN Z (((0 0 0,0 0 1,0 1 1,0 0 0)),((0 1 0,0 0 0,0 1 1,0 1 0)),
+                        ((0 0 0,0 1 0,1 1 0,0 0 0)),
+                        ((1 0 0,0 0 0,1 1 0,1 0 0)),((0 0 1,1 0 0,1 0 1,0 0 1)),
+                        ((0 0 1,0 0 0,1 0 0,0 0 1)),
+                        ((1 1 0,1 1 1,1 0 1,1 1 0)),((1 0 0,1 1 0,1 0 1,1 0 0)),
+                        ((0 1 0,0 1 1,1 1 1,0 1 0)),((1 1 0,0 1 0,1 1 1,1 1 0)),
+                        ((0 1 1,1 0 1,1 1 1,0 1 1)),((0 1 1,0 0 1,1 0 1,0 1 1)))</pre>
+                    <p> </p><div class="informalfigure"><div class="mediaobject"><img src="../images/st_tesselate02.png"/><div class="caption"><p>Tessellated Cube with triangles colored</p></div></div></div>
+                </td>
+              </tr>
+              <tr>
+                <td style="border-right: 1px solid ; "><p>
+                        </p><pre class="programlisting">SELECT 'POLYGON (( 10 190, 10 70, 80 70, 80 130, 50 160, 120 160, 120 190, 10 190 ))'::geometry;</pre><p>
+                        </p><div class="informalfigure"><div class="mediaobject"><img src="../images/st_tesselate03.png"/><div class="caption"><p>Original polygon</p></div></div></div>
+                </td>
+                <td><p>
+                        </p><pre class="programlisting">SELECT
+                        CG_Tesselate('POLYGON (( 10 190, 10 70, 80 70, 80 130, 50 160, 120 160, 120 190, 10 190 ))'::geometry);</pre><p>
+                </p>
+                <p>ST_AsText output</p>
+                <pre class="screen">TIN(((80 130,50 160,80 70,80 130)),((50 160,10 190,10 70,50 160)),
+                ((80 70,50 160,10 70,80 70)),((120 160,120 190,50 160,120 160)),
+                ((120 190,10 190,50 160,120 190)))</pre>
+            <div class="informalfigure"><div class="mediaobject"><img src="../images/st_tesselate04.png"/><div class="caption"><p>Tessellated Polygon</p></div></div></div>
+        </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="refsection" id="idm23367">
+        <h2>See Also</h2>
+        <p><a class="xref" href="CG_ConstrainedDelaunayTriangles.html" title="CG_ConstrainedDelaunayTriangles">CG_ConstrainedDelaunayTriangles</a>, <a class="xref" href="ST_DelaunayTriangles.html" title="ST_DelaunayTriangles">ST_DelaunayTriangles</a>, <a class="xref" href="ST_TriangulatePolygon.html" title="ST_TriangulatePolygon">ST_TriangulatePolygon</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_Tesselate.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference_sfcgal.html#sfcgal_processing">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="CG_Triangulate.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_Tesselate </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> CG_Triangulate</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

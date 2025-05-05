@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>UpdateRasterSRID</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="RT_ST_InterpolateRaster.html" title="ST_InterpolateRaster"/>
+    <link rel="next" href="RT_CreateOverview.html" title="ST_CreateOverview"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">UpdateRasterSRID</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="RT_ST_InterpolateRaster.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">11.2. Raster Management</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="RT_CreateOverview.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="RT_UpdateRasterSRID">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>UpdateRasterSRID — 
+                    Change the SRID of all rasters in the user-specified column and table.
+                </p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">raster <strong class="fsfunc">UpdateRasterSRID</strong>(</code>name  <var class="pdparam">schema_name</var>, name  <var class="pdparam">table_name</var>, name  <var class="pdparam">column_name</var>, integer  <var class="pdparam">new_srid</var><code>)</code>;</p>
+          <p><code class="funcdef">raster <strong class="fsfunc">UpdateRasterSRID</strong>(</code>name  <var class="pdparam">table_name</var>, name  <var class="pdparam">column_name</var>, integer  <var class="pdparam">new_srid</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm27767">
+        <h2>Description</h2>
+        <p>
+                    Change the SRID of all rasters in the user-specified column and table. The function will drop all appropriate column constraints (extent, alignment and SRID) before changing the SRID of the specified column's rasters.
+                </p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>
+                        The data (band pixel values) of the rasters are not touched by this function.  Only the raster's metadata is changed.
+                    </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p class="availability">Availability: 2.1.0</p>
+      </div>
+      <div class="refsection" id="idm27773">
+        <h2>See Also</h2>
+        <p>
+          <a class="xref" href="UpdateGeometrySRID.html" title="UpdateGeometrySRID">UpdateGeometrySRID</a>
+        </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="RT_ST_InterpolateRaster.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="RT_reference.html#Raster_Management_Functions">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="RT_CreateOverview.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_InterpolateRaster </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_CreateOverview</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

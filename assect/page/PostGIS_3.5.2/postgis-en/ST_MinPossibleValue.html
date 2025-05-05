@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_MinPossibleValue</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="RT_ST_BandPixelType.html" title="ST_BandPixelType"/>
+    <link rel="next" href="RT_ST_HasNoBand.html" title="ST_HasNoBand"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_MinPossibleValue</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="RT_ST_BandPixelType.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">11.5. Raster Band Accessors</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="RT_ST_HasNoBand.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_MinPossibleValue">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_MinPossibleValue — Returns the minimum value this pixeltype can store.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">integer <strong class="fsfunc">ST_MinPossibleValue</strong>(</code>text  <var class="pdparam">pixeltype</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm29755">
+        <h2>Description</h2>
+        <p>Returns the minimum value this pixeltype can store.</p>
+      </div>
+      <div class="refsection" id="idm29758">
+        <h2>Examples</h2>
+        <pre class="programlisting">SELECT ST_MinPossibleValue('16BSI');
+
+ st_minpossiblevalue
+---------------------
+              -32768
+
+
+SELECT ST_MinPossibleValue('8BUI');
+
+ st_minpossiblevalue
+---------------------
+                   0
+                </pre>
+      </div>
+      <div class="refsection" id="idm29761">
+        <h2>See Also</h2>
+        <p>
+          <a class="xref" href="RT_ST_BandPixelType.html" title="ST_BandPixelType">ST_BandPixelType</a>
+        </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="RT_ST_BandPixelType.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="RT_reference.html#RasterBand_Accessors">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="RT_ST_HasNoBand.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_BandPixelType </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_HasNoBand</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

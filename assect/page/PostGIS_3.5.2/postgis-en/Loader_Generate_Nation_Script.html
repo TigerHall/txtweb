@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Loader_Generate_Nation_Script</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="Loader_Generate_Script.html" title="Loader_Generate_Script"/>
+    <link rel="next" href="Missing_Indexes_Generate_Script.html" title="Missing_Indexes_Generate_Script"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">Loader_Generate_Nation_Script</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="Loader_Generate_Script.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">12.2. Tiger Geocoder</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="Missing_Indexes_Generate_Script.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="Loader_Generate_Nation_Script">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>Loader_Generate_Nation_Script — Generates a shell script for the specified platform that loads in the county and state lookup tables.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">text <strong class="fsfunc">loader_generate_nation_script</strong>(</code>text <var class="pdparam">os</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm38461">
+        <h2>Description</h2>
+        <p>Generates a shell script for the specified platform that loads in the <code class="varname">county_all</code>, <code class="varname">county_all_lookup</code>, <code class="varname">state_all</code> tables into <code class="varname">tiger_data</code> schema.  These inherit respectively from the <code class="varname">county</code>, <code class="varname">county_lookup</code>, <code class="varname">state</code> tables in <code class="varname">tiger</code> schema.</p>
+        <p>It uses unzip on Linux (7-zip on Windows by default) and wget to do the downloading. It uses <a class="xref" href="using_postgis_dbmanagement.html#shp2pgsql_usage" title="4.7.2. Using the Shapefile Loader">Section 4.7.2, “Using the Shapefile Loader”</a> to load in the data. </p>
+        <p>It uses the following control tables <code class="varname">tiger.loader_platform</code>, <code class="varname">tiger.loader_variables</code>, and <code class="varname">tiger.loader_lookuptables</code> to control the process and different OS shell syntax variations.</p>
+        <div class="orderedlist">
+          <ol class="orderedlist" type="1">
+            <li class="listitem">
+              <p><code class="varname">loader_variables</code> keeps track of various variables such as census site, year, data and staging schemas</p>
+            </li>
+            <li class="listitem">
+              <p><code class="varname">loader_platform</code> profiles of various platforms and where the various executables are located.  Comes with windows and linux/unix. More can be added.</p>
+            </li>
+            <li class="listitem">
+              <p><code class="varname">loader_lookuptables</code> each record defines a kind of table (state, county), whether to process records in it and how to load them in.  Defines the steps to import data, stage data, add, removes columns, indexes, and constraints for each.  Each table is prefixed with the state and inherits from a table in the tiger schema. e.g. creates <code class="varname">tiger_data.ma_faces</code> which inherits from <code class="varname">tiger.faces</code></p>
+            </li>
+          </ol>
+        </div>
+        <p class="enhanced">Enhanced: 2.4.1 zip code 5 tabulation area (zcta5) load step was fixed and when enabled, zcta5 data is loaded as a single table called zcta5_all as part of the nation script load.</p>
+        <p class="availability">Availability: 2.1.0 </p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>If you want zip code 5 tabulation area (zcta5) to be included in your nation script load, do the following:</p>
+                <pre class="programlisting">UPDATE tiger.loader_lookuptables SET load = true WHERE table_name = 'zcta510';</pre>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>If you were running <code class="varname">tiger_2010</code> version and you want to reload as state with newer tiger data, you'll need to for the very first load generate and run drop statements <a class="xref" href="Drop_Nation_Tables_Generate_Script.html" title="Drop_Nation_Tables_Generate_Script">Drop_Nation_Tables_Generate_Script</a> before you run this script.</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="refsection" id="idm38499">
+        <h2>Examples</h2>
+        <p>Generate script script to load nation data Windows.</p>
+        <pre class="programlisting">SELECT loader_generate_nation_script('windows'); </pre>
+        <p>Generate script to load up data for Linux/Unix systems.</p>
+        <pre class="programlisting">SELECT loader_generate_nation_script('sh'); </pre>
+      </div>
+      <div class="refsection" id="idm38505">
+        <h2>See Also</h2>
+        <p><a class="xref" href="Loader_Generate_Script.html" title="Loader_Generate_Script">Loader_Generate_Script</a>, <a class="xref" href="Drop_Nation_Tables_Generate_Script.html" title="Drop_Nation_Tables_Generate_Script">Drop_Nation_Tables_Generate_Script</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="Loader_Generate_Script.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="Extras.html#Tiger_Geocoder">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="Missing_Indexes_Generate_Script.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">Loader_Generate_Script </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> Missing_Indexes_Generate_Script</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

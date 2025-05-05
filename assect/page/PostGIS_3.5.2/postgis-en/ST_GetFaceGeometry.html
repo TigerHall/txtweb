@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_GetFaceGeometry</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_GetFaceEdges.html" title="ST_GetFaceEdges"/>
+    <link rel="next" href="GetRingEdges.html" title="GetRingEdges"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_GetFaceGeometry</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_GetFaceEdges.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">9.7. Topology Accessors</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="GetRingEdges.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_GetFaceGeometry">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_GetFaceGeometry — Returns the polygon in the given topology with the specified face id.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_GetFaceGeometry</strong>(</code>varchar  <var class="pdparam">atopology</var>, integer  <var class="pdparam">aface</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm25362">
+        <h2>Description</h2>
+        <p>Returns the polygon in the given topology with the specified face id. Builds the polygon from the edges making up the face.</p>
+        <p class="availability">Availability: 1.1 </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method implements the SQL/MM specification.
+         SQL-MM 3 Topo-Geo and Topo-Net 3: Routine Details: X.3.16</p>
+      </div>
+      <div class="refsection" id="idm25370">
+        <h2>Examples</h2>
+        <pre class="programlisting">
+-- Returns the wkt of the polygon added with AddFace
+SELECT ST_AsText(topology.ST_GetFaceGeometry('ma_topo', 1)) As facegeomwkt;
+-- result --
+               facegeomwkt
+
+--------------------------------------------------------------------------------
+ POLYGON((234776.9 899563.7,234896.5 899456.7,234914 899436.4,234946.6 899356.9,
+234872.5 899328.7,234891 899285.4,234992.5 899145,234890.6 899069,
+234755.2 899255.4,234612.7 899379.4,234776.9 899563.7))
+</pre>
+      </div>
+      <div class="refsection" id="idm25373">
+        <h2>See Also</h2>
+        <p>
+          <a class="xref" href="AddFace.html" title="AddFace">AddFace</a>
+        </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_GetFaceEdges.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="Topology.html#Topology_Accessors">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="GetRingEdges.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_GetFaceEdges </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> GetRingEdges</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

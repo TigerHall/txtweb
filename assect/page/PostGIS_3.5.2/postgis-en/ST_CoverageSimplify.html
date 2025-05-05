@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_CoverageSimplify</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_CoverageInvalidEdges.html" title="ST_CoverageInvalidEdges"/>
+    <link rel="next" href="ST_CoverageUnion.html" title="ST_CoverageUnion"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_CoverageSimplify</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_CoverageInvalidEdges.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.15. Coverages</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_CoverageUnion.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_CoverageSimplify">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_CoverageSimplify — Window function that simplifies the edges of a polygonal coverage.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_CoverageSimplify</strong>(</code>geometry winset 
+            <var class="pdparam">geom</var>, float8 
+            <var class="pdparam">tolerance</var>, boolean 
+            <var class="pdparam">simplifyBoundary = true</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm18186">
+        <h2>Description</h2>
+        <p>A window function which simplifies the edges of polygons in a polygonal coverage.
+      The simplification preserves the coverage topology.
+      This means the simplified output polygons are consistent along shared edges, and still form a valid coverage.
+      </p>
+        <p>The simplification uses a variant of the <a class="link" href="https://en.wikipedia.org/wiki/Visvalingam%E2%80%93Whyatt_algorithm" target="_top">Visvalingam–Whyatt algorithm</a>.
+      The <em class="parameter"><code>tolerance</code></em> parameter has units of distance,
+      and is roughly equal to the square root of triangular areas to be simplified.
+      </p>
+        <p>To simplify only the "internal" edges of the coverage (those that are shared by two polygons) set the <em class="parameter"><code>simplifyBoundary</code></em> parameter to false.</p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>If the input is not a valid coverage there may be unexpected artifacts in the output (such as boundary intersections, or separated boundaries which appeared to be shared).
+      Use <a class="xref" href="ST_CoverageInvalidEdges.html" title="ST_CoverageInvalidEdges">ST_CoverageInvalidEdges</a> to determine if a coverage is valid.
+      </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p class="availability">Availability: 3.4.0</p>
+        <p class="geos_requirement">Requires GEOS &gt;= 3.12.0</p>
+      </div>
+      <div class="refsection" id="idm18199">
+        <h2>Examples</h2>
+        <div class="informaltable">
+          <table style="border-collapse: collapse; border-top: 1px solid ; border-bottom: 1px solid ; border-left: 1px solid ; border-right: 1px solid ; ">
+            <colgroup>
+              <col/>
+              <col/>
+            </colgroup>
+            <tbody>
+              <tr>
+                <td style="border-right: 1px solid ; ">
+                  <p>
+        </p>
+                  <div class="informalfigure">
+                    <div class="mediaobject">
+                      <img src="../images/st_coveragesimplify01.png"/>
+                      <div class="caption">
+                        <p>Input coverage</p>
+                      </div>
+                    </div>
+                  </div>
+                  <p>
+        </p>
+                </td>
+                <td>
+                  <p>
+        </p>
+                  <div class="informalfigure">
+                    <div class="mediaobject">
+                      <img src="../images/st_coveragesimplify02.png"/>
+                      <div class="caption">
+                        <p>Simplified coverage</p>
+                      </div>
+                    </div>
+                  </div>
+                  <p>
+        </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <pre class="programlisting">WITH coverage(id, geom) AS (VALUES
+  (1, 'POLYGON ((160 150, 110 130, 90 100, 90 70, 60 60, 50 10, 30 30, 40 50, 25 40, 10 60, 30 100, 30 120, 20 170, 60 180, 90 190, 130 180, 130 160, 160 150), (40 160, 50 140, 66 125, 60 100, 80 140, 90 170, 60 160, 40 160))'::geometry),
+  (2, 'POLYGON ((40 160, 60 160, 90 170, 80 140, 60 100, 66 125, 50 140, 40 160))'::geometry),
+  (3, 'POLYGON ((110 130, 160 50, 140 50, 120 33, 90 30, 50 10, 60 60, 90 70, 90 100, 110 130))'::geometry),
+  (4, 'POLYGON ((160 150, 150 120, 160 90, 160 50, 110 130, 160 150))'::geometry)
+)
+SELECT id, ST_AsText(ST_CoverageSimplify(geom, 30) OVER ())
+  FROM coverage;
+
+ id |               st_astext
+----+---------------------------------------
+  1 | POLYGON ((160 150, 110 130, 50 10, 10 60, 20 170, 90 190, 160 150), (40 160, 66 125, 90 170, 40 160))
+  2 | POLYGON ((40 160, 66 125, 90 170, 40 160))
+  3 | POLYGON ((110 130, 160 50, 50 10, 110 130))
+  4 | POLYGON ((160 150, 160 50, 110 130, 160 150))
+      </pre>
+      </div>
+      <div class="refsection" id="idm18222">
+        <h2>See Also</h2>
+        <p>
+        <a class="xref" href="ST_CoverageInvalidEdges.html" title="ST_CoverageInvalidEdges">ST_CoverageInvalidEdges</a>
+      </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_CoverageInvalidEdges.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Coverage">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_CoverageUnion.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_CoverageInvalidEdges </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_CoverageUnion</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

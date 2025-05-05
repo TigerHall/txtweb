@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_AsGDALRaster</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="RT_ST_AsHexWKB.html" title="ST_AsHexWKB"/>
+    <link rel="next" href="RT_ST_AsJPEG.html" title="ST_AsJPEG"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_AsGDALRaster</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="RT_ST_AsHexWKB.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">11.11. Raster Outputs</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="RT_ST_AsJPEG.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="RT_ST_AsGDALRaster">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_AsGDALRaster — Return the raster tile in the designated GDAL Raster format.  Raster formats are one of those supported by your compiled library. Use ST_GDALDrivers() to get a list of formats supported by your library.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">bytea <strong class="fsfunc">ST_AsGDALRaster</strong>(</code>raster  <var class="pdparam">rast</var>, text  <var class="pdparam">format</var>, text[]  <var class="pdparam">options=NULL</var>, integer  <var class="pdparam">srid=sameassource</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm32708">
+        <h2>Description</h2>
+        <p>Returns the raster tile in the designated format. Arguments are itemized below:</p>
+        <div class="itemizedlist">
+          <ul class="itemizedlist" style="list-style-type: disc; ">
+            <li class="listitem">
+              <p>
+                       <code class="varname">format</code> format to output.  This is dependent on the drivers compiled in your libgdal library.  Generally available are 'JPEG', 'GTIff', 'PNG'. Use <a class="xref" href="RT_ST_GDALDrivers.html" title="ST_GDALDrivers">ST_GDALDrivers</a> to get a list of formats supported by your library.
+            </p>
+            </li>
+            <li class="listitem">
+              <p>
+            <code class="varname">options</code> text array of GDAL options. Valid options are dependent on the format. Refer to <a class="link" href="http://www.gdal.org/frmt_various.html" target="_top">GDAL Raster format options</a> for more details.
+            </p>
+            </li>
+            <li class="listitem">
+              <p>
+            <code class="varname">srs</code> The proj4text or srtext (from spatial_ref_sys) to embed in the image
+            </p>
+            </li>
+          </ul>
+        </div>
+        <p class="availability">Availability: 2.0.0 - requires GDAL &gt;= 1.6.0. </p>
+      </div>
+      <div class="refsection" id="idm32724">
+        <h2>JPEG Output Example, multiple tiles as single raster</h2>
+        <pre class="programlisting">
+SELECT ST_AsGDALRaster(ST_Union(rast), 'JPEG', ARRAY['QUALITY=50']) As rastjpg
+FROM dummy_rast
+WHERE rast &amp;&amp; ST_MakeEnvelope(10, 10, 11, 11);
+</pre>
+      </div>
+      <div class="refsection" id="idm32727">
+        <h2>Using PostgreSQL Large Object Support to export raster</h2>
+        <p>One way to export raster into another format is using <a class="link" href="https://www.postgresql.org/docs/current/static/lo-funcs.html" target="_top">PostgreSQL large object export functions</a>.
+                We'lll repeat the prior example but also exporting.  Note for this you'll need to have super user access to db since it uses server side lo functions.
+                It will also export to path on server network.  If you need export locally,
+                use the psql equivalent lo_ functions which export to the local file system instead of the server file system.</p>
+        <pre class="programlisting">
+DROP TABLE IF EXISTS tmp_out ;
+
+CREATE TABLE tmp_out AS
+SELECT lo_from_bytea(0,
+       ST_AsGDALRaster(ST_Union(rast), 'JPEG', ARRAY['QUALITY=50'])
+        ) AS loid
+  FROM dummy_rast
+WHERE rast &amp;&amp; ST_MakeEnvelope(10, 10, 11, 11);
+
+SELECT lo_export(loid, '/tmp/dummy.jpg')
+   FROM tmp_out;
+
+SELECT lo_unlink(loid)
+  FROM tmp_out;
+</pre>
+      </div>
+      <div class="refsection" id="idm32732">
+        <h2>GTIFF Output Examples</h2>
+        <pre class="programlisting">SELECT ST_AsGDALRaster(rast, 'GTiff') As rastjpg
+FROM dummy_rast WHERE rid=2;
+
+-- Out GeoTiff with jpeg compression, 90% quality
+SELECT ST_AsGDALRaster(rast, 'GTiff',
+  ARRAY['COMPRESS=JPEG', 'JPEG_QUALITY=90'],
+  4269) As rasttiff
+FROM dummy_rast WHERE rid=2;
+                </pre>
+      </div>
+      <div class="refsection" id="idm32735">
+        <h2>See Also</h2>
+        <p><a class="xref" href="using_raster_dataman.html#RT_Raster_Applications" title="10.3. Building Custom Applications with PostGIS Raster">Section 10.3, “Building Custom Applications with PostGIS Raster”</a>, <a class="xref" href="RT_ST_GDALDrivers.html" title="ST_GDALDrivers">ST_GDALDrivers</a>, <a class="xref" href="RT_ST_SRID.html" title="ST_SRID">ST_SRID</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="RT_ST_AsHexWKB.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="RT_reference.html#Raster_Outputs">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="RT_ST_AsJPEG.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_AsHexWKB </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_AsJPEG</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

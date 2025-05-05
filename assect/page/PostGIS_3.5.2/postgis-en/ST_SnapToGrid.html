@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_SnapToGrid</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_WrapX.html" title="ST_WrapX"/>
+    <link rel="next" href="ST_Snap.html" title="ST_Snap"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_SnapToGrid</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_WrapX.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.5. Geometry Editors</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_Snap.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_SnapToGrid">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_SnapToGrid — 
+		Snap all points of the input geometry to a regular grid.
+		</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_SnapToGrid</strong>(</code>geometry  <var class="pdparam">geomA</var>, float  <var class="pdparam">originX</var>, float  <var class="pdparam">originY</var>, float  <var class="pdparam">sizeX</var>, float  <var class="pdparam">sizeY</var><code>)</code>;</p>
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_SnapToGrid</strong>(</code>geometry  <var class="pdparam">geomA</var>, float  <var class="pdparam">sizeX</var>, float  <var class="pdparam">sizeY</var><code>)</code>;</p>
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_SnapToGrid</strong>(</code>geometry  <var class="pdparam">geomA</var>, float  <var class="pdparam">size</var><code>)</code>;</p>
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_SnapToGrid</strong>(</code>geometry  <var class="pdparam">geomA</var>, geometry  <var class="pdparam">pointOrigin</var>, float  <var class="pdparam">sizeX</var>, float  <var class="pdparam">sizeY</var>, float  <var class="pdparam">sizeZ</var>, float  <var class="pdparam">sizeM</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm7937">
+        <h2>Description</h2>
+        <p>Variant 1,2,3: Snap all points of the input geometry to the grid defined by
+			its origin and cell size. Remove consecutive points falling on the
+			same cell, eventually returning NULL if output points are not
+			enough to define a geometry of the given type. Collapsed
+			geometries in a collection are stripped from it.
+			Useful for reducing precision.
+		</p>
+        <p>Variant 4:  Introduced 1.1.0 - Snap all points of the input geometry to the grid defined by
+			its origin (the second argument, must be a point) and cell sizes.
+			Specify 0 as size for any dimension you don't want to snap to a
+			grid.</p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>The returned geometry might lose its simplicity (see
+		  <a class="xref" href="ST_IsSimple.html" title="ST_IsSimple">ST_IsSimple</a>).</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>Before release 1.1.0 this function always returned a 2d
+		  geometry. Starting at 1.1.0 the returned geometry will have same
+		  dimensionality as the input one with higher dimension values
+		  untouched. Use the version taking a second geometry argument to
+		  define all grid dimensions.</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p class="availability">Availability: 1.0.0RC1</p>
+        <p class="availability">Availability: 1.1.0 - Z and M support</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports 3d and will not drop the z-index.
+        </p>
+      </div>
+      <div class="refsection" id="idm7952">
+        <h2>Examples</h2>
+        <pre class="programlisting">
+--Snap your geometries to a precision grid of 10^-3
+UPDATE mytable
+   SET geom = ST_SnapToGrid(geom, 0.001);
+
+SELECT ST_AsText(ST_SnapToGrid(
+			ST_GeomFromText('LINESTRING(1.1115678 2.123, 4.111111 3.2374897, 4.11112 3.23748667)'),
+			0.001)
+		);
+			  st_astext
+-------------------------------------
+ LINESTRING(1.112 2.123,4.111 3.237)
+ --Snap a 4d geometry
+SELECT ST_AsEWKT(ST_SnapToGrid(
+	ST_GeomFromEWKT('LINESTRING(-1.1115678 2.123 2.3456 1.11111,
+		4.111111 3.2374897 3.1234 1.1111, -1.11111112 2.123 2.3456 1.1111112)'),
+ ST_GeomFromEWKT('POINT(1.12 2.22 3.2 4.4444)'),
+ 0.1, 0.1, 0.1, 0.01) );
+								  st_asewkt
+------------------------------------------------------------------------------
+ LINESTRING(-1.08 2.12 2.3 1.1144,4.12 3.22 3.1 1.1144,-1.08 2.12 2.3 1.1144)
+
+
+--With a 4d geometry - the ST_SnapToGrid(geom,size) only touches x and y coords but keeps m and z the same
+SELECT ST_AsEWKT(ST_SnapToGrid(ST_GeomFromEWKT('LINESTRING(-1.1115678 2.123 3 2.3456,
+		4.111111 3.2374897 3.1234 1.1111)'),
+	   0.01)      );
+						st_asewkt
+---------------------------------------------------------
+ LINESTRING(-1.11 2.12 3 2.3456,4.11 3.24 3.1234 1.1111)
+
+		</pre>
+      </div>
+      <div class="refsection" id="idm7955">
+        <h2>See Also</h2>
+        <p>
+		<a class="xref" href="ST_Snap.html" title="ST_Snap">ST_Snap</a>,
+		<a class="xref" href="ST_AsEWKT.html" title="ST_AsEWKT">ST_AsEWKT</a>,
+		<a class="xref" href="ST_AsText.html" title="ST_AsText">ST_AsText</a>,
+		<a class="xref" href="ST_GeomFromText.html" title="ST_GeomFromText">ST_GeomFromText</a>,
+		<a class="xref" href="ST_GeomFromEWKT.html" title="ST_GeomFromEWKT">ST_GeomFromEWKT</a>,
+		<a class="xref" href="ST_Simplify.html" title="ST_Simplify">ST_Simplify</a>
+		</p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_WrapX.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Geometry_Editors">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_Snap.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_WrapX </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_Snap</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

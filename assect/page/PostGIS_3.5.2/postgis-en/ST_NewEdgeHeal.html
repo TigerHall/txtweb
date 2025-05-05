@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_NewEdgeHeal</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_ModEdgeHeal.html" title="ST_ModEdgeHeal"/>
+    <link rel="next" href="ST_MoveIsoNode.html" title="ST_MoveIsoNode"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_NewEdgeHeal</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_ModEdgeHeal.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">9.6. Topology Editors</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_MoveIsoNode.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_NewEdgeHeal">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_NewEdgeHeal — 
+Heals two edges by deleting the node connecting them, deleting both edges,
+and replacing them with an edge whose direction is the same as the first
+edge provided.
+				</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">int <strong class="fsfunc">ST_NewEdgeHeal</strong>(</code>varchar  <var class="pdparam">atopology</var>, integer  <var class="pdparam">anedge</var>, integer  <var class="pdparam">anotheredge</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm24933">
+        <h2>Description</h2>
+        <p>
+Heals two edges by deleting the node connecting them, deleting both edges,
+and replacing them with an edge whose direction is the same as the first
+edge provided.
+Returns the id of the new edge replacing the healed ones.
+Updates all existing joined edges and relationships accordingly.
+		</p>
+        <p class="availability">Availability: 2.0</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method implements the SQL/MM specification.
+         SQL-MM: Topo-Geo and Topo-Net 3: Routine Details:  X.3.9</p>
+      </div>
+      <div class="refsection" id="idm24941">
+        <h2>See Also</h2>
+        <p>
+				<a class="xref" href="ST_ModEdgeHeal.html" title="ST_ModEdgeHeal">ST_ModEdgeHeal</a>
+				<a class="xref" href="ST_ModEdgeSplit.html" title="ST_ModEdgeSplit">ST_ModEdgeSplit</a>
+				<a class="xref" href="ST_NewEdgesSplit.html" title="ST_NewEdgesSplit">ST_NewEdgesSplit</a>
+				</p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_ModEdgeHeal.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="Topology.html#Topology_Editing">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_MoveIsoNode.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_ModEdgeHeal </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_MoveIsoNode</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,673 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Chapter 1. Introduction</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="index.html" title="PostGIS 3.5.2 Manual"/>
+    <link rel="next" href="postgis_installation.html" title="Chapter 2. PostGIS Installation"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">Chapter 1. Introduction</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="index.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; "> </th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="postgis_installation.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <section class="chapter" id="postgis_introduction">
+      <div class="titlepage">
+        <div>
+          <div>
+            <h1 class="title">Chapter 1. Introduction</h1>
+          </div>
+        </div>
+      </div>
+      <div class="toc">
+        <div class="toc-title">Table of Contents</div>
+        <ul class="toc">
+          <li>
+            <span class="section">
+              <a href="postgis_introduction.html#psc">1.1. Project Steering Committee</a>
+            </span>
+          </li>
+          <li>
+            <span class="section">
+              <a href="postgis_introduction.html#credits_core_present">1.2. Core Contributors Present</a>
+            </span>
+          </li>
+          <li>
+            <span class="section">
+              <a href="postgis_introduction.html#credits_core_past">1.3. Core Contributors Past</a>
+            </span>
+          </li>
+          <li>
+            <span class="section">
+              <a href="postgis_introduction.html#credits_other_contributors">1.4. Other Contributors</a>
+            </span>
+          </li>
+        </ul>
+      </div>
+      <p>PostGIS is a spatial extension for the PostgreSQL relational database
+	that was created by Refractions Research Inc, as a spatial
+  database technology research project. Refractions is a GIS and database
+  consulting company in Victoria, British Columbia, Canada, specializing in
+  data integration and custom software development.</p>
+      <p>PostGIS is now a project of the OSGeo Foundation and is developed and funded by many FOSS4G developers and
+     organizations all over the world that gain great benefit from its functionality and versatility.</p>
+      <p>The PostGIS project development group plans on supporting and
+  enhancing PostGIS to better support a range of important GIS functionality
+	in the areas of OGC and SQL/MM spatial standards, advanced topological constructs (coverages,
+  surfaces, networks), data source for desktop user interface tools for viewing and editing
+  GIS data, and web-based access tools.</p>
+      <section class="section" id="psc">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title" style="clear: both">1.1. Project Steering Committee</h2>
+            </div>
+          </div>
+        </div>
+        <p>
+		The PostGIS Project Steering Committee (PSC) coordinates the general direction,
+			release cycles, documentation, and outreach efforts for the PostGIS project.  In addition
+			the PSC provides general user support, accepts and approves patches from the general PostGIS community
+			and votes on miscellaneous issues involving PostGIS such as developer commit access, new PSC members
+			or significant API changes.
+	</p>
+        <div class="variablelist">
+          <dl class="variablelist">
+            <dt>
+              <span class="term">Raúl Marín Rodríguez</span>
+            </dt>
+            <dd>
+              <p>MVT support, Bug fixing, Performance and stability improvements, GitHub curation,  alignment of
+			PostGIS with PostgreSQL releases</p>
+            </dd>
+            <dt>
+              <span class="term">Regina Obe</span>
+            </dt>
+            <dd>
+              <p>CI and website maintenance, Windows production and experimental builds, documentation, alignment of
+			PostGIS with PostgreSQL releases, X3D support, TIGER geocoder support, management functions.</p>
+            </dd>
+            <dt>
+              <span class="term">Darafei Praliaskouski</span>
+            </dt>
+            <dd>
+              <p>Index improvements, bug fixing and geometry/geography function improvements, SFCGAL, raster, GitHub curation, and ci maintenance.</p>
+            </dd>
+            <dt>
+              <span class="term">Paul Ramsey (Chair)</span>
+            </dt>
+            <dd>
+              <p>Co-founder of PostGIS project.  General bug fixing, geography support,  geography and geometry index support (2D, 3D, nD index and anything spatial index), underlying geometry internal structures, GEOS functionality integration and alignment with
+			GEOS releases, alignment of
+			PostGIS with PostgreSQL releases, loader/dumper, and Shapefile GUI loader.</p>
+            </dd>
+            <dt>
+              <span class="term">Sandro Santilli</span>
+            </dt>
+            <dd>
+              <p>Bug fixes and maintenance, ci maintenance, git mirror management, management functions, integration of new GEOS functionality and alignment with GEOS releases, topology support, and raster framework and low level API functions.</p>
+            </dd>
+          </dl>
+        </div>
+      </section>
+      <section class="section" id="credits_core_present">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title" style="clear: both">1.2. Core Contributors Present</h2>
+            </div>
+          </div>
+        </div>
+        <div class="variablelist">
+          <dl class="variablelist">
+            <dt>
+              <span class="term">Nicklas Avén</span>
+            </dt>
+            <dd>
+              <p>Distance function enhancements (including 3D distance and relationship functions) and additions, Tiny WKB (TWKB) output format and general user support</p>
+            </dd>
+            <dt>
+              <span class="term">Loïc Bartoletti</span>
+            </dt>
+            <dd>
+              <p>SFCGAL enhancements and maintenance and ci support</p>
+            </dd>
+            <dt>
+              <span class="term">Dan Baston</span>
+            </dt>
+            <dd>
+              <p>Geometry clustering function additions, other geometry algorithm enhancements, GEOS enhancements and general user support</p>
+            </dd>
+            <dt>
+              <span class="term">Martin Davis</span>
+            </dt>
+            <dd>
+              <p>GEOS enhancements and documentation</p>
+            </dd>
+            <dt>
+              <span class="term">Björn Harrtell</span>
+            </dt>
+            <dd>
+              <p>MapBox Vector Tile, GeoBuf, and Flatgeobuf functions. Gitea testing and GitLab experimentation.</p>
+            </dd>
+            <dt>
+              <span class="term">Aliaksandr Kalenik</span>
+            </dt>
+            <dd>
+              <p>Geometry Processing, PostgreSQL gist, general bug fixing</p>
+            </dd>
+          </dl>
+        </div>
+      </section>
+      <section class="section" id="credits_core_past">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title" style="clear: both">1.3. Core Contributors Past</h2>
+            </div>
+          </div>
+        </div>
+        <div class="variablelist">
+          <dl class="variablelist">
+            <dt>
+              <span class="term">Bborie Park</span>
+            </dt>
+            <dd>
+              <p>Prior PSC Member. Raster development, integration with GDAL, raster loader, user support, general bug fixing, testing on various OS (Slackware, Mac, Windows, and more)</p>
+            </dd>
+            <dt>
+              <span class="term">Mark Cave-Ayland</span>
+            </dt>
+            <dd>
+              <p>Prior PSC Member. Coordinated bug fixing and maintenance effort, spatial index selectivity and binding, loader/dumper, and Shapefile GUI Loader, integration of new
+					and new function enhancements.</p>
+            </dd>
+            <dt>
+              <span class="term">Jorge Arévalo</span>
+            </dt>
+            <dd>
+              <p>Raster development, GDAL driver support, loader</p>
+            </dd>
+            <dt>
+              <span class="term">Olivier Courtin</span>
+            </dt>
+            <dd>
+              <p>(Emeritus) Input/output XML (KML,GML)/GeoJSON functions, 3D support and bug fixes.</p>
+            </dd>
+            <dt>
+              <span class="term">Chris Hodgson</span>
+            </dt>
+            <dd>
+              <p>Prior PSC Member. General development, site and buildbot maintenance, OSGeo incubation management</p>
+            </dd>
+            <dt>
+              <span class="term">Mateusz Loskot</span>
+            </dt>
+            <dd>
+              <p>CMake support for PostGIS, built original raster loader in python and low level raster API functions</p>
+            </dd>
+            <dt>
+              <span class="term">Kevin Neufeld</span>
+            </dt>
+            <dd>
+              <p>Prior PSC Member. Documentation and documentation support tools, buildbot maintenance, advanced user support
+		  on PostGIS newsgroup, and PostGIS maintenance function enhancements.</p>
+            </dd>
+            <dt>
+              <span class="term">Dave Blasby</span>
+            </dt>
+            <dd>
+              <p>The original developer/Co-founder of PostGIS. Dave wrote the server side
+		  objects, index bindings, and many of the server side analytical
+		  functions.</p>
+            </dd>
+            <dt>
+              <span class="term">Jeff Lounsbury</span>
+            </dt>
+            <dd>
+              <p>Original development of the Shapefile loader/dumper.</p>
+            </dd>
+            <dt>
+              <span class="term">Mark Leslie</span>
+            </dt>
+            <dd>
+              <p>Ongoing maintenance and development of core functions.  Enhanced curve support. Shapefile GUI loader.</p>
+            </dd>
+            <dt>
+              <span class="term">Pierre Racine</span>
+            </dt>
+            <dd>
+              <p>Architect of PostGIS raster implementation. Raster overall architecture, prototyping, programming support</p>
+            </dd>
+            <dt>
+              <span class="term">David Zwarg</span>
+            </dt>
+            <dd>
+              <p>Raster development (mostly map algebra analytic functions)</p>
+            </dd>
+          </dl>
+        </div>
+      </section>
+      <section class="section" id="credits_other_contributors">
+        <div class="titlepage">
+          <div>
+            <div>
+              <h2 class="title" style="clear: both">1.4. Other Contributors</h2>
+            </div>
+          </div>
+        </div>
+        <div class="variablelist">
+          <dl class="variablelist">
+            <dt>
+              <span class="term">Individual Contributors</span>
+            </dt>
+            <dd>
+              <p>
+				</p>
+              <table style="border: 0; " class="simplelist">
+                <tr>
+                  <td>Alex Bodnaru</td>
+                  <td>Gino Lucrezi</td>
+                  <td>Maxime Guillaud</td>
+                </tr>
+                <tr>
+                  <td>Alex Mayrhofer</td>
+                  <td>Greg Troxel</td>
+                  <td>Maxime van Noppen</td>
+                </tr>
+                <tr>
+                  <td>Andrea Peri</td>
+                  <td>Guillaume Lelarge</td>
+                  <td>Maxime Schoemans</td>
+                </tr>
+                <tr>
+                  <td>Andreas Forø Tollefsen</td>
+                  <td>Giuseppe Broccolo</td>
+                  <td>Michael Fuhr</td>
+                </tr>
+                <tr>
+                  <td>Andreas Neumann</td>
+                  <td>Han Wang</td>
+                  <td>Mike Toews</td>
+                </tr>
+                <tr>
+                  <td>Andrew Gierth</td>
+                  <td>Hans Lemuet</td>
+                  <td>Nathan Wagner</td>
+                </tr>
+                <tr>
+                  <td>Anne Ghisla</td>
+                  <td>Haribabu Kommi</td>
+                  <td>Nathaniel Clay</td>
+                </tr>
+                <tr>
+                  <td>Antoine Bajolet</td>
+                  <td>Havard Tveite</td>
+                  <td>Nikita Shulga</td>
+                </tr>
+                <tr>
+                  <td>Arthur Lesuisse</td>
+                  <td>IIDA Tetsushi</td>
+                  <td>Norman Vine</td>
+                </tr>
+                <tr>
+                  <td>Artur Zakirov</td>
+                  <td>Ingvild Nystuen</td>
+                  <td>Patricia Tozer</td>
+                </tr>
+                <tr>
+                  <td>Barbara Phillipot</td>
+                  <td>Jackie Leng</td>
+                  <td>Rafal Magda</td>
+                </tr>
+                <tr>
+                  <td>Ben Jubb</td>
+                  <td>James Addison</td>
+                  <td>Ralph Mason</td>
+                </tr>
+                <tr>
+                  <td>Bernhard Reiter</td>
+                  <td>James Marca</td>
+                  <td>Rémi Cura</td>
+                </tr>
+                <tr>
+                  <td>Björn Esser</td>
+                  <td>Jan Katins</td>
+                  <td>Richard Greenwood</td>
+                </tr>
+                <tr>
+                  <td>Brian Hamlin</td>
+                  <td>Jan Tojnar</td>
+                  <td>Robert Coup</td>
+                </tr>
+                <tr>
+                  <td>Bruce Rindahl</td>
+                  <td>Jason Smith</td>
+                  <td>Roger Crew</td>
+                </tr>
+                <tr>
+                  <td>Bruno Wolff III</td>
+                  <td>Jeff Adams</td>
+                  <td>Ron Mayer</td>
+                </tr>
+                <tr>
+                  <td>Bryce L. Nordgren</td>
+                  <td>Jelte Fennema</td>
+                  <td>Sam Peters</td>
+                </tr>
+                <tr>
+                  <td>Carl Anderson</td>
+                  <td>Jim Jones</td>
+                  <td>Sebastiaan Couwenberg</td>
+                </tr>
+                <tr>
+                  <td>Charlie Savage</td>
+                  <td>Joe Conway</td>
+                  <td>Sergei Shoulbakov</td>
+                </tr>
+                <tr>
+                  <td>Chris Mayo</td>
+                  <td>Jonne Savolainen</td>
+                  <td>Sergey Fedoseev</td>
+                </tr>
+                <tr>
+                  <td>Christian Schroeder</td>
+                  <td>Jose Carlos Martinez Llari</td>
+                  <td>Shinichi Sugiyama</td>
+                </tr>
+                <tr>
+                  <td>Christoph Berg</td>
+                  <td>Jörg Habenicht</td>
+                  <td>Shoaib Burq</td>
+                </tr>
+                <tr>
+                  <td>Christoph Moench-Tegeder</td>
+                  <td>Julien Rouhaud</td>
+                  <td>Silvio Grosso</td>
+                </tr>
+                <tr>
+                  <td>Dane Springmeyer</td>
+                  <td>Kashif Rasul</td>
+                  <td>Stefan Corneliu Petrea</td>
+                </tr>
+                <tr>
+                  <td>Dapeng Wang</td>
+                  <td>Klaus Foerster</td>
+                  <td>Steffen Macke</td>
+                </tr>
+                <tr>
+                  <td>Daryl Herzmann</td>
+                  <td>Kris Jurka</td>
+                  <td>Stepan Kuzmin</td>
+                </tr>
+                <tr>
+                  <td>Dave Fuhry</td>
+                  <td>Laurenz Albe</td>
+                  <td>Stephen Frost</td>
+                </tr>
+                <tr>
+                  <td>David Garnier</td>
+                  <td>Lars Roessiger</td>
+                  <td>Steven Ottens</td>
+                </tr>
+                <tr>
+                  <td>David Skea</td>
+                  <td>Leo Hsu</td>
+                  <td>Talha Rizwan</td>
+                </tr>
+                <tr>
+                  <td>David Techer</td>
+                  <td>Loic Dachary</td>
+                  <td>Teramoto Ikuhiro</td>
+                </tr>
+                <tr>
+                  <td>Dian M Fay</td>
+                  <td>Luca S. Percich</td>
+                  <td>Tom Glancy</td>
+                </tr>
+                <tr>
+                  <td>Dmitry Vasilyev</td>
+                  <td>Lucas C. Villa Real</td>
+                  <td>Tom van Tilburg</td>
+                </tr>
+                <tr>
+                  <td>Eduin Carrillo</td>
+                  <td>Maria Arias de Reyna</td>
+                  <td>Victor Collod</td>
+                </tr>
+                <tr>
+                  <td>Esteban Zimanyi</td>
+                  <td>Marc Ducobu</td>
+                  <td>Vincent Bre</td>
+                </tr>
+                <tr>
+                  <td>Eugene Antimirov</td>
+                  <td>Mark Sondheim</td>
+                  <td>Vincent Mora</td>
+                </tr>
+                <tr>
+                  <td>Even Rouault</td>
+                  <td>Markus Schaber</td>
+                  <td>Vincent Picavet</td>
+                </tr>
+                <tr>
+                  <td>Florian Weimer</td>
+                  <td>Markus Wanner</td>
+                  <td>Volf Tomáš</td>
+                </tr>
+                <tr>
+                  <td>Frank Warmerdam</td>
+                  <td>Matt Amos</td>
+                  <td>Zuo Chenwei</td>
+                </tr>
+                <tr>
+                  <td>George Silva</td>
+                  <td>Matt Bretl</td>
+                  <td> </td>
+                </tr>
+                <tr>
+                  <td>Gerald Fenoy</td>
+                  <td>Matthias Bay</td>
+                  <td> </td>
+                </tr>
+              </table>
+              <p>
+			</p>
+            </dd>
+            <dt>
+              <span class="term">Corporate Sponsors</span>
+            </dt>
+            <dd>
+              <p>These are corporate entities that have contributed developer time, hosting, or direct monetary funding to the PostGIS project.
+			      In alphabetical order:
+			</p>
+              <div class="itemizedlist">
+                <ul style="list-style-type: disc; " class="itemizedlist">
+                  <li class="listitem">
+                    <a class="link" href="https://aiven.io" target="_top">Aiven</a>
+                  </li>
+                  <li class="listitem">
+                    <a class="link" href="https://arrival3d.com" target="_top">Arrival 3D</a>
+                  </li>
+                  <li class="listitem">
+                    <a class="link" href="http://gfoss.it" target="_top">Associazione Italiana per l'Informazione Geografica Libera (GFOSS.it)</a>
+                  </li>
+                  <li class="listitem">
+                    <a class="link" href="https://www.ausvet.com.au" target="_top">AusVet</a>
+                  </li>
+                  <li class="listitem">Avencia</li>
+                  <li class="listitem">
+                    <a class="link" href="https://www.azavea.com" target="_top">Azavea</a>
+                  </li>
+                  <li class="listitem">
+                    <a class="link" href="https://www.boundlessgeo.com" target="_top">Boundless</a>
+                  </li>
+                  <li class="listitem">
+                    <a class="link" href="https://www.cadcorp.com" target="_top">Cadcorp</a>
+                  </li>
+                  <li class="listitem">
+                    <a class="link" href="https://www.camptocamp.com" target="_top">Camptocamp</a>
+                  </li>
+                  <li class="listitem">
+                    <a class="link" href="https://carto.com" target="_top">Carto</a>
+                  </li>
+                  <li class="listitem">
+                    <a class="link" href="https://www.crunchydata.com" target="_top">Crunchy Data</a>
+                  </li>
+                  <li class="listitem">
+                    <a class="link" href="https://www.boston.gov" target="_top">City of Boston (DND)</a>
+                  </li>
+                  <li class="listitem">
+                    <a class="link" href="https://www.hel.fi" target="_top">City of Helsinki</a>
+                  </li>
+                  <li class="listitem">
+                    <a class="link" href="https://blog.cleverelephant.ca" target="_top">Clever Elephant Solutions</a>
+                  </li>
+                  <li class="listitem">
+                    <a class="link" href="https://www.alveo.coop" target="_top">Cooperativa Alveo</a>
+                  </li>
+                  <li class="listitem">
+                    <a class="link" href="http://www.elecnor-deimos.com" target="_top">Deimos Space</a>
+                  </li>
+                  <li class="listitem">
+                    <a class="link" href="https://www.faunalia.eu" target="_top">Faunalia</a>
+                  </li>
+                  <li class="listitem">
+                    <a class="link" href="https://gov.bc.ca" target="_top">Geographic Data BC</a>
+                  </li>
+                  <li class="listitem">
+                    <a class="link" href="https://www.highgo.ca" target="_top">HighGo</a>
+                  </li>
+                  <li class="listitem">Hunter Systems Group</li>
+                  <li class="listitem">
+                    <a class="link" href="https://pti-agriambio.csic.es" target="_top">&gt;The National Institute for Agricultural and Food Research and Technology (INIA-CSIC)</a>
+                  </li>
+                  <li class="listitem">
+                    <a class="link" href="https://www.isciences.com" target="_top">ISciences, LLC</a>
+                  </li>
+                  <li class="listitem">
+                    <a class="link" href="https://www.kontur.io" target="_top">Kontur</a>
+                  </li>
+                  <li class="listitem">
+                    <a class="link" href="https://www.lidwala.com" target="_top">Lidwala Consulting Engineers</a>
+                  </li>
+                  <li class="listitem">
+                    <a class="link" href="https://www.jirotech.com" target="_top">LISAsoft</a>
+                  </li>
+                  <li class="listitem">Logical Tracking &amp; Tracing International AG</li>
+                  <li class="listitem">Maponics</li>
+                  <li class="listitem">
+                    <a class="link" href="http://www.mtri.org" target="_top">Michigan Tech Research Institute</a>
+                  </li>
+                  <li class="listitem">
+                    <a class="link" href="https://www.nrcan.gc.ca" target="_top">Natural Resources Canada</a>
+                  </li>
+                  <li class="listitem">Norwegian Forest and Landscape Institute</li>
+                  <li class="listitem">
+                    <a class="link" href="https://www.nibio.no/" target="_top">Norwegian Institute of Bioeconomy Research (NIBIO)</a>
+                  </li>
+                  <li class="listitem">
+                    <a class="link" href="https://www.osgeo.org" target="_top">OSGeo</a>
+                  </li>
+                  <li class="listitem">
+                    <a class="link" href="https://oslandia.com" target="_top">Oslandia</a>
+                  </li>
+                  <li class="listitem">
+                    <a class="link" href="https://www.palantir.com" target="_top">Palantir Technologies</a>
+                  </li>
+                  <li class="listitem">
+                    <a class="link" href="https://www.paragoncorporation.com" target="_top">Paragon Corporation</a>
+                  </li>
+                  <li class="listitem">
+                    <a class="link" href="https://www.r3-gis.com" target="_top">R3 GIS</a>
+                  </li>
+                  <li class="listitem">
+                    <a class="link" href="http://www.refractions.net" target="_top">Refractions Research</a>
+                  </li>
+                  <li class="listitem">
+                    <a class="link" href="https://www.regione.toscana.it" target="_top">Regione Toscana - SITA</a>
+                  </li>
+                  <li class="listitem">
+                    <a class="link" href="https://www.safe.com" target="_top">Safe Software</a>
+                  </li>
+                  <li class="listitem">Sirius Corporation plc</li>
+                  <li class="listitem">
+                    <a class="link" href="http://www.uster.ch" target="_top">Stadt Uster</a>
+                  </li>
+                  <li class="listitem">
+                    <a class="link" href="https://www.ucdavis.edu" target="_top">UC Davis Center for Vectorborne Diseases</a>
+                  </li>
+                  <li class="listitem">
+                    <a class="link" href="https://www.ulaval.ca" target="_top">Université Laval</a>
+                  </li>
+                  <li class="listitem">
+                    <a class="link" href="https://hiu.state.gov" target="_top">U.S. Department of State (HIU)</a>
+                  </li>
+                  <li class="listitem">
+                    <a class="link" href="https://www.zonarsystems.com" target="_top">Zonar Systems</a>
+                  </li>
+                </ul>
+              </div>
+              <p>
+		</p>
+            </dd>
+            <dt>
+              <span class="term">Crowd Funding Campaigns</span>
+            </dt>
+            <dd>
+              <p>Crowd funding campaigns are campaigns we run to get badly wanted features funded that can service a large number of people.  Each campaign is specifically focused on a particular feature or set of features.  Each sponsor chips in a small fraction of the needed funding and with enough people/organizations contributing, we have the funds to pay for the work that will help many.  If you have an idea for a feature you think many others would be willing to co-fund, please post to the <a class="link" href="https://lists.osgeo.org/mailman/listinfo/postgis-users" target="_top">PostGIS newsgroup</a> your thoughts and together we can make it happen. </p>
+              <p>PostGIS 2.0.0 was the first release we tried this strategy. We used <a class="link" href="http://www.pledgebank.com" target="_top">PledgeBank</a> and we got two successful campaigns out of it.</p>
+              <p><a class="link" href="http://www.pledgebank.com/postgistopology" target="_top"><span class="bold"><strong>postgistopology</strong></span></a> - 10 plus sponsors each contributed $250 USD to build toTopoGeometry function and beef up topology support in 2.0.0. It happened.</p>
+              <p><a class="link" href="http://www.pledgebank.com/postgis64windows" target="_top"><span class="bold"><strong>postgis64windows</strong></span></a> - 20 someodd sponsors each contributed $100 USD to pay for the work needed to work out PostGIS 64-bit issues on windows. It happened.</p>
+            </dd>
+            <dt>
+              <span class="term">Important Support Libraries</span>
+            </dt>
+            <dd>
+              <p>The <a class="link" href="https://libgeos.org" target="_top">GEOS</a>
+		  geometry operations library</p>
+              <p>The <a class="link" href="https://gdal.org" target="_top">GDAL</a>
+		  Geospatial Data Abstraction Library used to
+		  power much of the raster functionality introduced in PostGIS 2. In kind, improvements needed in GDAL
+		  to support PostGIS are contributed back to the GDAL project.</p>
+              <p>The <a class="link" href="https://www.proj4.org" target="_top">PROJ</a>
+		  cartographic projection library</p>
+              <p>Last but not least, <a class="link" href="http://www.postgresql.org" target="_top">PostgreSQL</a>,
+		  the giant that PostGIS stands on.  Much of the speed and flexibility of PostGIS would not be possible without
+		  the extensibility, great query planner, GIST index, and plethora of SQL features provided by PostgreSQL.</p>
+            </dd>
+          </dl>
+        </div>
+      </section>
+    </section>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="index.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; "> </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="postgis_installation.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">PostGIS 3.5.2 Manual </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> Chapter 2. PostGIS Installation</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

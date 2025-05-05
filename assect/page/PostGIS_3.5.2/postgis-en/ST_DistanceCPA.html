@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_DistanceCPA</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_ClosestPointOfApproach.html" title="ST_ClosestPointOfApproach"/>
+    <link rel="next" href="ST_CPAWithin.html" title="ST_CPAWithin"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_DistanceCPA</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_ClosestPointOfApproach.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.20. Trajectory Functions</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_CPAWithin.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_DistanceCPA">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_DistanceCPA — 
+Returns the distance between the closest point of approach of two trajectories.
+      </p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">float8 <strong class="fsfunc">ST_DistanceCPA</strong>(</code>geometry  <var class="pdparam">track1</var>, geometry  <var class="pdparam">track2</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm20306">
+        <h2>Description</h2>
+        <p>
+Returns the distance (in 2D) between two trajectories at their closest point of approach.
+      </p>
+        <p>
+Inputs must be valid trajectories as checked by
+<a class="xref" href="ST_IsValidTrajectory.html" title="ST_IsValidTrajectory">ST_IsValidTrajectory</a>.
+Null is returned if the trajectories do not overlap in their M ranges.
+			</p>
+        <p class="availability">Availability: 2.2.0</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports 3d and will not drop the z-index.
+        </p>
+      </div>
+      <div class="refsection" id="idm20316">
+        <h2>Examples</h2>
+        <pre class="programlisting">
+-- Return the minimum distance of two objects moving between 10:00 and 11:00
+WITH inp AS ( SELECT
+  ST_AddMeasure('LINESTRING Z (0 0 0, 10 0 5)'::geometry,
+    extract(epoch from '2015-05-26 10:00'::timestamptz),
+    extract(epoch from '2015-05-26 11:00'::timestamptz)
+  ) a,
+  ST_AddMeasure('LINESTRING Z (0 2 10, 12 1 2)'::geometry,
+    extract(epoch from '2015-05-26 10:00'::timestamptz),
+    extract(epoch from '2015-05-26 11:00'::timestamptz)
+  ) b
+)
+SELECT ST_DistanceCPA(a,b) distance FROM inp;
+
+     distance
+------------------
+ 1.96036833151395
+</pre>
+      </div>
+      <div class="refsection" id="idm20319">
+        <h2>See Also</h2>
+        <p>
+<a class="xref" href="ST_IsValidTrajectory.html" title="ST_IsValidTrajectory">ST_IsValidTrajectory</a>,
+<a class="xref" href="ST_ClosestPointOfApproach.html" title="ST_ClosestPointOfApproach">ST_ClosestPointOfApproach</a>,
+<a class="xref" href="ST_AddMeasure.html" title="ST_AddMeasure">ST_AddMeasure</a>,
+<a class="xref" href="geometry_distance_cpa.html" title="|=|">|=|</a>
+			</p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_ClosestPointOfApproach.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Temporal">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_CPAWithin.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_ClosestPointOfApproach </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_CPAWithin</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

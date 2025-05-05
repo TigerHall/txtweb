@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_GeogFromText</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_BdMPolyFromText.html" title="ST_BdMPolyFromText"/>
+    <link rel="next" href="ST_GeographyFromText.html" title="ST_GeographyFromText"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_GeogFromText</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_BdMPolyFromText.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.8.1. Well-Known Text (WKT)</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_GeographyFromText.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_GeogFromText">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_GeogFromText — Return a specified geography value from Well-Known Text representation or extended (WKT). </p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">geography <strong class="fsfunc">ST_GeogFromText</strong>(</code>text  <var class="pdparam">EWKT</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm8864">
+        <h2>Description</h2>
+        <p>Returns a geography object from the well-known text or extended well-known representation. SRID 4326 is assumed if unspecified.
+				This is an alias for ST_GeographyFromText.  Points are always expressed in long lat form.</p>
+      </div>
+      <div class="refsection" id="idm8867">
+        <h2>Examples</h2>
+        <pre class="programlisting">
+--- converting lon lat coords to geography
+ALTER TABLE sometable ADD COLUMN geog geography(POINT,4326);
+UPDATE sometable SET geog = ST_GeogFromText('SRID=4326;POINT(' || lon || ' ' || lat || ')');
+
+--- specify a geography point using EPSG:4267, NAD27
+SELECT ST_AsEWKT(ST_GeogFromText('SRID=4267;POINT(-77.0092 38.889588)'));
+			</pre>
+      </div>
+      <div class="refsection" id="idm8870">
+        <h2>See Also</h2>
+        <p><a class="xref" href="ST_AsText.html" title="ST_AsText">ST_AsText</a>, <a class="xref" href="ST_GeographyFromText.html" title="ST_GeographyFromText">ST_GeographyFromText</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_BdMPolyFromText.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#idm8784">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_GeographyFromText.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_BdMPolyFromText </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_GeographyFromText</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

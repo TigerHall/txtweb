@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_TransformPipeline</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_Transform.html" title="ST_Transform"/>
+    <link rel="next" href="postgis_srs_codes.html" title="postgis_srs_codes"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_TransformPipeline</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_Transform.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.7. Spatial Reference System Functions</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="postgis_srs_codes.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_TransformPipeline">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_TransformPipeline — Return a new geometry with coordinates transformed to
+      a different spatial reference system using a defined coordinate
+      transformation pipeline.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_TransformPipeline</strong>(</code>geometry  <var class="pdparam">g1</var>, text  <var class="pdparam">pipeline</var>, integer  <var class="pdparam">to_srid</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm8606">
+        <h2>Description</h2>
+        <p>
+      Return a new geometry with coordinates transformed to a different spatial reference system
+      using a defined coordinate transformation pipeline.
+      </p>
+        <p>
+      Transformation pipelines are defined using any of the following string formats:
+        </p>
+        <div class="itemizedlist">
+          <ul class="itemizedlist" style="list-style-type: disc; ">
+            <li class="listitem">
+              <p>
+              <code class="varname">urn:ogc:def:coordinateOperation:AUTHORITY::CODE</code>. Note that a simple
+              <code class="varname">EPSG:CODE</code> string does not uniquely identify a coordinate operation:
+              the same EPSG code can be used for a CRS definition.
+            </p>
+            </li>
+            <li class="listitem">
+              <p>
+            A PROJ pipeline string of the form: <code class="varname">+proj=pipeline ...</code>. Automatic
+            axis normalisation will not be applied, and if necessary the caller will need to add an
+            additional pipeline step, or remove <code class="varname">axisswap</code> steps.
+            </p>
+            </li>
+            <li class="listitem">
+              <p>
+            Concatenated operations of the form: <code class="varname">urn:ogc:def:coordinateOperation,coordinateOperation:EPSG::3895,coordinateOperation:EPSG::1618</code>.
+            </p>
+            </li>
+          </ul>
+        </div>
+        <p>
+    </p>
+        <p class="availability">Availability: 3.4.0</p>
+        <p>
+    The SRID of the input geometry is ignored, and the SRID of the output geometry will be set to
+    zero unless a value is provided via the optional <code class="varname">to_srid</code> parameter. When
+    using `ST_TransformPipeline()` the pipeline is executed in a forward direction. Using
+   <a class="xref" href="ST_InverseTransformPipeline.html" title="ST_InverseTransformPipeline">ST_InverseTransformPipeline</a> the pipeline is executed in the inverse direction.</p>
+        <p>Transforms using pipelines are a specialised version of <a class="xref" href="ST_Transform.html" title="ST_Transform">ST_Transform</a>.
+    In most cases `ST_Transform` will choose the correct operations to convert between coordinate
+    systems, and should be preferred.</p>
+      </div>
+      <div class="refsection" id="idm8628">
+        <h2>Examples</h2>
+        <p>Change WGS 84 long lat to UTM 31N using the EPSG:16031 conversion</p>
+        <pre class="programlisting">
+-- Forward direction
+SELECT ST_AsText(ST_TransformPipeline('SRID=4326;POINT(2 49)'::geometry,
+  'urn:ogc:def:coordinateOperation:EPSG::16031')) AS utm_geom;
+
+                  utm_geom
+--------------------------------------------
+ POINT(426857.9877165967 5427937.523342293)
+(1 row)
+
+-- Inverse direction
+SELECT ST_AsText(ST_InverseTransformPipeline('POINT(426857.9877165967 5427937.523342293)'::geometry,
+  'urn:ogc:def:coordinateOperation:EPSG::16031')) AS wgs_geom;
+
+          wgs_geom
+----------------------------
+ POINT(2 48.99999999999999)
+(1 row)
+    </pre>
+        <p>GDA2020 example.</p>
+        <pre class="programlisting">
+-- using ST_Transform with automatic selection of a conversion pipeline.
+SELECT ST_AsText(ST_Transform('SRID=4939;POINT(143.0 -37.0)'::geometry, 7844)) AS gda2020_auto;
+
+                 gda2020_auto
+-----------------------------------------------
+ POINT(143.00000635638918 -36.999986706128176)
+(1 row)
+
+-- using a defined conversion (EPSG:8447)
+SELECT ST_AsText(ST_TransformPipeline('SRID=4939;POINT(143.0 -37.0)'::geometry,
+  'urn:ogc:def:coordinateOperation:EPSG::8447')) AS gda2020_code;
+
+                   gda2020_code
+----------------------------------------------
+ POINT(143.0000063280214 -36.999986718287545)
+(1 row)
+
+-- using a PROJ pipeline definition matching EPSG:8447, as returned from
+-- 'projinfo -s EPSG:4939 -t EPSG:7844'.
+-- NOTE: any 'axisswap' steps must be removed.
+SELECT ST_AsText(ST_TransformPipeline('SRID=4939;POINT(143.0 -37.0)'::geometry,
+  '+proj=pipeline
+   +step +proj=unitconvert +xy_in=deg +xy_out=rad
+   +step +proj=hgridshift +grids=au_icsm_GDA94_GDA2020_conformal_and_distortion.tif
+   +step +proj=unitconvert +xy_in=rad +xy_out=deg')) AS gda2020_pipeline;
+
+                   gda2020_pipeline
+----------------------------------------------
+ POINT(143.0000063280214 -36.999986718287545)
+(1 row)
+    </pre>
+      </div>
+      <div class="refsection" id="idm8634">
+        <h2>See Also</h2>
+        <p><a class="xref" href="ST_Transform.html" title="ST_Transform">ST_Transform</a>, <a class="xref" href="ST_InverseTransformPipeline.html" title="ST_InverseTransformPipeline">ST_InverseTransformPipeline</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_Transform.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#SRS_Functions">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="postgis_srs_codes.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_Transform </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> postgis_srs_codes</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_CoverageUnion</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_CoverageSimplify.html" title="ST_CoverageSimplify"/>
+    <link rel="next" href="ST_Affine.html" title="ST_Affine"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_CoverageUnion</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_CoverageSimplify.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.15. Coverages</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_Affine.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_CoverageUnion">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_CoverageUnion — Computes the union of a set of polygons forming a coverage by removing shared edges.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_CoverageUnion</strong>(</code>geometry set
+            <var class="pdparam">geom</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm18238">
+        <h2>Description</h2>
+        <p>An aggregate function which unions a set of polygons forming a polygonal coverage.
+      The result is a polygonal geometry covering the same area as the coverage.
+      This function produces the same result as <a class="xref" href="ST_Union.html" title="ST_Union">ST_Union</a>,
+      but uses the coverage structure to compute the union much faster.
+      </p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>If the input is not a valid coverage there may be unexpected artifacts in the output (such as unmerged or overlapping polygons).
+            Use <a class="xref" href="ST_CoverageInvalidEdges.html" title="ST_CoverageInvalidEdges">ST_CoverageInvalidEdges</a> to determine if a coverage is valid.
+      </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p class="availability">Availability: 3.4.0 - requires GEOS &gt;= 3.8.0</p>
+      </div>
+      <div class="refsection" id="idm18246">
+        <h2>Examples</h2>
+        <div class="informaltable">
+          <table style="border-collapse: collapse; border-top: 1px solid ; border-bottom: 1px solid ; border-left: 1px solid ; border-right: 1px solid ; ">
+            <colgroup>
+              <col/>
+              <col/>
+            </colgroup>
+            <tbody>
+              <tr>
+                <td style="border-right: 1px solid ; ">
+                  <p>
+        </p>
+                  <div class="informalfigure">
+                    <div class="mediaobject">
+                      <img src="../images/st_coverageunion01.png"/>
+                      <div class="caption">
+                        <p>Input coverage</p>
+                      </div>
+                    </div>
+                  </div>
+                  <p>
+        </p>
+                </td>
+                <td>
+                  <p>
+        </p>
+                  <div class="informalfigure">
+                    <div class="mediaobject">
+                      <img src="../images/st_coverageunion02.png"/>
+                      <div class="caption">
+                        <p>Union result</p>
+                      </div>
+                    </div>
+                  </div>
+                  <p>
+        </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <pre class="programlisting">WITH coverage(id, geom) AS (VALUES
+  (1, 'POLYGON ((10 10, 10 150, 80 190, 110 150, 90 110, 40 110, 50 60, 10 10))'::geometry),
+  (2, 'POLYGON ((120 10, 10 10, 50 60, 100 70, 120 10))'::geometry),
+  (3, 'POLYGON ((140 80, 120 10, 100 70, 40 110, 90 110, 110 150, 140 80))'::geometry),
+  (4, 'POLYGON ((140 190, 120 170, 140 130, 160 150, 140 190))'::geometry),
+  (5, 'POLYGON ((180 160, 170 140, 140 130, 160 150, 140 190, 180 160))'::geometry)
+)
+SELECT ST_AsText(ST_CoverageUnion(geom))
+  FROM coverage;
+
+--------------------------------------
+MULTIPOLYGON (((10 150, 80 190, 110 150, 140 80, 120 10, 10 10, 10 150), (50 60, 100 70, 40 110, 50 60)), ((120 170, 140 190, 180 160, 170 140, 140 130, 120 170)))
+      </pre>
+      </div>
+      <div class="refsection" id="idm18269">
+        <h2>See Also</h2>
+        <p>
+        <a class="xref" href="ST_CoverageInvalidEdges.html" title="ST_CoverageInvalidEdges">ST_CoverageInvalidEdges</a>,
+        <a class="xref" href="ST_Union.html" title="ST_Union">ST_Union</a>
+      </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_CoverageSimplify.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Coverage">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_Affine.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_CoverageSimplify </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_Affine</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

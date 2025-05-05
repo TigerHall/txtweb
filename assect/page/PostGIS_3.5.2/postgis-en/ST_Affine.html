@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_Affine</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_CoverageUnion.html" title="ST_CoverageUnion"/>
+    <link rel="next" href="ST_Rotate.html" title="ST_Rotate"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_Affine</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_CoverageUnion.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.16. Affine Transformations</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_Rotate.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_Affine">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_Affine — Apply a 3D affine transformation to a geometry.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_Affine</strong>(</code>geometry  <var class="pdparam">geomA</var>, float  <var class="pdparam">a</var>, float  <var class="pdparam">b</var>, float  <var class="pdparam">c</var>, float  <var class="pdparam">d</var>, float  <var class="pdparam">e</var>, float  <var class="pdparam">f</var>, float  <var class="pdparam">g</var>, float  <var class="pdparam">h</var>, float  <var class="pdparam">i</var>, float  <var class="pdparam">xoff</var>, float  <var class="pdparam">yoff</var>, float  <var class="pdparam">zoff</var><code>)</code>;</p>
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_Affine</strong>(</code>geometry  <var class="pdparam">geomA</var>, float  <var class="pdparam">a</var>, float  <var class="pdparam">b</var>, float  <var class="pdparam">d</var>, float  <var class="pdparam">e</var>, float  <var class="pdparam">xoff</var>, float  <var class="pdparam">yoff</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm18352">
+        <h2>Description</h2>
+        <p>Applies a 3D affine transformation to the geometry to do things like translate, rotate, scale in one step.</p>
+        <p>
+		Version 1: The
+			call </p>
+        <pre class="programlisting">ST_Affine(geom, a, b, c, d, e, f, g, h, i, xoff, yoff, zoff) </pre>
+        <p>
+			represents the transformation matrix </p>
+        <pre class="programlisting">/ a  b  c  xoff \
+| d  e  f  yoff |
+| g  h  i  zoff |
+\ 0  0  0     1 /</pre>
+        <p> and the vertices are transformed as
+			follows: </p>
+        <pre class="programlisting">x' = a*x + b*y + c*z + xoff
+y' = d*x + e*y + f*z + yoff
+z' = g*x + h*y + i*z + zoff</pre>
+        <p> All of the translate / scale
+			functions below are expressed via such an affine
+			transformation.</p>
+        <p>Version 2: Applies a 2d affine transformation to the geometry. The
+			call </p>
+        <pre class="programlisting">ST_Affine(geom, a, b, d, e, xoff, yoff)</pre>
+        <p>
+			represents the transformation matrix </p>
+        <pre class="programlisting">/  a  b  0  xoff  \       /  a  b  xoff  \
+|  d  e  0  yoff  | rsp.  |  d  e  yoff  |
+|  0  0  1     0  |       \  0  0     1  /
+\  0  0  0     1  /</pre>
+        <p> and the vertices are transformed as
+			follows: </p>
+        <pre class="programlisting">x' = a*x + b*y + xoff
+y' = d*x + e*y + yoff
+z' = z </pre>
+        <p> This method is a subcase of the 3D method
+			above.</p>
+        <p class="enhanced">Enhanced: 2.0.0 support for Polyhedral surfaces, Triangles and TIN was introduced.</p>
+        <p class="availability">Availability: 1.1.2. Name changed from Affine to ST_Affine in 1.2.2</p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>Prior to 1.3.4, this function crashes if used with geometries that contain CURVES.  This is fixed in 1.3.4+</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports Polyhedral surfaces.
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports Triangles and Triangulated Irregular Network Surfaces (TIN).
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports 3d and will not drop the z-index.
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method supports Circular Strings and Curves.
+        </p>
+      </div>
+      <div class="refsection" id="idm18383">
+        <h2>Examples</h2>
+        <pre class="programlisting">
+--Rotate a 3d line 180 degrees about the z axis.  Note this is long-hand for doing ST_Rotate();
+ SELECT ST_AsEWKT(ST_Affine(geom,  cos(pi()), -sin(pi()), 0,  sin(pi()), cos(pi()), 0,  0, 0, 1,  0, 0, 0)) As using_affine,
+	 ST_AsEWKT(ST_Rotate(geom, pi())) As using_rotate
+	FROM (SELECT ST_GeomFromEWKT('LINESTRING(1 2 3, 1 4 3)') As geom) As foo;
+        using_affine         |        using_rotate
+-----------------------------+-----------------------------
+ LINESTRING(-1 -2 3,-1 -4 3) | LINESTRING(-1 -2 3,-1 -4 3)
+(1 row)
+
+--Rotate a 3d line 180 degrees in both the x and z axis
+SELECT ST_AsEWKT(ST_Affine(geom, cos(pi()), -sin(pi()), 0, sin(pi()), cos(pi()), -sin(pi()), 0, sin(pi()), cos(pi()), 0, 0, 0))
+	FROM (SELECT ST_GeomFromEWKT('LINESTRING(1 2 3, 1 4 3)') As geom) As foo;
+           st_asewkt
+-------------------------------
+ LINESTRING(-1 -2 -3,-1 -4 -3)
+(1 row)
+		</pre>
+      </div>
+      <div class="refsection" id="idm18386">
+        <h2>See Also</h2>
+        <p><a class="xref" href="ST_Rotate.html" title="ST_Rotate">ST_Rotate</a>, <a class="xref" href="ST_Scale.html" title="ST_Scale">ST_Scale</a>, <a class="xref" href="ST_Translate.html" title="ST_Translate">ST_Translate</a>, <a class="xref" href="ST_TransScale.html" title="ST_TransScale">ST_TransScale</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_CoverageUnion.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Affine_Transformation">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_Rotate.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_CoverageUnion </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_Rotate</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

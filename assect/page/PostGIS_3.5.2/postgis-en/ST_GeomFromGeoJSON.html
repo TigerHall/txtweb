@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_GeomFromGeoJSON</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_GeomFromGML.html" title="ST_GeomFromGML"/>
+    <link rel="next" href="ST_GeomFromKML.html" title="ST_GeomFromKML"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_GeomFromGeoJSON</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_GeomFromGML.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.8.3. Other Formats</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_GeomFromKML.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_GeomFromGeoJSON">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_GeomFromGeoJSON — Takes as input a geojson representation of a geometry and outputs a PostGIS geometry object</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_GeomFromGeoJSON</strong>(</code>text  <var class="pdparam">geomjson</var><code>)</code>;</p>
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_GeomFromGeoJSON</strong>(</code>json  <var class="pdparam">geomjson</var><code>)</code>;</p>
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_GeomFromGeoJSON</strong>(</code>jsonb  <var class="pdparam">geomjson</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm9895">
+        <h2>Description</h2>
+        <p>Constructs a PostGIS geometry object from the GeoJSON representation.</p>
+        <p>ST_GeomFromGeoJSON works only for JSON Geometry fragments. It throws an error if you try to use it on a whole JSON document.</p>
+        <p class="enhanced">Enhanced: 3.0.0 parsed geometry defaults to SRID=4326 if not specified otherwise.</p>
+        <p class="enhanced">Enhanced: 2.5.0 can now accept json and jsonb as inputs.</p>
+        <p class="availability">Availability: 2.0.0 requires - JSON-C &gt;= 0.9</p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>If you do not have JSON-C enabled, support you will get an error notice instead of seeing an output.
+			To enable JSON-C, run configure --with-jsondir=/path/to/json-c.  See <a class="xref" href="postgis_installation.html#installation_configuration" title="2.2.3. Build configuration">Section 2.2.3, “Build configuration”</a> for details.</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports 3d and will not drop the z-index.
+        </p>
+      </div>
+      <div class="refsection" id="idm9909">
+        <h2>Examples</h2>
+        <pre class="programlisting">SELECT ST_AsText(ST_GeomFromGeoJSON('{"type":"Point","coordinates":[-48.23456,20.12345]}')) As wkt;
+wkt
+------
+POINT(-48.23456 20.12345)
+</pre>
+        <pre class="programlisting">-- a 3D linestring
+SELECT ST_AsText(ST_GeomFromGeoJSON('{"type":"LineString","coordinates":[[1,2,3],[4,5,6],[7,8,9]]}')) As wkt;
+
+wkt
+-------------------
+LINESTRING(1 2,4 5,7 8)
+</pre>
+      </div>
+      <div class="refsection" id="idm9913">
+        <h2>See Also</h2>
+        <p><a class="xref" href="ST_AsText.html" title="ST_AsText">ST_AsText</a>, <a class="xref" href="ST_AsGeoJSON.html" title="ST_AsGeoJSON">ST_AsGeoJSON</a>, <a class="xref" href="postgis_installation.html#installation_configuration" title="2.2.3. Build configuration">Section 2.2.3, “Build configuration”</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_GeomFromGML.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#idm9736">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_GeomFromKML.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_GeomFromGML </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_GeomFromKML</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

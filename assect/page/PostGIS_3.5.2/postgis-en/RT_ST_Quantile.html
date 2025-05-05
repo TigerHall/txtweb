@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_Quantile</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="RT_ST_Histogram.html" title="ST_Histogram"/>
+    <link rel="next" href="RT_ST_SummaryStats.html" title="ST_SummaryStats"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_Quantile</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="RT_ST_Histogram.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">11.9. Raster Band Statistics and Analytics</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="RT_ST_SummaryStats.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="RT_ST_Quantile">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_Quantile — Compute quantiles for a raster or raster table coverage in the context of the sample or population. Thus, a value could be examined to be at the raster's 25%, 50%, 75% percentile.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">SETOF record <strong class="fsfunc">ST_Quantile</strong>(</code>raster  <var class="pdparam">rast</var>, integer  <var class="pdparam">nband=1</var>, boolean  <var class="pdparam">exclude_nodata_value=true</var>, double precision[]  <var class="pdparam">quantiles=NULL</var><code>)</code>;</p>
+          <p><code class="funcdef">SETOF record <strong class="fsfunc">ST_Quantile</strong>(</code>raster  <var class="pdparam">rast</var>, double precision[]  <var class="pdparam">quantiles</var><code>)</code>;</p>
+          <p><code class="funcdef">SETOF record <strong class="fsfunc">ST_Quantile</strong>(</code>raster  <var class="pdparam">rast</var>, integer  <var class="pdparam">nband</var>, double precision[]  <var class="pdparam">quantiles</var><code>)</code>;</p>
+          <p><code class="funcdef">double precision <strong class="fsfunc">ST_Quantile</strong>(</code>raster  <var class="pdparam">rast</var>, double precision  <var class="pdparam">quantile</var><code>)</code>;</p>
+          <p><code class="funcdef">double precision <strong class="fsfunc">ST_Quantile</strong>(</code>raster  <var class="pdparam">rast</var>, boolean  <var class="pdparam">exclude_nodata_value</var>, double precision  <var class="pdparam">quantile=NULL</var><code>)</code>;</p>
+          <p><code class="funcdef">double precision <strong class="fsfunc">ST_Quantile</strong>(</code>raster  <var class="pdparam">rast</var>, integer  <var class="pdparam">nband</var>, double precision  <var class="pdparam">quantile</var><code>)</code>;</p>
+          <p><code class="funcdef">double precision <strong class="fsfunc">ST_Quantile</strong>(</code>raster  <var class="pdparam">rast</var>, integer  <var class="pdparam">nband</var>, boolean  <var class="pdparam">exclude_nodata_value</var>, double precision  <var class="pdparam">quantile</var><code>)</code>;</p>
+          <p><code class="funcdef">double precision <strong class="fsfunc">ST_Quantile</strong>(</code>raster  <var class="pdparam">rast</var>, integer  <var class="pdparam">nband</var>, double precision  <var class="pdparam">quantile</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm32148">
+        <h2>Description</h2>
+        <p>Compute quantiles for a raster or raster table coverage in the context of the sample or population. Thus, a value could be examined to be at the raster's 25%, 50%, 75% percentile.</p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>If <code class="varname">exclude_nodata_value</code> is set to false, will also count pixels with no data.</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p class="changed">Changed: 3.1.0 Removed ST_Quantile(table_name, column_name) variant. </p>
+        <p class="availability">Availability: 2.0.0 </p>
+      </div>
+      <div class="refsection" id="idm32156">
+        <h2>Examples</h2>
+        <pre class="programlisting">
+UPDATE dummy_rast SET rast = ST_SetBandNoDataValue(rast,249) WHERE rid=2;
+--Example will consider only pixels of band 1 that are not 249 and in named quantiles --
+
+SELECT (pvq).*
+FROM (SELECT ST_Quantile(rast, ARRAY[0.25,0.75]) As pvq
+    FROM dummy_rast WHERE rid=2) As foo
+    ORDER BY (pvq).quantile;
+
+ quantile | value
+----------+-------
+     0.25 |   253
+     0.75 |   254
+
+SELECT ST_Quantile(rast, 0.75) As value
+    FROM dummy_rast WHERE rid=2;
+
+value
+------
+  254
+</pre>
+        <pre class="programlisting">
+--real live example.  Quantile of all pixels in band 2 intersecting a geometry
+SELECT rid, (ST_Quantile(rast,2)).* As pvc
+    FROM o_4_boston
+        WHERE ST_Intersects(rast,
+            ST_GeomFromText('POLYGON((224486 892151,224486 892200,224706 892200,224706 892151,224486 892151))',26986)
+            )
+ORDER BY value, quantile,rid
+;
+
+
+ rid | quantile | value
+-----+----------+-------
+   1 |        0 |     0
+   2 |        0 |     0
+  14 |        0 |     1
+  15 |        0 |     2
+  14 |     0.25 |    37
+   1 |     0.25 |    42
+  15 |     0.25 |    47
+   2 |     0.25 |    50
+  14 |      0.5 |    56
+   1 |      0.5 |    64
+  15 |      0.5 |    66
+   2 |      0.5 |    77
+  14 |     0.75 |    81
+  15 |     0.75 |    87
+   1 |     0.75 |    94
+   2 |     0.75 |   106
+  14 |        1 |   199
+   1 |        1 |   244
+   2 |        1 |   255
+  15 |        1 |   255
+</pre>
+      </div>
+      <div class="refsection" id="idm32160">
+        <h2>See Also</h2>
+        <p>
+                    <a class="xref" href="RT_ST_Count.html" title="ST_Count">ST_Count</a>,
+                    <a class="xref" href="RT_ST_SummaryStats.html" title="ST_SummaryStats">ST_SummaryStats</a>,
+                    <a class="xref" href="RT_ST_SummaryStatsAgg.html" title="ST_SummaryStatsAgg">ST_SummaryStatsAgg</a>,
+                    <a class="xref" href="RT_ST_SetBandNoDataValue.html" title="ST_SetBandNoDataValue">ST_SetBandNoDataValue</a>
+                </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="RT_ST_Histogram.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="RT_reference.html#RasterBand_Stats">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="RT_ST_SummaryStats.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_Histogram </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_SummaryStats</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

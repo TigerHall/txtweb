@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>CreateTopology</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="FindLayer.html" title="FindLayer"/>
+    <link rel="next" href="CopyTopology.html" title="CopyTopology"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">CreateTopology</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="FindLayer.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">9.5. Topology Constructors</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="CopyTopology.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="CreateTopology">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>CreateTopology — Creates a new topology schema and registers it in the topology.topology table.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">integer <strong class="fsfunc">CreateTopology</strong>(</code>varchar  <var class="pdparam">topology_schema_name</var><code>)</code>;</p>
+          <p><code class="funcdef">integer <strong class="fsfunc">CreateTopology</strong>(</code>varchar  <var class="pdparam">topology_schema_name</var>, integer  <var class="pdparam">srid</var><code>)</code>;</p>
+          <p><code class="funcdef">integer <strong class="fsfunc">CreateTopology</strong>(</code>varchar  <var class="pdparam">topology_schema_name</var>, integer  <var class="pdparam">srid</var>, double precision  <var class="pdparam">prec</var><code>)</code>;</p>
+          <p><code class="funcdef">integer <strong class="fsfunc">CreateTopology</strong>(</code>varchar  <var class="pdparam">topology_schema_name</var>, integer  <var class="pdparam">srid</var>, double precision  <var class="pdparam">prec</var>, boolean  <var class="pdparam">hasz</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm24263">
+        <h2>Description</h2>
+        <p>Creates a new topology schema with name <code class="varname">topology_name</code>
+                and registers it in the <code class="varname">topology.topology</code> table.
+				Topologies must be uniquely named.
+				The topology tables (<code class="varname">edge_data</code>, <code class="varname">face</code>, <code class="varname">node</code>,and <code class="varname">relation</code> are created in the schema.
+				It returns the id of the topology.
+				</p>
+        <p>The <code class="varname">srid</code> is the <a class="link" href="using_postgis_dbmanagement.html#spatial_ref_sys" title="4.5. Spatial Reference Systems">spatial reference system</a> SRID for the topology.
+				</p>
+        <p>The tolerance <code class="varname">prec</code> is measured in the units of the spatial reference system.
+				The tolerance defaults to 0.
+				</p>
+        <p><code class="varname">hasz</code> defaults to false if not specified. </p>
+        <p>This is similar to the SQL/MM <a class="xref" href="ST_InitTopoGeo.html" title="ST_InitTopoGeo">ST_InitTopoGeo</a> but has more functionality.</p>
+        <p class="availability">Availability: 1.1</p>
+        <p class="enhanced">Enhanced: 2.0 added the signature accepting hasZ</p>
+      </div>
+      <div class="refsection" id="idm24283">
+        <h2>Examples</h2>
+        <p>Create a topology schema called <code class="varname">ma_topo</code> that stores edges and nodes in Massachusetts State Plane-meters (SRID = 26986).
+					The tolerance represents 0.5 meters since the spatial reference system is meter-based.</p>
+        <pre class="programlisting">SELECT topology.CreateTopology('ma_topo', 26986, 0.5);</pre>
+        <p>Create a topology for Rhode Island called <code class="varname">ri_topo</code> in spatial reference system State Plane-feet (SRID = 3438)</p>
+        <pre class="programlisting">SELECT topology.CreateTopology('ri_topo', 3438) AS topoid;
+topoid
+------
+2</pre>
+      </div>
+      <div class="refsection" id="idm24291">
+        <h2>See Also</h2>
+        <p><a class="xref" href="using_postgis_dbmanagement.html#spatial_ref_sys" title="4.5. Spatial Reference Systems">Section 4.5, “Spatial Reference Systems”</a>, <a class="xref" href="ST_InitTopoGeo.html" title="ST_InitTopoGeo">ST_InitTopoGeo</a>, <a class="xref" href="Topology_Load_Tiger.html" title="Topology_Load_Tiger">Topology_Load_Tiger</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="FindLayer.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="Topology.html#Topology_Constructors">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="CopyTopology.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">FindLayer </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> CopyTopology</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

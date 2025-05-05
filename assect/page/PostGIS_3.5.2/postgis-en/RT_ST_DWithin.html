@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_DWithin</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="RT_ST_Within.html" title="ST_Within"/>
+    <link rel="next" href="RT_ST_DFullyWithin.html" title="ST_DFullyWithin"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_DWithin</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="RT_ST_Within.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">11.17. Raster and Raster Band Spatial Relationships</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="RT_ST_DFullyWithin.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="RT_ST_DWithin">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_DWithin — 
+                Return true if rasters rastA and rastB are within the specified distance of each other.
+            </p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">boolean <strong class="fsfunc">ST_DWithin</strong>(</code>
+                        raster 
+                        <var class="pdparam">rastA</var>
+                    , 
+                        integer 
+                        <var class="pdparam">nbandA</var>
+                    , 
+                        raster 
+                        <var class="pdparam">rastB</var>
+                    , 
+                        integer 
+                        <var class="pdparam">nbandB</var>
+                    , 
+                        double precision 
+                        <var class="pdparam">distance_of_srid</var>
+                    <code>)</code>;</p>
+          <p><code class="funcdef">boolean <strong class="fsfunc">ST_DWithin</strong>(</code>
+                        raster 
+                        <var class="pdparam">rastA</var>
+                    , 
+                        raster 
+                        <var class="pdparam">rastB</var>
+                    , 
+                        double precision 
+                        <var class="pdparam">distance_of_srid</var>
+                    <code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm37038">
+        <h2>Description</h2>
+        <p>
+                Return true if rasters rastA and rastB are within the specified distance of each other. If the band number is not provided (or set to NULL), only the convex hull of the raster is considered in the test. If the band number is provided, only those pixels with value (not NODATA) are considered in the test.
+            </p>
+        <p>
+                The distance is specified in units defined by the spatial reference system of the rasters. For this function to make sense, the source rasters must both be of the same coordinate projection, having the same SRID.
+            </p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>
+                    This operand will make use of any indexes that may be available on the rasters.
+                </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>
+                    To test the spatial relationship of a raster and a geometry, use ST_Polygon on the raster, e.g. ST_DWithin(ST_Polygon(raster), geometry).
+                </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p class="availability">Availability: 2.1.0</p>
+      </div>
+      <div class="refsection" id="idm37047">
+        <h2>Examples</h2>
+        <pre class="programlisting">
+SELECT r1.rid, r2.rid, ST_DWithin(r1.rast, 1, r2.rast, 1, 3.14) FROM dummy_rast r1 CROSS JOIN dummy_rast r2 WHERE r1.rid = 2;
+
+ rid | rid | st_dwithin
+-----+-----+------------
+   2 |   1 | f
+   2 |   2 | t
+            </pre>
+      </div>
+      <div class="refsection" id="idm37050">
+        <h2>See Also</h2>
+        <p>
+                <a class="xref" href="RT_ST_Within.html" title="ST_Within">ST_Within</a>,
+                <a class="xref" href="RT_ST_DFullyWithin.html" title="ST_DFullyWithin">ST_DFullyWithin</a>
+            </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="RT_ST_Within.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="RT_reference.html#Raster_Relationships">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="RT_ST_DFullyWithin.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_Within </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_DFullyWithin</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

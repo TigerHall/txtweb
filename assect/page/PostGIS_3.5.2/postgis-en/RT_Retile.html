@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_Retile</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="RT_ST_Tile.html" title="ST_Tile"/>
+    <link rel="next" href="RT_ST_FromGDALRaster.html" title="ST_FromGDALRaster"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_Retile</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="RT_ST_Tile.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">11.3. Raster Constructors</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="RT_ST_FromGDALRaster.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="RT_Retile">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_Retile — 
+                    Return a set of configured tiles from an arbitrarily tiled raster coverage.
+                </p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">SETOF raster <strong class="fsfunc">ST_Retile</strong>(</code>regclass  <var class="pdparam">tab</var>, name  <var class="pdparam">col</var>, geometry  <var class="pdparam">ext</var>, float8  <var class="pdparam">sfx</var>, float8  <var class="pdparam">sfy</var>, int  <var class="pdparam">tw</var>, int  <var class="pdparam">th</var>, text  <var class="pdparam">algo='NearestNeighbor'</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm28732">
+        <h2>Description</h2>
+        <p>
+Return a set of tiles having the specified scale (<code class="varname">sfx</code>,
+<code class="varname">sfy</code>) and max size (<code class="varname">tw</code>,
+<code class="varname">th</code>) and covering the specified extent
+(<code class="varname">ext</code>) with data coming from the specified
+raster coverage (<code class="varname">tab</code>, <code class="varname">col</code>).
+                </p>
+        <p>Algorithm options are: 'NearestNeighbor', 'Bilinear', 'Cubic', 'CubicSpline', and 'Lanczos'.  Refer to: <a class="link" href="http://www.gdal.org/gdalwarp.html" target="_top">GDAL Warp resampling methods</a> for more details.</p>
+        <p class="availability">Availability: 2.2.0</p>
+      </div>
+      <div class="refsection" id="idm28745">
+        <h2>See Also</h2>
+        <p>
+          <a class="xref" href="RT_CreateOverview.html" title="ST_CreateOverview">ST_CreateOverview</a>
+        </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="RT_ST_Tile.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="RT_reference.html#Raster_Constructors">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="RT_ST_FromGDALRaster.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_Tile </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_FromGDALRaster</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

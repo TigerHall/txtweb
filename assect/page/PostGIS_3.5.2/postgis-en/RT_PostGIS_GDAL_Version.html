@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>PostGIS_GDAL_Version</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="RT_DropOverviewConstraints.html" title="DropOverviewConstraints"/>
+    <link rel="next" href="RT_PostGIS_Raster_Lib_Build_Date.html" title="PostGIS_Raster_Lib_Build_Date"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">PostGIS_GDAL_Version</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="RT_DropOverviewConstraints.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">11.2. Raster Management</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="RT_PostGIS_Raster_Lib_Build_Date.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="RT_PostGIS_GDAL_Version">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>PostGIS_GDAL_Version — Reports the version of the GDAL library in use by PostGIS.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">text <strong class="fsfunc">PostGIS_GDAL_Version</strong>(</code><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm27481">
+        <h2>Description</h2>
+        <p>Reports the version of the GDAL library in use by PostGIS. Will also check and report if GDAL can find its data files.</p>
+      </div>
+      <div class="refsection" id="idm27484">
+        <h2>Examples</h2>
+        <pre class="programlisting">
+SELECT PostGIS_GDAL_Version();
+       postgis_gdal_version
+-----------------------------------
+ GDAL 1.11dev, released 2013/04/13
+                </pre>
+      </div>
+      <div class="refsection" id="idm27487">
+        <h2>See Also</h2>
+        <p>
+                    <a class="xref" href="postgis_gdal_datapath.html" title="postgis.gdal_datapath">postgis.gdal_datapath</a>
+                </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="RT_DropOverviewConstraints.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="RT_reference.html#Raster_Management_Functions">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="RT_PostGIS_Raster_Lib_Build_Date.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">DropOverviewConstraints </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> PostGIS_Raster_Lib_Build_Date</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

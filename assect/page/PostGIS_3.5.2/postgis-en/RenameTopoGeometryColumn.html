@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>RenameTopoGeometryColumn</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="AddTopoGeometryColumn.html" title="AddTopoGeometryColumn"/>
+    <link rel="next" href="DropTopology.html" title="DropTopology"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">RenameTopoGeometryColumn</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="AddTopoGeometryColumn.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">9.3. Topology and TopoGeometry Management</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="DropTopology.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="RenameTopoGeometryColumn">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>RenameTopoGeometryColumn — Renames a topogeometry column</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">topology.layer <strong class="fsfunc">RenameTopoGeometryColumn</strong>(</code>regclass 
+                        <var class="pdparam">layer_table</var>, name 
+                        <var class="pdparam">feature_column</var>, name 
+                        <var class="pdparam">new_name</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm23774">
+        <h2>Description</h2>
+        <p>
+This function changes the name of an existing TopoGeometry column
+ensuring metadata information about it is updated accordingly.
+                </p>
+        <p class="availability">Availability: 3.4.0</p>
+      </div>
+      <div class="refsection" id="idm23778">
+        <h2>Examples</h2>
+        <pre class="programlisting">
+SELECT topology.RenameTopoGeometryColumn('public.parcels', 'topogeom', 'tgeom');
+                </pre>
+      </div>
+      <div class="refsection" id="idm23781">
+        <h2>See Also</h2>
+        <p>
+				  <a class="xref" href="AddTopoGeometryColumn.html" title="AddTopoGeometryColumn">AddTopoGeometryColumn</a>,
+				  <a class="xref" href="RenameTopology.html" title="RenameTopology">RenameTopology</a>
+				</p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="AddTopoGeometryColumn.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="Topology.html#Topology_ManagementFunctions">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="DropTopology.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">AddTopoGeometryColumn </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> DropTopology</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

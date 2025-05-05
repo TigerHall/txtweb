@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_MinDist4ma</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="RT_ST_Min4ma.html" title="ST_Min4ma"/>
+    <link rel="next" href="RT_ST_Range4ma.html" title="ST_Range4ma"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_MinDist4ma</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="RT_ST_Min4ma.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">11.13. Built-in Map Algebra Callback Functions</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="RT_ST_Range4ma.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="RT_ST_MinDist4ma">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_MinDist4ma — Raster processing function that returns the minimum distance (in number of pixels) between the pixel of interest and a neighboring pixel with value.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">double precision <strong class="fsfunc">ST_MinDist4ma</strong>(</code>double precision[][][] <var class="pdparam">value</var>, integer[][] <var class="pdparam">pos</var>, text[] <var class="pdparam">VARIADIC userargs</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm35404">
+        <h2>Description</h2>
+        <p>Return the shortest distance (in number of pixels) between the pixel of interest and the closest pixel with value in the neighborhood.</p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>
+                        The intent of this function is to provide an informative data point that helps infer the usefulness of the pixel of interest's interpolated value from <a class="xref" href="RT_ST_InvDistWeight4ma.html" title="ST_InvDistWeight4ma">ST_InvDistWeight4ma</a>. This function is particularly useful when the neighborhood is sparsely populated.
+                    </p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>This function is a specialized callback function for use as a callback parameter to <a class="xref" href="RT_ST_MapAlgebra.html" title="ST_MapAlgebra (callback function version)">ST_MapAlgebra (callback function version)</a>.</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p class="availability">Availability: 2.1.0</p>
+      </div>
+      <div class="refsection" id="idm35414">
+        <h2>Examples</h2>
+        <pre class="programlisting">
+-- NEEDS EXAMPLE
+                </pre>
+      </div>
+      <div class="refsection" id="idm35417">
+        <h2>See Also</h2>
+        <p>
+                    <a class="xref" href="RT_ST_MapAlgebra.html" title="ST_MapAlgebra (callback function version)">ST_MapAlgebra (callback function version)</a>,
+                    <a class="xref" href="RT_ST_InvDistWeight4ma.html" title="ST_InvDistWeight4ma">ST_InvDistWeight4ma</a>
+                </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="RT_ST_Min4ma.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="RT_reference.html#Raster_Processing_MapAlgebra_Callbacks">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="RT_ST_Range4ma.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_Min4ma </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_Range4ma</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

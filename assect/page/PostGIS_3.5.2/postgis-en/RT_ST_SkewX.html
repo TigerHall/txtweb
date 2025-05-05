@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_SkewX</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="RT_ST_Rotation.html" title="ST_Rotation"/>
+    <link rel="next" href="RT_ST_SkewY.html" title="ST_SkewY"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_SkewX</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="RT_ST_Rotation.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">11.4. Raster Accessors</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="RT_ST_SkewY.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="RT_ST_SkewX">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_SkewX — Returns the georeference X skew (or rotation parameter).</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">float8 <strong class="fsfunc">ST_SkewX</strong>(</code>raster  <var class="pdparam">rast</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm29206">
+        <h2>Description</h2>
+        <p>Returns the georeference X skew (or rotation parameter).  Refer to <a class="link" href="http://en.wikipedia.org/wiki/World_file" target="_top">World File</a>
+                for more details.</p>
+      </div>
+      <div class="refsection" id="idm29210">
+        <h2>Examples</h2>
+        <pre class="programlisting">SELECT rid, ST_SkewX(rast) As skewx, ST_SkewY(rast) As skewy,
+    ST_GeoReference(rast) as georef
+FROM dummy_rast;
+
+ rid | skewx | skewy |       georef
+-----+-------+-------+--------------------
+   1 |     0 |     0 | 2.0000000000
+                     : 0.0000000000
+                     : 0.0000000000
+                     : 3.0000000000
+                     : 0.5000000000
+                     : 0.5000000000
+                     :
+   2 |     0 |     0 | 0.0500000000
+                     : 0.0000000000
+                     : 0.0000000000
+                     : -0.0500000000
+                     : 3427927.7500000000
+                     : 5793244.0000000000
+                </pre>
+      </div>
+      <div class="refsection" id="idm29213">
+        <h2>See Also</h2>
+        <p><a class="xref" href="RT_ST_GeoReference.html" title="ST_GeoReference">ST_GeoReference</a>, <a class="xref" href="RT_ST_SkewY.html" title="ST_SkewY">ST_SkewY</a>, <a class="xref" href="RT_ST_SetSkew.html" title="ST_SetSkew">ST_SetSkew</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="RT_ST_Rotation.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="RT_reference.html#Raster_Accessors">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="RT_ST_SkewY.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_Rotation </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_SkewY</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_LargestEmptyCircle</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_MaximumInscribedCircle.html" title="ST_MaximumInscribedCircle"/>
+    <link rel="next" href="ST_MinimumBoundingCircle.html" title="ST_MinimumBoundingCircle"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_LargestEmptyCircle</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_MaximumInscribedCircle.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.14. Geometry Processing</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_MinimumBoundingCircle.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_LargestEmptyCircle">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_LargestEmptyCircle — Computes the largest circle not overlapping a geometry.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">(geometry, geometry, double precision) <strong class="fsfunc">ST_LargestEmptyCircle</strong>(</code>geometry  <var class="pdparam">geom</var>, double precision  <var class="pdparam">tolerance=0.0</var>, geometry  <var class="pdparam">boundary=POINT EMPTY</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm17148">
+        <h2>Description</h2>
+        <p>Finds the largest circle which does not overlap a set of point and line obstacles. (Polygonal geometries may be included as obstacles, but only their boundary lines are used.) The center of the circle is constrained to lie inside a polygonal boundary, which by default is the convex hull of the input geometry. The circle center is the point in the interior of the boundary which has the farthest distance from the obstacles. The circle itself is provided by the center point and a nearest point lying on an obstacle determining the circle radius.</p>
+        <p>The circle center is determined to a given  accuracy specified by a distance tolerance, using an iterative algorithm. If the accuracy distance is not specified a reasonable default is used.</p>
+        <p>Returns a record with fields:</p>
+        <div class="itemizedlist">
+          <ul class="itemizedlist" style="list-style-type: disc; ">
+            <li class="listitem">
+              <p> <code class="varname">center</code> - center point of the circle </p>
+            </li>
+            <li class="listitem">
+              <p> <code class="varname">nearest</code> - a point on the geometry nearest to the center </p>
+            </li>
+            <li class="listitem">
+              <p> <code class="varname">radius</code> - radius of the circle </p>
+            </li>
+          </ul>
+        </div>
+        <p>To find the largest empty circle in the interior of a polygon, see <a class="xref" href="ST_MaximumInscribedCircle.html" title="ST_MaximumInscribedCircle">ST_MaximumInscribedCircle</a>.</p>
+        <p class="availability">Availability: 3.4.0.</p>
+        <p class="geos_requirement">Requires GEOS &gt;= 3.9.0.</p>
+      </div>
+      <div class="refsection" id="idm17167">
+        <h2>Examples</h2>
+        <pre class="programlisting">SELECT radius,
+      center,
+      nearest
+  FROM ST_LargestEmptyCircle(
+        'MULTILINESTRING (
+          (10 100, 60 180, 130 150, 190 160),
+          (20 50, 70 70, 90 20, 110 40),
+          (160 30, 100 100, 180 100))');</pre>
+        <div class="informalfigure">
+          <div class="mediaobject">
+            <img src="../images/st_largestemptycircle01.png"/>
+            <div class="caption">
+              <p>Largest Empty Circle within a set of lines.</p>
+            </div>
+          </div>
+        </div>
+        <pre class="programlisting">SELECT radius,
+       center,
+       nearest
+  FROM ST_LargestEmptyCircle(
+         ST_Collect(
+           'MULTIPOINT ((70 50), (60 130), (130 150), (80 90))'::geometry,
+           'POLYGON ((90 190, 10 100, 60 10, 190 40, 120 100, 190 180, 90 190))'::geometry),
+           0,
+         'POLYGON ((90 190, 10 100, 60 10, 190 40, 120 100, 190 180, 90 190))'::geometry
+       );</pre>
+        <div class="informalfigure">
+          <div class="mediaobject">
+            <img src="../images/st_largestemptycircle02.png"/>
+            <div class="caption">
+              <p>Largest Empty Circle within a set of points, constrained to lie in a polygon. The constraint polygon boundary must be included as an obstacle, as well as specified as the constraint for the circle center. </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="refsection" id="idm17183">
+        <h2>See Also</h2>
+        <p>
+          <a class="xref" href="ST_MinimumBoundingRadius.html" title="ST_MinimumBoundingRadius">ST_MinimumBoundingRadius</a>
+        </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_MaximumInscribedCircle.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Geometry_Processing">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_MinimumBoundingCircle.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_MaximumInscribedCircle </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_MinimumBoundingCircle</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

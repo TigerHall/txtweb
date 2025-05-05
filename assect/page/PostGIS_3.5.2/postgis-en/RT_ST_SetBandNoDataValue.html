@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_SetBandNoDataValue</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="RT_ST_Transform.html" title="ST_Transform"/>
+    <link rel="next" href="RT_ST_SetBandIsNoData.html" title="ST_SetBandIsNoData"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_SetBandNoDataValue</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="RT_ST_Transform.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">11.8. Raster Band Editors</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="RT_ST_SetBandIsNoData.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="RT_ST_SetBandNoDataValue">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_SetBandNoDataValue — Sets the value for the given band that represents no data. Band 1 is assumed if no band is specified.  To mark a band as having no nodata value, set the nodata value = NULL.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">raster <strong class="fsfunc">ST_SetBandNoDataValue</strong>(</code>raster  <var class="pdparam">rast</var>, double precision  <var class="pdparam">nodatavalue</var><code>)</code>;</p>
+          <p><code class="funcdef">raster <strong class="fsfunc">ST_SetBandNoDataValue</strong>(</code>raster  <var class="pdparam">rast</var>, integer  <var class="pdparam">band</var>, double precision  <var class="pdparam">nodatavalue</var>, boolean  <var class="pdparam">forcechecking=false</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm31692">
+        <h2>Description</h2>
+        <p>Sets the value that represents no data for the band.  Band 1 is assumed if not specified. This will affect results from <a class="xref" href="RT_ST_Polygon.html" title="ST_Polygon">ST_Polygon</a>, <a class="xref" href="RT_ST_DumpAsPolygons.html" title="ST_DumpAsPolygons">ST_DumpAsPolygons</a>, and the ST_PixelAs...() functions.</p>
+      </div>
+      <div class="refsection" id="idm31697">
+        <h2>Examples</h2>
+        <pre class="programlisting">-- change just first band no data value
+UPDATE dummy_rast
+    SET rast = ST_SetBandNoDataValue(rast,1, 254)
+WHERE rid = 2;
+
+-- change no data band value of bands 1,2,3
+UPDATE dummy_rast
+    SET rast =
+        ST_SetBandNoDataValue(
+            ST_SetBandNoDataValue(
+                ST_SetBandNoDataValue(
+                    rast,1, 254)
+                ,2,99),
+                3,108)
+        WHERE rid = 2;
+
+-- wipe out the nodata value this will ensure all pixels are considered for all processing functions
+UPDATE dummy_rast
+    SET rast = ST_SetBandNoDataValue(rast,1, NULL)
+WHERE rid = 2;
+                    </pre>
+      </div>
+      <div class="refsection" id="idm31700">
+        <h2>See Also</h2>
+        <p><a class="xref" href="RT_ST_BandNoDataValue.html" title="ST_BandNoDataValue">ST_BandNoDataValue</a>, <a class="xref" href="RT_ST_NumBands.html" title="ST_NumBands">ST_NumBands</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="RT_ST_Transform.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="RT_reference.html#RasterBand_Editors">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="RT_ST_SetBandIsNoData.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_Transform </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_SetBandIsNoData</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

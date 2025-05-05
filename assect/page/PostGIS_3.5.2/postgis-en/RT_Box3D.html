@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Box3D</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="RT_ST_TRI.html" title="ST_TRI"/>
+    <link rel="next" href="RT_ST_ConvexHull.html" title="ST_ConvexHull"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">Box3D</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="RT_ST_TRI.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">11.15. Raster Processing: Raster to Geometry</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="RT_ST_ConvexHull.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="RT_Box3D">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>Box3D — Returns the box 3d representation of the enclosing box of the raster.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">box3d <strong class="fsfunc">Box3D</strong>(</code>raster  <var class="pdparam">rast</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm36004">
+        <h2>Description</h2>
+        <p>Returns the box representing the extent of the raster.</p>
+        <p>
+                        The polygon is defined by the corner points of the bounding box ((<code class="varname">MINX</code>, <code class="varname">MINY</code>), (<code class="varname">MAXX</code>, <code class="varname">MAXY</code>))
+                    </p>
+        <p class="changed">Changed: 2.0.0 In pre-2.0 versions, there used to be a box2d instead of box3d.  Since box2d is a deprecated type, this was changed to box3d.</p>
+      </div>
+      <div class="refsection" id="idm36013">
+        <h2>Examples</h2>
+        <pre class="programlisting">
+SELECT
+    rid,
+    Box3D(rast) AS rastbox
+FROM dummy_rast;
+
+rid |        rastbox
+----+-------------------------------------------------
+1   | BOX3D(0.5 0.5 0,20.5 60.5 0)
+2   | BOX3D(3427927.75 5793243.5 0,3427928 5793244 0)
+                    </pre>
+      </div>
+      <div class="refsection" id="idm36016">
+        <h2>See Also</h2>
+        <p>
+                        <a class="xref" href="RT_ST_Envelope.html" title="ST_Envelope">ST_Envelope</a>
+                    </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="RT_ST_TRI.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="RT_reference.html#Raster_Processing_Geometry">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="RT_ST_ConvexHull.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_TRI </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_ConvexHull</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_TileEnvelope</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_Polygon.html" title="ST_Polygon"/>
+    <link rel="next" href="ST_HexagonGrid.html" title="ST_HexagonGrid"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_TileEnvelope</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_Polygon.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.3. Geometry Constructors</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_HexagonGrid.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_TileEnvelope">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_TileEnvelope — Creates a rectangular Polygon in <a class="link" href="https://en.wikipedia.org/wiki/Web_Mercator_projection" target="_top">Web Mercator</a> (SRID:3857) using the <a class="link" href="https://en.wikipedia.org/wiki/Tiled_web_map" target="_top">XYZ tile system</a>.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_TileEnvelope</strong>(</code>integer <var class="pdparam">tileZoom</var>, integer <var class="pdparam">tileX</var>, integer <var class="pdparam">tileY</var>, geometry <var class="pdparam">bounds=SRID=3857;LINESTRING(-20037508.342789 -20037508.342789,20037508.342789 20037508.342789)</var>, float <var class="pdparam">margin=0.0</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm4261">
+        <h2>Description</h2>
+        <p>Creates a rectangular Polygon
+            giving the extent of a tile in the <a class="link" href="https://en.wikipedia.org/wiki/Tiled_web_map" target="_top">XYZ tile system</a>.
+            The tile is specified by the zoom level Z and the XY index of the tile in the grid at that level.
+            Can be used to define the tile bounds required by <a class="xref" href="ST_AsMVTGeom.html" title="ST_AsMVTGeom">ST_AsMVTGeom</a> to convert geometry
+            into the MVT tile coordinate space.
+            </p>
+        <p>By default, the tile envelope is in the <a class="link" href="https://en.wikipedia.org/wiki/Web_Mercator_projection" target="_top">Web Mercator</a> coordinate system (SRID:3857)
+            using the standard range of the Web Mercator system (-20037508.342789, 20037508.342789).
+            This is the most common coordinate system used for MVT tiles.
+            The optional <code class="varname">bounds</code> parameter can be used to generate tiles in any coordinate system.
+            It is a geometry that has the SRID and extent of the "Zoom Level zero" square within which the XYZ tile system is inscribed.</p>
+        <p>The optional <code class="varname">margin</code> parameter can be used to expand a tile by the given percentage.
+            E.g. <code class="varname">margin=0.125</code> expands the tile by 12.5%, which is equivalent to buffer=512 when the tile extent size is 4096, as used in <a class="xref" href="ST_AsMVTGeom.html" title="ST_AsMVTGeom">ST_AsMVTGeom</a>.
+            This is useful to create a tile buffer to include data lying outside of the tile's visible area, but whose existence affects the tile rendering.
+            For example, a city name (a point) could be near an edge of a tile, so its label should be rendered on two tiles, even though the point is located in the visible area of just one tile.
+            Using expanded tiles in a query will include the city point in both tiles.
+            Use a negative value to shrink the tile instead. Values less than -0.5 are prohibited because that would eliminate the tile completely.
+            Do not specify a margin when using with <code class="varname">ST_AsMVTGeom</code>.
+            See the example for <a class="xref" href="ST_AsMVT.html" title="ST_AsMVT">ST_AsMVT</a>.</p>
+        <p class="enhanced">Enhanced: 3.1.0 Added margin parameter.</p>
+        <p class="availability">Availability: 3.0.0</p>
+      </div>
+      <div class="refsection" id="idm4277">
+        <h2>Example: Building a tile envelope</h2>
+        <pre class="programlisting">SELECT ST_AsText( ST_TileEnvelope(2, 1, 1) );
+
+ st_astext
+------------------------------
+ POLYGON((-10018754.1713945 0,-10018754.1713945 10018754.1713945,0 10018754.1713945,0 0,-10018754.1713945 0))
+
+SELECT ST_AsText( ST_TileEnvelope(3, 1, 1, ST_MakeEnvelope(-180, -90, 180, 90, 4326) ) );
+
+                      st_astext
+------------------------------------------------------
+ POLYGON((-135 45,-135 67.5,-90 67.5,-90 45,-135 45))
+</pre>
+      </div>
+      <div class="refsection" id="idm4280">
+        <h2>See Also</h2>
+        <p>
+          <a class="xref" href="ST_MakeEnvelope.html" title="ST_MakeEnvelope">ST_MakeEnvelope</a>
+        </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_Polygon.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Geometry_Constructors">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_HexagonGrid.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_Polygon </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_HexagonGrid</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>=</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_Geometry_Below.html" title="&lt;&lt;|"/>
+    <link rel="next" href="ST_Geometry_Right.html" title="&gt;&gt;"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">=</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_Geometry_Below.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.10.1. Bounding Box Operators</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_Geometry_Right.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_Geometry_EQ">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>= — Returns <code class="varname">TRUE</code> if the coordinates and coordinate order geometry/geography A
+			are the same as the coordinates and coordinate order of geometry/geography B.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">boolean <strong class="fsfunc">=</strong>(</code>
+				  geometry 
+
+				  <var class="pdparam">A</var>
+				, 
+				  geometry 
+
+				  <var class="pdparam">B</var>
+				<code>)</code>;</p>
+          <p><code class="funcdef">boolean <strong class="fsfunc">=</strong>(</code>
+					  geography 
+
+					  <var class="pdparam">A</var>
+					, 
+					  geography 
+
+					  <var class="pdparam">B</var>
+					<code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm12085">
+        <h2>Description</h2>
+        <p>The <code class="varname">=</code> operator returns <code class="varname">TRUE</code> if the coordinates and coordinate order geometry/geography A
+			are the same as the coordinates and coordinate order of geometry/geography B.  PostgreSQL uses the =, &lt;, and &gt; operators defined for geometries to
+			perform internal orderings and comparison of geometries (ie. in a GROUP BY or ORDER BY clause).</p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>Only geometry/geography that are exactly equal in all respects,
+          with the same coordinates, in the same order, are considered
+          equal by this operator. For "spatial equality", that ignores
+          things like coordinate order, and can detect features that
+          cover the same spatial area with different representations,
+          use <a class="xref" href="ST_OrderingEquals.html" title="ST_OrderingEquals">ST_OrderingEquals</a>
+          or <a class="xref" href="ST_Equals.html" title="ST_Equals">ST_Equals</a></p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="caution">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Caution]" src="../images/caution.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>This operand will NOT make use of any indexes that may be available on the
+				geometries. For an index assisted exact equality test, combine = with &amp;&amp;.</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p class="changed">Changed: 2.4.0, in prior versions this was bounding box equality not a geometric equality. If you need bounding box equality, use <a class="xref" href="ST_Geometry_Same.html" title="~=">~=</a> instead.</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method supports Circular Strings and Curves.
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports Polyhedral surfaces.
+        </p>
+      </div>
+      <div class="refsection" id="idm12106">
+        <h2>Examples</h2>
+        <pre class="programlisting">
+SELECT 'LINESTRING(0 0, 0 1, 1 0)'::geometry = 'LINESTRING(1 1, 0 0)'::geometry;
+ ?column?
+----------
+ f
+(1 row)
+
+SELECT ST_AsText(column1)
+FROM ( VALUES
+	('LINESTRING(0 0, 1 1)'::geometry),
+	('LINESTRING(1 1, 0 0)'::geometry)) AS foo;
+	  st_astext
+---------------------
+ LINESTRING(0 0,1 1)
+ LINESTRING(1 1,0 0)
+(2 rows)
+
+-- Note: the GROUP BY uses the "=" to compare for geometry equivalency.
+SELECT ST_AsText(column1)
+FROM ( VALUES
+	('LINESTRING(0 0, 1 1)'::geometry),
+	('LINESTRING(1 1, 0 0)'::geometry)) AS foo
+GROUP BY column1;
+      st_astext
+---------------------
+ LINESTRING(0 0,1 1)
+ LINESTRING(1 1,0 0)
+(2 rows)
+
+-- In versions prior to 2.0, this used to return true --
+ SELECT ST_GeomFromText('POINT(1707296.37 4820536.77)') =
+	ST_GeomFromText('POINT(1707296.27 4820536.87)') As pt_intersect;
+
+--pt_intersect --
+f
+
+</pre>
+      </div>
+      <div class="refsection" id="idm12109">
+        <h2>See Also</h2>
+        <p><a class="xref" href="ST_Equals.html" title="ST_Equals">ST_Equals</a>, <a class="xref" href="ST_OrderingEquals.html" title="ST_OrderingEquals">ST_OrderingEquals</a>, <a class="xref" href="ST_Geometry_Same.html" title="~=">~=</a>
+			</p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_Geometry_Below.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#operators-bbox">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_Geometry_Right.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">&lt;&lt;| </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> &gt;&gt;</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

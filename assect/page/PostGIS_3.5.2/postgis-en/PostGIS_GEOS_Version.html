@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>PostGIS_GEOS_Version</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="PostGIS_Full_Version.html" title="PostGIS_Full_Version"/>
+    <link rel="next" href="PostGIS_GEOS_Compiled_Version.html" title="PostGIS_GEOS_Compiled_Version"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">PostGIS_GEOS_Version</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="PostGIS_Full_Version.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.21. Version Functions</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="PostGIS_GEOS_Compiled_Version.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="PostGIS_GEOS_Version">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>PostGIS_GEOS_Version — Returns the version number of the GEOS
+		library.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">text <strong class="fsfunc">PostGIS_GEOS_Version</strong>(</code><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm20439">
+        <h2>Description</h2>
+        <p>Returns the version number of the GEOS library, or
+		<code class="varname">NULL</code> if GEOS support is not enabled.</p>
+      </div>
+      <div class="refsection" id="idm20443">
+        <h2>Examples</h2>
+        <pre class="programlisting">SELECT PostGIS_GEOS_Version();
+ postgis_geos_version
+----------------------
+3.12.0dev-CAPI-1.18.0
+(1 row)</pre>
+      </div>
+      <div class="refsection" id="idm20446">
+        <h2>See Also</h2>
+        <p><a class="xref" href="PostGIS_Full_Version.html" title="PostGIS_Full_Version">PostGIS_Full_Version</a>, <a class="xref" href="PostGIS_Lib_Version.html" title="PostGIS_Lib_Version">PostGIS_Lib_Version</a>, <a class="xref" href="PostGIS_LibXML_Version.html" title="PostGIS_LibXML_Version">PostGIS_LibXML_Version</a>, <a class="xref" href="PostGIS_PROJ_Version.html" title="PostGIS_PROJ_Version">PostGIS_PROJ_Version</a>, <a class="xref" href="PostGIS_Version.html" title="PostGIS_Version">PostGIS_Version</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="PostGIS_Full_Version.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Version_Functions">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="PostGIS_GEOS_Compiled_Version.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">PostGIS_Full_Version </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> PostGIS_GEOS_Compiled_Version</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

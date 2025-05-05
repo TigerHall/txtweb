@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>GetTopologySRID</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="GetTopologyID.html" title="GetTopologyID"/>
+    <link rel="next" href="GetTopologyName.html" title="GetTopologyName"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">GetTopologySRID</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="GetTopologyID.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">9.7. Topology Accessors</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="GetTopologyName.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="GetTopologySRID">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>GetTopologySRID — Returns the SRID of a topology in the topology.topology table given the name of the topology.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">integer <strong class="fsfunc">GetTopologyID</strong>(</code>varchar <var class="pdparam">toponame</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm25271">
+        <h2>Description</h2>
+        <p>Returns the spatial reference id of a topology in the topology.topology table given the name of the topology.</p>
+        <p class="availability">Availability: 2.0.0</p>
+      </div>
+      <div class="refsection" id="idm25275">
+        <h2>Examples</h2>
+        <pre class="programlisting">SELECT topology.GetTopologySRID('ma_topo') As SRID;
+ SRID
+-------
+  4326</pre>
+      </div>
+      <div class="refsection" id="idm25278">
+        <h2>See Also</h2>
+        <p>
+	<a class="xref" href="CreateTopology.html" title="CreateTopology">CreateTopology</a>,
+	<a class="xref" href="DropTopology.html" title="DropTopology">DropTopology</a>,
+	<a class="xref" href="GetTopologyName.html" title="GetTopologyName">GetTopologyName</a>,
+	<a class="xref" href="GetTopologyID.html" title="GetTopologyID">GetTopologyID</a>
+				</p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="GetTopologyID.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="Topology.html#Topology_Accessors">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="GetTopologyName.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">GetTopologyID </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> GetTopologyName</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

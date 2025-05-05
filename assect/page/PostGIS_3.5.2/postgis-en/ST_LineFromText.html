@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_LineFromText</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_GeomFromText.html" title="ST_GeomFromText"/>
+    <link rel="next" href="ST_MLineFromText.html" title="ST_MLineFromText"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_LineFromText</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_GeomFromText.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.8.1. Well-Known Text (WKT)</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_MLineFromText.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_LineFromText">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_LineFromText — Makes a Geometry from WKT representation with the given SRID. If SRID is
+				not given, it defaults to 0.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_LineFromText</strong>(</code>text  <var class="pdparam">WKT</var><code>)</code>;</p>
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_LineFromText</strong>(</code>text  <var class="pdparam">WKT</var>, integer  <var class="pdparam">srid</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm9146">
+        <h2>Description</h2>
+        <p>Makes a Geometry from WKT with the given SRID. If SRID is
+				not given, it defaults to 0.  If WKT passed in is not a LINESTRING, then null is returned.  </p>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>OGC SPEC 3.2.6.2 - option SRID is from the conformance
+				suite.</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="note">
+          <table style="border: 0; ">
+            <tr>
+              <td style="text-align: center; vertical-align: top; width: 25px; " rowspan="2">
+                <img alt="[Note]" src="../images/note.png"/>
+              </td>
+              <th style="text-align: left; "/>
+            </tr>
+            <tr>
+              <td style="text-align: left; vertical-align: top; ">
+                <p>If you know all your geometries are LINESTRINGS, its more efficient to just use ST_GeomFromText.
+			This just calls ST_GeomFromText and adds additional validation that it returns a linestring.</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method implements the <a class="link" href="http://www.opengeospatial.org/standards/sfs" target="_top">OGC Simple Features
+            Implementation Specification for SQL 1.1.</a>
+         s3.2.6.2</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method implements the SQL/MM specification.
+         SQL-MM 3: 7.2.8</p>
+      </div>
+      <div class="refsection" id="idm9162">
+        <h2>Examples</h2>
+        <pre class="programlisting">SELECT ST_LineFromText('LINESTRING(1 2, 3 4)') AS aline, ST_LineFromText('POINT(1 2)') AS null_return;
+aline                            | null_return
+------------------------------------------------
+010200000002000000000000000000F ... | t
+		</pre>
+      </div>
+      <div class="refsection" id="idm9165">
+        <h2>See Also</h2>
+        <p>
+          <a class="xref" href="ST_GeomFromText.html" title="ST_GeomFromText">ST_GeomFromText</a>
+        </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_GeomFromText.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#idm8784">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_MLineFromText.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_GeomFromText </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_MLineFromText</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

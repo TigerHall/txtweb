@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>stdaddr</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="Extras.html" title="Chapter 12. PostGIS Extras"/>
+    <link rel="next" href="rulestab.html" title="rules table"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">stdaddr</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="Extras.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">12.1.2. Address Standardizer Types</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="rulestab.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="stdaddr">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>stdaddr — A composite type that consists of the elements of an address.  This is the return type for <code class="varname">standardize_address</code> function.</p>
+      </div>
+      <div class="refsection" id="idm37225">
+        <h2>Description</h2>
+        <p>A composite type that consists of elements of an address.   This is the return type for <a class="xref" href="standardize_address.html" title="standardize_address">standardize_address</a> function. Some descriptions for elements are borrowed from <a class="link" href="http://www.pagcgeo.org/docs/html/pagc-12.html#ss12.1" target="_top">PAGC Postal Attributes</a>.</p>
+        <p>The token numbers denote the output reference number in the <a class="xref" href="rulestab.html" title="rules table">rules table</a>.</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method needs address_standardizer extension.
+        </p>
+        <div class="variablelist">
+          <dl class="variablelist">
+            <dt>
+              <span class="term">
+                <code class="varname">building</code>
+              </span>
+            </dt>
+            <dd>
+              <p> is text (token number <code class="code">0</code>):  Refers to building number or name. Unparsed building identifiers and types. Generally blank for most addresses.</p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">house_num</code>
+              </span>
+            </dt>
+            <dd>
+              <p>is a text (token number <code class="code">1</code>): This is the street number on a street. Example <span class="emphasis"><em>75</em></span> in <code class="code">75 State Street</code>.</p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">predir</code>
+              </span>
+            </dt>
+            <dd>
+              <p> is text (token number <code class="code">2</code>): STREET NAME PRE-DIRECTIONAL such as North, South, East, West etc.</p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">qual</code>
+              </span>
+            </dt>
+            <dd>
+              <p>is text (token number <code class="code">3</code>): STREET NAME PRE-MODIFIER Example <span class="emphasis"><em>OLD</em></span> in <code class="code">3715 OLD HIGHWAY 99</code>.</p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">pretype</code>
+              </span>
+            </dt>
+            <dd>
+              <p> is text (token number <code class="code">4</code>): STREET PREFIX TYPE</p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">name</code>
+              </span>
+            </dt>
+            <dd>
+              <p>is text (token number <code class="code">5</code>): STREET NAME</p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">suftype</code>
+              </span>
+            </dt>
+            <dd>
+              <p>is text (token number <code class="code">6</code>): STREET POST TYPE e.g. St, Ave, Cir.  A street type following the root street name. Example <span class="emphasis"><em>STREET</em></span> in <code class="code">75 State Street</code>.</p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">sufdir</code>
+              </span>
+            </dt>
+            <dd>
+              <p>is text (token number <code class="code">7</code>): STREET POST-DIRECTIONAL A directional modifier that follows the street name.. Example <span class="emphasis"><em>WEST</em></span> in <code class="code">3715 TENTH AVENUE WEST</code>.</p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">ruralroute</code>
+              </span>
+            </dt>
+            <dd>
+              <p>is text (token number <code class="code">8</code>): RURAL ROUTE . Example <span class="emphasis"><em>7</em></span> in <code class="code">RR 7</code>.</p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">extra</code>
+              </span>
+            </dt>
+            <dd>
+              <p>is text: Extra information like Floor number.</p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">city</code>
+              </span>
+            </dt>
+            <dd>
+              <p>is text (token number <code class="code">10</code>): Example Boston.</p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">state</code>
+              </span>
+            </dt>
+            <dd>
+              <p>is text (token number <code class="code">11</code>):  Example <code class="code">MASSACHUSETTS</code></p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">country</code>
+              </span>
+            </dt>
+            <dd>
+              <p>is text (token number <code class="code">12</code>):  Example <code class="code">USA</code></p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">postcode</code>
+              </span>
+            </dt>
+            <dd>
+              <p>is text POSTAL CODE (ZIP CODE) (token number <code class="code">13</code>):  Example <code class="code">02109</code></p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">box</code>
+              </span>
+            </dt>
+            <dd>
+              <p>is text POSTAL BOX NUMBER (token number <code class="code">14 and 15</code>):  Example <code class="code">02109</code></p>
+            </dd>
+            <dt>
+              <span class="term">
+                <code class="varname">unit</code>
+              </span>
+            </dt>
+            <dd>
+              <p>is text Apartment number or Suite Number (token number <code class="code">17</code>):  Example <span class="emphasis"><em>3B</em></span> in <code class="code">APT 3B</code>.</p>
+            </dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="Extras.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="Extras.html#Address_Standardizer_Types">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="rulestab.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">Chapter 12. PostGIS Extras </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> rules table</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

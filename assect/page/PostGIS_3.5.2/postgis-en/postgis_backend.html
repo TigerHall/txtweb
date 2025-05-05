@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>postgis.backend</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="PostGIS_Version.html" title="PostGIS_Version"/>
+    <link rel="next" href="postgis_gdal_datapath.html" title="postgis.gdal_datapath"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">postgis.backend</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="PostGIS_Version.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.22. Grand Unified Custom Variables (GUCs)</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="postgis_gdal_datapath.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="postgis_backend">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>postgis.backend — The backend to service a function where GEOS and SFCGAL overlap. Options: geos or sfcgal. Defaults to geos.</p>
+      </div>
+      <div class="refsection" id="idm20777">
+        <h2>Description</h2>
+        <p>This GUC is only relevant if you compiled PostGIS with sfcgal support.  By default <code class="varname">geos</code> backend is used for functions where both GEOS and SFCGAL have the same named function.  This variable allows you to override and make sfcgal the backend to service the request.</p>
+        <p class="availability">Availability: 2.1.0</p>
+      </div>
+      <div class="refsection" id="idm20782">
+        <h2>Examples</h2>
+        <p>Sets backend just for life of connection</p>
+        <pre class="programlisting">set postgis.backend = sfcgal;</pre>
+        <p>Sets backend for new connections to database</p>
+        <pre class="programlisting">ALTER DATABASE mygisdb SET postgis.backend = sfcgal;</pre>
+      </div>
+      <div class="refsection" id="idm20788">
+        <h2>See Also</h2>
+        <p>
+          <a class="xref" href="reference_sfcgal.html" title="Chapter 8. SFCGAL Functions Reference">Chapter 8, <em>SFCGAL Functions Reference</em></a>
+        </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="PostGIS_Version.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#PostGIS_GUC">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="postgis_gdal_datapath.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">PostGIS_Version </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> postgis.gdal_datapath</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

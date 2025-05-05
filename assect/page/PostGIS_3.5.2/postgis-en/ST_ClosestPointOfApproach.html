@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_ClosestPointOfApproach</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_IsValidTrajectory.html" title="ST_IsValidTrajectory"/>
+    <link rel="next" href="ST_DistanceCPA.html" title="ST_DistanceCPA"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_ClosestPointOfApproach</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_IsValidTrajectory.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.20. Trajectory Functions</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_DistanceCPA.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_ClosestPointOfApproach">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_ClosestPointOfApproach — 
+Returns a measure at the closest point of approach of two trajectories.
+      </p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">float8 <strong class="fsfunc">ST_ClosestPointOfApproach</strong>(</code>geometry  <var class="pdparam">track1</var>, geometry  <var class="pdparam">track2</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm20269">
+        <h2>Description</h2>
+        <p>
+Returns the smallest measure at which points interpolated along the given
+trajectories are the least distance apart.
+      </p>
+        <p>
+Inputs must be valid trajectories as
+checked by <a class="xref" href="ST_IsValidTrajectory.html" title="ST_IsValidTrajectory">ST_IsValidTrajectory</a>. Null is returned if
+the trajectories do not overlap in their M ranges.
+			</p>
+        <p>
+To obtain the actual points at the computed measure use <a class="xref" href="ST_LocateAlong.html" title="ST_LocateAlong">ST_LocateAlong</a> .
+			</p>
+        <p class="availability">Availability: 2.2.0</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports 3d and will not drop the z-index.
+        </p>
+      </div>
+      <div class="refsection" id="idm20281">
+        <h2>Examples</h2>
+        <pre class="programlisting">
+-- Return the time in which two objects moving between 10:00 and 11:00
+-- are closest to each other and their distance at that point
+WITH inp AS ( SELECT
+  ST_AddMeasure('LINESTRING Z (0 0 0, 10 0 5)'::geometry,
+    extract(epoch from '2015-05-26 10:00'::timestamptz),
+    extract(epoch from '2015-05-26 11:00'::timestamptz)
+  ) a,
+  ST_AddMeasure('LINESTRING Z (0 2 10, 12 1 2)'::geometry,
+    extract(epoch from '2015-05-26 10:00'::timestamptz),
+    extract(epoch from '2015-05-26 11:00'::timestamptz)
+  ) b
+), cpa AS (
+  SELECT ST_ClosestPointOfApproach(a,b) m FROM inp
+), points AS (
+  SELECT ST_GeometryN(ST_LocateAlong(a,m),1) pa,
+         ST_GeometryN(ST_LocateAlong(b,m),1) pb
+  FROM inp, cpa
+)
+SELECT to_timestamp(m) t,
+       ST_Distance(pa,pb) distance,
+       ST_AsText(pa, 2) AS pa, ST_AsText(pb, 2) AS pb
+FROM points, cpa;
+
+               t               |      distance      |                  pa                  |                   pb                   
+-------------------------------+--------------------+--------------------------------------+----------------------------------------
+ 2015-05-26 10:45:31.034483-07 | 1.9603683315139542 | POINT ZM (7.59 0 3.79 1432662331.03) | POINT ZM (9.1 1.24 3.93 1432662331.03)
+ </pre>
+      </div>
+      <div class="refsection" id="idm20284">
+        <h2>See Also</h2>
+        <p>
+<a class="xref" href="ST_IsValidTrajectory.html" title="ST_IsValidTrajectory">ST_IsValidTrajectory</a>,
+<a class="xref" href="ST_DistanceCPA.html" title="ST_DistanceCPA">ST_DistanceCPA</a>,
+<a class="xref" href="ST_LocateAlong.html" title="ST_LocateAlong">ST_LocateAlong</a>,
+<a class="xref" href="ST_AddMeasure.html" title="ST_AddMeasure">ST_AddMeasure</a>
+			</p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_IsValidTrajectory.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Temporal">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_DistanceCPA.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_IsValidTrajectory </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_DistanceCPA</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

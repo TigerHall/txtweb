@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_LineInterpolatePoints</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_3DLineInterpolatePoint.html" title="ST_3DLineInterpolatePoint"/>
+    <link rel="next" href="ST_LineLocatePoint.html" title="ST_LineLocatePoint"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_LineInterpolatePoints</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_3DLineInterpolatePoint.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.19. Linear Referencing</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_LineLocatePoint.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_LineInterpolatePoints">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_LineInterpolatePoints — 
+				Returns points interpolated along a line at a fractional interval.
+			</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">geometry <strong class="fsfunc">ST_LineInterpolatePoints</strong>(</code>geometry  <var class="pdparam">a_linestring</var>, float8  <var class="pdparam">a_fraction</var>, boolean  <var class="pdparam">repeat</var><code>)</code>;</p>
+          <p><code class="funcdef">geography <strong class="fsfunc">ST_LineInterpolatePoints</strong>(</code>geography  <var class="pdparam">a_linestring</var>, float8  <var class="pdparam">a_fraction</var>, boolean <var class="pdparam">use_spheroid = true</var>, boolean  <var class="pdparam">repeat = true</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm19872">
+        <h2>Description</h2>
+        <p>Returns one or more points interpolated along a line at a fractional interval.
+            The first argument
+			must be a LINESTRING. The second argument is a float8 between 0 and 1
+			representing the spacing between the points as a fraction of
+			line length. If the third argument is false, at most one point
+			will be constructed (which is equivalent to <a class="xref" href="ST_LineInterpolatePoint.html" title="ST_LineInterpolatePoint">ST_LineInterpolatePoint</a>.)
+		</p>
+        <p>
+			If the result has zero or one points, it is returned as a POINT.
+			If it has two or more points, it is returned as a MULTIPOINT.
+		</p>
+        <p class="availability">Availability: 2.5.0</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports 3d and will not drop the z-index.
+        </p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This function supports M coordinates.
+        </p>
+      </div>
+      <div class="refsection" id="idm19886">
+        <h2>Examples</h2>
+        <div class="informalfigure">
+          <div class="mediaobject">
+            <img src="../images/st_line_interpolate_points01.png"/>
+            <div class="caption">
+              <p>A LineString with points interpolated every 20% </p>
+            </div>
+          </div>
+        </div>
+        <pre class="programlisting">--Return points each 20% along a 2D line
+SELECT ST_AsText(ST_LineInterpolatePoints('LINESTRING(25 50, 100 125, 150 190)', 0.20))
+----------------
+ MULTIPOINT((51.5974135047432 76.5974135047432),(78.1948270094864 103.194827009486),(104.132163186446 130.37181214238),(127.066081593223 160.18590607119),(150 190))
+</pre>
+      </div>
+      <div class="refsection" id="idm19895">
+        <h2>See Also</h2>
+        <p>
+				<a class="xref" href="ST_LineInterpolatePoint.html" title="ST_LineInterpolatePoint">ST_LineInterpolatePoint</a>,
+				<a class="xref" href="ST_LineLocatePoint.html" title="ST_LineLocatePoint">ST_LineLocatePoint</a>
+			</p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_3DLineInterpolatePoint.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Linear_Referencing">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_LineLocatePoint.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_3DLineInterpolatePoint </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_LineLocatePoint</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

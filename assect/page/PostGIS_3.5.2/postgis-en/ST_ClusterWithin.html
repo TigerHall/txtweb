@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>ST_ClusterWithin</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_ClusterKMeans.html" title="ST_ClusterKMeans"/>
+    <link rel="next" href="ST_ClusterWithinWin.html" title="ST_ClusterWithinWin"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">ST_ClusterWithin</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_ClusterKMeans.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">7.17. Clustering Functions</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="ST_ClusterWithinWin.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="ST_ClusterWithin">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>ST_ClusterWithin — Aggregate function that clusters geometries by separation distance.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">geometry[] <strong class="fsfunc">ST_ClusterWithin</strong>(</code>geometry set  <var class="pdparam">g</var>, float8  <var class="pdparam">distance</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm19035">
+        <h2>Description</h2>
+        <p>An aggregate function that returns an array of GeometryCollections,
+        where each collection is a cluster containing some input geometries.
+        Clustering partitions the input geometries into sets
+        in which each geometry is within the specified <em class="parameter"><code>distance</code></em>
+        of at least one other geometry in the same cluster.
+        Distances are Cartesian distances in the units of the SRID.
+        </p>
+        <p>ST_ClusterWithin is equivalent to running <a class="xref" href="ST_ClusterDBSCAN.html" title="ST_ClusterDBSCAN">ST_ClusterDBSCAN</a> with <code class="code">minpoints =&gt; 0</code>.</p>
+        <p class="availability">Availability: 2.2.0</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method supports Circular Strings and Curves.
+        </p>
+      </div>
+      <div class="refsection" id="idm19047">
+        <h2>Examples</h2>
+        <pre class="programlisting">
+WITH testdata AS
+  (SELECT unnest(ARRAY['LINESTRING (0 0, 1 1)'::geometry,
+		       'LINESTRING (5 5, 4 4)'::geometry,
+		       'LINESTRING (6 6, 7 7)'::geometry,
+		       'LINESTRING (0 0, -1 -1)'::geometry,
+		       'POLYGON ((0 0, 4 0, 4 4, 0 4, 0 0))'::geometry]) AS geom)
+
+SELECT ST_AsText(unnest(ST_ClusterWithin(geom, 1.4))) FROM testdata;
+
+--result
+
+st_astext
+---------
+GEOMETRYCOLLECTION(LINESTRING(0 0,1 1),LINESTRING(5 5,4 4),LINESTRING(0 0,-1 -1),POLYGON((0 0,4 0,4 4,0 4,0 0)))
+GEOMETRYCOLLECTION(LINESTRING(6 6,7 7))
+        </pre>
+      </div>
+      <div class="refsection" id="idm19050">
+        <h2>See Also</h2>
+        <p>
+          <a class="xref" href="ST_ClusterWithinWin.html" title="ST_ClusterWithinWin">ST_ClusterWithinWin</a>,
+          <a class="xref" href="ST_ClusterDBSCAN.html" title="ST_ClusterDBSCAN">ST_ClusterDBSCAN</a>,
+          <a class="xref" href="ST_ClusterIntersecting.html" title="ST_ClusterIntersecting">ST_ClusterIntersecting</a>,
+          <a class="xref" href="ST_ClusterIntersectingWin.html" title="ST_ClusterIntersectingWin">ST_ClusterIntersectingWin</a>
+        </p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_ClusterKMeans.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference.html#Clustering_Functions">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="ST_ClusterWithinWin.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_ClusterKMeans </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> ST_ClusterWithinWin</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>

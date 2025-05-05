@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html><html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>CG_OptimalAlphaShape</title>
+    <link rel="stylesheet" type="text/css" href="../style.css"/>
+    <meta name="generator" content="DocBook XSL Stylesheets V1.79.2"/>
+    <link rel="prev" href="ST_OptimalAlphaShape.html" title="ST_OptimalAlphaShape"/>
+    <link rel="next" href="CG_OptimalConvexPartition.html" title="CG_OptimalConvexPartition"/>
+  </head>
+  <body>
+    <header>
+      <div class="navheader">
+        <table style="width: 100%; ">
+          <tr>
+            <th style="text-align: center; " colspan="3">CG_OptimalAlphaShape</th>
+          </tr>
+          <tr>
+            <td style="width: 20%; text-align: left; "><a accesskey="p" href="ST_OptimalAlphaShape.html">Prev</a> </td>
+            <th style="width: 60%; text-align: center; ">8.3. SFCGAL Processing and Relationship Functions</th>
+            <td style="width: 20%; text-align: right; "> <a accesskey="n" href="CG_OptimalConvexPartition.html">Next</a></td>
+          </tr>
+        </table>
+      </div>
+    </header>
+    <div class="refentry" id="CG_OptimalAlphaShape">
+      <div class="titlepage"/>
+      <div class="refnamediv">
+        <h2>Name</h2>
+        <p>CG_OptimalAlphaShape — Computes an Alpha-shape enclosing a geometry using an "optimal" alpha value.</p>
+      </div>
+      <div class="refsynopsisdiv">
+        <h2>Synopsis</h2>
+        <div class="funcsynopsis">
+          <p><code class="funcdef">geometry <strong class="fsfunc">CG_OptimalAlphaShape</strong>(</code>geometry <var class="pdparam">geom</var>, boolean  <var class="pdparam">allow_holes = false</var>, integer  <var class="pdparam">nb_components = 1</var><code>)</code>;</p>
+        </div>
+      </div>
+      <div class="refsection" id="idm23032">
+        <h2>Description</h2>
+        <p>Computes the "optimal" alpha-shape of the points in a geometry.
+                The alpha-shape is computed using a value of α chosen so that:
+            </p>
+        <div class="orderedlist">
+          <ol class="orderedlist" type="1">
+            <li class="listitem">
+              <p>the number of polygon elements is equal to or smaller than <code class="varname">nb_components</code>
+                        (which defaults to 1)</p>
+            </li>
+            <li class="listitem">
+              <p>all input points are contained in the shape</p>
+            </li>
+          </ol>
+        </div>
+        <p>
+                The result will not contain holes unless the optional <code class="varname">allow_holes</code> argument is specified as true.
+            </p>
+        <p class="availability">Availability: 3.5.0 - requires SFCGAL &gt;= 1.4.1.</p>
+        <p>
+            <span class="inlinemediaobject"><img src="../images/check.png"/></span>
+            This method needs SFCGAL backend.
+        </p>
+      </div>
+      <div class="refsection" id="idm23048">
+        <h2>Examples</h2>
+        <p>
+                </p>
+        <div class="informalfigure">
+          <div class="mediaobject">
+            <img src="../images/st_optimalalphashape01.png"/>
+            <div class="caption">
+              <p>Optimal alpha-shape of a MultiPoint (same example as <a class="xref" href="CG_AlphaShape.html" title="CG_AlphaShape">CG_AlphaShape</a>)</p>
+            </div>
+          </div>
+        </div>
+        <p>
+                </p>
+        <pre class="programlisting">SELECT ST_AsText(CG_OptimalAlphaShape('MULTIPOINT((63 84),(76 88),(68 73),(53 18),(91 50),(81 70),
+                (88 29),(24 82),(32 51),(37 23),(27 54),(84 19),(75 87),(44 42),(77 67),(90 30),(36 61),(32 65),
+                (81 47),(88 58),(68 73),(49 95),(81 60),(87 50),
+                (78 16),(79 21),(30 22),(78 43),(26 85),(48 34),(35 35),(36 40),(31 79),(83 29),(27 84),(52 98),(72 95),(85 71),
+                (75 84),(75 77),(81 29),(77 73),(41 42),(83 72),(23 36),(89 53),(27 57),(57 97),(27 77),(39 88),(60 81),
+                (80 72),(54 32),(55 26),(62 22),(70 20),(76 27),(84 35),(87 42),(82 54),(83 64),(69 86),(60 90),(50 86),(43 80),(36 73),
+                (36 68),(40 75),(24 67),(23 60),(26 44),(28 33),(40 32),(43 19),(65 16),(73 16),(38 46),(31 59),(34 86),(45 90),(64 97))'::geometry));</pre>
+        <p>
+            </p>
+        <pre class="screen">POLYGON((89 53,91 50,87 42,90 30,88 29,84 19,78 16,73 16,65 16,53 18,43 19,37 23,30 22,28 33,23 36,
+            26 44,27 54,23 60,24 67,27 77,24 82,26 85,34 86,39 88,45 90,49 95,52 98,57 97,64 97,72 95,76 88,75 84,75 77,83 72,85 71,83 64,88 58,89 53))</pre>
+        <p>
+    </p>
+        <p>
+        </p>
+        <div class="informalfigure">
+          <div class="mediaobject">
+            <img src="../images/st_optimalalphashape02.png"/>
+            <div class="caption">
+              <p>Optimal alpha-shape of a MultiPoint, allowing holes (same example as <a class="xref" href="CG_AlphaShape.html" title="CG_AlphaShape">CG_AlphaShape</a>)</p>
+            </div>
+          </div>
+        </div>
+        <p>
+        </p>
+        <pre class="programlisting">SELECT ST_AsText(CG_OptimalAlphaShape('MULTIPOINT((63 84),(76 88),(68 73),(53 18),(91 50),(81 70),(88 29),(24 82),(32 51),(37 23),(27 54),(84 19),(75 87),(44 42),(77 67),(90 30),(36 61),(32 65),(81 47),(88 58),(68 73),(49 95),(81 60),(87 50),
+        (78 16),(79 21),(30 22),(78 43),(26 85),(48 34),(35 35),(36 40),(31 79),(83 29),(27 84),(52 98),(72 95),(85 71),
+        (75 84),(75 77),(81 29),(77 73),(41 42),(83 72),(23 36),(89 53),(27 57),(57 97),(27 77),(39 88),(60 81),
+        (80 72),(54 32),(55 26),(62 22),(70 20),(76 27),(84 35),(87 42),(82 54),(83 64),(69 86),(60 90),(50 86),(43 80),(36 73),
+        (36 68),(40 75),(24 67),(23 60),(26 44),(28 33),(40 32),(43 19),(65 16),(73 16),(38 46),(31 59),(34 86),(45 90),(64 97))'::geometry, allow_holes =&gt; true));</pre>
+        <p>
+    </p>
+        <pre class="screen">POLYGON((89 53,91 50,87 42,90 30,88 29,84 19,78 16,73 16,65 16,53 18,43 19,37 23,30 22,28 33,23 36,26 44,27 54,23 60,24 67,27 77,24 82,26 85,34 86,39 88,45 90,49 95,52 98,57 97,64 97,72 95,76 88,75 84,75 77,83 72,85 71,83 64,88 58,89 53),(36 61,36 68,40 75,43 80,50 86,60 81,68 73,77 67,81 60,82 54,81 47,78 43,81 29,76 27,70 20,62 22,55 26,54 32,48 34,44 42,38 46,36 61))</pre>
+        <p>
+</p>
+      </div>
+      <div class="refsection" id="idm23070">
+        <h2>See Also</h2>
+        <p><a class="xref" href="ST_ConcaveHull.html" title="ST_ConcaveHull">ST_ConcaveHull</a>, <a class="xref" href="CG_AlphaShape.html" title="CG_AlphaShape">CG_AlphaShape</a></p>
+      </div>
+    </div>
+    <footer>
+      <div class="navfooter">
+        <table style="width: 100%; ">
+          <tr>
+            <td style="width: 40%; text-align: left; "><a accesskey="p" href="ST_OptimalAlphaShape.html">Prev</a> </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="u" href="reference_sfcgal.html#sfcgal_processing">Up</a>
+            </td>
+            <td style="width: 40%; text-align: right; "> <a accesskey="n" href="CG_OptimalConvexPartition.html">Next</a></td>
+          </tr>
+          <tr>
+            <td style="width: 40%; text-align: left; vertical-align: top; ">ST_OptimalAlphaShape </td>
+            <td style="width: 20%; text-align: center; ">
+              <a accesskey="h" href="index.html">Home</a>
+            </td>
+            <td style="width: 40%; text-align: right; vertical-align: top; "> CG_OptimalConvexPartition</td>
+          </tr>
+        </table>
+      </div>
+    </footer>
+  </body>
+</html>
